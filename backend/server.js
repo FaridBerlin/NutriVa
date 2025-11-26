@@ -8,15 +8,14 @@ const PORT = process.env.PORT || 3000;
 /* const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; */
 const frontendUrl = "http://localhost:5173";
 
+const app = express();
+
 app.use(
   cors({
     origin: frontendUrl,
     credentials: true,
   })
 );
-
-const app = express();
-app;
 
 app.use(express.json());
 
