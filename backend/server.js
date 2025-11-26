@@ -1,0 +1,29 @@
+import express from "express";
+import connectDB from "./config/dbConnect.js";
+import cors from "cors";
+
+connectDB();
+
+const PORT = process.env.PORT || 3000;
+/* const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; */
+const frontendUrl = "http://localhost:5173";
+
+app.use(
+  cors({
+    origin: frontendUrl,
+    credentials: true,
+  })
+);
+
+const app = express();
+app;
+
+app.use(express.json());
+
+app.use((err, req, res, next) => {
+  res.status(500).json({ msg: err.message || "Server Error" });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port: ${PORT}`);
+});
