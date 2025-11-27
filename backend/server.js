@@ -10,6 +10,8 @@ const frontendUrl = "http://localhost:5173";
 
 const app = express();
 
+app.use(express.json());
+
 app.use(
   cors({
     origin: frontendUrl,
@@ -17,7 +19,6 @@ app.use(
   })
 );
 
-app.use(express.json());
 
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || "Server Error" });
