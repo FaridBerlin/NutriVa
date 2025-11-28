@@ -68,6 +68,9 @@ web_modules/
 # dotenv environment variable files
 .env
 
+# VS Code settings (personal preferences)
+.vscode/
+
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache

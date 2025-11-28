@@ -1,6 +1,7 @@
 import express from "express";
 import connectDB from "./config/dbConnect.js";
 import cors from "cors";
+import authRoutes from "./routes/auth.js";
 
 connectDB();
 
@@ -19,6 +20,8 @@ app.use(
   })
 );
 
+// Routes
+app.use("/api/auth", authRoutes);
 
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || "Server Error" });
