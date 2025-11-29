@@ -1,19 +1,26 @@
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import LandingPage from "./pages/LandingPage"; // main landing page
+import LandingPage from "./pages/LandingPage";
+import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
 
 function App() {
   return (
-    <>
-      {/* <BrowserRouter> */}
-        {/* <Routes> */}
-          {/*  <Route path="/" element={<Home />} />
-          <Route path="/UserProfile" element={<UserProfile />} /> */}
+    <Router>
 
-          <LandingPage />
-        {/* </Routes> */}
-      {/* </BrowserRouter> */}
-    </>
+
+
+
+
+      <Navbar />
+      
+      <Routes>
+        {/* Landing page */}
+        <Route path="/" element={<LandingPage />} />
+        {/* Home page */}
+        <Route path="/home" element={<HomePage />} />
+      </Routes>
+    </Router>
   );
 }
 

@@ -6,7 +6,7 @@ export default function NutrivaLogo() {
       <img
         src={logo}
         alt="Nutriva Logo"
-        className="w-32 h-22 object-contain "
+        className="w-24 sm:w-28 md:w-32 lg:w-36 h-auto object-contain"
       />
     </div>
   );
