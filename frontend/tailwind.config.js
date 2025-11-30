@@ -4,7 +4,7 @@ export default {
     extend: {
       colors: {
         primary: "#83D385", // main green color
-        primaryDark: "#69c86f", // Hover
+        primaryDark: "#7FBC81", // Hover
         primarySoft: "rgba(127,188,129,0.85)", // button bg
         primaryLight70: "rgba(131, 211, 133, 0.7)", // 70% opacity
         primaryLight40: "rgba(131, 211, 133, 0.4)", // 40% opacity

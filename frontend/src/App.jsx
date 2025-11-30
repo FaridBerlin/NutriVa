@@ -3,24 +3,19 @@ import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
-
+// import { AuthProvider } from "./contexts/AuthContext";
 function App() {
   return (
-    <Router>
-
-
-
-
-
-      <Navbar />
-      
-      <Routes>
-        {/* Landing page */}
-        <Route path="/" element={<LandingPage />} />
-        {/* Home page */}
-        <Route path="/home" element={<HomePage />} />
-      </Routes>
-    </Router>
+    // <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          {/* Home page */}
+          <Route path="/home" element={<HomePage />} />
+        </Routes>
+      </Router>
+    // </AuthProvider>
   );
 }
 
