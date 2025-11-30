@@ -1,20 +1,27 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import HomeTest from "./pages/HomeTest";
+import LandingPage from "./pages/LandingPage";
+import HomePage from "./pages/HomePage";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./context/AuthContext";
+
+
+
+
+
 
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
+      <Router>
+        <Navbar />
         <Routes>
-          <Route path="/" element={<HomeTest />} />
-          
-          {/*  <Route path="/" element={<Home />} />
-          <Route path="/UserProfile" element={<UserProfile />} /> */}
+          <Route path="/" element={<LandingPage />} />
+          {/* Home page */}
+          <Route path="/home" element={<HomePage />} />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+      </Router>
+    // </AuthProvider>
   );
 }
 

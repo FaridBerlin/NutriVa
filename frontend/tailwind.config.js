@@ -1,22 +1,22 @@
-/** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
-      keyframes: {
-        slideDown: {
-          "0%": { transform: "translateY(-100px)", opacity: "0" },
-          "100%": { transform: "translateY(0)", opacity: "1" },
+      colors: {
+        primary: "#83D385", // main green color
+        primaryDark: "#7FBC81", // Hover
+        primarySoft: "rgba(127,188,129,0.85)", // button bg
+        primaryLight70: "rgba(131, 211, 133, 0.7)", // 70% opacity
+        primaryLight40: "rgba(131, 211, 133, 0.4)", // 40% opacity
+        textDark: "#2E2E2E", // almost black
+        textLight: "#6B7280", // gray-700
+        gray: {
+          600: "#4B5563", // text-gray-600
+          700: "#374151", //  text-gray-700
+          800: "#1F2937", // text-gray-800
         },
-      },
-      animation: {
-        slideDown: "slideDown 1s ease-out",
       },
     },
   },
   plugins: [],
-}
-
+};
