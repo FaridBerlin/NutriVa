@@ -3,10 +3,16 @@ import "./App.css";
 import LandingPage from "./pages/LandingPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./components/Navbar";
-// import { AuthProvider } from "./contexts/AuthContext";
+import { AuthProvider } from "./context/AuthContext";
+
+
+
+
+
+
 function App() {
   return (
-    // <AuthProvider>
+    <AuthProvider>
       <Router>
         <Navbar />
         <Routes>
