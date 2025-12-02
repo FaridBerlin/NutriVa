@@ -1,54 +1,62 @@
 import mongoose from "mongoose";
 import bcryptjs from "bcryptjs";
-import {Schema, model} from "mongoose";
+import { Schema, model } from "mongoose";
 
-const userSchema = new Schema({
+const userSchema = new Schema(
+  {
+    name: {
+      type: String,
+      required: [true, "Please provide a name"],
+    },
+    email: {
+      type: String,
+      required: [true, "Please provide an email"],
+      unique: true,
+      lowercase: true,
+      match: [
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+        "Please provide a valid email",
+      ],
+    },
 
-name: {
-type: String,
-required: [true, "Please provide a name"],
-},
-email: {
-type: String,
-required: [true, "Please provide an email"],
-unique: true,
-lowercase: true,
-match: [
-/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-"Please provide a valid email",
-],
-},
-password: {
-type: String,
-required: [true, "Please provide a password"],
-minlength: 6,
-select: false,
-},
-profileCompleted: {
-type: Boolean,
-default: false,
-},
-age: Number,
-gender: String,
-height: Number,
-weight: Number,
-dietType: String,
-fitnessGoal: String,
-createdAt: {
-type: Date,
-default: Date.now,
-},
-},
-{ timestamps: true }
+    // image upload (optional) with multer and cloud storage
+    // profileImage: {
+    //   type: String,
+    //   default: "default-profile.png",
+    // },
+
+    password: {
+      type: String,
+      required: [true, "Please provide a password"],
+      minlength: 6,
+      select: false,
+    },
+    profileCompleted: {
+      type: Boolean,
+      default: false,
+    },
+    age: Number,
+    gender: String,
+    height: Number,
+    weight: Number,
+    dietType: String,
+    fitnessGoal: String,
+    createdAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  { timestamps: true }
 );
 userSchema.pre("save", async function (next) {
-if (!this.isModified("password")) {
-next();
-}
-const salt = await bcryptjs.genSalt(10);this.password = await bcryptjs.hash(this.password, salt);
+  if (!this.isModified("password")) {
+    next();
+  }
+  const salt = await bcryptjs.genSalt(10);
+  this.password = await bcryptjs.hash(this.password, salt);
 });
 userSchema.methods.matchPassword = async function (enteredPassword) {
-return await bcryptjs.compare(enteredPassword, this.password);
+  return await bcryptjs.compare(enteredPassword, this.password);
 };
 
 export default model("User", userSchema);

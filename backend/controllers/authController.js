@@ -35,7 +35,8 @@ email: user.email,
 });
 
 } catch (error) {
-res.status(500).json({ message: error.message });
+console.error("Signup error:", error);
+res.status(500).json({ message: error.message || "Server error during signup" });
 }
 };
 export const login = async (req, res) => {
@@ -66,7 +67,8 @@ email: user.email,
 },
 });
 } catch (error) {
-res.status(500).json({ message: error.message });
+console.error("Login error:", error);
+res.status(500).json({ message: error.message || "Server error during login" });
 }
 };
 
