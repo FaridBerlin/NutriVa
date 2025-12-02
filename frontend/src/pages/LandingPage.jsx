@@ -5,9 +5,9 @@ export default function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      {/* Hero Wrapper (Centered vertically without scroll) */}
-      <div className="flex flex-col md:flex-row items-center justify-center h-full px-6 sm:px-10 md:px-20 gap-6 md:gap-10">
+    <div className="relative w-full overflow-hidden">
+      {/* Hero Section */}
+      <div className="flex flex-col md:flex-row items-center justify-center min-h-screen px-6 sm:px-10 md:px-20 gap-6 md:gap-10">
         {/* Left Text */}
         <div className="max-w-xl text-center md:text-left space-y-4 md:space-y-5">
           <h2 className="text-textLight text-base sm:text-lg md:text-xl font-medium tracking-wide">
@@ -39,49 +39,78 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* CTA Button */}
-      <div className="absolute bottom-6 sm:bottom-8 right-4 sm:right-8 z-20">
-        <button
-          onClick={() => navigate("/home")}
-          className="px-6 sm:px-8 md:px-10 py-2 sm:py-2.5 md:py-3 bg-primarySoft hover:bg-primary
-          text-sm sm:text-base md:text-lg rounded-xl transition-all shadow-md"
-        >
-          Get Start
-        </button>
-      </div>
+      {/* About Us Section */}
+      <section id="about" className="py-20 px-6 sm:px-10 md:px-20">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-10">
+            About Us
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* About Card 1 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Content coming soon...</span>
+            </div>
+            {/* About Card 2 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Content coming soon...</span>
+            </div>
+            {/* About Card 3 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Content coming soon...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-20 px-6 sm:px-10 md:px-20 bg-white/30">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-10">
+            What Our Users Say
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {/* Testimonial Card 1 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Testimonial coming soon...</span>
+            </div>
+            {/* Testimonial Card 2 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Testimonial coming soon...</span>
+            </div>
+            {/* Testimonial Card 3 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-8 min-h-[200px] flex items-center justify-center">
+              <span className="text-gray-400">Testimonial coming soon...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 px-6 sm:px-10 md:px-20">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-10 text-center">
+            Frequently Asked Questions
+          </h2>
+          <div className="space-y-4">
+            {/* FAQ Item 1 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-6 min-h-[80px] flex items-center justify-center">
+              <span className="text-gray-400">FAQ coming soon...</span>
+            </div>
+            {/* FAQ Item 2 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-6 min-h-[80px] flex items-center justify-center">
+              <span className="text-gray-400">FAQ coming soon...</span>
+            </div>
+            {/* FAQ Item 3 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-6 min-h-[80px] flex items-center justify-center">
+              <span className="text-gray-400">FAQ coming soon...</span>
+            </div>
+            {/* FAQ Item 4 */}
+            <div className="bg-white/60 backdrop-blur-sm rounded-xl border-2 border-dashed border-gray-300 p-6 min-h-[80px] flex items-center justify-center">
+              <span className="text-gray-400">FAQ coming soon...</span>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
-
-/**
- * ===========================
- *  LandingPage.jsx – Summary
- * ===========================
- *
- * This page is the main landing (hero) section of the project.
- * It displays the logo, marketing text, a hero animation, and a CTA button.
- *
- * 🔹 FILE NAME:
- *    /src/pages/LandingPage.jsx
- *
- * 🔹 COMPONENTS USED:
- *    1) NutrivaLogo.jsx    → located in /src/components/
- *    2) HeroAnimation.jsx  → located in /src/components/
- *
- * 🔹 STYLES:
- *    LandingPage.module.css → located in /src/pages/
- *
- * 🔹 IMAGES / ASSETS:
- *    No direct image imports here.
- *    (HeroAnimation component may use its own assets.)
- *
- * 🔹 NOTES FOR TEAM:
- *    - This page is full-screen (min-h-screen).
- *    - Do NOT remove `position: absolute` for the logo or CTA button.
- *    - Main text and animation are inside the hero section.
- *    - Keep component imports exactly as shown so the layout does not break.
- *
- * 🔹 PURPOSE:
- *    This is the first screen users see.
- *    It serves as the visual introduction to the Nutriva platform.
- */

@@ -2,12 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-
-/*   Global styles*/
+/* Global styles */
 body {
   background: linear-gradient(to bottom, rgba(131, 211, 133, 0.44) 0%, white 50%, rgba(131, 211, 133, 0.25) 100%);
 }
 
 html, body, #root {
   height: 100%;
+}
+
+/* Dropdown animation */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.2s ease-out;
 }

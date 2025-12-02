@@ -20,29 +20,44 @@ export default function LoginForm() {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
-    try {
-      const response = await api.post("/auth/login", formData);
-      localStorage.setItem("token", response.data.token);
-      setUser(response.data.user);
-      navigate("/dashboard");
-    } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
-    } finally {
-      setIsLoading(false);
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+  setError("");
+  try {
+    const response = await api.post("/auth/login", formData);
+    localStorage.setItem("token", response.data.token);
+    setUser(response.data.user);
+
+    if (!response.data.user.profileCompleted) {
+      navigate("/profile");      // مستخدم جديد - ملء البيانات أولاً
+    } else {
+      navigate("/dashboard");    // مستخدم موجود - اذهب للداشبورد
     }
-  };
+  } catch (err) {
+    setError(err.response?.data?.message || "Login failed");
+  } finally {
+    setIsLoading(false);
+  }
+};
+
+
+  // shared green button style
+  const greenButtonClass = `
+    text-white bg-gradient-to-br from-green-600 to-green-400 
+    hover:bg-gradient-to-bl focus:ring-4 focus:outline-none 
+    focus:ring-green-200 font-medium rounded-md 
+    text-base px-5 py-2.5 shadow-md transition-all text-center
+    disabled:opacity-50
+  `;
 
   return (
-    <div>
-      <h2>Login</h2>
+    <div className="space-y-4">
+      <h2 className="text-xl font-bold">Login</h2>
 
-      {error && <div>{error}</div>}
+      {error && <div className="text-red-600">{error}</div>}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-bold mb-2">Email</label>
           <input
@@ -65,17 +80,21 @@ export default function LoginForm() {
             required
           />
         </div>
+        {/* Login button with unified green gradient style */}
         <button
           type="submit"
           disabled={isLoading}
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+          className={greenButtonClass}
         >
           {isLoading ? "Logging in..." : "Login"}
         </button>
       </form>
 
-      <p>
-        Don't have an account? <a href="/signup">Sign up</a>
+      <p className="text-sm">
+        Don't have an account?{" "}
+        <a href="/signup" className="text-primary hover:underline">
+          Sign up
+        </a>
       </p>
     </div>
   );
