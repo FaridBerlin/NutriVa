@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import ProfileForm from "../components/ProfileForm";
 
+// import api from "../services/api";   // later use api to fetch profile data
+
+
 export default function ProfilePage() {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,11 +21,10 @@ export default function ProfilePage() {
 
   const fetchProfile = async () => {
     try {
-      // TODO: استدعاء API للحصول على البروفايل
-      // const response = await api.get('/profile');
+
       // setProfile(response.data);
       
-      // بيانات وهمية مؤقتة
+    // Mock profile data for demonstration
       const mockProfile = {
         name: user?.name || "Ahmed",
         age: 25,
@@ -225,7 +227,7 @@ export default function ProfilePage() {
               <p className="text-sm text-textLight">calories/day</p>
             </div>
 
-            {/* TDEE */}
+            {/* TDEE   Total Daily Energy Expenditure */}
             <div className="p-6 bg-purple-50 rounded-xl border-l-4 border-purple-500">
               <p className="text-sm text-textLight mb-1">Daily Calorie Need</p>
               <p className="text-4xl font-bold text-textDark mb-2">{profile.tdee}</p>
@@ -316,3 +318,30 @@ export default function ProfilePage() {
 
 
 // i want add lottie animation here later or icon 
+//  Profile API Endpoints Needed
+
+// ### GET /api/profile
+// - Fetch logged-in user's profile
+// - Return 404 if no profile exists
+
+// ### POST /api/profile
+// - Create new profile
+// - Update User.profileCompleted = true
+// - Validate all fields
+
+// ### PUT /api/profile
+// - Update existing profile
+// - Validate changes
+
+// ## Required Fields
+// - age (Number, 13-120)
+// - gender (String, "male"/"female")
+// - height (Number, cm)
+// - weight (Number, kg)
+// - activityLevel (String, enum)
+// - dietaryGoal (String, enum)
+
+//  Notes
+// - All routes require authentication (protect middleware)
+// - Profile linked to User via user field
+// - Return proper error messages
