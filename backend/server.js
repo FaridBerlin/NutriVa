@@ -4,6 +4,7 @@ import cors from "cors";
 import authRoutes from "./routes/auth.js";
 
 import userRouter from "./routes/userRoutes.js";
+import profileRouter from "./routes/profileRoutes.js";
 
 connectDB();
 
@@ -26,6 +27,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 
 app.use("/api/user", userRouter);
+app.use("/api/profile", profileRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || "Server Error" });
