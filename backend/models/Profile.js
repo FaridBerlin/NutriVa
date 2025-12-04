@@ -29,7 +29,7 @@ const profileSchema = new Schema({
     },
     activityLevel: {
       type: String,
-      enum: ["sedentary", "light", "moderate", "very", "extreme"],
+      enum: ["sedentary", "light", "moderate", "active", "very_active"],
       required: true,
     },
     foodType: {
@@ -39,7 +39,7 @@ const profileSchema = new Schema({
     },
     dietaryGoal: {
       type: String,
-      enum: ["maintain", "weightLoss", "weightGain"],
+      enum: ["lose_weight", "maintain_weight", "gain_weight", "build_muscle"],
       required: true,
     },
 
@@ -72,8 +72,9 @@ profileSchema.methods.getDailyCalories = function () {
   const tdee = this.getTDEE();
   let dailyCalories = tdee;
   
-  if (this.dietaryGoal === 'weightLoss') dailyCalories -= 300;
-  if (this.dietaryGoal === 'weightGain') dailyCalories += 300;
+  if (this.dietaryGoal === 'lose_weight') dailyCalories -= 300;
+  if (this.dietaryGoal === 'gain_weight') dailyCalories += 300;
+  if (this.dietaryGoal === 'build_muscle') dailyCalories += 500;
   
   return Math.round(dailyCalories);
 };

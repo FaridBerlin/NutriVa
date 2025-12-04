@@ -78,7 +78,9 @@ export const getProfile = async () => {
     logError('GET', '/profile', error);
     
     // 404 means profile doesn't exist yet - not really an error
-    if (error.response?.status === 404) {
+    // 400 with "not found" message also means profile doesn't exist
+    if (error.response?.status === 404 || 
+        (error.response?.status === 400 && error.response?.data?.message?.includes('not found'))) {
       return {
         data: null,
         error: null
