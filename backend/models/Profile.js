@@ -1,4 +1,5 @@
 import { Schema, model } from "mongoose";
+import { calculateBMR, calculateTDEE } from "../utils/nutritionCalculations.js";
 
 const profileSchema = new Schema({
 
@@ -15,7 +16,7 @@ const profileSchema = new Schema({
     },
     gender: {
       type: String,
-      enum: ["male", "female"],
+      enum: ["male", "female", "other"],
       required: true,
     },
     height: { 
@@ -28,16 +29,60 @@ const profileSchema = new Schema({
     },
     activityLevel: {
       type: String,
-      enum: ["sedentary", "light", "moderate", "active", "veryActive"],
+      enum: ["sedentary", "light", "moderate", "active", "very_active"],
       required: true,
+    },
+    foodType: {
+      type: String,
+      enum: ["veg", "nonveg", "vegan"],
+      
     },
     dietaryGoal: {
       type: String,
-      enum: ["maintain", "weightLoss", "weightGain"],
+      enum: ["lose_weight", "maintain_weight", "gain_weight", "build_muscle"],
       required: true,
     },
 
 
+
 }, { timestamps: true });
+
+// Virtual BMR using Harris-Benedict Equation
+profileSchema.virtual('bmr').get(function () {
+return calculateBMR({
+weight: this.weight,
+height: this.height,
+age: this.age,
+gender: this.gender,
+});
+
+});
+
+
+
+// Method to calculate daily calorie needs
+profileSchema.methods.getTDEE = function () {
+return calculateTDEE({
+bmr: this.bmr,
+activityLevel: this.activityLevel,
+});
+};
+
+profileSchema.methods.getDailyCalories = function () {
+  const tdee = this.getTDEE();
+  let dailyCalories = tdee;
+  
+  if (this.dietaryGoal === 'lose_weight') dailyCalories -= 300;
+  if (this.dietaryGoal === 'gain_weight') dailyCalories += 300;
+  if (this.dietaryGoal === 'build_muscle') dailyCalories += 500;
+  
+  return Math.round(dailyCalories);
+};
+
+
+
+// Include virtuals in JSON
+profileSchema.set('toJSON', { virtuals: true });
+profileSchema.set('toObject', { virtuals: true });
 
 export default model('Profile', profileSchema);

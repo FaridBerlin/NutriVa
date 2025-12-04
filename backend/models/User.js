@@ -18,13 +18,6 @@ const userSchema = new Schema(
         "Please provide a valid email",
       ],
     },
-
-    // image upload (optional) with multer and cloud storage
-    // profileImage: {
-    //   type: String,
-    //   default: "default-profile.png",
-    // },
-
     password: {
       type: String,
       required: [true, "Please provide a password"],

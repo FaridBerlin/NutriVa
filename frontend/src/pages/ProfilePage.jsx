@@ -130,7 +130,7 @@ export default function ProfilePage() {
 
 
              {/* // Edit icon */}
-            <span>✏️</span> 
+            <span>icon </span> 
             Edit Profile
           </button>
         </div>
@@ -146,7 +146,7 @@ export default function ProfilePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <span className="text-2xl">📛</span>
+              <span className="text-2xl">icon</span>
               <div>
                 <p className="text-sm text-textLight">Name</p>
                 <p className="text-lg font-semibold text-textDark">{profile.name}</p>
@@ -162,7 +162,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <span className="text-2xl">{profile.gender === 'male' ? '👨' : profile.gender === 'female' ? '👩' : '🧑'}</span>
+              <span className="text-2xl">{profile.gender === 'male' ? 'icon' : profile.gender === 'female' ? '👩' : '🧑'}</span>
               <div>
                 <p className="text-sm text-textLight">Gender</p>
                 <p className="text-lg font-semibold text-textDark capitalize">{profile.gender}</p>
@@ -170,7 +170,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <span className="text-2xl">📏</span>
+              <span className="text-2xl">icon</span>
               <div>
                 <p className="text-sm text-textLight">Height</p>
                 <p className="text-lg font-semibold text-textDark">
@@ -180,7 +180,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <span className="text-2xl">⚖️</span>
+              <span className="text-2xl">icon</span>
               <div>
                 <p className="text-sm text-textLight">Weight</p>
                 <p className="text-lg font-semibold text-textDark">
@@ -190,7 +190,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
-              <span className="text-2xl">💪</span>
+              <span className="text-2xl">icon</span>
               <div>
                 <p className="text-sm text-textLight">Activity Level</p>
                 <p className="text-lg font-semibold text-textDark capitalize">

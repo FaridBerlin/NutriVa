@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
   // Function to verify token and get user data
   const verifyToken = async () => {
     const token = localStorage.getItem("token");
-    
+
     if (!token) {
       setIsLoading(false);
       return;
@@ -18,7 +18,7 @@ export function AuthProvider({ children }) {
 
     try {
       // Call backend to verify token and get user data
-      const response = await api.get("/auth/profile");
+      const response = await api.get("/auth/me");
       setUser(response.data.user);
     } catch (error) {
       // Token is invalid or expired, remove it

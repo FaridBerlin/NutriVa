@@ -95,7 +95,7 @@ export default function ProfileForm() {
     try {
       console.log("Submitting profile:", formData);
       
-      // إرسال البيانات للـ API
+      // send data to backend
       const response = await api.put("/user/me", {
         ...formData,
         profileCompleted: true
@@ -103,7 +103,10 @@ export default function ProfileForm() {
       
       if (response.status === 200) {
         console.log("Profile updated successfully");
-        // بعد النجاح، انتقل للـ Dashboard
+
+
+
+    /// navigate to dashboard
         navigate("/dashboard");
       }
     } catch (error) {
