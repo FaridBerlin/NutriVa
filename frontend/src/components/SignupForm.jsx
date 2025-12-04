@@ -26,7 +26,7 @@ export default function SignupForm() {
       const response = await api.post("/auth/signup", formData);
       localStorage.setItem("token", response.data.token);
       setUser(response.data.user);
-      navigate("/onboarding");
+      navigate("/profile"); // Navigate to profile creation page
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     } finally {

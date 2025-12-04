@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useProfile } from "../context/ProfileContext";
 
-export default function ProfilePage() {
+export default function ProfilePageTest() {
   const navigate = useNavigate();
   const {
     profile,
@@ -12,16 +12,16 @@ export default function ProfilePage() {
     createProfile,
     updateProfile,
     clearError,
-    profileProgress
+    profileProgress,
   } = useProfile();
 
   const [formData, setFormData] = useState({
-    age: '',
-    gender: '',
-    height: '',
-    weight: '',
-    activityLevel: 'sedentary',
-    dietaryGoal: 'maintain_weight'
+    age: "",
+    gender: "",
+    height: "",
+    weight: "",
+    activityLevel: "sedentary",
+    dietaryGoal: "maintain_weight",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -30,21 +30,21 @@ export default function ProfilePage() {
   useEffect(() => {
     if (profile) {
       setFormData({
-        age: profile.age || '',
-        gender: profile.gender || '',
-        height: profile.height || '',
-        weight: profile.weight || '',
-        activityLevel: profile.activityLevel || 'sedentary',
-        dietaryGoal: profile.dietaryGoal || 'maintain_weight'
+        age: profile.age || "",
+        gender: profile.gender || "",
+        height: profile.height || "",
+        weight: profile.weight || "",
+        activityLevel: profile.activityLevel || "sedentary",
+        dietaryGoal: profile.dietaryGoal || "maintain_weight",
       });
     }
   }, [profile]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -57,7 +57,7 @@ export default function ProfilePage() {
       ...formData,
       age: parseInt(formData.age),
       height: parseInt(formData.height),
-      weight: parseInt(formData.weight)
+      weight: parseInt(formData.weight),
     };
 
     let result;
@@ -71,7 +71,7 @@ export default function ProfilePage() {
       setIsEditing(false);
       // Redirect to dashboard after profile creation
       if (!profile) {
-        navigate('/dashboard');
+        navigate("/dashboard");
       }
     }
   };
@@ -83,13 +83,12 @@ export default function ProfilePage() {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              {profile ? 'Update Your Profile' : 'Complete Your Profile'}
+              {profile ? "Update Your Profile" : "Complete Your Profile"}
             </h2>
             <p className="text-gray-600 mb-6">
               {profile
-                ? 'Update your information to get better recommendations'
-                : 'Tell us about yourself to get personalized nutrition recommendations'
-              }
+                ? "Update your information to get better recommendations"
+                : "Tell us about yourself to get personalized nutrition recommendations"}
             </p>
 
             {profile && (
@@ -198,11 +197,21 @@ export default function ProfilePage() {
                   required
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
-                  <option value="sedentary">Sedentary (little/no exercise)</option>
-                  <option value="light">Light (light exercise 1-3 days/week)</option>
-                  <option value="moderate">Moderate (moderate exercise 3-5 days/week)</option>
-                  <option value="active">Active (hard exercise 6-7 days/week)</option>
-                  <option value="very_active">Very Active (very hard exercise & physical job)</option>
+                  <option value="sedentary">
+                    Sedentary (little/no exercise)
+                  </option>
+                  <option value="light">
+                    Light (light exercise 1-3 days/week)
+                  </option>
+                  <option value="moderate">
+                    Moderate (moderate exercise 3-5 days/week)
+                  </option>
+                  <option value="active">
+                    Active (hard exercise 6-7 days/week)
+                  </option>
+                  <option value="very_active">
+                    Very Active (very hard exercise & physical job)
+                  </option>
                 </select>
               </div>
 
@@ -232,7 +241,11 @@ export default function ProfilePage() {
                   disabled={loading}
                   className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? 'Saving...' : (profile ? 'Update Profile' : 'Complete Profile')}
+                  {loading
+                    ? "Saving..."
+                    : profile
+                    ? "Update Profile"
+                    : "Complete Profile"}
                 </button>
 
                 {profile && (
@@ -270,7 +283,9 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Personal Info */}
             <div className="bg-gray-50 p-6 rounded-lg">
-              <h3 className="text-xl font-semibold mb-4">Personal Information</h3>
+              <h3 className="text-xl font-semibold mb-4">
+                Personal Information
+              </h3>
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="font-medium">Age:</span>
@@ -301,11 +316,15 @@ export default function ProfilePage() {
               <div className="space-y-3">
                 <div className="flex justify-between">
                   <span className="font-medium">Activity Level:</span>
-                  <span className="capitalize">{profile.activityLevel.replace('_', ' ')}</span>
+                  <span className="capitalize">
+                    {profile.activityLevel.replace("_", " ")}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Goal:</span>
-                  <span className="capitalize">{profile.dietaryGoal.replace('_', ' ')}</span>
+                  <span className="capitalize">
+                    {profile.dietaryGoal.replace("_", " ")}
+                  </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">TDEE:</span>
@@ -323,7 +342,8 @@ export default function ProfilePage() {
 
           {/* Success Message */}
           <div className="mt-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
-            🎉 Your profile is complete! You're all set to start tracking your nutrition.
+            🎉 Your profile is complete! You're all set to start tracking your
+            nutrition.
           </div>
         </div>
       </div>
