@@ -1,12 +1,14 @@
 
-// iam form but you can change me as you want
-import { useState } from "react";
+
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
 
 export default function ProfileForm() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
   const totalSteps = 5;
 
   // Form Data State
@@ -33,6 +35,42 @@ export default function ProfileForm() {
     // Step 5: Goals
     fitnessGoal: ""
   });
+
+  // Load existing profile data on mount
+  useEffect(() => {
+    const loadExistingProfile = async () => {
+      try {
+        setIsLoading(true);
+        const response = await api.get("/profile");
+        
+        if (response.data?.data) {
+          const profile = response.data.data;
+          console.log("Loaded existing profile:", profile);
+          
+          setIsEditMode(true);
+          setFormData(prev => ({
+            ...prev,
+            name: profile.user?.name || prev.name,
+            age: profile.age?.toString() || "",
+            gender: profile.gender ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1) : "",
+            height: profile.height?.toString() || "",
+            weight: profile.weight?.toString() || "",
+            activityLevel: profile.activityLevel || "",
+            dietaryPreference: profile.foodType || "",
+            fitnessGoal: profile.dietaryGoal || ""
+          }));
+        }
+      } catch (error) {
+        // No existing profile - that's fine, user will create new one
+        console.log("No existing profile found, creating new one");
+        setIsEditMode(false);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadExistingProfile();
+  }, []);
 
   // Calculate BMI
   const calculateBMI = () => {
@@ -93,25 +131,90 @@ export default function ProfileForm() {
 
   const handleSubmit = async () => {
     try {
-      console.log("Submitting profile:", formData);
+      console.log("=== PROFILE SUBMISSION ===");
+      console.log("Edit Mode:", isEditMode);
+      console.log("Full formData:", formData);
       
-      // send data to backend
-      const response = await api.put("/user/me", {
-        ...formData,
-        profileCompleted: true
-      });
+      // Validation
+      if (!formData.fitnessGoal) {
+        alert("Please select a fitness goal");
+        return;
+      }
       
-      if (response.status === 200) {
-        console.log("Profile updated successfully");
-
-
-
-    /// navigate to dashboard
+      if (!formData.activityLevel) {
+        alert("Please select an activity level");
+        return;
+      }
+      
+      // Transform data to match Backend expected format
+      const profileData = {
+        age: parseInt(formData.age),
+        gender: formData.gender.toLowerCase(), // male, female, other
+        height: parseFloat(formData.height),
+        weight: parseFloat(formData.weight),
+        activityLevel: formData.activityLevel, // sedentary, light, moderate, active, very_active
+        dietaryGoal: formData.fitnessGoal // lose_weight, maintain_weight, gain_weight, build_muscle
+      };
+      
+      console.log("Profile data to send:", JSON.stringify(profileData, null, 2));
+      
+      let response;
+      
+      // If in edit mode, use PUT directly
+      if (isEditMode) {
+        console.log("Updating existing profile...");
+        response = await api.put("/profile", profileData);
+      } else {
+        console.log("Creating new profile...");
+        response = await api.post("/profile/complete", profileData);
+      }
+      
+      if (response.status === 200 || response.status === 201) {
+        console.log("Profile created successfully:", response.data);
         navigate("/dashboard");
       }
     } catch (error) {
       console.error("Error submitting profile:", error);
-      alert("Failed to update profile. Please try again.");
+      console.error("Error response:", error.response?.data);
+      
+      // If profile already exists, try to update
+      if (error.response?.status === 400) {
+        const errorData = error.response?.data;
+        
+        // Check if it's validation errors
+        if (errorData?.errors && Array.isArray(errorData.errors)) {
+          const errorMessages = errorData.errors.map(e => e.msg || e.message).join('\n');
+          alert("Validation errors:\n" + errorMessages);
+          return;
+        }
+        
+        // Check if profile already exists
+        if (errorData?.message?.includes("already exists")) {
+          try {
+            const profileData = {
+              age: parseInt(formData.age),
+              gender: formData.gender.toLowerCase(),
+              height: parseFloat(formData.height),
+              weight: parseFloat(formData.weight),
+              activityLevel: formData.activityLevel,
+              dietaryGoal: formData.fitnessGoal
+            };
+            
+            console.log("Updating existing profile...");
+            const updateResponse = await api.put("/profile", profileData);
+            if (updateResponse.status === 200) {
+              console.log("Profile updated successfully");
+              navigate("/dashboard");
+              return;
+            }
+          } catch (updateError) {
+            console.error("Error updating profile:", updateError);
+            console.error("Update error response:", updateError.response?.data);
+          }
+        }
+      }
+      
+      alert(error.response?.data?.message || "Failed to save profile. Please try again.");
     }
   };
 
@@ -133,6 +236,18 @@ export default function ProfileForm() {
     }
   };
 
+  // Show loading while fetching existing profile
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-textLight">Loading your profile...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
       <div className="max-w-2xl mx-auto">
@@ -140,10 +255,10 @@ export default function ProfileForm() {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-textDark mb-2">
-            Welcome to NutriVa! 🎉
+            {isEditMode ? "Edit Your Profile ✏️" : "Welcome to NutriVa! 🎉"}
           </h1>
           <p className="text-textLight text-lg">
-            Let's personalize your nutrition journey
+            {isEditMode ? "Update your information below" : "Let's personalize your nutrition journey"}
           </p>
         </div>
 
@@ -211,7 +326,9 @@ export default function ProfileForm() {
                        text-white rounded-lg font-semibold hover:shadow-lg 
                        transition-all transform hover:scale-105"
           >
-            {currentStep === totalSteps ? 'Complete Setup ✓' : 'Next →'}
+            {currentStep === totalSteps 
+              ? (isEditMode ? 'Update Profile ✓' : 'Complete Setup ✓') 
+              : 'Next →'}
           </button>
         </div>
 
@@ -421,13 +538,13 @@ function Step3Activity({ formData, handleChange }) {
       emoji: '🏃'
     },
     { 
-      value: 'very', 
+      value: 'active', 
       label: 'Very Active',
       description: 'Hard exercise 6-7 days/week',
       emoji: '🏋️'
     },
     { 
-      value: 'extra', 
+      value: 'very_active', 
       label: 'Extra Active',
       description: 'Very hard exercise, physical job',
       emoji: '💪'
@@ -478,12 +595,13 @@ function Step3Activity({ formData, handleChange }) {
 }
 
 // Step 4: Diet & Health
+// Updated 4 December 2025: Fixed foodType values to match Backend enum (veg, nonveg, vegan)
 function Step4Diet({ formData, handleChange }) {
   const [allergyInput, setAllergyInput] = useState("");
 
   const dietOptions = [
-    { value: 'vegetarian', label: 'Vegetarian', emoji: '🥗' },
-    { value: 'non-veg', label: 'Non-Veg', emoji: '🍗' },
+    { value: 'veg', label: 'Vegetarian', emoji: '🥗' },
+    { value: 'nonveg', label: 'Non-Veg', emoji: '🍗' },
     { value: 'vegan', label: 'Vegan', emoji: '🌱' }
   ];
 
@@ -616,25 +734,26 @@ function Step4Diet({ formData, handleChange }) {
 }
 
 // Step 5: Goals
+// Updated 4 December 2025: Fixed dietaryGoal values to match Backend enum
 function Step5Goals({ formData, handleChange }) {
   const goals = [
     { 
-      value: 'lose', 
+      value: 'lose_weight', 
       label: 'Lose Weight',
       icon: '📉',
     },
     { 
-      value: 'gain', 
+      value: 'gain_weight', 
       label: 'Gain Weight',
       icon: '📈',
     },
     { 
-      value: 'muscle', 
+      value: 'build_muscle', 
       label: 'Build Muscle',
       icon: '💪',
     },
     { 
-      value: 'maintain', 
+      value: 'maintain_weight', 
       label: 'Maintain',
       icon: '⚖️',
     }

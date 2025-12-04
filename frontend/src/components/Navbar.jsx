@@ -43,7 +43,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 backdrop-blur-lg border-b border-white/20">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-2">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-1">
         
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-3">
@@ -100,7 +100,7 @@ export default function Navbar() {
                       </li>
                       <li>
                         <Link
-                          to="/profile-view"
+                          to="/profile"
                           onClick={() => setIsDropdownOpen(false)}
                           className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium"
                         >
@@ -160,78 +160,11 @@ export default function Navbar() {
           </button>
         </div>
 
-        {/* Navigation Links */}
+        {/* Navigation Links - Only show Sign In/Sign Up for non-logged in users */}
         <div className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
           <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 md:flex-row md:space-x-6 md:mt-0">
-            {user ? (
+            {!user && (
               <>
-                <li>
-                  <Link
-                    to="/dashboard"
-                    className={`block py-1.5 px-3 rounded transition-all duration-300 ${
-                      isActive('/dashboard')
-                        ? 'text-primary font-semibold'
-                        : 'text-textDark hover:text-primary'
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Dashboard
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/profile-view"
-                    className={`block py-1.5 px-3 rounded transition-all duration-300 ${
-                      isActive('/profile-view')
-                        ? 'text-primary font-semibold'
-                        : 'text-textDark hover:text-primary'
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Profile
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/meal-planner"
-                    className={`block py-1.5 px-3 rounded transition-all duration-300 ${
-                      isActive('/meal-planner')
-                        ? 'text-primary font-semibold'
-                        : 'text-textDark hover:text-primary'
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Meals
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/analytics"
-                    className={`block py-1.5 px-3 rounded transition-all duration-300 ${
-                      isActive('/analytics')
-                        ? 'text-primary font-semibold'
-                        : 'text-textDark hover:text-primary'
-                    }`}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Analytics
-                  </Link>
-                </li>
-              </>
-            ) : (
-              <>
-                <li>
-                  <Link
-                    to="/"
-                    className={`block py-1.5 px-3 rounded transition-all duration-300 ${
-                      isActive('/')
-                        ? 'text-primary font-semibold'
-                        : 'text-textDark hover:text-primary'
-                    }`}
-                  >
-                    Home
-                  </Link>
-                </li>
                 <li>
                   <Link
                     to="/login"

@@ -1,8 +1,30 @@
+/**
+ * DashboardPage.jsx
+ * 
+ * @modified 4 December 2025
+ * @description Dashboard page that displays user profile and nutrition data
+ * 
+ * CHANGES MADE (4 Dec 2025):
+ * - Now using ProfileContext for centralized data management
+ * - Removed direct API calls - data comes from context
+ * - Added loading and error states from context
+ */
+
 import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
+import { useProfile } from "../context/ProfileContext";
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext);
+  const { profile, nutritionTargets, loading } = useProfile();
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-xl text-gray-600">Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen pt-10">
@@ -27,8 +49,8 @@ export default function DashboardPage() {
             <ul className="space-y-2 text-gray-700">
               <li><strong>Name:</strong> {user?.name}</li>
               <li><strong>Email:</strong> {user?.email}</li>
-              <li><strong>Age:</strong> {user?.age || "Not set"}</li>
-              <li><strong>Gender:</strong> {user?.gender || "Not set"}</li>
+              <li><strong>Age:</strong> {profile?.age || "Not set"}</li>
+              <li><strong>Gender:</strong> {profile?.gender || "Not set"}</li>
             </ul>
           </div>
 
@@ -36,21 +58,34 @@ export default function DashboardPage() {
           <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
             <h3 className="text-lg font-semibold text-primary mb-4">Body Metrics</h3>
             <ul className="space-y-2 text-gray-700">
-              <li><strong>Height:</strong> {user?.height ? `${user.height} cm` : "Not set"}</li>
-              <li><strong>Weight:</strong> {user?.weight ? `${user.weight} kg` : "Not set"}</li>
+              <li><strong>Height:</strong> {profile?.height ? `${profile.height} cm` : "Not set"}</li>
+              <li><strong>Weight:</strong> {profile?.weight ? `${profile.weight} kg` : "Not set"}</li>
+              <li><strong>Activity:</strong> {profile?.activityLevel?.replace('_', ' ') || "Not set"}</li>
             </ul>
           </div>
 
-          {/* Diet Performance */}
+          {/* Nutrition Calculations */}
           <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-            <h3 className="text-lg font-semibold text-primary mb-4">Diet Performance</h3>
-            <p className="text-gray-700"><strong>Diet Type:</strong> {user?.dietType || "Not set"}</p>
+            <h3 className="text-lg font-semibold text-primary mb-4">Nutrition Info</h3>
+            <ul className="space-y-2 text-gray-700">
+              <li><strong>BMR:</strong> {nutritionTargets?.bmr ? `${Math.round(nutritionTargets.bmr)} kcal` : "Not set"}</li>
+              <li><strong>TDEE:</strong> {nutritionTargets?.tdee ? `${Math.round(nutritionTargets.tdee)} kcal` : "Not set"}</li>
+              <li><strong>Daily Calories:</strong> {nutritionTargets?.dailyCalories ? `${Math.round(nutritionTargets.dailyCalories)} kcal` : "Not set"}</li>
+            </ul>
           </div>
 
           {/* Fitness Goals */}
           <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
             <h3 className="text-lg font-semibold text-primary mb-4">Fitness Goals</h3>
-            <p className="text-gray-700"><strong>Goal:</strong> {user?.fitnessGoal || "Not set"}</p>
+            <p className="text-gray-700">
+              <strong>Goal:</strong> {
+                profile?.dietaryGoal === 'lose_weight' ? 'Lose Weight' :
+                profile?.dietaryGoal === 'gain_weight' ? 'Gain Weight' :
+                profile?.dietaryGoal === 'build_muscle' ? 'Build Muscle' :
+                profile?.dietaryGoal === 'maintain_weight' ? 'Maintain Weight' :
+                profile?.dietaryGoal || "Not set"
+              }
+            </p>
           </div>
 
           {/* Meal Planner - Coming Soon */}

@@ -30,9 +30,9 @@ const handleSubmit = async (e) => {
     setUser(response.data.user);
 
     if (!response.data.user.profileCompleted) {
-      navigate("/profile");      // مستخدم جديد - ملء البيانات أولاً
+      navigate("/profile");      // New user - fill profile first
     } else {
-      navigate("/dashboard");    // مستخدم موجود - اذهب للداشبورد
+      navigate("/dashboard");    // Existing user - go to dashboard
     }
   } catch (err) {
     setError(err.response?.data?.message || "Login failed");
