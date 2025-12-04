@@ -31,12 +31,15 @@ export const completeProfile = async (req, res, next) => {
     res.status(201).json({
       success: true,
       message: "Profile created successfully.",
-      data: profile,
-      calculations: {
-        bmr: profile.bmr,
-        tdee: profile.getTDEE(),
-        dailyCalories: profile.getDailyCalories(),
-      },
+      data: {
+        profile: profile.toJSON(),
+        nutritionTargets: {
+          bmi: profile.bmi,
+          bmr: profile.bmr,
+          tdee: profile.getTDEE(),
+          targetCalories: profile.getDailyCalories()
+        }
+      }
     });
   } catch (error) {
     next(error);
@@ -60,12 +63,15 @@ export const getProfile = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "User Profile.",
-      data: profile,
-      calculations: {
-        bmr: profile.bmr,
-        tdee: profile.getTDEE(),
-        dailyCalories: profile.getDailyCalories(),
-      },
+      data: {
+        profile: profile.toJSON(),
+        nutritionTargets: {
+          bmi: profile.bmi,
+          bmr: profile.bmr,
+          tdee: profile.getTDEE(),
+          targetCalories: profile.getDailyCalories()
+        }
+      }
     });
   } catch (error) {
     next(error);
@@ -91,12 +97,15 @@ export const updateProfile = async (req, res, next) => {
     res.status(200).json({
       success: true,
       message: "Profile updated successfully.",
-      data: profile,
-      calculations: {
-        bmr: profile.bmr,
-        tdee: profile.getTDEE(),
-        dailyCalories: profile.getDailyCalories(),
-      },
+      data: {
+        profile: profile.toJSON(),
+        nutritionTargets: {
+          bmi: profile.bmi,
+          bmr: profile.bmr,
+          tdee: profile.getTDEE(),
+          targetCalories: profile.getDailyCalories()
+        }
+      }
     });
   } catch (error) {
     next(error);
