@@ -22,10 +22,10 @@ export const validateProfile = [
     .isIn(["male", "female", "other"])
     .withMessage("Gender must be male, female, or other"),
   body("height")
-    .isInt({ min: 50, max: 300 })
+    .isFloat({ min: 50, max: 300 })
     .withMessage("Height must be between 50 and 300 cm"),
   body("weight")
-    .isInt({ min: 20, max: 500 })
+    .isFloat({ min: 20, max: 500 })
     .withMessage("Weight must be between 20 and 500 kg"),
   body("activityLevel")
     .isIn(["sedentary", "light", "moderate", "active", "very_active"])
@@ -46,11 +46,11 @@ export const validateProfileUpdate = [
     .withMessage("Gender must be male, female, or other"),
   body("height")
     .optional()
-    .isInt({ min: 50, max: 300 })
+    .isFloat({ min: 50, max: 300 })
     .withMessage("Height must be between 50 and 300 cm"),
   body("weight")
     .optional()
-    .isInt({ min: 20, max: 500 })
+    .isFloat({ min: 20, max: 500 })
     .withMessage("Weight must be between 20 and 500 kg"),
   body("activityLevel")
     .optional()

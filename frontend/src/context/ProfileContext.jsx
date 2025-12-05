@@ -17,7 +17,7 @@ export function ProfileProvider({ children }) {
   
   const [profile, setProfile] = useState(null);
   const [nutritionTargets, setNutritionTargets] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true); // Start with loading true
   const [error, setError] = useState(null);
   
   // Cache to reduce API calls
@@ -25,6 +25,7 @@ export function ProfileProvider({ children }) {
   const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
 
   // Fetch profile from API
+  // Updated 4 December 2025: Fixed to match Backend response structure
   const fetchProfile = useCallback(async (forceRefresh = false) => {
     // Check cache
     if (!forceRefresh && lastFetch && Date.now() - lastFetch < CACHE_DURATION) {
@@ -36,16 +37,22 @@ export function ProfileProvider({ children }) {
     setError(null);
 
     try {
-      const { data, error: apiError } = await profileApi.getProfile();
+      const { data, calculations, error: apiError } = await profileApi.getProfile();
       
       if (apiError) {
         setError(apiError);
         setProfile(null);
         setNutritionTargets(null);
       } else if (data) {
-        setProfile(data.profile);
-        setNutritionTargets(data.nutritionTargets);
+        // Backend returns profile data directly
+        setProfile(data);
+        // Set calculations as nutritionTargets
+        setNutritionTargets(calculations);
         setLastFetch(Date.now());
+      } else {
+        // No profile exists yet
+        setProfile(null);
+        setNutritionTargets(null);
       }
     } catch (err) {
       setError(err.message || 'Failed to fetch profile');
@@ -190,8 +197,9 @@ export function ProfileProvider({ children }) {
       setProfile(null);
       setNutritionTargets(null);
       setLastFetch(null);
+      setLoading(false);
     }
-  }, [user, fetchProfile]);
+  }, [user]); // Remove fetchProfile from dependencies to avoid infinite loop
 
   const value = {
     profile,

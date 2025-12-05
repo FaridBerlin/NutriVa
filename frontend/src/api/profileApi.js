@@ -29,8 +29,9 @@ const retryRequest = async (fn, retries = 2) => {
 
 /**
  * Create user profile
+ * Updated 5 December 2025: Fixed to match Backend response structure
  * @param {Object} profileData - Profile information
- * @returns {Promise<{data: Object|null, error: string|null}>}
+ * @returns {Promise<{data: Object|null, calculations: Object|null, error: string|null}>}
  */
 export const createProfile = async (profileData) => {
   try {
@@ -42,8 +43,13 @@ export const createProfile = async (profileData) => {
     
     logResponse('POST', '/profile/complete', response);
     
+    // Backend returns { data: { profile, nutritionTargets } }
+    const profile = response.data.data?.profile || response.data.data;
+    const nutritionData = response.data.data?.nutritionTargets || null;
+    
     return {
-      data: response.data.data,
+      data: profile,
+      calculations: nutritionData,
       error: null
     };
   } catch (error) {
@@ -51,6 +57,7 @@ export const createProfile = async (profileData) => {
     
     return {
       data: null,
+      calculations: null,
       error: error.response?.data?.message || error.message || 'Failed to create profile'
     };
   }
@@ -58,7 +65,9 @@ export const createProfile = async (profileData) => {
 
 /**
  * Get current user's profile
- * @returns {Promise<{data: Object|null, error: string|null}>}
+ * Updated 5 December 2025: Fixed to match Backend response structure
+ * Backend returns: { data: { profile: {...}, nutritionTargets: {...} } }
+ * @returns {Promise<{data: Object|null, calculations: Object|null, error: string|null}>}
  */
 export const getProfile = async () => {
   try {
@@ -70,8 +79,13 @@ export const getProfile = async () => {
     
     logResponse('GET', '/profile', response);
     
+    // Backend returns { data: { profile, nutritionTargets } }
+    const profileData = response.data.data?.profile || response.data.data;
+    const nutritionData = response.data.data?.nutritionTargets || null;
+    
     return {
-      data: response.data.data,
+      data: profileData,
+      calculations: nutritionData,
       error: null
     };
   } catch (error) {
@@ -83,12 +97,14 @@ export const getProfile = async () => {
         (error.response?.status === 400 && error.response?.data?.message?.includes('not found'))) {
       return {
         data: null,
+        calculations: null,
         error: null
       };
     }
     
     return {
       data: null,
+      calculations: null,
       error: error.response?.data?.message || error.message || 'Failed to fetch profile'
     };
   }
@@ -96,8 +112,9 @@ export const getProfile = async () => {
 
 /**
  * Update user profile
+ * Updated 5 December 2025: Fixed to match Backend response structure
  * @param {Object} profileData - Updated profile information
- * @returns {Promise<{data: Object|null, error: string|null}>}
+ * @returns {Promise<{data: Object|null, calculations: Object|null, error: string|null}>}
  */
 export const updateProfile = async (profileData) => {
   try {
@@ -109,8 +126,13 @@ export const updateProfile = async (profileData) => {
     
     logResponse('PUT', '/profile', response);
     
+    // Backend returns { data: { profile, nutritionTargets } }
+    const profile = response.data.data?.profile || response.data.data;
+    const nutritionData = response.data.data?.nutritionTargets || null;
+    
     return {
-      data: response.data.data,
+      data: profile,
+      calculations: nutritionData,
       error: null
     };
   } catch (error) {
@@ -118,6 +140,7 @@ export const updateProfile = async (profileData) => {
     
     return {
       data: null,
+      calculations: null,
       error: error.response?.data?.message || error.message || 'Failed to update profile'
     };
   }
