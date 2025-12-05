@@ -33,7 +33,7 @@ export default function ProfilePage() {
   const handleEditComplete = () => {
     setIsEditing(false);
     refreshProfile();
-  };
+  };                                                      
 
   // ProfileForm editing state  
   if (isEditing) {
@@ -52,27 +52,9 @@ export default function ProfilePage() {
     );
   }
 
-  // No profile exists yet
+  // No profile exists yet - show the multi-step ProfileForm
   if (!profile) {
-    return (
-      <div className="min-h-screen flex items-center justify-center px-4">
-        <div className="text-center max-w-md">
-          <h2 className="text-2xl font-bold text-textDark mb-4">
-            Complete Your Profile
-          </h2>
-          <p className="text-textLight mb-6">
-            Let's set up your nutrition profile to get personalized recommendations.
-          </p>
-          <button
-            onClick={() => navigate("/profile/edit")}
-            className="px-8 py-3 bg-primary hover:bg-primaryDark text-white 
-                       rounded-lg font-semibold transition-all shadow-md"
-          >
-            Get Started
-          </button>
-        </div>
-      </div>
-    );
+    return <ProfileForm />;
   }
 
   // Prepare display data
