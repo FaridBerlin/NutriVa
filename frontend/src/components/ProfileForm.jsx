@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../services/api";
+import { useProfile } from "../context/ProfileContext";
 
 export default function ProfileForm() {
+  const { refreshProfile } = useProfile();
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -171,6 +173,8 @@ export default function ProfileForm() {
       
       if (response.status === 200 || response.status === 201) {
         console.log("Profile created successfully:", response.data);
+        // Refresh ProfileContext so Dashboard gets the new data
+        await refreshProfile();
         navigate("/dashboard");
       }
     } catch (error) {
@@ -204,6 +208,8 @@ export default function ProfileForm() {
             const updateResponse = await api.put("/profile", profileData);
             if (updateResponse.status === 200) {
               console.log("Profile updated successfully");
+              // Refresh ProfileContext so Dashboard gets the updated data
+              await refreshProfile();
               navigate("/dashboard");
               return;
             }
