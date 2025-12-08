@@ -5,6 +5,7 @@ import authRoutes from "./routes/auth.js";
 
 import userRouter from "./routes/userRoutes.js";
 import profileRouter from "./routes/profileRoutes.js";
+import mealRouter from "./routes/mealRoutes.js";
 
 connectDB();
 
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/user", userRouter);
 app.use("/api/profile", profileRouter);
+app.use("/api/meal", mealRouter);
 
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || "Server Error" });
