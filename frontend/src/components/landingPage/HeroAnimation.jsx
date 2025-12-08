@@ -1,5 +1,5 @@
 import Lottie from "lottie-react";
-import nutritionAnim from "../assets/animations/nutrition.json";
+import nutritionAnim from "../../assets/animations/nutrition.json";
 
 export default function HeroAnimation() {
   return (
