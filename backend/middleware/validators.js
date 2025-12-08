@@ -62,6 +62,85 @@ export const validateProfileUpdate = [
     .withMessage("Invalid dietary goal"),
 ];
 
+// Meal validation
+export const mealValidator = [
+  body("name")
+  .notEmpty()
+  .withMessage("Name is required"),
+  body("description")
+  .notEmpty()
+  .withMessage("Description is required"),
+
+  body("calories")
+  .isFloat({ min: 0 })
+  .withMessage("Calories must be >= 0"),
+  body("protein")
+  .isFloat({ min: 0 })
+  .withMessage("Protein must be >= 0"),
+  body("carbs")
+  .isFloat({ min: 0 })
+  .withMessage("Carbs must be >= 0"),
+  body("fats")
+  .isFloat({ min: 0 })
+  .withMessage("Fats must be >= 0"),
+
+  body("serving_size")
+  .notEmpty()
+  .withMessage("Serving size is required"),
+
+  body("category")
+    .isIn(["breakfast", "lunch", "dinner", "snack"])
+    .withMessage("Invalid category"),
+
+  body("type")
+    .isIn(["balanced", "high-protein", "low-carb", "keto", "vegan", "veg", "gluten-free"])
+    .withMessage("Invalid meal type"),
+];
+
+
+export const mealValidatorUpdate = [
+  body("name")
+  .optional()
+  .notEmpty()
+  .withMessage("Name is required"),
+  body("description")
+  .optional()
+  .notEmpty()
+  .withMessage("Description is required"),
+
+  body("calories")
+  .optional()
+  .isFloat({ min: 0 })
+  .withMessage("Calories must be >= 0"),
+  body("protein")
+  .optional()
+  .isFloat({ min: 0 })
+  .withMessage("Protein must be >= 0"),
+  body("carbs")
+  .optional()
+  .isFloat({ min: 0 })
+  .withMessage("Carbs must be >= 0"),
+  body("fats")
+  .optional()
+  .isFloat({ min: 0 })
+  .withMessage("Fats must be >= 0"),
+
+  body("serving_size")
+  .optional()
+  .notEmpty()
+  .withMessage("Serving size is required"),
+
+  body("category")
+  .optional()
+    .isIn(["breakfast", "lunch", "dinner", "snack"])
+    .withMessage("Invalid category"),
+
+  body("type")
+  .optional()
+    .isIn(["balanced", "high-protein", "low-carb", "keto", "vegan", "veg", "gluten-free"])
+    .withMessage("Invalid meal type"),
+];
+
 export const handleValidationErrors = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
