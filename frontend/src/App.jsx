@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 
 // Pages
@@ -19,15 +19,32 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import { AuthProvider } from "./context/AuthContext";
 import { ProfileProvider } from "./context/ProfileContext";
 
+// Layout wrapper to handle conditional Navbar/Footer
+function AppLayout({ children }) {
+  const location = useLocation();
+  
+  // Pages that should NOT show Navbar and Footer (dashboard-style pages)
+  const dashboardRoutes = ['/dashboard', '/settings'];
+  const isDashboardPage = dashboardRoutes.some(route => location.pathname.startsWith(route));
+
+  return (
+    <div className={`min-h-screen ${isDashboardPage ? 'bg-gray-50' : 'bg-gradient-to-br from-green-100 via-white to-green-50'}`}>
+      {!isDashboardPage && <Navbar />}
+      <main className={!isDashboardPage ? 'pt-20' : ''}>
+        {children}
+      </main>
+      {!isDashboardPage && <Footer />}
+    </div>
+  );
+}
+
 function App() {
   return (
     <AuthProvider>
       <ProfileProvider>
         <Router>
-          <div className="min-h-screen bg-gradient-to-br from-green-100 via-white to-green-50">
-            <Navbar />
-            <main className="pt-20">
-              <Routes>
+          <AppLayout>
+            <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/login" element={<LoginPage />} />
@@ -63,9 +80,7 @@ function App() {
                   } 
                 />
               </Routes>
-            </main>
-            <Footer />
-          </div>
+          </AppLayout>
         </Router>
       </ProfileProvider>
     </AuthProvider>
