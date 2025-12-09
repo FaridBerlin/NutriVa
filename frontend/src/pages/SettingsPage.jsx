@@ -2,6 +2,25 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../services/api";
+import { 
+  Settings, 
+  User, 
+  Lock, 
+  ClipboardList, 
+  Activity, 
+  Target,
+  TrendingDown,
+  Scale,
+  TrendingUp,
+  Dumbbell,
+  Beef,
+  Salad,
+  Leaf,
+  Save,
+  Loader2,
+  Ruler,
+  Weight
+} from "lucide-react";
 
 export default function SettingsPage() {
   const { user } = useContext(AuthContext);
@@ -24,6 +43,15 @@ export default function SettingsPage() {
     dietaryGoal: "",
     foodType: "",
   });
+
+  // Password change state
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState({ type: "", text: "" });
 
   // Load existing profile data
   useEffect(() => {
@@ -66,6 +94,52 @@ export default function SettingsPage() {
     setMessage({ type: "", text: "" });
   };
 
+  const handlePasswordChange = (field, value) => {
+    setPasswordData(prev => ({ ...prev, [field]: value }));
+    setPasswordMessage({ type: "", text: "" });
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setPasswordMessage({ type: "", text: "" });
+
+    // Validate passwords
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+      setPasswordMessage({ type: "error", text: "Please fill in all password fields" });
+      return;
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setPasswordMessage({ type: "error", text: "New password must be at least 6 characters" });
+      return;
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMessage({ type: "error", text: "New passwords do not match" });
+      return;
+    }
+
+    setIsChangingPassword(true);
+
+    try {
+      await api.put("/user/change-password", {
+        currentPassword: passwordData.currentPassword,
+        newPassword: passwordData.newPassword,
+      });
+
+      setPasswordMessage({ type: "success", text: "Password changed successfully! " });
+      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    } catch (error) {
+      console.error("Error changing password:", error);
+      setPasswordMessage({ 
+        type: "error", 
+        text: error.response?.data?.message || "Failed to change password " 
+      });
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSaving(true);
@@ -104,17 +178,17 @@ export default function SettingsPage() {
 
   // Dietary Goal Options
   const dietaryGoals = [
-    { value: "lose_weight", label: "Lose Weight", icon: "📉" },
-    { value: "maintain_weight", label: "Maintain Weight", icon: "⚖️" },
-    { value: "gain_weight", label: "Gain Weight", icon: "📈" },
-    { value: "build_muscle", label: "Build Muscle", icon: "💪" },
+    { value: "lose_weight", label: "Lose Weight", Icon: TrendingDown },
+    { value: "maintain_weight", label: "Maintain Weight", Icon: Scale },
+    { value: "gain_weight", label: "Gain Weight", Icon: TrendingUp },
+    { value: "build_muscle", label: "Build Muscle", Icon: Dumbbell },
   ];
 
   // Food Type Options
   const foodTypes = [
-    { value: "nonveg", label: "Non-Vegetarian", icon: "🍖" },
-    { value: "veg", label: "Vegetarian", icon: "🥗" },
-    { value: "vegan", label: "Vegan", icon: "🌱" },
+    { value: "nonveg", label: "Non-Vegetarian", Icon: Beef },
+    { value: "veg", label: "Vegetarian", Icon: Salad },
+    { value: "vegan", label: "Vegan", Icon: Leaf },
   ];
 
   if (isLoading) {
@@ -134,7 +208,9 @@ export default function SettingsPage() {
         
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-textDark mb-2">⚙️ Settings</h1>
+          <h1 className="text-3xl font-bold text-textDark mb-2 flex items-center justify-center gap-2">
+            <Settings className="w-8 h-8 text-primary" /> Settings
+          </h1>
           <p className="text-textLight">Manage your profile and preferences</p>
         </div>
 
@@ -154,7 +230,7 @@ export default function SettingsPage() {
           {/* Account Information */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <span>👤</span> Account Information
+              <User className="w-5 h-5 text-primary" /> Account Information
             </h2>
             
             <div className="grid md:grid-cols-2 gap-4">
@@ -182,10 +258,87 @@ export default function SettingsPage() {
             </div>
           </div>
 
+          {/* Change Password Section */}
+          <div className="bg-white rounded-2xl shadow-lg p-6">
+            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+              <Lock className="w-5 h-5 text-primary" /> Change Password
+            </h2>
+
+            {/* Password Message */}
+            {passwordMessage.text && (
+              <div className={`mb-4 p-4 rounded-lg ${
+                passwordMessage.type === "success" 
+                  ? "bg-green-100 text-green-700 border border-green-300" 
+                  : "bg-red-100 text-red-700 border border-red-300"
+              }`}>
+                {passwordMessage.text}
+              </div>
+            )}
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-textDark mb-2">Current Password</label>
+                <input
+                  type="password"
+                  value={passwordData.currentPassword}
+                  onChange={(e) => handlePasswordChange("currentPassword", e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  placeholder="Enter current password"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-textDark mb-2">New Password</label>
+                <input
+                  type="password"
+                  value={passwordData.newPassword}
+                  onChange={(e) => handlePasswordChange("newPassword", e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  placeholder="Enter new password"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-textDark mb-2">Confirm New Password</label>
+                <input
+                  type="password"
+                  value={passwordData.confirmPassword}
+                  onChange={(e) => handlePasswordChange("confirmPassword", e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  placeholder="Confirm new password"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={handlePasswordSubmit}
+                disabled={isChangingPassword}
+                className={`px-6 py-2.5 rounded-xl font-semibold text-white transition-all ${
+                  isChangingPassword
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:scale-105"
+                }`}
+              >
+                {isChangingPassword ? (
+                  <span className="flex items-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Changing...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    <Lock className="w-4 h-4" /> Change Password
+                  </span>
+                )}
+              </button>
+            </div>
+          </div>
+
           {/* Personal Information */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <span>📋</span> Personal Information
+              <ClipboardList className="w-5 h-5 text-primary" /> Personal Information
             </h2>
             
             <div className="grid md:grid-cols-3 gap-4">
@@ -217,18 +370,23 @@ export default function SettingsPage() {
 
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">Food Preference</label>
-                <select
-                  value={formData.foodType}
-                  onChange={(e) => handleChange("foodType", e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                >
-                  <option value="">Select preference</option>
+                <div className="flex gap-2">
                   {foodTypes.map((type) => (
-                    <option key={type.value} value={type.value}>
-                      {type.icon} {type.label}
-                    </option>
+                    <button
+                      key={type.value}
+                      type="button"
+                      onClick={() => handleChange("foodType", type.value)}
+                      className={`flex-1 p-3 rounded-lg border-2 flex items-center justify-center gap-2 transition-all ${
+                        formData.foodType === type.value
+                          ? "border-primary bg-primaryLight40"
+                          : "border-gray-200 hover:border-primary"
+                      }`}
+                    >
+                      <type.Icon className={`w-5 h-5 ${formData.foodType === type.value ? "text-primary" : "text-textLight"}`} />
+                      <span className="text-sm font-medium">{type.label}</span>
+                    </button>
                   ))}
-                </select>
+                </div>
               </div>
             </div>
           </div>
@@ -236,7 +394,7 @@ export default function SettingsPage() {
           {/* Body Metrics */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <span>📊</span> Body Metrics
+              <Ruler className="w-5 h-5 text-primary" /> Body Metrics
             </h2>
             
             <div className="grid md:grid-cols-2 gap-4">
@@ -273,7 +431,7 @@ export default function SettingsPage() {
           {/* Activity Level */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <span>🏃</span> Activity Level
+              <Activity className="w-5 h-5 text-primary" /> Activity Level
             </h2>
             
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
@@ -298,7 +456,7 @@ export default function SettingsPage() {
           {/* Dietary Goal */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <span>🎯</span> Dietary Goal
+              <Target className="w-5 h-5 text-primary" /> Dietary Goal
             </h2>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -313,7 +471,9 @@ export default function SettingsPage() {
                       : "border-gray-200 hover:border-primary"
                   }`}
                 >
-                  <div className="text-3xl mb-2">{goal.icon}</div>
+                  <div className="flex justify-center mb-2">
+                    <goal.Icon className={`w-8 h-8 ${formData.dietaryGoal === goal.value ? "text-primary" : "text-textLight"}`} />
+                  </div>
                   <div className="font-semibold text-textDark">{goal.label}</div>
                 </button>
               ))}
@@ -333,11 +493,13 @@ export default function SettingsPage() {
             >
               {isSaving ? (
                 <span className="flex items-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <Loader2 className="w-5 h-5 animate-spin" />
                   Saving...
                 </span>
               ) : (
-                "Save Changes ✓"
+                <span className="flex items-center gap-2">
+                  <Save className="w-5 h-5" /> Save Changes
+                </span>
               )}
             </button>
           </div>
