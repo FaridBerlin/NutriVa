@@ -49,7 +49,7 @@ type:
     type: String,
     enum: ["balanced", "high-protein", "low-carb", "keto", "vegan", "veg", "gluten-free"]
 },  
-
+// Add the image field
 image: String,
 
 favorites: 

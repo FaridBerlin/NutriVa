@@ -8,4 +8,3 @@ export { default as PlanSummary } from './PlanSummary';
 export { default as WeeklyCalendar } from './WeeklyCalendar';
 export { default as CreatePlan } from './CreatePlan';
 export { default as CreateMeal } from './CreateMeal';
-export { default as ComingSoon } from './ComingSoon';
