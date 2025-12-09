@@ -1,5 +1,4 @@
 
-// Dashboard component exports
 export { default as DashboardHeader } from './DashboardHeader';
 export { default as DashboardStats } from './DashboardStats';
 export { default as ProfileOverview } from './ProfileOverview';

@@ -1,5 +1,4 @@
-import { Save } from 'lucide-react';
-
+import { Save } from "lucide-react"; // Importing Save icon from lucide-react
 export default function CreateMeal({ onSave, onCancel }) {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -7,14 +6,14 @@ export default function CreateMeal({ onSave, onCancel }) {
     if (onSave) {
       const formData = new FormData(e.target);
       const meal = {
-        name: formData.get('name'),
-        type: formData.get('type'),
-        servingSize: formData.get('servingSize'),
-        calories: formData.get('calories'),
-        protein: formData.get('protein'),
-        carbs: formData.get('carbs'),
-        ingredients: formData.get('ingredients'),
-        instructions: formData.get('instructions')
+        name: formData.get("name"),
+        type: formData.get("type"),
+        servingSize: formData.get("servingSize"),
+        calories: formData.get("calories"),
+        protein: formData.get("protein"),
+        carbs: formData.get("carbs"),
+        ingredients: formData.get("ingredients"),
+        instructions: formData.get("instructions"),
       };
       onSave(meal);
     }
@@ -26,7 +25,6 @@ export default function CreateMeal({ onSave, onCancel }) {
       <div className="bg-white rounded-xl shadow-md p-8 border border-gray-100">
         <div className="max-w-3xl mx-auto">
           <form onSubmit={handleSubmit} className="space-y-6">
-            
             {/* Meal Name */}
             <div>
               <label className="block text-sm font-semibold text-textDark mb-2">
@@ -47,7 +45,7 @@ export default function CreateMeal({ onSave, onCancel }) {
                 <label className="block text-sm font-semibold text-textDark mb-2">
                   Meal Type
                 </label>
-                <select 
+                <select
                   name="type"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                 >
