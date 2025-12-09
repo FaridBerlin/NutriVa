@@ -10,8 +10,7 @@ import mealRouter from "./routes/mealRoutes.js";
 connectDB();
 
 const PORT = process.env.PORT || 3000;
-/* const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; */
-const frontendUrl = "http://localhost:5173";
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; // from .env file
 
 const app = express();
 

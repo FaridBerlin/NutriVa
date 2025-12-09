@@ -1,134 +1,185 @@
 /**
  * DashboardPage.jsx
  * 
- * @modified 4 December 2025
- * @description Dashboard page that displays user profile and nutrition data
- * 
- * CHANGES MADE (4 Dec 2025):
- * - Now using ProfileContext for centralized data management
- * - Removed direct API calls - data comes from context
- * - Added loading and error states from context
+ * @modified 8 December 2025
+ * @description Main dashboard page with modular components
  */
 
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { useProfile } from "../context/ProfileContext";
+import { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useProfile } from '../context/ProfileContext';
+import Sidebar from '../components/Sidebar/Sidebar';
+import { Utensils, MessageSquare } from 'lucide-react';
+
+import {
+  DashboardHeader,
+  DashboardStats,
+  ProfileOverview,
+  BMIGoals,
+  HealthMetrics,
+  PlanSummary,
+  WeeklyCalendar,
+  CreatePlan,
+  CreateMeal,
+  ComingSoon
+} from '../components/dashboard';
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext);
   const { profile, nutritionTargets, loading } = useProfile();
+  const [activeSection, setActiveSection] = useState('dashboard');
 
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-xl text-gray-600">Loading...</div>
+        <div className="text-xl text-textLight">Loading...</div>
       </div>
     );
   }
 
+  // Prepare data
+  const statsData = {
+    dailyCalories: nutritionTargets?.dailyCalories || 2000,
+    weight: profile?.weight || 68,
+    bmi: nutritionTargets?.bmi || 24.5,
+    daysLeft: profile?.planDuration || 30
+  };
+
+  const profileData = {
+    name: user?.name,
+    email: user?.email,
+    age: profile?.age,
+    gender: profile?.gender,
+    height: profile?.height,
+    weight: profile?.weight,
+    bmi: nutritionTargets?.bmi,
+    bmiCategory: profile?.bmiCategory,
+    dietaryGoal: profile?.dietaryGoal,
+    mealsPerDay: profile?.mealsPerDay || 3,
+    planDuration: profile?.planDuration || 30,
+    dietType: profile?.dietType,
+    fitnessGoal: profile?.dietaryGoal?.replace('_', ' '),
+    dailyCalories: nutritionTargets?.dailyCalories,
+    targetBMI: profile?.targetBMI,
+    targetWeight: profile?.targetWeight
+  };
+
+  const goalsData = {
+    caloriesCurrent: 1450,
+    caloriesTarget: nutritionTargets?.dailyCalories || 2000,
+    proteinCurrent: 85,
+    proteinTarget: nutritionTargets?.protein || 150,
+    carbsCurrent: 180,
+    carbsTarget: 250,
+    fatsCurrent: 45,
+    fatsTarget: 65
+  };
+
+  const metricsData = {
+    bmi: nutritionTargets?.bmi,
+    bodyFat: '20-25%',
+    bmr: nutritionTargets?.bmr,
+    tdee: nutritionTargets?.tdee,
+    dailyCalories: nutritionTargets?.dailyCalories,
+    protein: nutritionTargets?.protein,
+    fats: nutritionTargets?.fats
+  };
+
+  const planData = {
+    fitnessGoal: `${profile?.dietaryGoal?.replace('_', ' ') || 'Weight loss'} program for 30 days`,
+    dietPlan: `${profile?.dietType || 'Balanced'} diet with ${profile?.mealsPerDay || 3} meals per day`
+  };
+
+  const createPlanData = {
+    goal: profile?.dietaryGoal?.replace('_', ' ') || 'Weight Loss',
+    dailyCalories: nutritionTargets?.dailyCalories,
+    bmi: nutritionTargets?.bmi,
+    activityLevel: profile?.activityLevel || 'Moderate',
+    duration: profile?.planDuration || 30
+  };
+
+  const handleGeneratePlan = () => {
+    console.log('Generating AI plan...');
+    // TODO: Implement AI plan generation
+  };
+
+  const handleSaveMeal = (mealData) => {
+    console.log('Saving meal:', mealData);
+    // TODO: Implement meal saving
+  };
+
+  // Render content based on active section
+  const renderContent = () => {
+    switch (activeSection) {
+      case 'dashboard':
+        return <DashboardStats stats={statsData} />;
+      
+      case 'profile':
+        return <ProfileOverview profile={profileData} />;
+      
+      case 'bmi':
+        return (
+          <BMIGoals 
+            bmi={nutritionTargets?.bmi}
+            bmiCategory={profile?.bmiCategory}
+            goals={goalsData}
+          />
+        );
+      
+      case 'metrics':
+        return <HealthMetrics metrics={metricsData} />;
+      
+      case 'plan':
+        return <PlanSummary plan={planData} />;
+      
+      case 'calendar':
+        return <WeeklyCalendar />;
+      
+      case 'create-plan':
+        return (
+          <CreatePlan 
+            profile={createPlanData}
+            onGenerate={handleGeneratePlan}
+          />
+        );
+      
+      case 'create-meal':
+        return (
+          <CreateMeal 
+            onSave={handleSaveMeal}
+            onCancel={() => setActiveSection('dashboard')}
+          />
+        );
+      
+      case 'meals':
+        return <ComingSoon icon={Utensils} title="Meal Planner" />;
+      
+      case 'ai':
+        return <ComingSoon icon={MessageSquare} title="AI Assistant" />;
+      
+      default:
+        return <DashboardStats stats={statsData} />;
+    }
+  };
+
   return (
-    <div className="min-h-screen pt-10">
-      <div className="max-w-6xl mx-auto space-y-10 px-4">
+    <div className="flex min-h-screen bg-gray-50">
+      
+      {/* Sidebar */}
+      <Sidebar 
+        activeSection={activeSection}
+        onSectionChange={setActiveSection}
+      />
+
+      {/* Main Content */}
+      <div className="flex-1 ml-64">
         
         {/* Header */}
-        <div className="text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-primary mb-5">
-            Welcome back, {user?.name}! 
-          </h1>
-          <p className="text-gray-600 text-lg">
-            Your personalized nutrition dashboard
-          </p>
-        </div>
+        <DashboardHeader userName={user?.name} />
 
-        {/* Grid content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          
-          {/* Personal Details */}
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-            <h3 className="text-lg font-semibold text-primary mb-4">Personal Details</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li><strong>Name:</strong> {user?.name}</li>
-              <li><strong>Email:</strong> {user?.email}</li>
-              <li><strong>Age:</strong> {profile?.age || "Not set"}</li>
-              <li><strong>Gender:</strong> {profile?.gender || "Not set"}</li>
-            </ul>
-          </div>
-
-          {/* Body Metrics */}
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-            <h3 className="text-lg font-semibold text-primary mb-4">Body Metrics</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li><strong>Height:</strong> {profile?.height ? `${profile.height} cm` : "Not set"}</li>
-              <li><strong>Weight:</strong> {profile?.weight ? `${profile.weight} kg` : "Not set"}</li>
-              <li><strong>Activity:</strong> {profile?.activityLevel?.replace('_', ' ') || "Not set"}</li>
-            </ul>
-          </div>
-
-          {/* Nutrition Calculations */}
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-            <h3 className="text-lg font-semibold text-primary mb-4">Nutrition Info</h3>
-            <ul className="space-y-2 text-gray-700">
-              <li><strong>BMR:</strong> {nutritionTargets?.bmr ? `${Math.round(nutritionTargets.bmr)} kcal` : "Not set"}</li>
-              <li><strong>TDEE:</strong> {nutritionTargets?.tdee ? `${Math.round(nutritionTargets.tdee)} kcal` : "Not set"}</li>
-              <li><strong>Daily Calories:</strong> {nutritionTargets?.dailyCalories ? `${Math.round(nutritionTargets.dailyCalories)} kcal` : "Not set"}</li>
-            </ul>
-          </div>
-
-          {/* Fitness Goals */}
-          <div className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition">
-            <h3 className="text-lg font-semibold text-primary mb-4">Fitness Goals</h3>
-            <p className="text-gray-700">
-              <strong>Goal:</strong> {
-                profile?.dietaryGoal === 'lose_weight' ? 'Lose Weight' :
-                profile?.dietaryGoal === 'gain_weight' ? 'Gain Weight' :
-                profile?.dietaryGoal === 'build_muscle' ? 'Build Muscle' :
-                profile?.dietaryGoal === 'maintain_weight' ? 'Maintain Weight' :
-                profile?.dietaryGoal || "Not set"
-              }
-            </p>
-          </div>
-
-          {/* Meal Planner - Coming Soon */}
-          <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl border-2 border-dashed border-orange-300 p-6 flex flex-col items-center justify-center text-orange-500 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">🍽️</span>
-            <h3 className="font-semibold text-lg mb-1">Meal Planner</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
-
-          {/* Calorie Tracker - Coming Soon */}
-          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl border-2 border-dashed border-blue-300 p-6 flex flex-col items-center justify-center text-blue-500 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">🔥</span>
-            <h3 className="font-semibold text-lg mb-1">Calorie Tracker</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
-
-          {/* Progress Charts - Coming Soon */}
-          <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl border-2 border-dashed border-purple-300 p-6 flex flex-col items-center justify-center text-purple-500 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">📊</span>
-            <h3 className="font-semibold text-lg mb-1">Progress Charts</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
-
-          {/* Recipes - Coming Soon */}
-          <div className="bg-gradient-to-br from-pink-50 to-pink-100 rounded-xl border-2 border-dashed border-pink-300 p-6 flex flex-col items-center justify-center text-pink-500 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">📖</span>
-            <h3 className="font-semibold text-lg mb-1">Healthy Recipes</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
-
-          {/* Water Intake - Coming Soon */}
-          <div className="bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl border-2 border-dashed border-cyan-300 p-6 flex flex-col items-center justify-center text-cyan-500 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">💧</span>
-            <h3 className="font-semibold text-lg mb-1">Water Intake</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
-
-          {/* AI Recommendations - Coming Soon */}
-          <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl border-2 border-dashed border-green-300 p-6 flex flex-col items-center justify-center text-green-600 hover:shadow-lg transition">
-            <span className="text-3xl mb-2">🤖</span>
-            <h3 className="font-semibold text-lg mb-1">AI Recommendations</h3>
-            <span className="text-sm">Coming Soon</span>
-          </div>
+        {/* Content Area */}
+        <div className="p-8">
+          {renderContent()}
         </div>
       </div>
     </div>

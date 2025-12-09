@@ -33,21 +33,21 @@ export default function SettingsPage() {
         const response = await api.get("/profile");
         
         if (response.data?.data) {
-          const profile = response.data.data;
+          const profileData = response.data.data.profile || response.data.data;
           setFormData({
-            name: profile.user?.name || user?.name || "",
-            email: profile.user?.email || user?.email || "",
-            age: profile.age?.toString() || "",
-            gender: profile.gender || "",
-            height: profile.height?.toString() || "",
-            weight: profile.weight?.toString() || "",
-            activityLevel: profile.activityLevel || "",
-            dietaryGoal: profile.dietaryGoal || "",
-            foodType: profile.foodType || "",
+            name: profileData.user?.name || user?.name || "",
+            email: profileData.user?.email || user?.email || "",
+            age: profileData.age?.toString() || "",
+            gender: profileData.gender || "",
+            height: profileData.height?.toString() || "",
+            weight: profileData.weight?.toString() || "",
+            activityLevel: profileData.activityLevel || "",
+            dietaryGoal: profileData.dietaryGoal || "",
+            foodType: profileData.foodType || "",
           });
         }
       } catch (error) {
-        console.log("No profile found");
+        console.log("No profile found", error);
         setFormData(prev => ({
           ...prev,
           name: user?.name || "",
