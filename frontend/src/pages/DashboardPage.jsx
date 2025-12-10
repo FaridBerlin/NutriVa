@@ -1,23 +1,8 @@
-<<<<<<< HEAD
-import { useState, useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
-import { useProfile } from '../context/ProfileContext';
-import Sidebar from '../components/Sidebar/Sidebar';
-import { Utensils, MessageSquare } from 'lucide-react';
-=======
-/**
- * DashboardPage.jsx
- *
- * @modified 8 December 2025
- * @description Main dashboard page with modular components
- */
-
 import { useState, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import { Utensils, MessageSquare } from 'lucide-react'
->>>>>>> dev
 
 import {
   DashboardHeader,
@@ -29,13 +14,8 @@ import {
   WeeklyCalendar,
   CreatePlan,
   CreateMeal,
-<<<<<<< HEAD
-} from '../components/dashboard';
-import MealPlanDisplay from '../components/MealPlanDisplay';
-=======
-  ComingSoon,
 } from '../components/dashboard'
->>>>>>> dev
+import MealPlanDisplay from '../components/MealPlanDisplay'
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
@@ -112,15 +92,9 @@ export default function DashboardPage() {
   }
 
   const handleGeneratePlan = () => {
-<<<<<<< HEAD
-    console.log('Generating AI plan...');
-    // to do: Implement AI plan generation logic later!!!
-  };
-=======
     console.log('Generating AI plan...')
-    // TODO: Implement AI plan generation
+    // to do: Implement AI plan generation logic later!!!
   }
->>>>>>> dev
 
   const handleSaveMeal = (mealData) => {
     console.log('Saving meal:', mealData)
@@ -170,7 +144,7 @@ export default function DashboardPage() {
         totals: { calories: 520, protein: 18, carbs: 75, fat: 14 },
       },
     ],
-  };
+  }
 
   // Render content based on active section
   const renderContent = () => {
@@ -194,13 +168,8 @@ export default function DashboardPage() {
         return <HealthMetrics metrics={metricsData} />
 
       case 'plan':
-<<<<<<< HEAD
-         return null; // Removed ComingSoon component
-      
-=======
-        return <PlanSummary plan={planData} />
+        return null // Removed ComingSoon component
 
->>>>>>> dev
       case 'calendar':
         return <WeeklyCalendar />
 
@@ -221,13 +190,8 @@ export default function DashboardPage() {
         )
 
       case 'meals':
-<<<<<<< HEAD
-        return <MealPlanDisplay plan={dummyPlan} />;
-      
-=======
-        return <ComingSoon icon={Utensils} title="Meal Planner" />
+        return <MealPlanDisplay plan={dummyPlan} />
 
->>>>>>> dev
       case 'ai':
         return <ComingSoon icon={MessageSquare} title="AI Assistant" />
 
@@ -237,11 +201,7 @@ export default function DashboardPage() {
   }
 
   return (
-<<<<<<< HEAD
     <div className="flex min-h-screen bg-transparent">
-=======
-    <div className="flex min-h-screen bg-gray-50">
->>>>>>> dev
       {/* Sidebar */}
       <Sidebar
         activeSection={activeSection}

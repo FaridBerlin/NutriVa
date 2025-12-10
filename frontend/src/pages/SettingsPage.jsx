@@ -1,14 +1,13 @@
-<<<<<<< HEAD
-import { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext";
-import api from "../services/api";
-import { 
-  Settings, 
-  User, 
-  Lock, 
-  ClipboardList, 
-  Activity, 
+import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
+import api from '../services/api'
+import {
+  Settings,
+  User,
+  Lock,
+  ClipboardList,
+  Activity,
   Target,
   TrendingDown,
   Scale,
@@ -20,14 +19,8 @@ import {
   Save,
   Loader2,
   Ruler,
-  Weight
-} from "lucide-react";
-=======
-import { useState, useEffect, useContext } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { AuthContext } from '../context/AuthContext'
-import api from '../services/api'
->>>>>>> dev
+  Weight,
+} from 'lucide-react'
 
 export default function SettingsPage() {
   const { user } = useContext(AuthContext)
@@ -53,12 +46,12 @@ export default function SettingsPage() {
 
   // Password change state
   const [passwordData, setPasswordData] = useState({
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  });
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
-  const [passwordMessage, setPasswordMessage] = useState({ type: "", text: "" });
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  })
+  const [isChangingPassword, setIsChangingPassword] = useState(false)
+  const [passwordMessage, setPasswordMessage] = useState({ type: '', text: '' })
 
   // Load existing profile data
   useEffect(() => {
@@ -102,50 +95,67 @@ export default function SettingsPage() {
   }
 
   const handlePasswordChange = (field, value) => {
-    setPasswordData(prev => ({ ...prev, [field]: value }));
-    setPasswordMessage({ type: "", text: "" });
-  };
+    setPasswordData((prev) => ({ ...prev, [field]: value }))
+    setPasswordMessage({ type: '', text: '' })
+  }
 
   const handlePasswordSubmit = async (e) => {
-    e.preventDefault();
-    setPasswordMessage({ type: "", text: "" });
+    e.preventDefault()
+    setPasswordMessage({ type: '', text: '' })
 
     // Validate passwords
-    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
-      setPasswordMessage({ type: "error", text: "Please fill in all password fields" });
-      return;
+    if (
+      !passwordData.currentPassword ||
+      !passwordData.newPassword ||
+      !passwordData.confirmPassword
+    ) {
+      setPasswordMessage({
+        type: 'error',
+        text: 'Please fill in all password fields',
+      })
+      return
     }
 
     if (passwordData.newPassword.length < 6) {
-      setPasswordMessage({ type: "error", text: "New password must be at least 6 characters" });
-      return;
+      setPasswordMessage({
+        type: 'error',
+        text: 'New password must be at least 6 characters',
+      })
+      return
     }
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setPasswordMessage({ type: "error", text: "New passwords do not match" });
-      return;
+      setPasswordMessage({ type: 'error', text: 'New passwords do not match' })
+      return
     }
 
-    setIsChangingPassword(true);
+    setIsChangingPassword(true)
 
     try {
-      await api.put("/user/change-password", {
+      await api.put('/user/change-password', {
         currentPassword: passwordData.currentPassword,
         newPassword: passwordData.newPassword,
-      });
+      })
 
-      setPasswordMessage({ type: "success", text: "Password changed successfully! " });
-      setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+      setPasswordMessage({
+        type: 'success',
+        text: 'Password changed successfully! ',
+      })
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      })
     } catch (error) {
-      console.error("Error changing password:", error);
-      setPasswordMessage({ 
-        type: "error", 
-        text: error.response?.data?.message || "Failed to change password " 
-      });
+      console.error('Error changing password:', error)
+      setPasswordMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Failed to change password ',
+      })
     } finally {
-      setIsChangingPassword(false);
+      setIsChangingPassword(false)
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -188,33 +198,18 @@ export default function SettingsPage() {
 
   // Dietary Goal Options
   const dietaryGoals = [
-<<<<<<< HEAD
-    { value: "lose_weight", label: "Lose Weight", Icon: TrendingDown },
-    { value: "maintain_weight", label: "Maintain Weight", Icon: Scale },
-    { value: "gain_weight", label: "Gain Weight", Icon: TrendingUp },
-    { value: "build_muscle", label: "Build Muscle", Icon: Dumbbell },
-  ];
-
-  // Food Type Options
-  const foodTypes = [
-    { value: "nonveg", label: "Non-Vegetarian", Icon: Beef },
-    { value: "veg", label: "Vegetarian", Icon: Salad },
-    { value: "vegan", label: "Vegan", Icon: Leaf },
-  ];
-=======
-    { value: 'lose_weight', label: 'Lose Weight', icon: '📉' },
-    { value: 'maintain_weight', label: 'Maintain Weight', icon: '⚖️' },
-    { value: 'gain_weight', label: 'Gain Weight', icon: '📈' },
-    { value: 'build_muscle', label: 'Build Muscle', icon: '💪' },
+    { value: 'lose_weight', label: 'Lose Weight', Icon: TrendingDown },
+    { value: 'maintain_weight', label: 'Maintain Weight', Icon: Scale },
+    { value: 'gain_weight', label: 'Gain Weight', Icon: TrendingUp },
+    { value: 'build_muscle', label: 'Build Muscle', Icon: Dumbbell },
   ]
 
   // Food Type Options
   const foodTypes = [
-    { value: 'nonveg', label: 'Non-Vegetarian', icon: '🍖' },
-    { value: 'veg', label: 'Vegetarian', icon: '🥗' },
-    { value: 'vegan', label: 'Vegan', icon: '🌱' },
+    { value: 'nonveg', label: 'Non-Vegetarian', Icon: Beef },
+    { value: 'veg', label: 'Vegetarian', Icon: Salad },
+    { value: 'vegan', label: 'Vegan', Icon: Leaf },
   ]
->>>>>>> dev
 
   if (isLoading) {
     return (
@@ -299,44 +294,58 @@ export default function SettingsPage() {
 
             {/* Password Message */}
             {passwordMessage.text && (
-              <div className={`mb-4 p-4 rounded-lg ${
-                passwordMessage.type === "success" 
-                  ? "bg-green-100 text-green-700 border border-green-300" 
-                  : "bg-red-100 text-red-700 border border-red-300"
-              }`}>
+              <div
+                className={`mb-4 p-4 rounded-lg ${
+                  passwordMessage.type === 'success'
+                    ? 'bg-green-100 text-green-700 border border-green-300'
+                    : 'bg-red-100 text-red-700 border border-red-300'
+                }`}
+              >
                 {passwordMessage.text}
               </div>
             )}
-            
+
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Current Password</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Current Password
+                </label>
                 <input
                   type="password"
                   value={passwordData.currentPassword}
-                  onChange={(e) => handlePasswordChange("currentPassword", e.target.value)}
+                  onChange={(e) =>
+                    handlePasswordChange('currentPassword', e.target.value)
+                  }
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="Enter current password"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">New Password</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  New Password
+                </label>
                 <input
                   type="password"
                   value={passwordData.newPassword}
-                  onChange={(e) => handlePasswordChange("newPassword", e.target.value)}
+                  onChange={(e) =>
+                    handlePasswordChange('newPassword', e.target.value)
+                  }
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="Enter new password"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Confirm New Password</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Confirm New Password
+                </label>
                 <input
                   type="password"
                   value={passwordData.confirmPassword}
-                  onChange={(e) => handlePasswordChange("confirmPassword", e.target.value)}
+                  onChange={(e) =>
+                    handlePasswordChange('confirmPassword', e.target.value)
+                  }
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="Confirm new password"
                 />
@@ -350,8 +359,8 @@ export default function SettingsPage() {
                 disabled={isChangingPassword}
                 className={`px-6 py-2.5 rounded-xl font-semibold text-white transition-all ${
                   isChangingPassword
-                    ? "bg-gray-400 cursor-not-allowed"
-                    : "bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:scale-105"
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:scale-105'
                 }`}
               >
                 {isChangingPassword ? (
@@ -371,7 +380,8 @@ export default function SettingsPage() {
           {/* Personal Information */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
-              <ClipboardList className="w-5 h-5 text-primary" /> Personal Information
+              <ClipboardList className="w-5 h-5 text-primary" /> Personal
+              Information
             </h2>
 
             <div className="grid md:grid-cols-3 gap-4">
@@ -406,32 +416,24 @@ export default function SettingsPage() {
               </div>
 
               <div>
-<<<<<<< HEAD
-                <label className="block text-sm font-medium text-textDark mb-2">Food Preference</label>
-                <div className="flex gap-2">
-=======
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Food Preference
                 </label>
-                <select
-                  value={formData.foodType}
-                  onChange={(e) => handleChange('foodType', e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
-                >
-                  <option value="">Select preference</option>
->>>>>>> dev
+                <div className="flex gap-2">
                   {foodTypes.map((type) => (
                     <button
                       key={type.value}
                       type="button"
-                      onClick={() => handleChange("foodType", type.value)}
+                      onClick={() => handleChange('foodType', type.value)}
                       className={`flex-1 p-3 rounded-lg border-2 flex items-center justify-center gap-2 transition-all ${
                         formData.foodType === type.value
-                          ? "border-primary bg-primaryLight40"
-                          : "border-gray-200 hover:border-primary"
+                          ? 'border-primary bg-primaryLight40'
+                          : 'border-gray-200 hover:border-primary'
                       }`}
                     >
-                      <type.Icon className={`w-5 h-5 ${formData.foodType === type.value ? "text-primary" : "text-textLight"}`} />
+                      <type.Icon
+                        className={`w-5 h-5 ${formData.foodType === type.value ? 'text-primary' : 'text-textLight'}`}
+                      />
                       <span className="text-sm font-medium">{type.label}</span>
                     </button>
                   ))}
@@ -528,17 +530,14 @@ export default function SettingsPage() {
                       : 'border-gray-200 hover:border-primary'
                   }`}
                 >
-<<<<<<< HEAD
                   <div className="flex justify-center mb-2">
-                    <goal.Icon className={`w-8 h-8 ${formData.dietaryGoal === goal.value ? "text-primary" : "text-textLight"}`} />
+                    <goal.Icon
+                      className={`w-8 h-8 ${formData.dietaryGoal === goal.value ? 'text-primary' : 'text-textLight'}`}
+                    />
                   </div>
-                  <div className="font-semibold text-textDark">{goal.label}</div>
-=======
-                  <div className="text-3xl mb-2">{goal.icon}</div>
                   <div className="font-semibold text-textDark">
                     {goal.label}
                   </div>
->>>>>>> dev
                 </button>
               ))}
             </div>
@@ -561,13 +560,9 @@ export default function SettingsPage() {
                   Saving...
                 </span>
               ) : (
-<<<<<<< HEAD
                 <span className="flex items-center gap-2">
                   <Save className="w-5 h-5" /> Save Changes
                 </span>
-=======
-                'Save Changes ✓'
->>>>>>> dev
               )}
             </button>
           </div>

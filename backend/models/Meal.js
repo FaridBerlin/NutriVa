@@ -49,7 +49,6 @@ const mealSchema = new Schema(
       ref: 'User',
     },
   },
-<<<<<<< HEAD
   ingredients: [String],
   calories: 
   { 
@@ -104,10 +103,6 @@ createdBy:
 },
 
 }, { timestamps: true });
-=======
-  { timestamps: true },
-)
->>>>>>> dev
 
 mealSchema.statics.findByCategory = function (category) {
   return this.find({ category })

@@ -1,15 +1,3 @@
-<<<<<<< HEAD
-
-export { default as DashboardHeader } from './DashboardHeader';
-export { default as DashboardStats } from './DashboardStats';
-export { default as ProfileOverview } from './ProfileOverview';
-export { default as BMIGoals } from './BMIGoals';
-export { default as HealthMetrics } from './HealthMetrics';
-export { default as PlanSummary } from './PlanSummary';
-export { default as WeeklyCalendar } from './WeeklyCalendar';
-export { default as CreatePlan } from './CreatePlan';
-export { default as CreateMeal } from './CreateMeal';
-=======
 export { default as DashboardHeader } from './DashboardHeader'
 export { default as DashboardStats } from './DashboardStats'
 export { default as ProfileOverview } from './ProfileOverview'
@@ -19,5 +7,3 @@ export { default as PlanSummary } from './PlanSummary'
 export { default as WeeklyCalendar } from './WeeklyCalendar'
 export { default as CreatePlan } from './CreatePlan'
 export { default as CreateMeal } from './CreateMeal'
-export { default as ComingSoon } from './ComingSoon'
->>>>>>> dev

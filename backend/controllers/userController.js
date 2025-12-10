@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import User from "../models/User.js";
 import bcryptjs from "bcryptjs"; 
-=======
-import User from '../models/User.js'
->>>>>>> dev
 
 // Get basic user info (name, email) - NOT profile data
 export const getUser = async (req, res) => {
@@ -49,7 +45,6 @@ export const updateUser = async (req, res) => {
       message: err.message,
     })
   }
-<<<<<<< HEAD
 };
 
 // Change user password
@@ -107,6 +102,3 @@ export const changePassword = async (req, res) => {
     });
   }
 };
-=======
-}
->>>>>>> dev

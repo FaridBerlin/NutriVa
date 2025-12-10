@@ -17,18 +17,11 @@ export default function WeeklyCalendar({ dailyMeals = [] }) {
         date: date.getDate(),
         month: date.toLocaleDateString('en-US', { month: 'short' }),
         isToday: date.toDateString() === today.toDateString(),
-<<<<<<< HEAD
-        meals: dailyMeals[i] || [] // Link daily meals
-      });
-    }
-    return days;
-  }, [dailyMeals]);
-=======
+        meals: dailyMeals[i] || [], // Link daily meals
       })
     }
     return days
-  }, [])
->>>>>>> dev
+  }, [dailyMeals])
 
   return (
     <div>
@@ -50,10 +43,14 @@ export default function WeeklyCalendar({ dailyMeals = [] }) {
               {/* Placeholder for displaying daily meals */}
               {day.meals.length > 0 ? (
                 <div className="mt-3 w-full">
-                  <span className="block text-xs font-semibold mb-1">Meals:</span>
+                  <span className="block text-xs font-semibold mb-1">
+                    Meals:
+                  </span>
                   <ul className="text-xs space-y-1">
                     {day.meals.map((meal, idx) => (
-                      <li key={idx} className="truncate">{meal.name}</li>
+                      <li key={idx} className="truncate">
+                        {meal.name}
+                      </li>
                     ))}
                   </ul>
                 </div>
