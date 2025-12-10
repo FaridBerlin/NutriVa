@@ -14,8 +14,10 @@ import {
   WeeklyCalendar,
   CreatePlan,
   CreateMeal,
+  WaterIntake,
 } from '../components/dashboard'
 import MealPlanDisplay from '../components/MealPlanDisplay'
+import { WaterTracker } from '../components/dashboard'
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
@@ -150,7 +152,14 @@ export default function DashboardPage() {
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <DashboardStats stats={statsData} />
+        return (
+          <>
+            <DashboardStats stats={statsData} />
+            <div className="mt-4">
+              <WaterIntake />
+            </div>
+          </>
+        )
 
       case 'profile':
         return <ProfileOverview profile={profileData} />
@@ -194,6 +203,9 @@ export default function DashboardPage() {
 
       case 'ai':
         return <ComingSoon icon={MessageSquare} title="AI Assistant" />
+
+      case 'water-tracker':
+        return <WaterTracker />
 
       default:
         return <DashboardStats stats={statsData} />
