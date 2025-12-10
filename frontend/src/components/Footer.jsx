@@ -91,50 +91,6 @@ export default function Footer() {
           </div>
 
           {/* Product Links */}
-          <div>
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Product
-            </h4>
-            <ul className="space-y-4">
-              <li>
-                <Link
-                  to="/dashboard"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Dashboard
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/profile"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Profile
-                </Link>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Meal Planner
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Analytics
-                </a>
-              </li>
-            </ul>
-          </div>
 
           {/* Company Links */}
           <div>

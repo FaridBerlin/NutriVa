@@ -187,8 +187,9 @@ export function ProfileProvider({ children }) {
   }
 
   // Refresh profile (force fetch)
-  const refreshProfile = () => {
-    fetchProfile(true)
+  // Refresh profile (force fetch, async)
+  const refreshProfile = async () => {
+    await fetchProfile(true)
   }
 
   // Clear error

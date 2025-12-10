@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 
-export default function WeeklyCalendar() {
+// Add prop for daily meals
+export default function WeeklyCalendar({ dailyMeals = [] }) {
   const weekDays = useMemo(() => {
     const days = []
     const today = new Date()
@@ -16,10 +17,11 @@ export default function WeeklyCalendar() {
         date: date.getDate(),
         month: date.toLocaleDateString('en-US', { month: 'short' }),
         isToday: date.toDateString() === today.toDateString(),
+        meals: dailyMeals[i] || [], // Link daily meals
       })
     }
     return days
-  }, [])
+  }, [dailyMeals])
 
   return (
     <div>
@@ -38,6 +40,23 @@ export default function WeeklyCalendar() {
               <span className="text-sm font-medium mb-2">{day.day}</span>
               <span className="text-3xl font-bold">{day.date}</span>
               <span className="text-xs mt-2">{day.month}</span>
+              {/* Placeholder for displaying daily meals */}
+              {day.meals.length > 0 ? (
+                <div className="mt-3 w-full">
+                  <span className="block text-xs font-semibold mb-1">
+                    Meals:
+                  </span>
+                  <ul className="text-xs space-y-1">
+                    {day.meals.map((meal, idx) => (
+                      <li key={idx} className="truncate">
+                        {meal.name}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <span className="mt-3 text-xs text-gray-400">No meals</span>
+              )}
             </div>
           ))}
         </div>

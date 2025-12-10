@@ -17,6 +17,7 @@ import {
   LogOut,
   Settings,
   Home,
+  Droplet,
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
@@ -49,6 +50,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       badgeColor: 'green',
     },
     { id: 'create-meal', label: 'Create Meal', icon: PlusCircle },
+    { id: 'water-tracker', label: 'Water Tracker', icon: Droplet },
   ]
 
   return (

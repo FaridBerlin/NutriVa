@@ -1,10 +1,3 @@
-/**
- * DashboardPage.jsx
- *
- * @modified 8 December 2025
- * @description Main dashboard page with modular components
- */
-
 import { useState, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
@@ -21,8 +14,10 @@ import {
   WeeklyCalendar,
   CreatePlan,
   CreateMeal,
-  ComingSoon,
+  WaterIntake,
 } from '../components/dashboard'
+import MealPlanDisplay from '../components/MealPlanDisplay'
+import { WaterTracker } from '../components/dashboard'
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
@@ -100,7 +95,7 @@ export default function DashboardPage() {
 
   const handleGeneratePlan = () => {
     console.log('Generating AI plan...')
-    // TODO: Implement AI plan generation
+    // to do: Implement AI plan generation logic later!!!
   }
 
   const handleSaveMeal = (mealData) => {
@@ -108,11 +103,63 @@ export default function DashboardPage() {
     // TODO: Implement meal saving
   }
 
+  // Dummy meal plan for testing (replace with real data or API)
+  const dummyPlan = {
+    name: 'Test Meal Plan',
+    createdAt: Date.now(),
+    days: [
+      {
+        meals: [
+          {
+            name: 'Oatmeal with Berries',
+            description: 'Healthy oatmeal topped with fresh berries',
+            nutrition: { calories: 320, protein: 12, carbs: 54, fat: 6 },
+            ingredients: ['oats', 'milk', 'blueberries', 'honey'],
+            category: 'breakfast',
+            dietType: 'veg',
+            cuisine: 'international',
+          },
+          {
+            name: 'Grilled Chicken Salad',
+            description: 'Fresh greens with grilled chicken breast',
+            nutrition: { calories: 420, protein: 35, carbs: 20, fat: 22 },
+            ingredients: ['chicken', 'lettuce', 'tomato', 'cucumber'],
+            category: 'lunch',
+            dietType: 'non-veg',
+            cuisine: 'american',
+          },
+        ],
+        totals: { calories: 740, protein: 47, carbs: 74, fat: 28 },
+      },
+      {
+        meals: [
+          {
+            name: 'Veggie Pasta',
+            description: 'Whole wheat pasta with vegetables',
+            nutrition: { calories: 520, protein: 18, carbs: 75, fat: 14 },
+            ingredients: ['pasta', 'zucchini', 'tomato sauce', 'parmesan'],
+            category: 'dinner',
+            dietType: 'veg',
+            cuisine: 'italian',
+          },
+        ],
+        totals: { calories: 520, protein: 18, carbs: 75, fat: 14 },
+      },
+    ],
+  }
+
   // Render content based on active section
   const renderContent = () => {
     switch (activeSection) {
       case 'dashboard':
-        return <DashboardStats stats={statsData} />
+        return (
+          <>
+            <DashboardStats stats={statsData} />
+            <div className="mt-4">
+              <WaterIntake />
+            </div>
+          </>
+        )
 
       case 'profile':
         return <ProfileOverview profile={profileData} />
@@ -130,7 +177,7 @@ export default function DashboardPage() {
         return <HealthMetrics metrics={metricsData} />
 
       case 'plan':
-        return <PlanSummary plan={planData} />
+        return null // Removed ComingSoon component
 
       case 'calendar':
         return <WeeklyCalendar />
@@ -152,10 +199,13 @@ export default function DashboardPage() {
         )
 
       case 'meals':
-        return <ComingSoon icon={Utensils} title="Meal Planner" />
+        return <MealPlanDisplay plan={dummyPlan} />
 
       case 'ai':
         return <ComingSoon icon={MessageSquare} title="AI Assistant" />
+
+      case 'water-tracker':
+        return <WaterTracker />
 
       default:
         return <DashboardStats stats={statsData} />
@@ -163,7 +213,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-transparent">
       {/* Sidebar */}
       <Sidebar
         activeSection={activeSection}
