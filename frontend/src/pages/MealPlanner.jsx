@@ -1,76 +1,85 @@
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
-const DIET_TYPES = ["veg", "non-veg", "vegan", "eggetarian"];
-const ALLERGENS = ["dairy", "gluten", "nuts", "soy", "eggs", "shellfish"];
-const CUISINES = ["indian", "chinese", "italian", "mexican", "american", "mediterranean"];
+const DIET_TYPES = ['veg', 'non-veg', 'vegan', 'eggetarian']
+const ALLERGENS = ['dairy', 'gluten', 'nuts', 'soy', 'eggs', 'shellfish']
+const CUISINES = [
+  'indian',
+  'chinese',
+  'italian',
+  'mexican',
+  'american',
+  'mediterranean',
+]
 
 export default function MealPlanner() {
   const [form, setForm] = useState({
-    planName: "",
+    planName: '',
     duration: 7,
     mealsPerDay: 3,
-    dietType: "veg",
+    dietType: 'veg',
     cuisine: [],
     allergens: [],
-    preferences: ""
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+    preferences: '',
+  })
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    if (type === "checkbox" && ALLERGENS.includes(name)) {
+    const { name, value, type, checked } = e.target
+    if (type === 'checkbox' && ALLERGENS.includes(name)) {
       setForm((prev) => ({
         ...prev,
         allergens: checked
           ? [...prev.allergens, name]
-          : prev.allergens.filter((a) => a !== name)
-      }));
-    } else if (type === "checkbox" && CUISINES.includes(name)) {
+          : prev.allergens.filter((a) => a !== name),
+      }))
+    } else if (type === 'checkbox' && CUISINES.includes(name)) {
       setForm((prev) => ({
         ...prev,
         cuisine: checked
           ? [...prev.cuisine, name]
-          : prev.cuisine.filter((c) => c !== name)
-      }));
+          : prev.cuisine.filter((c) => c !== name),
+      }))
     } else {
-      setForm((prev) => ({ ...prev, [name]: value }));
+      setForm((prev) => ({ ...prev, [name]: value }))
     }
-  };
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
-    setSuccess("");
+    e.preventDefault()
+    setError('')
+    setSuccess('')
     if (!form.planName) {
-      setError("Plan name is required");
-      return;
+      setError('Plan name is required')
+      return
     }
-    setLoading(true);
+    setLoading(true)
     try {
       // TODO: Replace with real API call
-      await new Promise((res) => setTimeout(res, 1200));
-      setSuccess("Meal plan generated successfully!");
+      await new Promise((res) => setTimeout(res, 1200))
+      setSuccess('Meal plan generated successfully!')
       setForm({
-        planName: "",
+        planName: '',
         duration: 7,
         mealsPerDay: 3,
-        dietType: "veg",
+        dietType: 'veg',
         cuisine: [],
         allergens: [],
-        preferences: ""
-      });
+        preferences: '',
+      })
     } catch (err) {
-      setError("Failed to generate meal plan. Try again.");
+      setError('Failed to generate meal plan. Try again.')
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 mt-8">
-      <h2 className="text-2xl font-bold mb-4 text-textDark">Create Your Meal Plan</h2>
+      <h2 className="text-2xl font-bold mb-4 text-textDark">
+        Create Your Meal Plan
+      </h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block mb-1 font-medium">Plan Name</label>
@@ -104,8 +113,10 @@ export default function MealPlanner() {
             onChange={handleChange}
             className="w-full border rounded px-3 py-2"
           >
-            {[2,3,4,5,6].map((n) => (
-              <option key={n} value={n}>{n}</option>
+            {[2, 3, 4, 5, 6].map((n) => (
+              <option key={n} value={n}>
+                {n}
+              </option>
             ))}
           </select>
         </div>
@@ -176,9 +187,9 @@ export default function MealPlanner() {
           className="w-full py-2 rounded bg-primary text-white font-bold mt-2"
           disabled={loading}
         >
-          {loading ? "Generating..." : "Generate Meal Plan"}
+          {loading ? 'Generating...' : 'Generate Meal Plan'}
         </button>
       </form>
     </div>
-  );
+  )
 }

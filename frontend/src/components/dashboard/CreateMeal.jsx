@@ -1,13 +1,18 @@
+<<<<<<< HEAD
 import { useState } from "react";
 import { Save } from "lucide-react";
 
 const CATEGORY_OPTIONS = ["breakfast", "lunch", "dinner", "snack"];
 const TYPE_OPTIONS = ["balanced", "high-protein", "low-carb", "keto", "vegan", "veg", "gluten-free"];
 
+=======
+import { Save } from 'lucide-react' // Importing Save icon from lucide-react
+>>>>>>> dev
 export default function CreateMeal({ onSave, onCancel }) {
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
+<<<<<<< HEAD
     e.preventDefault();
     setError("");
     const formData = new FormData(e.target);
@@ -31,6 +36,25 @@ export default function CreateMeal({ onSave, onCancel }) {
     }
     if (onSave) onSave(meal);
   };
+=======
+    e.preventDefault()
+    // Handle form submission
+    if (onSave) {
+      const formData = new FormData(e.target)
+      const meal = {
+        name: formData.get('name'),
+        type: formData.get('type'),
+        servingSize: formData.get('servingSize'),
+        calories: formData.get('calories'),
+        protein: formData.get('protein'),
+        carbs: formData.get('carbs'),
+        ingredients: formData.get('ingredients'),
+        instructions: formData.get('instructions'),
+      }
+      onSave(meal)
+    }
+  }
+>>>>>>> dev
 
   return (
     <div>
@@ -118,5 +142,5 @@ export default function CreateMeal({ onSave, onCancel }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

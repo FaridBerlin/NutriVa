@@ -4,32 +4,32 @@ import {
   UserCircle,
   ArrowRight,
   Wand2,
-} from "lucide-react";
+} from 'lucide-react'
 
 export default function CreatePlan({ profile, onGenerate }) {
   const features = [
-    "Personalized meal plans for 30 days",
-    "Calorie & macro breakdowns",
-    "Recipe suggestions with ingredients",
-    "Weekly shopping lists",
-    "Progress tracking & adjustments",
-  ];
+    'Personalized meal plans for 30 days',
+    'Calorie & macro breakdowns',
+    'Recipe suggestions with ingredients',
+    'Weekly shopping lists',
+    'Progress tracking & adjustments',
+  ]
 
   const profileInfo = [
-    { label: "Goal", value: profile?.goal || "Weight Loss" },
+    { label: 'Goal', value: profile?.goal || 'Weight Loss' },
     {
-      label: "Daily Calories",
+      label: 'Daily Calories',
       value: profile?.dailyCalories
         ? `${profile.dailyCalories} kcal`
-        : "2000 kcal",
+        : '2000 kcal',
     },
-    { label: "Current BMI", value: profile?.bmi || "24.5" },
-    { label: "Activity Level", value: profile?.activityLevel || "Moderate" },
+    { label: 'Current BMI', value: profile?.bmi || '24.5' },
+    { label: 'Activity Level', value: profile?.activityLevel || 'Moderate' },
     {
-      label: "Duration",
-      value: profile?.duration ? `${profile.duration} Days` : "30 Days",
+      label: 'Duration',
+      value: profile?.duration ? `${profile.duration} Days` : '30 Days',
     },
-  ];
+  ]
 
   return (
     <div className="bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 rounded-2xl shadow-lg p-8 border border-purple-200">
@@ -80,8 +80,8 @@ export default function CreatePlan({ profile, onGenerate }) {
                 key={index}
                 className={`flex justify-between py-2 ${
                   index < profileInfo.length - 1
-                    ? "border-b border-gray-100"
-                    : ""
+                    ? 'border-b border-gray-100'
+                    : ''
                 }`}
               >
                 <span className="text-gray-600">{item.label}:</span>
@@ -106,5 +106,5 @@ export default function CreatePlan({ profile, onGenerate }) {
         </button>
       </div>
     </div>
-  );
+  )
 }

@@ -1,18 +1,18 @@
-import { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../services/api";
-import { AuthContext } from "../context/AuthContext";
+import { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import api from '../services/api'
+import { AuthContext } from '../context/AuthContext'
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const { setUser } = useContext(AuthContext);
-  const navigate = useNavigate();
+    name: '',
+    email: '',
+    password: '',
+  })
+  const [error, setError] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  const { setUser } = useContext(AuthContext)
+  const navigate = useNavigate()
 
   // shared green button style
   const greenButtonClass = `
@@ -20,30 +20,30 @@ export default function SignupForm() {
     hover:bg-gradient-to-bl focus:ring-4 focus:outline-none 
     focus:ring-green-200 font-medium rounded-md 
     text-base px-5 py-2.5 shadow-md transition-all text-center
-  `;
+  `
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
-    });
-  };
+    })
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError("");
+    e.preventDefault()
+    setIsLoading(true)
+    setError('')
     try {
-      const response = await api.post("/auth/signup", formData);
-      localStorage.setItem("token", response.data.token);
-      setUser(response.data.user);
-      navigate("/profile");
+      const response = await api.post('/auth/signup', formData)
+      localStorage.setItem('token', response.data.token)
+      setUser(response.data.user)
+      navigate('/profile')
     } catch (err) {
-      setError(err.response?.data?.message || "Signup failed");
+      setError(err.response?.data?.message || 'Signup failed')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   return (
     <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
@@ -85,20 +85,16 @@ export default function SignupForm() {
           />
         </div>
         {/* Sign Up button with unified green gradient style */}
-        <button
-          type="submit"
-          disabled={isLoading}
-          className={greenButtonClass}
-        >
-          {isLoading ? "Creating account..." : "Sign Up"}
+        <button type="submit" disabled={isLoading} className={greenButtonClass}>
+          {isLoading ? 'Creating account...' : 'Sign Up'}
         </button>
       </form>
       <p className="mt-4 text-sm">
-        Already have an account?{" "}
+        Already have an account?{' '}
         <a href="/login" className="text-primary hover:underline">
           Log in
         </a>
       </p>
     </div>
-  );
+  )
 }

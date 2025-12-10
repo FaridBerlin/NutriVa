@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -21,28 +22,34 @@ import {
   Ruler,
   Weight
 } from "lucide-react";
+=======
+import { useState, useEffect, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
+import api from '../services/api'
+>>>>>>> dev
 
 export default function SettingsPage() {
-  const { user } = useContext(AuthContext);
-  const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
+  const { user } = useContext(AuthContext)
+  const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSaving, setIsSaving] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
 
   const [formData, setFormData] = useState({
     // User Info
-    name: "",
-    email: "",
-    
+    name: '',
+    email: '',
+
     // Profile Info
-    age: "",
-    gender: "",
-    height: "",
-    weight: "",
-    activityLevel: "",
-    dietaryGoal: "",
-    foodType: "",
-  });
+    age: '',
+    gender: '',
+    height: '',
+    weight: '',
+    activityLevel: '',
+    dietaryGoal: '',
+    foodType: '',
+  })
 
   // Password change state
   const [passwordData, setPasswordData] = useState({
@@ -57,42 +64,42 @@ export default function SettingsPage() {
   useEffect(() => {
     const loadProfile = async () => {
       try {
-        setIsLoading(true);
-        const response = await api.get("/profile");
-        
+        setIsLoading(true)
+        const response = await api.get('/profile')
+
         if (response.data?.data) {
-          const profileData = response.data.data.profile || response.data.data;
+          const profileData = response.data.data.profile || response.data.data
           setFormData({
-            name: profileData.user?.name || user?.name || "",
-            email: profileData.user?.email || user?.email || "",
-            age: profileData.age?.toString() || "",
-            gender: profileData.gender || "",
-            height: profileData.height?.toString() || "",
-            weight: profileData.weight?.toString() || "",
-            activityLevel: profileData.activityLevel || "",
-            dietaryGoal: profileData.dietaryGoal || "",
-            foodType: profileData.foodType || "",
-          });
+            name: profileData.user?.name || user?.name || '',
+            email: profileData.user?.email || user?.email || '',
+            age: profileData.age?.toString() || '',
+            gender: profileData.gender || '',
+            height: profileData.height?.toString() || '',
+            weight: profileData.weight?.toString() || '',
+            activityLevel: profileData.activityLevel || '',
+            dietaryGoal: profileData.dietaryGoal || '',
+            foodType: profileData.foodType || '',
+          })
         }
       } catch (error) {
-        console.log("No profile found", error);
-        setFormData(prev => ({
+        console.log('No profile found', error)
+        setFormData((prev) => ({
           ...prev,
-          name: user?.name || "",
-          email: user?.email || "",
-        }));
+          name: user?.name || '',
+          email: user?.email || '',
+        }))
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
-    };
+    }
 
-    loadProfile();
-  }, [user]);
+    loadProfile()
+  }, [user])
 
   const handleChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
-    setMessage({ type: "", text: "" });
-  };
+    setFormData((prev) => ({ ...prev, [field]: value }))
+    setMessage({ type: '', text: '' })
+  }
 
   const handlePasswordChange = (field, value) => {
     setPasswordData(prev => ({ ...prev, [field]: value }));
@@ -141,9 +148,9 @@ export default function SettingsPage() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSaving(true);
-    setMessage({ type: "", text: "" });
+    e.preventDefault()
+    setIsSaving(true)
+    setMessage({ type: '', text: '' })
 
     try {
       const profileData = {
@@ -154,30 +161,34 @@ export default function SettingsPage() {
         activityLevel: formData.activityLevel,
         dietaryGoal: formData.dietaryGoal,
         foodType: formData.foodType || undefined,
-      };
+      }
 
-      await api.put("/profile", profileData);
+      await api.put('/profile', profileData)
       // Navigate to profile page after successful save
-      navigate("/profile");
+      navigate('/profile')
     } catch (error) {
-      console.error("Error updating profile:", error);
-      setMessage({ type: "error", text: error.response?.data?.message || "Failed to update profile ❌" });
+      console.error('Error updating profile:', error)
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Failed to update profile ❌',
+      })
     } finally {
-      setIsSaving(false);
+      setIsSaving(false)
     }
-  };
+  }
 
   // Activity Level Options
   const activityLevels = [
-    { value: "sedentary", label: "Sedentary", desc: "Little or no exercise" },
-    { value: "light", label: "Light", desc: "Exercise 1-3 days/week" },
-    { value: "moderate", label: "Moderate", desc: "Exercise 3-5 days/week" },
-    { value: "active", label: "Active", desc: "Exercise 6-7 days/week" },
-    { value: "very_active", label: "Very Active", desc: "Hard exercise daily" },
-  ];
+    { value: 'sedentary', label: 'Sedentary', desc: 'Little or no exercise' },
+    { value: 'light', label: 'Light', desc: 'Exercise 1-3 days/week' },
+    { value: 'moderate', label: 'Moderate', desc: 'Exercise 3-5 days/week' },
+    { value: 'active', label: 'Active', desc: 'Exercise 6-7 days/week' },
+    { value: 'very_active', label: 'Very Active', desc: 'Hard exercise daily' },
+  ]
 
   // Dietary Goal Options
   const dietaryGoals = [
+<<<<<<< HEAD
     { value: "lose_weight", label: "Lose Weight", Icon: TrendingDown },
     { value: "maintain_weight", label: "Maintain Weight", Icon: Scale },
     { value: "gain_weight", label: "Gain Weight", Icon: TrendingUp },
@@ -190,6 +201,20 @@ export default function SettingsPage() {
     { value: "veg", label: "Vegetarian", Icon: Salad },
     { value: "vegan", label: "Vegan", Icon: Leaf },
   ];
+=======
+    { value: 'lose_weight', label: 'Lose Weight', icon: '📉' },
+    { value: 'maintain_weight', label: 'Maintain Weight', icon: '⚖️' },
+    { value: 'gain_weight', label: 'Gain Weight', icon: '📈' },
+    { value: 'build_muscle', label: 'Build Muscle', icon: '💪' },
+  ]
+
+  // Food Type Options
+  const foodTypes = [
+    { value: 'nonveg', label: 'Non-Vegetarian', icon: '🍖' },
+    { value: 'veg', label: 'Vegetarian', icon: '🥗' },
+    { value: 'vegan', label: 'Vegan', icon: '🌱' },
+  ]
+>>>>>>> dev
 
   if (isLoading) {
     return (
@@ -199,13 +224,12 @@ export default function SettingsPage() {
           <p className="text-textLight">Loading settings...</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
       <div className="max-w-3xl mx-auto">
-        
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-textDark mb-2 flex items-center justify-center gap-2">
@@ -216,44 +240,53 @@ export default function SettingsPage() {
 
         {/* Message */}
         {message.text && (
-          <div className={`mb-6 p-4 rounded-lg ${
-            message.type === "success" 
-              ? "bg-green-100 text-green-700 border border-green-300" 
-              : "bg-red-100 text-red-700 border border-red-300"
-          }`}>
+          <div
+            className={`mb-6 p-4 rounded-lg ${
+              message.type === 'success'
+                ? 'bg-green-100 text-green-700 border border-green-300'
+                : 'bg-red-100 text-red-700 border border-red-300'
+            }`}
+          >
             {message.text}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          
           {/* Account Information */}
           <div className="bg-white rounded-2xl shadow-lg p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Account Information
             </h2>
-            
+
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Name</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Name
+                </label>
                 <input
                   type="text"
                   value={formData.name}
                   disabled
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500"
                 />
-                <p className="text-xs text-textLight mt-1">Contact support to change name</p>
+                <p className="text-xs text-textLight mt-1">
+                  Contact support to change name
+                </p>
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Email</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Email
+                </label>
                 <input
                   type="email"
                   value={formData.email}
                   disabled
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500"
                 />
-                <p className="text-xs text-textLight mt-1">Email cannot be changed</p>
+                <p className="text-xs text-textLight mt-1">
+                  Email cannot be changed
+                </p>
               </div>
             </div>
           </div>
@@ -340,25 +373,29 @@ export default function SettingsPage() {
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-primary" /> Personal Information
             </h2>
-            
+
             <div className="grid md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Age</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Age
+                </label>
                 <input
                   type="number"
                   value={formData.age}
-                  onChange={(e) => handleChange("age", e.target.value)}
+                  onChange={(e) => handleChange('age', e.target.value)}
                   min="13"
                   max="120"
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Gender</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Gender
+                </label>
                 <select
                   value={formData.gender}
-                  onChange={(e) => handleChange("gender", e.target.value)}
+                  onChange={(e) => handleChange('gender', e.target.value)}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 >
                   <option value="">Select gender</option>
@@ -369,8 +406,20 @@ export default function SettingsPage() {
               </div>
 
               <div>
+<<<<<<< HEAD
                 <label className="block text-sm font-medium text-textDark mb-2">Food Preference</label>
                 <div className="flex gap-2">
+=======
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Food Preference
+                </label>
+                <select
+                  value={formData.foodType}
+                  onChange={(e) => handleChange('foodType', e.target.value)}
+                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                >
+                  <option value="">Select preference</option>
+>>>>>>> dev
                   {foodTypes.map((type) => (
                     <button
                       key={type.value}
@@ -396,14 +445,16 @@ export default function SettingsPage() {
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Ruler className="w-5 h-5 text-primary" /> Body Metrics
             </h2>
-            
+
             <div className="grid md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Height (cm)</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Height (cm)
+                </label>
                 <input
                   type="number"
                   value={formData.height}
-                  onChange={(e) => handleChange("height", e.target.value)}
+                  onChange={(e) => handleChange('height', e.target.value)}
                   min="50"
                   max="300"
                   step="0.1"
@@ -411,13 +462,15 @@ export default function SettingsPage() {
                   placeholder="e.g., 175"
                 />
               </div>
-              
+
               <div>
-                <label className="block text-sm font-medium text-textDark mb-2">Weight (kg)</label>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Weight (kg)
+                </label>
                 <input
                   type="number"
                   value={formData.weight}
-                  onChange={(e) => handleChange("weight", e.target.value)}
+                  onChange={(e) => handleChange('weight', e.target.value)}
                   min="20"
                   max="500"
                   step="0.1"
@@ -433,21 +486,25 @@ export default function SettingsPage() {
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary" /> Activity Level
             </h2>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
               {activityLevels.map((level) => (
                 <button
                   key={level.value}
                   type="button"
-                  onClick={() => handleChange("activityLevel", level.value)}
+                  onClick={() => handleChange('activityLevel', level.value)}
                   className={`p-4 rounded-xl border-2 text-center transition-all hover:shadow-md ${
                     formData.activityLevel === level.value
-                      ? "border-primary bg-primaryLight40 shadow-lg"
-                      : "border-gray-200 hover:border-primary"
+                      ? 'border-primary bg-primaryLight40 shadow-lg'
+                      : 'border-gray-200 hover:border-primary'
                   }`}
                 >
-                  <div className="font-semibold text-textDark text-sm">{level.label}</div>
-                  <div className="text-xs text-textLight mt-1">{level.desc}</div>
+                  <div className="font-semibold text-textDark text-sm">
+                    {level.label}
+                  </div>
+                  <div className="text-xs text-textLight mt-1">
+                    {level.desc}
+                  </div>
                 </button>
               ))}
             </div>
@@ -458,23 +515,30 @@ export default function SettingsPage() {
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" /> Dietary Goal
             </h2>
-            
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {dietaryGoals.map((goal) => (
                 <button
                   key={goal.value}
                   type="button"
-                  onClick={() => handleChange("dietaryGoal", goal.value)}
+                  onClick={() => handleChange('dietaryGoal', goal.value)}
                   className={`p-6 rounded-xl border-2 text-center transition-all hover:shadow-md ${
                     formData.dietaryGoal === goal.value
-                      ? "border-primary bg-primaryLight40 shadow-lg"
-                      : "border-gray-200 hover:border-primary"
+                      ? 'border-primary bg-primaryLight40 shadow-lg'
+                      : 'border-gray-200 hover:border-primary'
                   }`}
                 >
+<<<<<<< HEAD
                   <div className="flex justify-center mb-2">
                     <goal.Icon className={`w-8 h-8 ${formData.dietaryGoal === goal.value ? "text-primary" : "text-textLight"}`} />
                   </div>
                   <div className="font-semibold text-textDark">{goal.label}</div>
+=======
+                  <div className="text-3xl mb-2">{goal.icon}</div>
+                  <div className="font-semibold text-textDark">
+                    {goal.label}
+                  </div>
+>>>>>>> dev
                 </button>
               ))}
             </div>
@@ -487,8 +551,8 @@ export default function SettingsPage() {
               disabled={isSaving}
               className={`px-8 py-3 rounded-xl font-semibold text-white transition-all ${
                 isSaving
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-gradient-to-r from-primary to-primaryDark hover:shadow-lg hover:scale-105"
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-primary to-primaryDark hover:shadow-lg hover:scale-105'
               }`}
             >
               {isSaving ? (
@@ -497,14 +561,18 @@ export default function SettingsPage() {
                   Saving...
                 </span>
               ) : (
+<<<<<<< HEAD
                 <span className="flex items-center gap-2">
                   <Save className="w-5 h-5" /> Save Changes
                 </span>
+=======
+                'Save Changes ✓'
+>>>>>>> dev
               )}
             </button>
           </div>
         </form>
       </div>
     </div>
-  );
+  )
 }

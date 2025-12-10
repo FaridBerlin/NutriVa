@@ -1,27 +1,34 @@
-import { useMemo } from 'react';
+import { useMemo } from 'react'
 
 // Add prop for daily meals
 export default function WeeklyCalendar({ dailyMeals = [] }) {
   const weekDays = useMemo(() => {
-    const days = [];
-    const today = new Date();
-    const currentDay = today.getDay();
-    const monday = new Date(today);
-    monday.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1));
+    const days = []
+    const today = new Date()
+    const currentDay = today.getDay()
+    const monday = new Date(today)
+    monday.setDate(today.getDate() - currentDay + (currentDay === 0 ? -6 : 1))
 
     for (let i = 0; i < 7; i++) {
-      const date = new Date(monday);
-      date.setDate(monday.getDate() + i);
+      const date = new Date(monday)
+      date.setDate(monday.getDate() + i)
       days.push({
         day: date.toLocaleDateString('en-US', { weekday: 'short' }),
         date: date.getDate(),
         month: date.toLocaleDateString('en-US', { month: 'short' }),
         isToday: date.toDateString() === today.toDateString(),
+<<<<<<< HEAD
         meals: dailyMeals[i] || [] // Link daily meals
       });
     }
     return days;
   }, [dailyMeals]);
+=======
+      })
+    }
+    return days
+  }, [])
+>>>>>>> dev
 
   return (
     <div>
@@ -58,5 +65,5 @@ export default function WeeklyCalendar({ dailyMeals = [] }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -6,39 +6,39 @@ import {
   RadialBarChart,
   RadialBar,
   Legend,
-} from "recharts";
+} from 'recharts'
 
 export default function BMIGoals({ bmi, bmiCategory, goals }) {
   const progressData = [
     {
-      name: "Calories",
+      name: 'Calories',
       current: goals?.caloriesCurrent || 1450,
       target: goals?.caloriesTarget || 2000,
-      unit: "kcal",
-      fill: "#8b5cf6", // purple
+      unit: 'kcal',
+      fill: '#8b5cf6', // purple
     },
     {
-      name: "Protein",
+      name: 'Protein',
       current: goals?.proteinCurrent || 85,
       target: goals?.proteinTarget || 150,
-      unit: "g",
-      fill: "#83D385", // green (primary)
+      unit: 'g',
+      fill: '#83D385', // green (primary)
     },
     {
-      name: "Carbs",
+      name: 'Carbs',
       current: goals?.carbsCurrent || 180,
       target: goals?.carbsTarget || 250,
-      unit: "g",
-      fill: "#3b82f6", // blue
+      unit: 'g',
+      fill: '#3b82f6', // blue
     },
     {
-      name: "Fats",
+      name: 'Fats',
       current: goals?.fatsCurrent || 45,
       target: goals?.fatsTarget || 65,
-      unit: "g",
-      fill: "#f97316", // orange
+      unit: 'g',
+      fill: '#f97316', // orange
     },
-  ];
+  ]
 
   // Prepare data for RadialBarChart
   const radialData = progressData.map((item) => ({
@@ -48,22 +48,22 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
     current: item.current,
     target: item.target,
     unit: item.unit,
-  }));
+  }))
 
   // Macros distribution for Pie Chart
   const macrosData = [
-    { name: "Protein", value: goals?.proteinCurrent || 85, fill: "#83D385" },
-    { name: "Carbs", value: goals?.carbsCurrent || 180, fill: "#3b82f6" },
-    { name: "Fats", value: goals?.fatsCurrent || 45, fill: "#f97316" },
-  ];
+    { name: 'Protein', value: goals?.proteinCurrent || 85, fill: '#83D385' },
+    { name: 'Carbs', value: goals?.carbsCurrent || 180, fill: '#3b82f6' },
+    { name: 'Fats', value: goals?.fatsCurrent || 45, fill: '#f97316' },
+  ]
 
   const getBMIColor = (bmi) => {
-    if (!bmi) return "#83D385";
-    if (bmi < 18.5) return "#3b82f6";
-    if (bmi < 25) return "#83D385";
-    if (bmi < 30) return "#f97316";
-    return "#ef4444";
-  };
+    if (!bmi) return '#83D385'
+    if (bmi < 18.5) return '#3b82f6'
+    if (bmi < 25) return '#83D385'
+    if (bmi < 30) return '#f97316'
+    return '#ef4444'
+  }
 
   return (
     <div>
@@ -84,7 +84,7 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
                   <Pie
                     data={[
                       { value: bmi || 24.5, fill: getBMIColor(bmi) },
-                      { value: 40 - (bmi || 24.5), fill: "#e5e7eb" },
+                      { value: 40 - (bmi || 24.5), fill: '#e5e7eb' },
                     ]}
                     cx="50%"
                     cy="50%"
@@ -101,7 +101,7 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
                   className="text-4xl font-bold"
                   style={{ color: getBMIColor(bmi) }}
                 >
-                  {bmi?.toFixed(1) || "24.5"}
+                  {bmi?.toFixed(1) || '24.5'}
                 </span>
                 <span className="text-sm text-textLight">BMI</span>
               </div>
@@ -110,7 +110,7 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
               className="text-lg font-semibold mt-2"
               style={{ color: getBMIColor(bmi) }}
             >
-              {bmiCategory || "Healthy"}
+              {bmiCategory || 'Healthy'}
             </p>
             <p className="text-sm text-textLight">Healthy Range: 18.5 - 24.9</p>
           </div>
@@ -179,13 +179,13 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
               layout="horizontal"
               verticalAlign="bottom"
               formatter={(value, entry) => {
-                const item = radialData.find((d) => d.name === value);
-                return `${value}: ${item?.current}/${item?.target} ${item?.unit}`;
+                const item = radialData.find((d) => d.name === value)
+                return `${value}: ${item?.current}/${item?.target} ${item?.unit}`
               }}
             />
           </RadialBarChart>
         </ResponsiveContainer>
       </div>
     </div>
-  );
+  )
 }
