@@ -5,5 +5,5 @@ export default function ComingSoon({ icon: Icon, title }) {
       <h2 className="text-2xl font-bold text-textDark mb-2">{title}</h2>
       <p className="text-textLight">Coming Soon</p>
     </div>
-  );
+  )
 }

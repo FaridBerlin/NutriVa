@@ -1,4 +1,4 @@
-import HeroAnimation from "./HeroAnimation";
+import HeroAnimation from './HeroAnimation'
 
 export default function HeroSection() {
   return (
@@ -6,7 +6,7 @@ export default function HeroSection() {
       {/* Left Text */}
       <div className="max-w-xl text-center md:text-left space-y-4 md:space-y-5">
         <h1 className="text-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-          <span className="text-primary">Nutri</span>tion <br></br>Meets{" "}
+          <span className="text-primary">Nutri</span>tion <br></br>Meets{' '}
           <br></br> Inno
           <span className="text-primary">Va</span>tion
         </h1>
@@ -25,5 +25,5 @@ export default function HeroSection() {
         <HeroAnimation />
       </div>
     </div>
-  );
+  )
 }
