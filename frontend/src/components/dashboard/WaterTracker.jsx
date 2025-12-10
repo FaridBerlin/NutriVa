@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Droplet, Plus, Minus } from 'lucide-react'
-import { useProfile } from '../../context/ProfileContext'
+import { useProfile } from '../../context/ProfileContext'// Import the useProfile hook
 
 function calculateDailyWaterIntakeLiters(weight) {
   if (!weight) return null
