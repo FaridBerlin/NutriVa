@@ -48,61 +48,48 @@ const mealSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
+
+    ingredients: [String],
+    calories: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    protein: { type: Number, required: true, min: 0 },
+    carbs: { type: Number, required: true, min: 0 },
+    fats: { type: Number, required: true, min: 0 },
+
+    serving_size: { type: String, required: true },
+    category: { type: String, enum: ['breakfast', 'lunch', 'dinner', 'snack'] },
+    type: {
+      type: String,
+      enum: [
+        'balanced',
+        'high-protein',
+        'low-carb',
+        'keto',
+        'vegan',
+        'veg',
+        'gluten-free',
+      ],
+    },
+    // Add the image field
+    image: String,
+
+    favorites: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+      },
+    ],
+
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
   },
-  ingredients: [String],
-  calories: 
-  { 
-    type: Number, 
-    required: true, 
-    min: 0 
-},
-  protein: 
-  { type: Number, 
-    required: true, 
-    min: 0 
-},
-  carbs: 
-  { type: Number, 
-    required: true, 
-    min: 0 
-},
-  fats: 
-  { type: Number, 
-    required: true, 
-    min: 0 
-},
-
-  serving_size: 
-  { type: String, 
-    required: true 
-},
-category: 
-{ type: String, 
-  enum: ["breakfast", "lunch", "dinner", "snack"] 
-},
-type: 
-{
-    type: String,
-    enum: ["balanced", "high-protein", "low-carb", "keto", "vegan", "veg", "gluten-free"]
-},  
-// Add the image field
-image: String,
-
-favorites: 
-[
-  { 
-    type: Schema.Types.ObjectId, 
-    ref: "User" 
-  }
-],
-
-createdBy: 
-{ 
-  type: Schema.Types.ObjectId, 
-  ref: "User"
-},
-
-}, { timestamps: true });
+  { timestamps: true },
+)
 
 mealSchema.statics.findByCategory = function (category) {
   return this.find({ category })

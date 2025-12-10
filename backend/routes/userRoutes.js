@@ -1,6 +1,10 @@
-import { Router } from "express";
-import { protect } from "../middleware/authMiddleware.js";
-import { getUser, updateUser, changePassword } from "../controllers/userController.js";
+import { Router } from 'express'
+import { protect } from '../middleware/authMiddleware.js'
+import {
+  getUser,
+  updateUser,
+  changePassword,
+} from '../controllers/userController.js'
 
 const userRouter = Router()
 
@@ -14,6 +18,6 @@ userRouter.get('/me', getUser)
 userRouter.put('/me', updateUser)
 
 // PUT /api/user/change-password - Change user password
-userRouter.put("/change-password", changePassword);
+userRouter.put('/change-password', changePassword)
 
-export default userRouter;
+export default userRouter
