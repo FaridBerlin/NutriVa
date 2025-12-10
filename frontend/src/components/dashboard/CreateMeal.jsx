@@ -1,23 +1,23 @@
-import { Save } from "lucide-react"; // Importing Save icon from lucide-react
+import { Save } from 'lucide-react' // Importing Save icon from lucide-react
 export default function CreateMeal({ onSave, onCancel }) {
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // Handle form submission
     if (onSave) {
-      const formData = new FormData(e.target);
+      const formData = new FormData(e.target)
       const meal = {
-        name: formData.get("name"),
-        type: formData.get("type"),
-        servingSize: formData.get("servingSize"),
-        calories: formData.get("calories"),
-        protein: formData.get("protein"),
-        carbs: formData.get("carbs"),
-        ingredients: formData.get("ingredients"),
-        instructions: formData.get("instructions"),
-      };
-      onSave(meal);
+        name: formData.get('name'),
+        type: formData.get('type'),
+        servingSize: formData.get('servingSize'),
+        calories: formData.get('calories'),
+        protein: formData.get('protein'),
+        carbs: formData.get('carbs'),
+        ingredients: formData.get('ingredients'),
+        instructions: formData.get('instructions'),
+      }
+      onSave(meal)
     }
-  };
+  }
 
   return (
     <div>
@@ -155,5 +155,5 @@ export default function CreateMeal({ onSave, onCancel }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

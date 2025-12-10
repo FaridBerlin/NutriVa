@@ -1,56 +1,56 @@
-import User from "../models/User.js";
-import jwt from "jsonwebtoken";
+import User from '../models/User.js'
+import jwt from 'jsonwebtoken'
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "7d",
-  });
-};
+    expiresIn: '7d',
+  })
+}
 export const signup = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
-    let user = await User.findOne({ email });
+    const { name, email, password } = req.body
+    let user = await User.findOne({ email })
     if (user) {
-      return res.status(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: 'User already exists' })
     }
 
     user = new User({
       name,
       email,
       password,
-    });
+    })
 
-    await user.save();
-    const token = generateToken(user._id);
+    await user.save()
+    const token = generateToken(user._id)
     res.status(201).json({
       success: true,
       token,
       user: { id: user._id, name: user.name, email: user.email },
-    });
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 export const login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body
     if (!email || !password) {
       return res
         .status(400)
-        .json({ message: "Please provide email and password" });
+        .json({ message: 'Please provide email and password' })
     }
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await User.findOne({ email }).select('+password')
     if (!user) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: 'Invalid credentials' })
     }
 
-    const isMatch = await user.matchPassword(password);
+    const isMatch = await user.matchPassword(password)
     if (!isMatch) {
-      return res.status(401).json({ message: "Invalid credentials" });
+      return res.status(401).json({ message: 'Invalid credentials' })
     }
 
-    const token = generateToken(user._id);
+    const token = generateToken(user._id)
     res.status(200).json({
       success: true,
       token,
@@ -60,17 +60,17 @@ export const login = async (req, res) => {
         email: user.email,
         profileCompleted: user.profileCompleted,
       },
-    });
+    })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
 
 export const getUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id);
-    res.status(200).json({ success: true, user });
+    const user = await User.findById(req.user.id)
+    res.status(200).json({ success: true, user })
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message })
   }
-};
+}
