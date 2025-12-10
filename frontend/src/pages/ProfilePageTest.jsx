@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-import { useProfile } from "../context/ProfileContext";
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useProfile } from '../context/ProfileContext'
 
 export default function ProfilePageTest() {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   const {
     profile,
     nutritionTargets,
@@ -13,44 +13,44 @@ export default function ProfilePageTest() {
     updateProfile,
     clearError,
     profileProgress,
-  } = useProfile();
+  } = useProfile()
 
   const [formData, setFormData] = useState({
-    age: "",
-    gender: "",
-    height: "",
-    weight: "",
-    activityLevel: "sedentary",
-    dietaryGoal: "maintain_weight",
-  });
+    age: '',
+    gender: '',
+    height: '',
+    weight: '',
+    activityLevel: 'sedentary',
+    dietaryGoal: 'maintain_weight',
+  })
 
-  const [isEditing, setIsEditing] = useState(false);
+  const [isEditing, setIsEditing] = useState(false)
 
   // Load existing profile data when editing
   useEffect(() => {
     if (profile) {
       setFormData({
-        age: profile.age || "",
-        gender: profile.gender || "",
-        height: profile.height || "",
-        weight: profile.weight || "",
-        activityLevel: profile.activityLevel || "sedentary",
-        dietaryGoal: profile.dietaryGoal || "maintain_weight",
-      });
+        age: profile.age || '',
+        gender: profile.gender || '',
+        height: profile.height || '',
+        weight: profile.weight || '',
+        activityLevel: profile.activityLevel || 'sedentary',
+        dietaryGoal: profile.dietaryGoal || 'maintain_weight',
+      })
     }
-  }, [profile]);
+  }, [profile])
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }));
-  };
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    clearError();
+    e.preventDefault()
+    clearError()
 
     // Convert string values to numbers
     const profileData = {
@@ -58,23 +58,23 @@ export default function ProfilePageTest() {
       age: parseInt(formData.age),
       height: parseInt(formData.height),
       weight: parseInt(formData.weight),
-    };
+    }
 
-    let result;
+    let result
     if (profile) {
-      result = await updateProfile(profileData);
+      result = await updateProfile(profileData)
     } else {
-      result = await createProfile(profileData);
+      result = await createProfile(profileData)
     }
 
     if (result.success) {
-      setIsEditing(false);
+      setIsEditing(false)
       // Redirect to dashboard after profile creation
       if (!profile) {
-        navigate("/dashboard");
+        navigate('/dashboard')
       }
     }
-  };
+  }
 
   // Show form if no profile exists or editing
   if (!profile || isEditing) {
@@ -83,12 +83,12 @@ export default function ProfilePageTest() {
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-lg shadow-md p-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-2">
-              {profile ? "Update Your Profile" : "Complete Your Profile"}
+              {profile ? 'Update Your Profile' : 'Complete Your Profile'}
             </h2>
             <p className="text-gray-600 mb-6">
               {profile
-                ? "Update your information to get better recommendations"
-                : "Tell us about yourself to get personalized nutrition recommendations"}
+                ? 'Update your information to get better recommendations'
+                : 'Tell us about yourself to get personalized nutrition recommendations'}
             </p>
 
             {profile && (
@@ -242,10 +242,10 @@ export default function ProfilePageTest() {
                   className="flex-1 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {loading
-                    ? "Saving..."
+                    ? 'Saving...'
                     : profile
-                    ? "Update Profile"
-                    : "Complete Profile"}
+                      ? 'Update Profile'
+                      : 'Complete Profile'}
                 </button>
 
                 {profile && (
@@ -262,7 +262,7 @@ export default function ProfilePageTest() {
           </div>
         </div>
       </div>
-    );
+    )
   }
 
   // Show profile data
@@ -317,13 +317,13 @@ export default function ProfilePageTest() {
                 <div className="flex justify-between">
                   <span className="font-medium">Activity Level:</span>
                   <span className="capitalize">
-                    {profile.activityLevel.replace("_", " ")}
+                    {profile.activityLevel.replace('_', ' ')}
                   </span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium">Goal:</span>
                   <span className="capitalize">
-                    {profile.dietaryGoal.replace("_", " ")}
+                    {profile.dietaryGoal.replace('_', ' ')}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -348,5 +348,5 @@ export default function ProfilePageTest() {
         </div>
       </div>
     </div>
-  );
+  )
 }

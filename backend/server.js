@@ -1,39 +1,39 @@
-import express from "express";
-import connectDB from "./config/dbConnect.js";
-import cors from "cors";
-import authRoutes from "./routes/auth.js";
+import express from 'express'
+import connectDB from './config/dbConnect.js'
+import cors from 'cors'
+import authRoutes from './routes/auth.js'
 
-import userRouter from "./routes/userRoutes.js";
-import profileRouter from "./routes/profileRoutes.js";
-import mealRouter from "./routes/mealRoutes.js";
+import userRouter from './routes/userRoutes.js'
+import profileRouter from './routes/profileRoutes.js'
+import mealRouter from './routes/mealRoutes.js'
 
-connectDB();
+connectDB()
 
-const PORT = process.env.PORT || 3000;
-const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173"; // from .env file
+const PORT = process.env.PORT || 3000
+const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173' // from .env file
 
-const app = express();
+const app = express()
 
-app.use(express.json());
+app.use(express.json())
 
 app.use(
   cors({
     origin: frontendUrl,
     credentials: true,
-  })
-);
+  }),
+)
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use('/api/auth', authRoutes)
 
-app.use("/api/user", userRouter);
-app.use("/api/profile", profileRouter);
-app.use("/api/meal", mealRouter);
+app.use('/api/user', userRouter)
+app.use('/api/profile', profileRouter)
+app.use('/api/meal', mealRouter)
 
 app.use((err, req, res, next) => {
-  res.status(500).json({ msg: err.message || "Server Error" });
-});
+  res.status(500).json({ msg: err.message || 'Server Error' })
+})
 
 app.listen(PORT, () => {
-  console.log(`Server is listening on port: ${PORT}`);
-});
+  console.log(`Server is listening on port: ${PORT}`)
+})
