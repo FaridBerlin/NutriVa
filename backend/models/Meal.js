@@ -11,28 +11,23 @@ const mealSchema = new Schema(
       required: true,
     },
     ingredients: [String],
-    calories: {
-      type: Number,
-      required: true,
-      min: 0,
+    nutrition: {
+      calories: { type: Number, required: true, min: 0 },
+      protein: { type: Number, required: true, min: 0 },
+      carbs: { type: Number, required: true, min: 0 },
+      fat: { type: Number, required: true, min: 0 },
     },
-    protein: { type: Number, required: true, min: 0 },
-    carbs: { type: Number, required: true, min: 0 },
-    fats: { type: Number, required: true, min: 0 },
 
-    serving_size: { type: String, required: true },
+    serving_size: { type: String },
     category: { type: String, enum: ['breakfast', 'lunch', 'dinner', 'snack'] },
-    type: {
+    dietType: {
       type: String,
-      enum: [
-        'balanced',
-        'high-protein',
-        'low-carb',
-        'keto',
-        'vegan',
-        'veg',
-        'gluten-free',
-      ],
+      enum: ['veg', 'non-veg', 'vegan'],
+      default: 'non-veg',
+    },
+    allergens: {
+      type: [String],
+      default: [],
     },
 
     image: String,
@@ -56,8 +51,8 @@ mealSchema.statics.findByCategory = function (category) {
   return this.find({ category })
 }
 
-mealSchema.statics.findByType = function (type) {
-  return this.find({ type })
+mealSchema.statics.findByDietType = function (dietType) {
+  return this.find({ dietType })
 }
 
 export default model('Meal', mealSchema)
