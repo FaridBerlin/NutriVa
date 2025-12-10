@@ -28,12 +28,6 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    age: Number,
-    gender: String,
-    height: Number,
-    weight: Number,
-    dietType: String,
-    fitnessGoal: String,
     createdAt: {
       type: Date,
       default: Date.now,
