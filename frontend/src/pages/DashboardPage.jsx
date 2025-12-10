@@ -1,5 +1,3 @@
-
-
 import { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { useProfile } from '../context/ProfileContext';
@@ -95,7 +93,7 @@ export default function DashboardPage() {
 
   const handleGeneratePlan = () => {
     console.log('Generating AI plan...');
-    // TODO: Implement AI plan generation
+    // to do: Implement AI plan generation logic later!!!
   };
 
   const handleSaveMeal = (mealData) => {
@@ -203,8 +201,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      
+    <div className="flex min-h-screen bg-transparent">
       {/* Sidebar */}
       <Sidebar 
         activeSection={activeSection}
