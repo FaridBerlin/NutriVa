@@ -29,8 +29,6 @@ const breakfastMeals = [
     ingredients: ["greek yogurt", "granola", "blueberries", "honey"],
     nutrition: { calories: 280, protein: 15, carbs: 35, fat: 8 },
     allergens: ["dairy", "gluten", "nuts"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "b002",
@@ -42,8 +40,6 @@ const breakfastMeals = [
     ingredients: ["bread", "avocado", "egg", "lemon", "salt", "pepper"],
     nutrition: { calories: 310, protein: 12, carbs: 32, fat: 15 },
     allergens: ["gluten", "eggs"],
-    prepTime: 10,
-    difficulty: "easy"
   },
   {
     id: "b003",
@@ -55,8 +51,6 @@ const breakfastMeals = [
     ingredients: ["oats", "yogurt", "apple", "almonds", "milk"],
     nutrition: { calories: 290, protein: 10, carbs: 40, fat: 9 },
     allergens: ["dairy", "gluten", "nuts"],
-    prepTime: 8,
-    difficulty: "easy"
   },
 
   // VEG - Mediterranean
@@ -70,8 +64,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "tomatoes", "bell peppers", "feta", "olive oil", "cumin"],
     nutrition: { calories: 270, protein: 12, carbs: 18, fat: 16 },
     allergens: ["eggs", "dairy"],
-    prepTime: 20,
-    difficulty: "medium"
   },
   {
     id: "b005",
@@ -83,8 +75,6 @@ const breakfastMeals = [
     ingredients: ["mozzarella", "tomato", "basil", "olive oil", "bread"],
     nutrition: { calories: 300, protein: 11, carbs: 28, fat: 15 },
     allergens: ["dairy", "gluten"],
-    prepTime: 8,
-    difficulty: "easy"
   },
 
   // VEG - American
@@ -98,8 +88,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "spinach", "mushrooms", "cheddar", "onion"],
     nutrition: { calories: 290, protein: 14, carbs: 15, fat: 17 },
     allergens: ["eggs", "dairy"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "b007",
@@ -111,8 +99,6 @@ const breakfastMeals = [
     ingredients: ["whole wheat flour", "eggs", "milk", "blueberries", "maple syrup"],
     nutrition: { calories: 340, protein: 9, carbs: 52, fat: 10 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 20,
-    difficulty: "easy"
   },
 
   // VEG - Asian (Indian)
@@ -126,8 +112,6 @@ const breakfastMeals = [
     ingredients: ["poha", "onion", "potato", "peanuts", "turmeric", "mustard seeds"],
     nutrition: { calories: 250, protein: 8, carbs: 40, fat: 7 },
     allergens: ["nuts"],
-    prepTime: 15,
-    difficulty: "medium"
   },
   {
     id: "b009",
@@ -139,8 +123,6 @@ const breakfastMeals = [
     ingredients: ["rice flour", "urad dal", "potato", "onion", "ginger", "green chili"],
     nutrition: { calories: 300, protein: 10, carbs: 45, fat: 10 },
     allergens: ["none"],
-    prepTime: 30,
-    difficulty: "hard"
   },
   {
     id: "b010",
@@ -152,8 +134,6 @@ const breakfastMeals = [
     ingredients: ["semolina", "carrot", "peas", "onion", "cumin", "mustard seeds"],
     nutrition: { calories: 270, protein: 8, carbs: 42, fat: 8 },
     allergens: ["gluten"],
-    prepTime: 20,
-    difficulty: "medium"
   },
 
   // VEG - Latin American
@@ -167,8 +147,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "tortillas", "black beans", "avocado", "salsa", "cheese"],
     nutrition: { calories: 330, protein: 12, carbs: 38, fat: 14 },
     allergens: ["eggs", "dairy"],
-    prepTime: 15,
-    difficulty: "medium"
   },
   {
     id: "b012",
@@ -180,8 +158,6 @@ const breakfastMeals = [
     ingredients: ["tortilla chips", "green salsa", "cheese", "sour cream", "egg"],
     nutrition: { calories: 310, protein: 10, carbs: 36, fat: 14 },
     allergens: ["gluten", "dairy", "eggs"],
-    prepTime: 15,
-    difficulty: "easy"
   },
 
   // VEG - Middle Eastern
@@ -195,8 +171,6 @@ const breakfastMeals = [
     ingredients: ["labneh", "olive oil", "pita", "tomato", "cucumber", "herbs"],
     nutrition: { calories: 270, protein: 11, carbs: 30, fat: 12 },
     allergens: ["dairy", "gluten"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "b014",
@@ -208,8 +182,6 @@ const breakfastMeals = [
     ingredients: ["flatbread", "zaatar", "olive oil", "sesame seeds"],
     nutrition: { calories: 290, protein: 9, carbs: 38, fat: 11 },
     allergens: ["gluten", "sesame"],
-    prepTime: 10,
-    difficulty: "medium"
   },
 
   // NON-VEG - European
@@ -223,8 +195,6 @@ const breakfastMeals = [
     ingredients: ["bacon", "eggs", "bread", "butter"],
     nutrition: { calories: 380, protein: 20, carbs: 28, fat: 18 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 15,
-    difficulty: "easy"
   },
   {
     id: "b016",
@@ -236,8 +206,6 @@ const breakfastMeals = [
     ingredients: ["bagel", "cream cheese", "salmon", "capers", "red onion"],
     nutrition: { calories: 380, protein: 18, carbs: 38, fat: 14 },
     allergens: ["gluten", "dairy", "fish"],
-    prepTime: 8,
-    difficulty: "easy"
   },
   {
     id: "b017",
@@ -249,8 +217,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "ham", "cheddar", "bell pepper", "butter"],
     nutrition: { calories: 380, protein: 22, carbs: 12, fat: 26 },
     allergens: ["eggs", "dairy"],
-    prepTime: 12,
-    difficulty: "medium"
   },
 
   // NON-VEG - American
@@ -264,8 +230,6 @@ const breakfastMeals = [
     ingredients: ["turkey sausage", "whole wheat flour", "eggs", "milk", "maple syrup"],
     nutrition: { calories: 420, protein: 18, carbs: 48, fat: 16 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 20,
-    difficulty: "easy"
   },
   {
     id: "b019",
@@ -277,8 +241,6 @@ const breakfastMeals = [
     ingredients: ["beef steak", "eggs", "potatoes", "butter", "salt", "pepper"],
     nutrition: { calories: 480, protein: 28, carbs: 32, fat: 24 },
     allergens: ["eggs", "dairy"],
-    prepTime: 25,
-    difficulty: "medium"
   },
 
   // NON-VEG - Asian
@@ -292,8 +254,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "onion", "tomato", "bread", "turmeric", "cumin"],
     nutrition: { calories: 320, protein: 20, carbs: 25, fat: 14 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 12,
-    difficulty: "easy"
   },
   {
     id: "b021",
@@ -305,8 +265,6 @@ const breakfastMeals = [
     ingredients: ["chicken mince", "flour", "onion", "ginger", "green chili"],
     nutrition: { calories: 380, protein: 22, carbs: 35, fat: 15 },
     allergens: ["gluten"],
-    prepTime: 30,
-    difficulty: "hard"
   },
 
   // NON-VEG - Latin
@@ -320,8 +278,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "chorizo", "tortillas", "onion", "salsa"],
     nutrition: { calories: 400, protein: 20, carbs: 30, fat: 20 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 15,
-    difficulty: "medium"
   },
   {
     id: "b023",
@@ -333,8 +289,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "sausage", "potatoes", "cheese", "flour tortilla"],
     nutrition: { calories: 450, protein: 22, carbs: 42, fat: 18 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 20,
-    difficulty: "medium"
   },
 
   // NON-VEG - Mediterranean
@@ -348,8 +302,6 @@ const breakfastMeals = [
     ingredients: ["eggs", "tomatoes", "feta", "olives", "olive oil"],
     nutrition: { calories: 340, protein: 16, carbs: 18, fat: 20 },
     allergens: ["eggs", "dairy"],
-    prepTime: 20,
-    difficulty: "medium"
   }
 ];
 
@@ -369,8 +321,6 @@ const lunchMeals = [
     ingredients: ["tomato", "cucumber", "olives", "feta", "onion", "olive oil"],
     nutrition: { calories: 280, protein: 10, carbs: 18, fat: 18 },
     allergens: ["dairy"],
-    prepTime: 10,
-    difficulty: "easy"
   },
   {
     id: "l002",
@@ -382,8 +332,6 @@ const lunchMeals = [
     ingredients: ["whole wheat pasta", "eggplant", "zucchini", "tomato", "olive oil"],
     nutrition: { calories: 380, protein: 13, carbs: 58, fat: 10 },
     allergens: ["gluten"],
-    prepTime: 30,
-    difficulty: "medium"
   },
 
   // VEG - European
@@ -397,8 +345,6 @@ const lunchMeals = [
     ingredients: ["eggplant", "zucchini", "tomato", "bell pepper", "herbs", "bread"],
     nutrition: { calories: 310, protein: 8, carbs: 42, fat: 11 },
     allergens: ["gluten"],
-    prepTime: 40,
-    difficulty: "medium"
   },
   {
     id: "l004",
@@ -410,8 +356,6 @@ const lunchMeals = [
     ingredients: ["rice", "saffron", "bell pepper", "artichoke", "peas", "onion"],
     nutrition: { calories: 360, protein: 10, carbs: 55, fat: 10 },
     allergens: ["none"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "l005",
@@ -423,8 +367,6 @@ const lunchMeals = [
     ingredients: ["vegetables", "beans", "pasta", "tomato", "vegetable broth"],
     nutrition: { calories: 280, protein: 12, carbs: 48, fat: 5 },
     allergens: ["gluten"],
-    prepTime: 35,
-    difficulty: "easy"
   },
 
   // VEG - American
@@ -438,8 +380,6 @@ const lunchMeals = [
     ingredients: ["veggie patty", "bun", "lettuce", "tomato", "sweet potato"],
     nutrition: { calories: 400, protein: 14, carbs: 52, fat: 16 },
     allergens: ["gluten"],
-    prepTime: 20,
-    difficulty: "easy"
   },
   {
     id: "l007",
@@ -451,8 +391,6 @@ const lunchMeals = [
     ingredients: ["quinoa", "roasted vegetables", "chickpeas", "tahini", "lemon"],
     nutrition: { calories: 420, protein: 16, carbs: 54, fat: 14 },
     allergens: ["sesame"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "l008",
@@ -464,8 +402,6 @@ const lunchMeals = [
     ingredients: ["mixed greens", "avocado", "chickpeas", "cucumber", "olive oil"],
     nutrition: { calories: 340, protein: 13, carbs: 38, fat: 15 },
     allergens: ["none"],
-    prepTime: 15,
-    difficulty: "easy"
   },
 
   // VEG - Asian
@@ -479,8 +415,6 @@ const lunchMeals = [
     ingredients: ["rice noodles", "bell pepper", "broccoli", "peanut sauce", "lime"],
     nutrition: { calories: 380, protein: 12, carbs: 50, fat: 14 },
     allergens: ["nuts", "fish"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "l010",
@@ -492,8 +426,6 @@ const lunchMeals = [
     ingredients: ["egg noodles", "mixed vegetables", "sesame oil", "soy sauce"],
     nutrition: { calories: 350, protein: 11, carbs: 48, fat: 11 },
     allergens: ["gluten", "eggs"],
-    prepTime: 20,
-    difficulty: "medium"
   },
   {
     id: "l011",
@@ -505,8 +437,6 @@ const lunchMeals = [
     ingredients: ["kidney beans", "rice", "onion", "tomato", "cumin", "coriander"],
     nutrition: { calories: 380, protein: 15, carbs: 60, fat: 8 },
     allergens: ["none"],
-    prepTime: 30,
-    difficulty: "medium"
   },
   {
     id: "l012",
@@ -518,8 +448,6 @@ const lunchMeals = [
     ingredients: ["chickpeas", "flour", "yogurt", "onion", "tomato", "ginger"],
     nutrition: { calories: 450, protein: 18, carbs: 65, fat: 15 },
     allergens: ["gluten", "dairy"],
-    prepTime: 45,
-    difficulty: "hard"
   },
   {
     id: "l013",
@@ -531,8 +459,6 @@ const lunchMeals = [
     ingredients: ["paneer", "tomato", "cream", "roti", "onion", "ginger"],
     nutrition: { calories: 420, protein: 20, carbs: 40, fat: 18 },
     allergens: ["gluten", "dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
 
   // VEG - Middle Eastern
@@ -546,8 +472,6 @@ const lunchMeals = [
     ingredients: ["falafel", "pita", "tahini", "tomato", "cucumber", "lettuce"],
     nutrition: { calories: 380, protein: 14, carbs: 48, fat: 15 },
     allergens: ["gluten", "sesame"],
-    prepTime: 20,
-    difficulty: "medium"
   },
   {
     id: "l015",
@@ -559,8 +483,6 @@ const lunchMeals = [
     ingredients: ["bulgur", "parsley", "mint", "tomato", "lemon", "olive oil"],
     nutrition: { calories: 300, protein: 10, carbs: 42, fat: 10 },
     allergens: ["gluten"],
-    prepTime: 15,
-    difficulty: "easy"
   },
 
   // VEG - Latin
@@ -574,8 +496,6 @@ const lunchMeals = [
     ingredients: ["rice", "black beans", "corn", "salsa", "cheese", "avocado"],
     nutrition: { calories: 420, protein: 14, carbs: 55, fat: 14 },
     allergens: ["dairy"],
-    prepTime: 15,
-    difficulty: "easy"
   },
   {
     id: "l017",
@@ -587,8 +507,6 @@ const lunchMeals = [
     ingredients: ["tortillas", "roasted vegetables", "green salsa", "cheese", "sour cream"],
     nutrition: { calories: 380, protein: 13, carbs: 48, fat: 15 },
     allergens: ["gluten", "dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
 
   // NON-VEG - Mediterranean
@@ -602,8 +520,6 @@ const lunchMeals = [
     ingredients: ["chicken breast", "broccoli", "carrot", "potato", "olive oil"],
     nutrition: { calories: 420, protein: 32, carbs: 42, fat: 10 },
     allergens: ["none"],
-    prepTime: 30,
-    difficulty: "easy"
   },
   {
     id: "l019",
@@ -615,8 +531,6 @@ const lunchMeals = [
     ingredients: ["salmon", "asparagus", "lemon", "butter", "garlic"],
     nutrition: { calories: 480, protein: 36, carbs: 32, fat: 20 },
     allergens: ["fish", "dairy"],
-    prepTime: 25,
-    difficulty: "medium"
   },
 
   // NON-VEG - American
@@ -630,8 +544,6 @@ const lunchMeals = [
     ingredients: ["ground chicken", "bun", "lettuce", "tomato", "mayo"],
     nutrition: { calories: 420, protein: 32, carbs: 38, fat: 14 },
     allergens: ["gluten", "eggs"],
-    prepTime: 20,
-    difficulty: "easy"
   },
   {
     id: "l021",
@@ -643,8 +555,6 @@ const lunchMeals = [
     ingredients: ["ground turkey", "pasta", "tomato sauce", "onion", "garlic"],
     nutrition: { calories: 420, protein: 32, carbs: 48, fat: 10 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "l022",
@@ -656,8 +566,6 @@ const lunchMeals = [
     ingredients: ["chicken breast", "romaine", "parmesan", "croutons", "caesar dressing"],
     nutrition: { calories: 380, protein: 32, carbs: 28, fat: 14 },
     allergens: ["dairy", "gluten", "eggs"],
-    prepTime: 20,
-    difficulty: "easy"
   },
 
   // NON-VEG - Asian
@@ -671,8 +579,6 @@ const lunchMeals = [
     ingredients: ["chicken", "rice", "saffron", "onion", "ginger", "yogurt"],
     nutrition: { calories: 450, protein: 25, carbs: 50, fat: 15 },
     allergens: ["dairy"],
-    prepTime: 45,
-    difficulty: "hard"
   },
   {
     id: "l024",
@@ -684,8 +590,6 @@ const lunchMeals = [
     ingredients: ["fish", "rice", "coconut milk", "tomato", "turmeric", "cumin"],
     nutrition: { calories: 400, protein: 28, carbs: 45, fat: 12 },
     allergens: ["fish", "dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "l025",
@@ -697,8 +601,6 @@ const lunchMeals = [
     ingredients: ["rice noodles", "chicken", "peanuts", "lime", "egg", "tamarind"],
     nutrition: { calories: 450, protein: 28, carbs: 48, fat: 14 },
     allergens: ["nuts", "eggs", "fish"],
-    prepTime: 25,
-    difficulty: "medium"
   }
 ];
 
@@ -718,8 +620,6 @@ const dinnerMeals = [
     ingredients: ["whole wheat pasta", "broccoli", "zucchini", "bell pepper", "garlic", "olive oil"],
     nutrition: { calories: 380, protein: 13, carbs: 55, fat: 11 },
     allergens: ["gluten"],
-    prepTime: 30,
-    difficulty: "easy"
   },
   {
     id: "d002",
@@ -731,8 +631,6 @@ const dinnerMeals = [
     ingredients: ["pasta sheets", "spinach", "ricotta", "tomato sauce", "mozzarella"],
     nutrition: { calories: 420, protein: 18, carbs: 48, fat: 15 },
     allergens: ["gluten", "dairy", "eggs"],
-    prepTime: 50,
-    difficulty: "medium"
   },
   {
     id: "d003",
@@ -744,8 +642,6 @@ const dinnerMeals = [
     ingredients: ["potatoes", "mushrooms", "zucchini", "cheese", "cream"],
     nutrition: { calories: 360, protein: 14, carbs: 42, fat: 14 },
     allergens: ["dairy", "gluten"],
-    prepTime: 40,
-    difficulty: "medium"
   },
 
   // VEG - Mediterranean
@@ -759,8 +655,6 @@ const dinnerMeals = [
     ingredients: ["paneer", "spinach", "cream", "roti", "onion", "ginger"],
     nutrition: { calories: 350, protein: 18, carbs: 35, fat: 15 },
     allergens: ["gluten", "dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "d005",
@@ -772,8 +666,6 @@ const dinnerMeals = [
     ingredients: ["rice", "mixed vegetables", "saffron", "onion", "yogurt"],
     nutrition: { calories: 380, protein: 12, carbs: 55, fat: 12 },
     allergens: ["dairy"],
-    prepTime: 40,
-    difficulty: "medium"
   },
   {
     id: "d006",
@@ -785,8 +677,6 @@ const dinnerMeals = [
     ingredients: ["lentils", "rice", "onion", "tomato", "cumin", "mustard seeds"],
     nutrition: { calories: 320, protein: 14, carbs: 50, fat: 6 },
     allergens: ["none"],
-    prepTime: 35,
-    difficulty: "medium"
   },
 
   // VEG - American
@@ -800,8 +690,6 @@ const dinnerMeals = [
     ingredients: ["bell peppers", "quinoa", "black beans", "corn", "cheese"],
     nutrition: { calories: 340, protein: 14, carbs: 46, fat: 12 },
     allergens: ["dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "d008",
@@ -813,8 +701,6 @@ const dinnerMeals = [
     ingredients: ["beans", "tomato", "bell pepper", "onion", "chili powder"],
     nutrition: { calories: 310, protein: 15, carbs: 45, fat: 8 },
     allergens: ["none"],
-    prepTime: 35,
-    difficulty: "easy"
   },
 
   // VEG - Asian
@@ -828,8 +714,6 @@ const dinnerMeals = [
     ingredients: ["tofu", "mixed vegetables", "ginger", "garlic", "soy sauce", "rice"],
     nutrition: { calories: 340, protein: 16, carbs: 44, fat: 10 },
     allergens: ["gluten", "soy"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "d010",
@@ -841,8 +725,6 @@ const dinnerMeals = [
     ingredients: ["mixed vegetables", "coconut milk", "rice", "onion", "turmeric"],
     nutrition: { calories: 360, protein: 10, carbs: 48, fat: 14 },
     allergens: ["dairy"],
-    prepTime: 30,
-    difficulty: "medium"
   },
 
   // VEG - Latin
@@ -856,8 +738,6 @@ const dinnerMeals = [
     ingredients: ["poblano peppers", "cheese", "tomato sauce", "egg", "flour"],
     nutrition: { calories: 340, protein: 12, carbs: 38, fat: 15 },
     allergens: ["gluten", "dairy", "eggs"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "d012",
@@ -869,8 +749,6 @@ const dinnerMeals = [
     ingredients: ["corn tortillas", "squash", "black beans", "salsa", "cheese"],
     nutrition: { calories: 320, protein: 12, carbs: 48, fat: 9 },
     allergens: ["dairy"],
-    prepTime: 25,
-    difficulty: "easy"
   },
 
   // NON-VEG - European
@@ -884,8 +762,6 @@ const dinnerMeals = [
     ingredients: ["beef steak", "garlic", "butter", "broccoli", "potato"],
     nutrition: { calories: 520, protein: 42, carbs: 32, fat: 24 },
     allergens: ["dairy"],
-    prepTime: 30,
-    difficulty: "medium"
   },
   {
     id: "d014",
@@ -897,8 +773,6 @@ const dinnerMeals = [
     ingredients: ["chicken thighs", "rosemary", "thyme", "root vegetables", "olive oil"],
     nutrition: { calories: 480, protein: 36, carbs: 32, fat: 20 },
     allergens: ["none"],
-    prepTime: 40,
-    difficulty: "easy"
   },
   {
     id: "d015",
@@ -910,8 +784,6 @@ const dinnerMeals = [
     ingredients: ["cod", "lemon", "capers", "asparagus", "butter"],
     nutrition: { calories: 360, protein: 38, carbs: 28, fat: 10 },
     allergens: ["fish", "dairy"],
-    prepTime: 25,
-    difficulty: "easy"
   },
 
   // NON-VEG - American
@@ -925,8 +797,6 @@ const dinnerMeals = [
     ingredients: ["ground beef", "corn tortillas", "lettuce", "tomato", "salsa"],
     nutrition: { calories: 420, protein: 32, carbs: 40, fat: 14 },
     allergens: ["none"],
-    prepTime: 20,
-    difficulty: "easy"
   },
   {
     id: "d017",
@@ -938,8 +808,6 @@ const dinnerMeals = [
     ingredients: ["chicken breast", "breadcrumbs", "tomato sauce", "mozzarella", "pasta"],
     nutrition: { calories: 480, protein: 38, carbs: 42, fat: 16 },
     allergens: ["gluten", "dairy", "eggs"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "d018",
@@ -951,8 +819,6 @@ const dinnerMeals = [
     ingredients: ["ground turkey", "breadcrumbs", "vegetables", "tomato sauce"],
     nutrition: { calories: 400, protein: 36, carbs: 32, fat: 14 },
     allergens: ["gluten", "eggs", "dairy"],
-    prepTime: 45,
-    difficulty: "medium"
   },
 
   // NON-VEG - Asian
@@ -966,8 +832,6 @@ const dinnerMeals = [
     ingredients: ["chicken", "yogurt", "spices", "mint", "lime"],
     nutrition: { calories: 320, protein: 35, carbs: 8, fat: 15 },
     allergens: ["dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   },
   {
     id: "d020",
@@ -979,8 +843,6 @@ const dinnerMeals = [
     ingredients: ["chicken", "yogurt", "tomato sauce", "cream", "rice", "ginger"],
     nutrition: { calories: 420, protein: 28, carbs: 40, fat: 16 },
     allergens: ["dairy"],
-    prepTime: 40,
-    difficulty: "medium"
   },
   {
     id: "d021",
@@ -992,8 +854,6 @@ const dinnerMeals = [
     ingredients: ["beef", "soy sauce", "scallions", "ginger", "rice"],
     nutrition: { calories: 450, protein: 32, carbs: 48, fat: 14 },
     allergens: ["gluten", "soy"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "d022",
@@ -1005,8 +865,6 @@ const dinnerMeals = [
     ingredients: ["shrimp", "egg noodles", "mixed vegetables", "sesame oil", "soy sauce"],
     nutrition: { calories: 380, protein: 28, carbs: 42, fat: 12 },
     allergens: ["shellfish", "gluten", "eggs"],
-    prepTime: 20,
-    difficulty: "medium"
   },
 
   // NON-VEG - Mediterranean
@@ -1020,8 +878,6 @@ const dinnerMeals = [
     ingredients: ["salmon", "dill", "fennel", "lemon", "olive oil"],
     nutrition: { calories: 420, protein: 38, carbs: 24, fat: 18 },
     allergens: ["fish"],
-    prepTime: 25,
-    difficulty: "medium"
   },
   {
     id: "d024",
@@ -1033,8 +889,6 @@ const dinnerMeals = [
     ingredients: ["chicken breast", "spinach", "feta", "cream", "garlic"],
     nutrition: { calories: 400, protein: 36, carbs: 18, fat: 16 },
     allergens: ["dairy"],
-    prepTime: 35,
-    difficulty: "medium"
   }
 ];
 
@@ -1054,8 +908,6 @@ const snackMeals = [
     ingredients: ["hummus", "carrots", "celery", "bell pepper"],
     nutrition: { calories: 180, protein: 7, carbs: 20, fat: 8 },
     allergens: ["sesame"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s002",
@@ -1067,8 +919,6 @@ const snackMeals = [
     ingredients: ["almonds", "cashews", "pumpkin seeds", "dried cranberries"],
     nutrition: { calories: 200, protein: 6, carbs: 16, fat: 14 },
     allergens: ["tree nuts"],
-    prepTime: 1,
-    difficulty: "easy"
   },
   {
     id: "s003",
@@ -1080,8 +930,6 @@ const snackMeals = [
     ingredients: ["apple", "almond butter"],
     nutrition: { calories: 200, protein: 6, carbs: 24, fat: 9 },
     allergens: ["tree nuts"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s004",
@@ -1093,8 +941,6 @@ const snackMeals = [
     ingredients: ["greek yogurt", "honey"],
     nutrition: { calories: 160, protein: 12, carbs: 18, fat: 3 },
     allergens: ["dairy"],
-    prepTime: 2,
-    difficulty: "easy"
   },
   {
     id: "s005",
@@ -1106,8 +952,6 @@ const snackMeals = [
     ingredients: ["whole grain crackers", "cheddar cheese"],
     nutrition: { calories: 210, protein: 9, carbs: 22, fat: 10 },
     allergens: ["gluten", "dairy"],
-    prepTime: 3,
-    difficulty: "easy"
   },
   {
     id: "s006",
@@ -1119,8 +963,6 @@ const snackMeals = [
     ingredients: ["chickpeas", "onion", "tomato", "lemon", "cumin"],
     nutrition: { calories: 180, protein: 9, carbs: 25, fat: 5 },
     allergens: ["none"],
-    prepTime: 10,
-    difficulty: "easy"
   },
   {
     id: "s007",
@@ -1132,8 +974,6 @@ const snackMeals = [
     ingredients: ["chickpeas", "olive oil", "salt", "spices"],
     nutrition: { calories: 160, protein: 8, carbs: 18, fat: 6 },
     allergens: ["none"],
-    prepTime: 30,
-    difficulty: "medium"
   },
   {
     id: "s008",
@@ -1145,8 +985,6 @@ const snackMeals = [
     ingredients: ["cheese", "grapes", "almonds"],
     nutrition: { calories: 240, protein: 10, carbs: 22, fat: 12 },
     allergens: ["dairy", "tree nuts"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s009",
@@ -1158,8 +996,6 @@ const snackMeals = [
     ingredients: ["oats", "nuts", "protein powder", "honey"],
     nutrition: { calories: 220, protein: 10, carbs: 26, fat: 8 },
     allergens: ["tree nuts", "dairy"],
-    prepTime: 1,
-    difficulty: "easy"
   },
   {
     id: "s010",
@@ -1171,8 +1007,6 @@ const snackMeals = [
     ingredients: ["yogurt", "berries", "granola", "milk"],
     nutrition: { calories: 280, protein: 10, carbs: 42, fat: 8 },
     allergens: ["dairy", "gluten"],
-    prepTime: 8,
-    difficulty: "easy"
   },
 
   // NON-VEG
@@ -1186,8 +1020,6 @@ const snackMeals = [
     ingredients: ["eggs", "salt", "pepper"],
     nutrition: { calories: 140, protein: 13, carbs: 1, fat: 10 },
     allergens: ["eggs"],
-    prepTime: 15,
-    difficulty: "easy"
   },
   {
     id: "s012",
@@ -1199,8 +1031,6 @@ const snackMeals = [
     ingredients: ["turkey slices", "cheese"],
     nutrition: { calories: 160, protein: 18, carbs: 2, fat: 9 },
     allergens: ["dairy"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s013",
@@ -1212,8 +1042,6 @@ const snackMeals = [
     ingredients: ["canned tuna", "mayo", "crackers"],
     nutrition: { calories: 200, protein: 16, carbs: 16, fat: 8 },
     allergens: ["fish", "gluten", "dairy"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s014",
@@ -1225,8 +1053,6 @@ const snackMeals = [
     ingredients: ["whey protein", "almond milk", "banana"],
     nutrition: { calories: 180, protein: 20, carbs: 18, fat: 3 },
     allergens: ["dairy"],
-    prepTime: 3,
-    difficulty: "easy"
   },
   {
     id: "s015",
@@ -1238,8 +1064,6 @@ const snackMeals = [
     ingredients: ["beef jerky", "almonds"],
     nutrition: { calories: 220, protein: 16, carbs: 8, fat: 14 },
     allergens: ["tree nuts"],
-    prepTime: 1,
-    difficulty: "easy"
   },
   {
     id: "s016",
@@ -1251,8 +1075,6 @@ const snackMeals = [
     ingredients: ["cooked chicken", "mayo", "celery", "tomato"],
     nutrition: { calories: 190, protein: 22, carbs: 6, fat: 9 },
     allergens: ["eggs"],
-    prepTime: 8,
-    difficulty: "easy"
   },
   {
     id: "s017",
@@ -1264,8 +1086,6 @@ const snackMeals = [
     ingredients: ["shrimp", "cocktail sauce", "lemon"],
     nutrition: { calories: 100, protein: 19, carbs: 4, fat: 1 },
     allergens: ["shellfish"],
-    prepTime: 5,
-    difficulty: "easy"
   },
   {
     id: "s018",
@@ -1277,8 +1097,6 @@ const snackMeals = [
     ingredients: ["canned salmon", "whole grain crackers"],
     nutrition: { calories: 180, protein: 18, carbs: 16, fat: 6 },
     allergens: ["fish", "gluten"],
-    prepTime: 3,
-    difficulty: "easy"
   }
 ];
 
@@ -1333,7 +1151,9 @@ function filterByAllergens(meals, allergens) {
   if (!allergens || allergens.length === 0) return meals;
   
   return meals.filter(meal => {
-    const mealAllergens = meal.allergens.toLowerCase().split(',').map(a => a.trim());
+    const mealAllergens = Array.isArray(meal.allergens) 
+      ? meal.allergens.map(a => a.toLowerCase())
+      : meal.allergens.toLowerCase().split(',').map(a => a.trim());
     return !allergens.some(allergen => 
       mealAllergens.includes(allergen.toLowerCase())
     );
@@ -1411,7 +1231,7 @@ function getMealStats() {
 // EXPORTS
 // ============================================================================
 
-module.exports = {
+export default {
   // Meal arrays
   breakfastMeals,
   lunchMeals,
