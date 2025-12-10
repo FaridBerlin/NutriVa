@@ -81,11 +81,10 @@ function calculateTDEE(bmr, activityLevel) {
  * Adjust calories based on user goal
  *
  * Goals:
- * - maintenance: no change
- * - weightLoss: -500 calories/day (0.5 kg/week loss)
- * - weightGain: +500 calories/day (0.5 kg/week gain)
- * - aggressive_loss: -750 calories/day (1 kg/week loss)
- * - aggressive_gain: +750 calories/day (1 kg/week gain)
+ * - maintain_weight: no change
+ * - lose_weight: -500 calories/day (0.5 kg/week loss)
+ * - gain_weight: +500 calories/day (0.5 kg/week gain)
+ * - build_muscle: +300 calories/day (muscle building surplus)
  *
  * @param {number} tdee - Total daily energy expenditure
  * @param {string} goal - User's goal
@@ -93,11 +92,10 @@ function calculateTDEE(bmr, activityLevel) {
  */
 function adjustCaloriesForGoal(tdee, goal) {
   const adjustments = {
-    maintenance: 0,
-    weightloss: -500,
-    weightgain: 500,
-    aggressive_loss: -750,
-    aggressive_gain: 750,
+    maintain_weight: 0,
+    lose_weight: -500,
+    gain_weight: 500,
+    build_muscle: 300,
   }
 
   const adjustment = adjustments[goal.toLowerCase()]
@@ -115,9 +113,10 @@ function adjustCaloriesForGoal(tdee, goal) {
  * Calculate macro targets based on goal
  *
  * Macro splits by goal:
- * - weightLoss: 40% protein, 40% carbs, 20% fat
- * - weightGain: 30% protein, 50% carbs, 20% fat
- * - maintenance: 30% protein, 45% carbs, 25% fat
+ * - lose_weight: 40% protein, 40% carbs, 20% fat
+ * - gain_weight: 30% protein, 50% carbs, 20% fat
+ * - build_muscle: 35% protein, 45% carbs, 20% fat
+ * - maintain_weight: 30% protein, 45% carbs, 25% fat
  *
  * @param {number} dailyCalories - Daily calorie target
  * @param {string} goal - User's goal
@@ -127,17 +126,19 @@ function calculateMacroTargets(dailyCalories, goal) {
   let macroSplit
 
   switch (goal.toLowerCase()) {
-    case 'weightLoss':
-    case 'aggressive_loss':
+    case 'lose_weight':
       // High protein for satiety and muscle preservation
       macroSplit = { protein: 0.4, carbs: 0.4, fat: 0.2 }
       break
-    case 'weightGain':
-    case 'aggressive_gain':
+    case 'gain_weight':
       // Higher carbs for energy and muscle building
       macroSplit = { protein: 0.3, carbs: 0.5, fat: 0.2 }
       break
-    case 'maintenance':
+    case 'build_muscle':
+      // Very high protein for muscle growth
+      macroSplit = { protein: 0.35, carbs: 0.45, fat: 0.2 }
+      break
+    case 'maintain_weight':
     default:
       // Balanced split
       macroSplit = { protein: 0.3, carbs: 0.45, fat: 0.25 }
@@ -444,7 +445,7 @@ async function generateMealPlan(params) {
     age, // years
     gender, // 'male' or 'female'
     activityLevel = 'moderate', // sedentary, light, moderate, active, veryActive
-    goal = 'maintenance', // maintenance, weightLoss, weightGain, etc
+    goal = 'maintain_weight', // maintain_weight, lose_weight, gain_weight, build_muscle
 
     // Meal preferences
     dietType = 'all', // veg, non-veg, all
