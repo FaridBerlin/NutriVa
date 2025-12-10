@@ -1,4 +1,4 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, Types } from 'mongoose'
 
 const mealPlanSchema = new Schema(
   {
@@ -9,13 +9,13 @@ const mealPlanSchema = new Schema(
       enum: [1, 3, 7, 14, 30],
       default: 3,
     },
-    mealsPerDay: { type: Number, enum: ['1', '2', '3', '4'], default: '3' },
+    mealsPerDay: { type: Number, enum: [1, 2, 3, 4], default: 3 },
     dietType: {
       type: String,
       enum: ['veg', 'non-veg', 'vegan'],
       default: 'non-veg',
     },
-    dietaryRestrictions: {
+    allergens: {
       type: [String],
       enum: ['dairy-free', 'gluten-free', 'nut-free', 'soy-free', 'none'],
       default: ['none'],
