@@ -1,152 +1,161 @@
-import mealsDB from "../data/mealDatabase.js";
+import mealsDB from '../data/mealDatabase.js'
+import MealRotationService from '../services/mealRotationService.js'
 
-// import MealRotationService from "../services/mealRotationService.js";
-// import mealsDB from "../data/mealDatabase.js";
-
-// const rotation = new MealRotationService(mealsDB);
+const rotation = new MealRotationService(mealsDB)
 
 export function selectMealsForDay(params) {
-  const {
-    dailyCalories,
-    dietType,
-    allergens = [],
-    excludeMealIds = [],
-    cuisinePreference,
-  } = params;
+  try {
+    const {
+      dailyCalories,
+      mealsPerDay = 4,
+      dietType,
+      allergens = [],
+      excludeMealIds = [],
+      cuisinePreference,
+    } = params
 
-  const calorieDistribution = {
-    breakfast: dailyCalories * 0.25,
-    lunch: dailyCalories * 0.35,
-    dinner: dailyCalories * 0.35,
-    snack: dailyCalories * 0.05,
-  };
+    // 1. VALIDATION
+    const minCaloriesNeeded = 150 * mealsPerDay
 
-  function filterMeals(type) {
-    return mealsDB[type]
-      .filter((meal) =>
-        !excludeMealIds.includes(meal.id)
+    if (!dailyCalories || dailyCalories < minCaloriesNeeded) {
+      console.warn(
+        `Invalid dailyCalories: ${dailyCalories}. Must be at least ${minCaloriesNeeded} for ${mealsPerDay} meals.`,
       )
-      .filter((meal) =>
-        dietType === "veg" ? meal.isVeg :
-        dietType === "vegan" ? meal.isVegan :
-        true
-      )
-      .filter((meal) =>
-        allergens.length === 0 ||
-        !meal.allergens.some(a => allergens.includes(a))
-      )
-      .filter((meal) =>
-        cuisinePreference ? meal.cuisine === cuisinePreference : true
-      );
-  }
+      return safeReturn()
+    }
 
-  function pickMeal(type, targetCalories) {
-    const tolerance = 50;
-    const min = targetCalories - tolerance;
-    const max = targetCalories + tolerance;
+    if (![1, 2, 3, 4].includes(mealsPerDay)) {
+      console.warn(`invalid mealsPerDay: ${mealsPerDay}`)
+      return safeReturn()
+    }
 
-    const availableMeals = filterMeals(type)
-      .filter(m => m.calories >= min && m.calories <= max);
+    // 2. WHICH MEALS TO PICK
+    const mealPlanMap = {
+      1: ['lunch'],
+      2: ['lunch', 'dinner'],
+      3: ['breakfast', 'lunch', 'dinner'],
+      4: ['breakfast', 'lunch', 'dinner', 'snack'],
+    }
 
-    if (availableMeals.length === 0) return null;
+    const mealOrder = mealPlanMap[mealsPerDay]
 
-    // random choice to avoid repetition
-    return availableMeals[Math.floor(Math.random() * availableMeals.length)];
-  }
+    // 3. DYNAMIC CALORIE SPLIT
+    const defaultSplit = {
+      breakfast: 0.25,
+      lunch: 0.35,
+      dinner: 0.35,
+      snack: 0.05,
+    }
 
+    const selectedMealsSplit = mealOrder.reduce((acc, m) => {
+      acc[m] = defaultSplit[m]
+      return acc
+    }, {})
 
-//   function pickMeal(type, targetCalories) {
-//   const tolerance = 50;
-//   const min = targetCalories - tolerance;
-//   const max = targetCalories + tolerance;
+    // normalize splits for selected meals
+    const totalWeight = Object.values(selectedMealsSplit).reduce(
+      (a, b) => a + b,
+      0,
+    )
 
-//   // Meals matching user rules
-//   const filtered = filterMeals(type).filter(
-//     (m) => m.calories >= min && m.calories <= max
-//   );
+    const calorieDistribution = {}
+    for (const m of mealOrder) {
+      calorieDistribution[m] =
+        dailyCalories * (selectedMealsSplit[m] / totalWeight)
+    }
 
-//   // If filtered meals exist → random choice (variety)
-//   if (filtered.length > 0) {
-//     // Shuffle
-//     const shuffled = filtered.sort(() => Math.random() - 0.5);
+    // 4. MEAL PICKER FUNCTION
+    function pickMeal(type, targetCalories) {
+      try {
+        if (!mealsDB[type] || !Array.isArray(mealsDB[type])) {
+          console.error(`Invalid meal type: ${type}`)
+          return null
+        }
 
-//     const meal = shuffled[0];
-//     rotation.markUsed(type, meal.id);
+        const tolerance = 50
+        const min = targetCalories - tolerance
+        const max = targetCalories + tolerance
 
-//     return meal;
-//   }
+        // Unused meals (rotation)
+        const unused = rotation.getAvailableMeals(type) || []
 
-//   // If no filtered meals → fall back to rotation system
-//   return rotation.pickRandomMeal(type);
-// }
+        // Apply filters
+        let filtered = unused
+          .filter((m) => m && m.id != null)
+          .filter((m) => !excludeMealIds.includes(m.id))
+          .filter((m) =>
+            dietType === 'veg'
+              ? m.isVeg
+              : dietType === 'vegan'
+                ? m.isVegan
+                : true,
+          )
+          .filter(
+            (m) =>
+              allergens.length === 0 ||
+              !m.allergens?.some((a) => allergens.includes(a)),
+          )
+          .filter((m) =>
+            cuisinePreference ? m.cuisine === cuisinePreference : true,
+          )
 
+        if (filtered.length === 0) {
+          console.warn(`No meals match filters for ${type}`)
+          return null
+        }
 
+        // Try calorie match
+        let matches = filtered.filter(
+          (m) => m.calories >= min && m.calories <= max,
+        )
 
+        if (matches.length === 0) {
+          console.warn(`No calorie match for ${type}. Using fallback.`)
+          matches = filtered
+        }
 
-  const breakfast = pickMeal("breakfast", calorieDistribution.breakfast);
-  const lunch = pickMeal("lunch", calorieDistribution.lunch);
-  const dinner = pickMeal("dinner", calorieDistribution.dinner);
-  const snack = pickMeal("snack", calorieDistribution.snack);
+        const chosen = matches[Math.floor(Math.random() * matches.length)]
 
-  const totalCalories =
-    (breakfast?.calories || 0) +
-    (lunch?.calories || 0) +
-    (dinner?.calories || 0) +
-    (snack?.calories || 0);
+        rotation.markUsed(type, chosen.id)
 
-  return {
-    breakfast,
-    lunch,
-    dinner,
-    snack,
-    totalCalories,
-  };
-}
-
-
-
-
-/*
-mealSelectionService.js (daily meal selection)
-
-const rotationService = new MealRotationService(mealsDB);
-export function selectMealsForDay(params) {
-  const { dailyCalories, mealsPerDay, dietType, allergens, excludeMealIds = [], cuisinePreference } = params;
-
-  const calorieDistribution = {
-    breakfast: dailyCalories * 0.25,
-    lunch: dailyCalories * 0.35,
-    dinner: dailyCalories * 0.35,
-    snack: dailyCalories * 0.05,
-  };
-
-  const mealTypes = ["breakfast", "lunch", "dinner"];
-  if (mealsPerDay === 4) mealTypes.push("snack");
-
-  const selectedMeals = {};
-
-  mealTypes.forEach(type => {
-    let meal;
-    // try selecting a meal that matches calorie target ±50 and other filters
-    for (let i = 0; i < 10; i++) { // try 10 times before giving up
-      const candidate = rotationService.getRandomMeal(type, excludeMealIds);
-      if (
-        candidate.calories >= calorieDistribution[type] - 50 &&
-        candidate.calories <= calorieDistribution[type] + 50 &&
-        (!dietType || candidate.dietType === dietType) &&
-        (!cuisinePreference || candidate.cuisine === cuisinePreference) &&
-        !candidate.allergens.some(a => allergens.includes(a))
-      ) {
-        meal = candidate;
-        break;
+        return chosen
+      } catch (err) {
+        console.error(`Error selecting meal for ${type}:`, err)
+        return null
       }
     }
-    // fallback if no match found
-    if (!meal) meal = rotationService.getRandomMeal(type, excludeMealIds);
-    selectedMeals[type] = meal;
-  });
 
-  return selectedMeals;
+    // 5. PICK MEALS BASED ON ORDER
+    const result = {}
+
+    for (const mealType of mealOrder) {
+      result[mealType] = pickMeal(mealType, calorieDistribution[mealType])
+    }
+
+    // Compute total calories
+    const totalCalories = mealOrder.reduce(
+      (sum, m) => sum + (result[m]?.calories || 0),
+      0,
+    )
+
+    return {
+      ...result,
+      totalCalories,
+      mealsPerDay,
+    }
+  } catch (err) {
+    console.error('Critical error in selectMealsForDay:', err)
+    return safeReturn()
+  }
 }
-*/
 
+// Safe fallback return for error scenarios
+function safeReturn() {
+  return {
+    breakfast: null,
+    lunch: null,
+    dinner: null,
+    snack: null,
+    totalCalories: 0,
+  }
+}
