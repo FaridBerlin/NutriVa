@@ -23,6 +23,7 @@ import ProtectedRoute from './components/ProtectedRoute'
 // Context Providers
 import { AuthProvider } from './context/AuthContext'
 import { ProfileProvider } from './context/ProfileContext'
+import { MealPlanProvider } from './context/mealPlanContext'
 
 // Layout wrapper to handle conditional Navbar/Footer
 function AppLayout({ children }) {
@@ -49,46 +50,48 @@ function App() {
   return (
     <AuthProvider>
       <ProfileProvider>
-        <Router>
-          <AppLayout>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
+        <MealPlanProvider>
+          <Router>
+            <AppLayout>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />} />
 
-              {/* Protected Routes */}
-              <Route
-                path="/dashboard"
-                element={
-                  <ProtectedRoute>
-                    <DashboardPage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Protected Routes */}
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <DashboardPage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Profile - View user data */}
-              <Route
-                path="/profile"
-                element={
-                  <ProtectedRoute>
-                    <ProfilePage />
-                  </ProtectedRoute>
-                }
-              />
+                {/* Profile - View user data */}
+                <Route
+                  path="/profile"
+                  element={
+                    <ProtectedRoute>
+                      <ProfilePage />
+                    </ProtectedRoute>
+                  }
+                />
 
-              {/* Settings - Account settings and profile edit */}
-              <Route
-                path="/settings"
-                element={
-                  <ProtectedRoute>
-                    <SettingsPage />
-                  </ProtectedRoute>
-                }
-              />
-            </Routes>
-          </AppLayout>
-        </Router>
+                {/* Settings - Account settings and profile edit */}
+                <Route
+                  path="/settings"
+                  element={
+                    <ProtectedRoute>
+                      <SettingsPage />
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </AppLayout>
+          </Router>
+        </MealPlanProvider>
       </ProfileProvider>
     </AuthProvider>
   )

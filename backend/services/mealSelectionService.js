@@ -1,6 +1,9 @@
 import mealsDB from '../data/mealDatabase.js'
 import MealRotationService from '../services/mealRotationService.js'
 
+/// just a sample _temporery now_ would be deleted after implementing the AI
+/// this an AI generated logivc to choose the fitting meals for the user
+
 const rotation = new MealRotationService(mealsDB)
 
 export function selectMealsForDay(params) {
