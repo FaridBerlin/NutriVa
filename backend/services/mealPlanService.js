@@ -8,77 +8,24 @@
  * Meal Plan Service - Core Business Logic
  * backend/services/mealPlanService.js
  *
- * Generates personalized meal plans based on user profile and preferences
- * Handles:
- * - BMR/TDEE calculations
- * - Smart meal selection with variety
- * - Nutrition validation
- * - Multi-day plan generation
+ * Now uses Strategy Pattern for meal generation.
+ * Supports multiple generation strategies: mock data, AI models, external APIs.
+ *
+ * Architecture:
+ * - mealGenerationStrategy.js: Abstract strategy and implementations
+ * - mealGeneratorConfig.js: Configuration and factory
+ * - This file: Orchestrates the generation process
  */
 
 import mealDatabase from '../data/mealDatabase.js'
+import mealGeneratorConfig from '../config/mealGeneratorConfig.js'
+import { calculateBMR, calculateTDEE } from '../utils/nutritionCalculations.js'
 
 // ============================================================================
-// BMR & TDEE CALCULATIONS
+// BMR & TDEE CALCULATIONS (Imported from utils)
 // ============================================================================
 
-/**
- * Calculate Basal Metabolic Rate (BMR) using Mifflin-St Jeor Formula
- * More accurate than Harris-Benedict for modern populations
- *
- * @param {number} weight - Weight in kg
- * @param {number} height - Height in cm
- * @param {number} age - Age in years
- * @param {string} gender - 'male' or 'female'
- * @returns {number} BMR in calories
- */
-function calculateBMR(weight, height, age, gender) {
-  let bmr
-
-  if (gender.toLowerCase() === 'male') {
-    bmr = 10 * weight + 6.25 * height - 5 * age + 5
-  } else if (gender.toLowerCase() === 'female') {
-    bmr = 10 * weight + 6.25 * height - 5 * age - 161
-  } else {
-    throw new Error('Gender must be "male" or "female"')
-  }
-
-  return bmr
-}
-
-/**
- * Calculate Total Daily Energy Expenditure (TDEE)
- * Multiplies BMR by activity factor
- *
- * Activity levels:
- * - sedentary: 1.2 (little/no exercise)
- * - light: 1.375 (1-3 days/week)
- * - moderate: 1.55 (3-5 days/week)
- * - active: 1.725 (6-7 days/week)
- * - veryActive: 1.9 (2x per day)
- *
- * @param {number} bmr - Basal metabolic rate
- * @param {string} activityLevel - Activity level
- * @returns {number} TDEE in calories
- */
-function calculateTDEE(bmr, activityLevel) {
-  const activityFactors = {
-    sedentary: 1.2,
-    light: 1.375,
-    moderate: 1.55,
-    active: 1.725,
-    veryactive: 1.9,
-  }
-
-  const factor = activityFactors[activityLevel.toLowerCase()]
-  if (!factor) {
-    throw new Error(
-      `Activity level must be one of: ${Object.keys(activityFactors).join(', ')}`,
-    )
-  }
-
-  return bmr * factor
-}
+// Note: calculateBMR and calculateTDEE are now imported from ../utils/nutritionCalculations.js
 
 /**
  * Adjust calories based on user goal
@@ -435,202 +382,30 @@ function generatePlanNutritionSummary(planData, targets) {
  * @param {object} params - Generation parameters
  * @returns {object} Complete meal plan with nutrition data
  */
+/**
+ * Generate a personalized meal plan using the configured strategy
+ * @param {object} params - Generation parameters
+ * @returns {Promise<object>} Generated meal plan
+ */
 async function generateMealPlan(params) {
-  const {
-    userId, // Required: User ID
-    planName = 'My Meal Plan', // Optional: Plan name
-    duration = 7, // Days (1-30)
-    mealsPerDay = 3, // Meals per day (2-6)
+  try {
+    // Get the configured meal generator
+    const generator = mealGeneratorConfig.getMealGenerator()
 
-    // User profile (required for calorie calculations)
-    weight, // kg
-    height, // cm
-    age, // years
-    gender, // 'male' or 'female'
-    activityLevel = 'moderate', // sedentary, light, moderate, active, veryActive
-    goal = 'maintain_weight', // maintain_weight, lose_weight, gain_weight, build_muscle
+    // Log which generator is being used (helpful for debugging)
+    const config = mealGeneratorConfig.getGeneratorConfig()
+    console.log(`🔄 Generating meal plan using ${config.type} strategy`)
 
-    // Meal preferences
-    dietType = 'all', // veg, non-veg, all
-    allergens = [], // array of allergens to avoid
-    cuisinePreference, // optional: preferred cuisine
-    foodRestrictions = [], // optional: foods to avoid
-  } = params
+    // Delegate to the strategy
+    const mealPlan = await generator.generate(params)
 
-  // Validate required parameters
-  if (!userId) throw new Error('userId is required')
-  if (!weight || !height || !age || !gender) {
-    throw new Error('User profile (weight, height, age, gender) is required')
+    console.log(`✅ Meal plan generated successfully with ${mealPlan.days.length} days`)
+    return mealPlan
+
+  } catch (error) {
+    console.error('❌ Meal plan generation failed:', error.message)
+    throw new Error(`Meal plan generation failed: ${error.message}`)
   }
-
-  // Validate plan parameters
-  if (duration < 1 || duration > 30) {
-    throw new Error('Duration must be between 1 and 30 days')
-  }
-
-  if (mealsPerDay < 2 || mealsPerDay > 6) {
-    throw new Error('Meals per day must be between 2 and 6')
-  }
-
-  // Step 1: Calculate calorie and macro targets
-  const bmr = calculateBMR(weight, height, age, gender)
-  const tdee = calculateTDEE(bmr, activityLevel)
-  const dailyCalories = adjustCaloriesForGoal(tdee, goal)
-  const macroTargets = calculateMacroTargets(dailyCalories, goal)
-
-  // Calculate calorie per meal (distributed by meal type)
-  const calorieDistribution = {
-    breakfast: dailyCalories * 0.25,
-    lunch: dailyCalories * 0.35,
-    dinner: dailyCalories * 0.3,
-    snack: dailyCalories * 0.1, // Only if mealsPerDay > 3
-  }
-
-  // Step 2: Generate meals for each day
-  const mealPlan = {
-    userId,
-    planName,
-    duration,
-    mealsPerDay,
-    createdAt: new Date(),
-
-    // Nutrition targets
-    nutritionTargets: {
-      dailyCalories: Math.round(dailyCalories),
-      dailyMacros: {
-        protein: macroTargets.protein,
-        carbs: macroTargets.carbs,
-        fat: macroTargets.fat,
-      },
-      userMetrics: {
-        weight,
-        height,
-        age,
-        gender,
-        activityLevel,
-        goal,
-        bmr,
-        tdee,
-      },
-    },
-
-    // Generated plan
-    days: [],
-  }
-
-  // Track used meals for variety (across all days and categories)
-  const usedMealIds = []
-
-  // Generate meals for each day
-  for (let day = 1; day <= duration; day++) {
-    const dayMeals = []
-
-    try {
-      // Select Breakfast
-      const breakfast = selectMealForCategory({
-        category: 'breakfast',
-        dietType: dietType === 'all' ? undefined : dietType,
-        allergens,
-        usedMealIds,
-        calorieTarget: calorieDistribution.breakfast,
-        cuisine: cuisinePreference,
-      })
-      dayMeals.push(breakfast)
-      usedMealIds.push(breakfast.id)
-
-      // Select Lunch
-      const lunch = selectMealForCategory({
-        category: 'lunch',
-        dietType: dietType === 'all' ? undefined : dietType,
-        allergens,
-        usedMealIds,
-        calorieTarget: calorieDistribution.lunch,
-        cuisine: cuisinePreference,
-      })
-      dayMeals.push(lunch)
-      usedMealIds.push(lunch.id)
-
-      // Select Dinner
-      const dinner = selectMealForCategory({
-        category: 'dinner',
-        dietType: dietType === 'all' ? undefined : dietType,
-        allergens,
-        usedMealIds,
-        calorieTarget: calorieDistribution.dinner,
-        cuisine: cuisinePreference,
-      })
-      dayMeals.push(dinner)
-      usedMealIds.push(dinner.id)
-
-      // Select Snacks if needed (mealsPerDay > 3)
-      if (mealsPerDay > 3) {
-        for (let snackCount = mealsPerDay - 3; snackCount > 0; snackCount--) {
-          const snack = selectMealForCategory({
-            category: 'snack',
-            dietType: dietType === 'all' ? undefined : dietType,
-            allergens,
-            usedMealIds,
-            calorieTarget: calorieDistribution.snack / (mealsPerDay - 3),
-            cuisine: cuisinePreference,
-          })
-          dayMeals.push(snack)
-          usedMealIds.push(snack.id)
-        }
-      }
-
-      // Calculate day nutrition
-      const dayNutrition = calculateDayNutrition(dayMeals)
-      const macroPercentages = calculateMacroPercentages(dayNutrition)
-
-      // Validate day nutrition against daily targets
-      const validation = validateNutrition(dayNutrition, {
-        calories: dailyCalories,
-        protein: macroTargets.protein,
-        carbs: macroTargets.carbs,
-        fat: macroTargets.fat,
-      })
-
-      // Add day to plan
-      mealPlan.days.push({
-        dayNumber: day,
-        date: new Date(new Date().setDate(new Date().getDate() + day - 1)),
-        meals: dayMeals,
-        totalNutrition: dayNutrition,
-        macroPercentages,
-        nutritionValidation: validation,
-      })
-    } catch (error) {
-      throw new Error(
-        `Failed to generate meals for day ${day}: ${error.message}`,
-      )
-    }
-  }
-
-  // Step 3: Generate plan-level summary
-  mealPlan.nutritionSummary = generatePlanNutritionSummary(mealPlan, {
-    dailyCalories,
-    protein: macroTargets.protein,
-    carbs: macroTargets.carbs,
-    fat: macroTargets.fat,
-  })
-
-  // Step 4: Generate warnings if needed
-  mealPlan.warnings = []
-  if (mealPlan.nutritionSummary.averageCalorieVariance < -200) {
-    mealPlan.warnings.push(
-      'Plan is significantly lower in calories than target',
-    )
-  }
-  if (mealPlan.nutritionSummary.averageCalorieVariance > 200) {
-    mealPlan.warnings.push(
-      'Plan is significantly higher in calories than target',
-    )
-  }
-  if (mealPlan.nutritionSummary.macroPercentages.proteinPercent < 20) {
-    mealPlan.warnings.push('Protein percentage is lower than recommended')
-  }
-
-  return mealPlan
 }
 
 // ============================================================================
@@ -638,21 +413,20 @@ async function generateMealPlan(params) {
 // ============================================================================
 
 export default {
-  // BMR/TDEE calculations
-  calculateBMR,
-  calculateTDEE,
+  // Main generation function (now uses strategy pattern)
+  generateMealPlan,
+
+  // Utility functions (used by MockMealGenerator)
+  calculateBMR, // Imported from utils
+  calculateTDEE, // Imported from utils
   adjustCaloriesForGoal,
   calculateMacroTargets,
-
-  // Meal selection
   selectMealForCategory,
-
-  // Nutrition calculations
   calculateDayNutrition,
   calculateMacroPercentages,
   validateNutrition,
   generatePlanNutritionSummary,
 
-  // Main function
-  generateMealPlan,
+  // Configuration access
+  getGeneratorConfig: mealGeneratorConfig.getGeneratorConfig,
 }
