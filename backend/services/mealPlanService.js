@@ -1,3 +1,9 @@
+/// just a sample _temporery now_ would be deleted after implementing the AI
+/// this an AI generated logivc to choose the fitting meals for the user
+
+// This file requires mealDatabase.js
+// Make sure it's in: backend/data/mealDatabase.js
+
 /**
  * Meal Plan Service - Core Business Logic
  * backend/services/mealPlanService.js
