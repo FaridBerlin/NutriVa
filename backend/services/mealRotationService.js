@@ -1,3 +1,6 @@
+/// just a sample _temporery now_ would be deleted after implementing the AI
+/// this an AI generated logivc to choose the fitting meals for the user
+
 export class MealRotationService {
   constructor(mealsDB) {
     this.mealsDB = mealsDB
