@@ -35,7 +35,6 @@ export const createMealPlan = async (req, res, next) => {
       goal: profile.dietaryGoal || 'maintain_weight',
       dietType: dietType || profile.foodType || 'nonveg',
       allergens,
-      foodRestrictions: [],
     })
 
     // Create meal plan in database
