@@ -11,6 +11,7 @@ import {
   Apple,
   Calendar,
   Utensils,
+  List,
   MessageSquare,
   PlusCircle,
   Wand2,
@@ -41,6 +42,10 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       icon: Utensils,
       badge: 'Soon',
       badgeColor: 'orange',
+    },
+     {id: 'meal-plans',
+    label: 'Mealplan List',
+    icon: List
     },
     {
       id: 'ai',
