@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react'
 import { AuthContext } from './AuthContext'
-import * as mealApi from '../api/mealApi'
+//import * as mealApi from '../api/mealApi'
+import mealApi from '../api/mealApi'
 
 export const MealPlanContext = createContext()
 

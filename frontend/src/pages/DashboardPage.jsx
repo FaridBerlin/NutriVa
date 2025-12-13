@@ -3,6 +3,8 @@ import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import { Utensils, MessageSquare } from 'lucide-react'
+import MealPlanList from '../components/MealPlanList'
+import { useMealPlan } from '../context/mealPlanContext'
 
 import {
   DashboardHeader,
@@ -189,6 +191,9 @@ export default function DashboardPage() {
             onGenerate={handleGeneratePlan}
           />
         )
+
+        case 'meal-plans':
+            return <MealPlanList />
 
       case 'create-meal':
         return (
