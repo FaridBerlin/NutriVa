@@ -79,7 +79,7 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
           </h3>
           <div className="flex flex-col items-center">
             <div className="relative w-48 h-48">
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={200}>
                 <PieChart>
                   <Pie
                     data={[

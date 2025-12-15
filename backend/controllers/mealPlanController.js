@@ -58,6 +58,7 @@ export const createMealPlan = async (req, res, next) => {
       warnings: generatedPlan.warnings || [],
     })
   } catch (error) {
+    console.error('Meal plan creation error:', error)
     next(error)
   }
 }

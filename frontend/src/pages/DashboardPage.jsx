@@ -2,9 +2,7 @@ import { useState, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
-import { Utensils, MessageSquare } from 'lucide-react'
 import MealPlanList from '../components/MealPlanList'
-import { useMealPlan } from '../context/mealPlanContext'
 
 import {
   DashboardHeader,
@@ -13,11 +11,10 @@ import {
   BMIGoals,
   HealthMetrics,
   PlanSummary,
-  CreatePlan,
   WaterIntake,
 } from '../components/dashboard'
-import MealPlanDisplay from '../components/MealPlanDisplay'
-import { WaterTracker } from '../components/dashboard'
+
+import MealPlanner from './MealPlanner'
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
@@ -149,7 +146,6 @@ export default function DashboardPage() {
   }
 
   // Render content based on active section
-  // Always show all main dashboard cards (profile, BMI, health, plan, calendar, water, create meal)
   return (
     <div className="flex min-h-screen bg-transparent">
       {/* Sidebar */}
@@ -163,20 +159,26 @@ export default function DashboardPage() {
         {/* Header */}
         <DashboardHeader userName={user?.name} />
 
-        {/* Content Area: All cards always visible */}
+        {/* Content Area: Switch between dashboard and meal planner */}
         <div className="p-8 space-y-8">
-          <DashboardStats stats={statsData} />
-          <ProfileOverview profile={profileData} />
-          <BMIGoals
-            bmi={nutritionTargets?.bmi}
-            bmiCategory={profile?.bmiCategory}
-            goals={goalsData}
-          />
-          <HealthMetrics metrics={metricsData} />
-          <PlanSummary plan={planData} />
-          {/* <WeeklyCalendar /> removed */}
-          <WaterIntake />
-          {/* <CreateMeal onSave={handleSaveMeal} onCancel={() => {}} /> removed */}
+          {activeSection === 'my-meal-plans' ? (
+            <MealPlanList />
+          ) : activeSection === 'create-plan' ? (
+            <MealPlanner />
+          ) : (
+            <>
+              <DashboardStats stats={statsData} />
+              <ProfileOverview profile={profileData} />
+              <BMIGoals
+                bmi={nutritionTargets?.bmi}
+                bmiCategory={profile?.bmiCategory}
+                goals={goalsData}
+              />
+              <HealthMetrics metrics={metricsData} />
+              <PlanSummary plan={planData} />
+              <WaterIntake />
+            </>
+          )}
         </div>
       </div>
     </div>
