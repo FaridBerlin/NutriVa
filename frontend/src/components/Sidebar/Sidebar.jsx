@@ -22,20 +22,9 @@ import {
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
-  const { logout } = useContext(AuthContext)
-  const navigate = useNavigate()
-
-  const handleLogout = () => {
-    logout()
-    navigate('/')
-  }
+  // Add My Meal Planner to the sidebar
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'bmi', label: 'BMI & Goals', icon: Activity },
-    { id: 'metrics', label: 'Health Metrics', icon: Heart },
-    { id: 'plan', label: 'Your Plan', icon: Apple },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
     {
       id: 'meals',
       label: 'Meal Planner',
@@ -43,9 +32,10 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       badge: 'Soon',
       badgeColor: 'orange',
     },
-     {id: 'meal-plans',
-    label: 'Mealplan List',
-    icon: List
+    {
+      id: 'my-meal-planner',
+      label: 'My Meal Planner',
+      icon: List,
     },
     {
       id: 'ai',
@@ -54,9 +44,15 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       badge: 'New',
       badgeColor: 'green',
     },
-    { id: 'create-meal', label: 'Create Meal', icon: PlusCircle },
-    { id: 'water-tracker', label: 'Water Tracker', icon: Droplet },
   ]
+  const { logout } = useContext(AuthContext)
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/')
+  }
+  // (duplicate removed above)
 
   return (
     <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm">

@@ -13,9 +13,7 @@ import {
   BMIGoals,
   HealthMetrics,
   PlanSummary,
-  WeeklyCalendar,
   CreatePlan,
-  CreateMeal,
   WaterIntake,
 } from '../components/dashboard'
 import MealPlanDisplay from '../components/MealPlanDisplay'
@@ -151,72 +149,7 @@ export default function DashboardPage() {
   }
 
   // Render content based on active section
-  const renderContent = () => {
-    switch (activeSection) {
-      case 'dashboard':
-        return (
-          <>
-            <DashboardStats stats={statsData} />
-            <div className="mt-4">
-              <WaterIntake />
-            </div>
-          </>
-        )
-
-      case 'profile':
-        return <ProfileOverview profile={profileData} />
-
-      case 'bmi':
-        return (
-          <BMIGoals
-            bmi={nutritionTargets?.bmi}
-            bmiCategory={profile?.bmiCategory}
-            goals={goalsData}
-          />
-        )
-
-      case 'metrics':
-        return <HealthMetrics metrics={metricsData} />
-
-      case 'plan':
-        return null // Removed ComingSoon component
-
-      case 'calendar':
-        return <WeeklyCalendar />
-
-      case 'create-plan':
-        return (
-          <CreatePlan
-            profile={createPlanData}
-            onGenerate={handleGeneratePlan}
-          />
-        )
-
-        case 'meal-plans':
-            return <MealPlanList />
-
-      case 'create-meal':
-        return (
-          <CreateMeal
-            onSave={handleSaveMeal}
-            onCancel={() => setActiveSection('dashboard')}
-          />
-        )
-
-      case 'meals':
-        return <MealPlanDisplay plan={dummyPlan} />
-
-      case 'ai':
-        return <ComingSoon icon={MessageSquare} title="AI Assistant" />
-
-      case 'water-tracker':
-        return <WaterTracker />
-
-      default:
-        return <DashboardStats stats={statsData} />
-    }
-  }
-
+  // Always show all main dashboard cards (profile, BMI, health, plan, calendar, water, create meal)
   return (
     <div className="flex min-h-screen bg-transparent">
       {/* Sidebar */}
@@ -230,8 +163,21 @@ export default function DashboardPage() {
         {/* Header */}
         <DashboardHeader userName={user?.name} />
 
-        {/* Content Area */}
-        <div className="p-8">{renderContent()}</div>
+        {/* Content Area: All cards always visible */}
+        <div className="p-8 space-y-8">
+          <DashboardStats stats={statsData} />
+          <ProfileOverview profile={profileData} />
+          <BMIGoals
+            bmi={nutritionTargets?.bmi}
+            bmiCategory={profile?.bmiCategory}
+            goals={goalsData}
+          />
+          <HealthMetrics metrics={metricsData} />
+          <PlanSummary plan={planData} />
+          {/* <WeeklyCalendar /> removed */}
+          <WaterIntake />
+          {/* <CreateMeal onSave={handleSaveMeal} onCancel={() => {}} /> removed */}
+        </div>
       </div>
     </div>
   )
