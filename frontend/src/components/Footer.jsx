@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import NutrivaLogo from './NutrivaLogo'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -15,13 +16,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Section */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary to-green-400 rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
-                <span className="text-2xl">🥗</span>
-              </div>
-              <span className="text-2xl font-bold bg-gradient-to-r from-primary to-green-400 bg-clip-text text-transparent">
-                Nutriva
-              </span>
+            <div className="flex items-center mb-6">
+              <Link
+                to="/"
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="flex items-center hover:scale-105 transition-transform"
+              >
+                <NutrivaLogo />
+              </Link>
             </div>
             <p className="text-gray-400 leading-relaxed mb-6">
               Transform your health journey with personalized nutrition
@@ -32,7 +34,9 @@ export default function Footer() {
             {/* Social Links */}
             <div className="flex gap-3">
               <a
-                href="#"
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-11 h-11 bg-gray-800 hover:bg-gradient-to-br hover:from-blue-600 hover:to-blue-700 
                            rounded-xl flex items-center justify-center transition-all duration-300 
                            hover:scale-110 hover:shadow-lg hover:shadow-blue-500/30 group"
@@ -46,7 +50,9 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.twitter.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-11 h-11 bg-gray-800 hover:bg-gradient-to-br hover:from-sky-500 hover:to-sky-600 
                            rounded-xl flex items-center justify-center transition-all duration-300 
                            hover:scale-110 hover:shadow-lg hover:shadow-sky-500/30 group"
@@ -60,7 +66,9 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-11 h-11 bg-gray-800 hover:bg-gradient-to-br hover:from-pink-500 hover:to-rose-500 
                            rounded-xl flex items-center justify-center transition-all duration-300 
                            hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30 group"
@@ -74,7 +82,9 @@ export default function Footer() {
                 </svg>
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-11 h-11 bg-gray-800 hover:bg-gradient-to-br hover:from-blue-700 hover:to-blue-800 
                            rounded-xl flex items-center justify-center transition-all duration-300 
                            hover:scale-110 hover:shadow-lg hover:shadow-blue-700/30 group"
@@ -89,8 +99,6 @@ export default function Footer() {
               </a>
             </div>
           </div>
-
-          {/* Product Links */}
 
           {/* Company Links */}
           <div>
@@ -114,25 +122,7 @@ export default function Footer() {
                   className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Careers
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Press Kit
+                  FAQ
                 </a>
               </li>
             </ul>
@@ -151,7 +141,7 @@ export default function Footer() {
                   className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  FAQ
+                  Help Center
                 </a>
               </li>
               <li>
@@ -160,7 +150,7 @@ export default function Footer() {
                   className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Help Center
+                  Imprint
                 </a>
               </li>
               <li>

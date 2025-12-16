@@ -86,13 +86,14 @@ export function selectMealsForDay(params) {
         let filtered = unused
           .filter((m) => m && m.id != null)
           .filter((m) => !excludeMealIds.includes(m.id))
-          .filter((m) =>
-            dietType === 'veg'
-              ? m.isVeg
-              : dietType === 'vegan'
-                ? m.isVegan
-                : true,
-          )
+          // .filter((m) =>
+          //   dietType === 'veg'
+          //     ? m.isVeg
+          //     : dietType === 'vegan'
+          //       ? m.isVegan
+          //       : true,
+          // )
+          .filter((m) => dietType === 'veg' ? m.dietType === 'veg' : dietType === 'vegan' ? m.dietType === 'vegan' : true)
           .filter(
             (m) =>
               allergens.length === 0 ||
