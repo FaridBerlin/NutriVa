@@ -44,12 +44,10 @@ export default function Navbar() {
   return (
     <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 backdrop-blur-lg border-b border-white/20">
       <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-1">
-        {/* Logo */}
         <Link to="/" className="flex items-center space-x-3">
           <NutrivaLogo />
         </Link>
 
-        {/* Right Side - User Menu & Mobile Toggle */}
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0">
           {user ? (
             <>

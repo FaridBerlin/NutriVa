@@ -11,7 +11,7 @@ import {
   BMIGoals,
   HealthMetrics,
   PlanSummary,
-  WaterIntake,
+  WaterTracker,
 } from '../components/dashboard'
 
 import MealPlanner from './MealPlanner'
@@ -176,7 +176,7 @@ export default function DashboardPage() {
               />
               <HealthMetrics metrics={metricsData} />
               <PlanSummary plan={planData} />
-              <WaterIntake />
+              <WaterTracker />
             </>
           )}
         </div>
