@@ -50,7 +50,9 @@ export function MealPlanProvider({ children }) {
       if (err.response?.status === 404) {
         setActivePlan(null)
       } else {
-        setError(err.response?.data?.message || 'Failed to fetch meal plan')
+        setError(
+          err.response?.data?.message || 'Failed to fetch last meal plan',
+        )
       }
     } finally {
       setLoading(false)
@@ -68,7 +70,7 @@ export function MealPlanProvider({ children }) {
       const response = await mealApi.getAllMealPlans()
       setAllPlans(response.mealPlans || [])
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to fetch meal plans')
+      setError(err.response?.data?.message || 'Failed to fetch all meal plans')
     } finally {
       setLoading(false)
     }

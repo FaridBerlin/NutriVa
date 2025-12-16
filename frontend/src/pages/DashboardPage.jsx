@@ -2,7 +2,7 @@ import { useState, useContext } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
-import MealPlanList from '../components/MealPlanList'
+import MealPlanList from '../components/mealPlanner/MealPlanList'
 
 import {
   DashboardHeader,
@@ -164,7 +164,9 @@ export default function DashboardPage() {
           {activeSection === 'my-meal-plans' ? (
             <MealPlanList />
           ) : activeSection === 'create-plan' ? (
-            <MealPlanner />
+            <MealPlanner
+              onPlanCreated={() => setActiveSection('my-meal-plans')}
+            />
           ) : (
             <>
               <DashboardStats stats={statsData} />

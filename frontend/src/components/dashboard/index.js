@@ -1,4 +1,4 @@
-export { default as MyMealPlanner } from '../MealPlanList'
+export { default as MyMealPlanner } from '../mealPlanner/MealPlanList'
 export { default as DashboardHeader } from './DashboardHeader'
 export { default as DashboardStats } from './DashboardStats'
 export { default as ProfileOverview } from './ProfileOverview'
