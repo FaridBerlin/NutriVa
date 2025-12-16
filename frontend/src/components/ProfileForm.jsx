@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect, useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
@@ -10,6 +10,7 @@ import {
   Target,
   Flame,
   Drumstick,
+  Check,
   Leaf,
 } from 'lucide-react'
 import { useProfile } from '../context/ProfileContext'
@@ -23,6 +24,8 @@ export default function ProfileForm() {
   const [isLoading, setIsLoading] = useState(true)
   const [isEditMode, setIsEditMode] = useState(false)
   const totalSteps = 5
+  const [formError, setFormError] = useState('')
+  const [showError, setShowError] = useState(false)
 
   // Form Data State
   const [formData, setFormData] = useState({
@@ -129,6 +132,37 @@ export default function ProfileForm() {
   // Progress Percentage
   const progressPercentage = (currentStep / totalSteps) * 100
 
+  // Animated display percentage for smooth transitions
+  const [displayPercent, setDisplayPercent] = useState(progressPercentage)
+  const prevPercentRef = useRef(progressPercentage)
+
+  useEffect(() => {
+    const start = prevPercentRef.current || 0
+    const end = (currentStep / totalSteps) * 100
+    const duration = 600 // ms
+    let rafId
+    let startTime = null
+
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3)
+
+    const step = (timestamp) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const t = Math.min(1, elapsed / duration)
+      const value = start + (end - start) * easeOut(t)
+      setDisplayPercent(value)
+      if (t < 1) {
+        rafId = requestAnimationFrame(step)
+      } else {
+        prevPercentRef.current = end
+        setDisplayPercent(end)
+      }
+    }
+
+    rafId = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(rafId)
+  }, [currentStep, totalSteps])
+
   // Steps Configuration (lucide-react icons)
   const steps = [
     { number: 1, label: 'Basic', icon: <User className="w-6 h-6" /> },
@@ -141,11 +175,46 @@ export default function ProfileForm() {
   // Handle Input Change
   const handleChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
+    // Clear inline error when user changes a field
+    setFormError('')
   }
+
+  useEffect(() => {
+    if (formError) setShowError(true)
+    else setShowError(false)
+  }, [formError])
 
   // Navigation
   const handleNext = () => {
+    // Validate step-specific required choices before advancing
+    if (currentStep === 1) {
+      if (!formData.name || !formData.age || !formData.gender) {
+        setFormError(
+          'Please fill in your name, age and gender before continuing.',
+        )
+        return
+      }
+    }
+
+    if (currentStep === 2) {
+      if (!formData.height || !formData.weight) {
+        setFormError('Please enter your height and weight before continuing.')
+        return
+      }
+    }
+
+    if (currentStep === 3 && !formData.activityLevel) {
+      setFormError('Please select an activity level before continuing.')
+      return
+    }
+
+    if (currentStep === 4 && !formData.dietaryPreference) {
+      setFormError('Please select a dietary preference before continuing.')
+      return
+    }
+
     if (currentStep < totalSteps) {
+      setFormError('')
       setCurrentStep((prev) => prev + 1)
     } else {
       handleSubmit()
@@ -166,12 +235,12 @@ export default function ProfileForm() {
 
       // Validation
       if (!formData.fitnessGoal) {
-        alert('Please select a fitness goal')
+        setFormError('Please select a fitness goal before completing setup.')
         return
       }
 
       if (!formData.activityLevel) {
-        alert('Please select an activity level')
+        setFormError('Please select an activity level before completing setup.')
         return
       }
 
@@ -296,12 +365,12 @@ export default function ProfileForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
-      <div className="max-w-2xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-10 px-6 text-base md:text-lg">
+      <div className="max-w-3xl mx-auto">
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-textDark mb-2">
-            {isEditMode ? 'Edit Your Profile ✏️' : 'Welcome to NutriVa! 🎉'}
+            {isEditMode ? 'Edit Your Profile' : 'Welcome to NutriVa! '}
           </h1>
           <p className="text-textLight text-lg">
             {isEditMode
@@ -321,11 +390,44 @@ export default function ProfileForm() {
             </span>
           </div>
 
-          <div className="w-full bg-gray-200 rounded-full h-2 mb-4">
+          <div
+            className="w-full bg-gray-200 rounded-full h-3 mb-4 relative overflow-hidden"
+            aria-hidden
+          >
+            {/* shimmer keyframes */}
+            <style>{`
+              @keyframes shimmerMove { 0% { background-position: -200% 0 } 100% { background-position: 200% 0 } }
+            `}</style>
+
+            <div className="absolute inset-0 bg-gray-200" />
+
             <div
-              className="bg-gradient-to-r from-primary to-primaryDark h-2 rounded-full transition-all duration-300"
-              style={{ width: `${progressPercentage}%` }}
-            ></div>
+              className="relative overflow-hidden rounded-full h-3"
+              style={{ boxShadow: 'inset 0 2px 6px rgba(0,0,0,0.06)' }}
+            >
+              <div
+                className="h-3 rounded-full transition-all duration-300"
+                style={{
+                  width: `${displayPercent}%`,
+                  background:
+                    'linear-gradient(90deg, var(--tw-gradient-stops))',
+                  backgroundImage:
+                    'linear-gradient(90deg, #6EE7B7 0%, #10B981 50%, #0EA5A2 100%)',
+                }}
+              />
+
+              {/* animated shimmer overlay */}
+              <div
+                className="absolute top-0 left-0 h-3 rounded-full"
+                style={{
+                  width: `${displayPercent}%`,
+                  backgroundImage:
+                    'linear-gradient(90deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.06) 100%)',
+                  backgroundSize: '200% 100%',
+                  animation: 'shimmerMove 1.8s linear infinite',
+                }}
+              />
+            </div>
           </div>
 
           {/* Steps Icons */}
@@ -355,7 +457,17 @@ export default function ProfileForm() {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+        <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10 mb-6 ring-1 ring-black/5">
+          <div
+            className={`mb-4 p-3 rounded-md bg-red-50 border border-red-200 text-red-700 transform transition-all duration-300 ${
+              showError
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 -translate-y-2 pointer-events-none'
+            }`}
+            aria-live="assertive"
+          >
+            {formError}
+          </div>
           {renderStepContent()}
         </div>
 
@@ -365,11 +477,11 @@ export default function ProfileForm() {
             onClick={handleBack}
             disabled={currentStep === 1}
             className={`
-              px-6 py-2.5 rounded-lg font-medium transition-all
+              px-8 py-3 rounded-lg font-medium transition-all text-lg shadow-md
               ${
                 currentStep === 1
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-200 text-textDark hover:bg-gray-300'
+                  : 'bg-gray-50 text-textDark hover:bg-gray-100'
               }
             `}
           >
@@ -378,9 +490,9 @@ export default function ProfileForm() {
 
           <button
             onClick={handleNext}
-            className="px-8 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
-                       text-white rounded-lg font-semibold hover:shadow-lg 
-                       transition-all transform hover:scale-105"
+            className="px-10 py-3 bg-gradient-to-r from-primary to-primaryDark 
+                       text-white rounded-lg font-semibold shadow-xl 
+                       transition-all transform hover:scale-105 text-lg"
           >
             {currentStep === totalSteps
               ? isEditMode
@@ -410,10 +522,10 @@ function Step1BasicInfo({ formData, handleChange }) {
           <User className="w-7 h-7 text-primary" />
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-textDark">
+          <h2 className="text-3xl font-bold text-textDark">
             Basic Information
           </h2>
-          <p className="text-textLight">Tell us about yourself</p>
+          <p className="text-textLight text-lg">Tell us about yourself</p>
         </div>
       </div>
 
@@ -427,8 +539,8 @@ function Step1BasicInfo({ formData, handleChange }) {
           value={formData.name}
           onChange={(e) => handleChange('name', e.target.value)}
           placeholder="Enter your name"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg 
-                     focus:ring-2 focus:ring-primary focus:border-transparent
+          className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
+                     focus:ring-3 focus:ring-primary focus:border-transparent
                      transition-all"
         />
       </div>
@@ -443,8 +555,8 @@ function Step1BasicInfo({ formData, handleChange }) {
           value={formData.age}
           onChange={(e) => handleChange('age', e.target.value)}
           placeholder="22"
-          className="w-full px-4 py-3 border border-gray-300 rounded-lg 
-                     focus:ring-2 focus:ring-primary focus:border-transparent
+          className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
+                     focus:ring-3 focus:ring-primary focus:border-transparent
                      transition-all"
         />
       </div>
@@ -522,22 +634,21 @@ function Step2Metrics({
         <label className="block text-sm font-medium text-textDark mb-2">
           Height <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-3 items-center">
           <input
             type="number"
             value={formData.height}
             onChange={(e) => handleChange('height', e.target.value)}
             placeholder="188"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
+            className="flex-1 px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
+                       focus:ring-3 focus:ring-primary focus:border-transparent
                        transition-all"
           />
           <select
             value={formData.heightUnit}
             onChange={(e) => handleChange('heightUnit', e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary
-                       transition-all"
+            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm
+                       focus:ring-3 focus:ring-primary transition-all"
           >
             <option value="cm">cm</option>
             <option value="ft">ft</option>
@@ -550,22 +661,21 @@ function Step2Metrics({
         <label className="block text-sm font-medium text-textDark mb-2">
           Weight <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-2">
+        <div className="flex gap-3 items-center">
           <input
             type="number"
             value={formData.weight}
             onChange={(e) => handleChange('weight', e.target.value)}
             placeholder="90"
-            className="flex-1 px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
+            className="flex-1 px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
+                       focus:ring-3 focus:ring-primary focus:border-transparent
                        transition-all"
           />
           <select
             value={formData.weightUnit}
             onChange={(e) => handleChange('weightUnit', e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary
-                       transition-all"
+            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm
+                       focus:ring-3 focus:ring-primary transition-all"
           >
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>
@@ -650,12 +760,17 @@ function Step3Activity({ formData, handleChange }) {
             type="button"
             onClick={() => handleChange('activityLevel', activity.value)}
             className={
-              `w-full p-4 border-2 rounded-xl text-left transition-all hover:shadow-md ` +
+              `relative w-full p-4 border-2 rounded-xl text-left transition-all hover:shadow-md ` +
               (formData.activityLevel === activity.value
                 ? 'border-primary bg-primaryLight40 ring-2 ring-primaryLight70'
                 : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
             }
           >
+            {formData.activityLevel === activity.value && (
+              <span className="absolute top-3 right-3 bg-green-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow">
+                <Check className="w-4 h-4" />
+              </span>
+            )}
             <div className="flex items-center gap-4">
               <span>{activity.icon}</span>
               <div className="flex-1">
@@ -666,9 +781,6 @@ function Step3Activity({ formData, handleChange }) {
                   {activity.description}
                 </div>
               </div>
-              {formData.activityLevel === activity.value && (
-                <span className="text-primary text-2xl">✓</span>
-              )}
             </div>
           </button>
         ))}
@@ -736,12 +848,17 @@ function Step4Diet({ formData, handleChange }) {
               type="button"
               onClick={() => handleChange('dietaryPreference', option.value)}
               className={
-                `p-4 border-2 rounded-lg text-center transition-all ` +
+                `relative p-4 border-2 rounded-lg text-center transition-all ` +
                 (formData.dietaryPreference === option.value
                   ? 'border-primary bg-primaryLight40 shadow-md'
                   : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
               }
             >
+              {formData.dietaryPreference === option.value && (
+                <span className="absolute top-3 right-3 bg-green-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow">
+                  <Check className="w-4 h-4" />
+                </span>
+              )}
               <div className="mb-2 flex justify-center">{option.icon}</div>
               <div className="font-medium text-textDark">{option.label}</div>
             </button>
@@ -763,7 +880,7 @@ function Step4Diet({ formData, handleChange }) {
             onChange={(e) =>
               handleChange('mealsPerDay', parseInt(e.target.value))
             }
-            className="flex-1 h-2 bg-primaryLight40 rounded-lg appearance-none cursor-pointer accent-primary"
+            className="flex-1 h-3 bg-primaryLight40 rounded-lg appearance-none cursor-pointer accent-primary shadow-sm"
             style={{
               background: `linear-gradient(to right, #83D385 0%, #83D385 ${((formData.mealsPerDay - 2) / 4) * 100}%, #e5e7eb ${((formData.mealsPerDay - 2) / 4) * 100}%, #e5e7eb 100%)`,
             }}
@@ -772,7 +889,7 @@ function Step4Diet({ formData, handleChange }) {
             {formData.mealsPerDay}
           </span>
         </div>
-        <div className="flex justify-between text-xs text-textLight mt-1">
+        <div className="flex justify-between text-sm text-textLight mt-2">
           <span>2 meals</span>
           <span>6 meals</span>
         </div>
@@ -892,7 +1009,7 @@ function Step5Goals({ formData, handleChange }) {
               type="button"
               onClick={() => handleChange('fitnessGoal', goal.value)}
               className={`
-                p-6 border-2 rounded-xl text-center transition-all
+                relative p-6 border-2 rounded-xl text-center transition-all
                 hover:shadow-md
                 ${
                   formData.fitnessGoal === goal.value
@@ -901,6 +1018,11 @@ function Step5Goals({ formData, handleChange }) {
                 }
               `}
             >
+              {formData.fitnessGoal === goal.value && (
+                <span className="absolute top-3 right-3 bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow">
+                  <Check className="w-4 h-4" />
+                </span>
+              )}
               <div className="mb-2 flex justify-center">{goal.icon}</div>
               <div className="font-semibold text-textDark">{goal.label}</div>
             </button>
