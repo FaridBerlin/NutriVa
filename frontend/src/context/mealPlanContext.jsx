@@ -174,7 +174,8 @@ export function MealPlanProvider({ children }) {
 
   // Auto-fetch latest plan when user logs in
   useEffect(() => {
-    if (user) {
+    if (user && user.profileCompleted) {
+      // Only fetch if user has completed profile
       fetchLatestPlan()
     } else {
       setActivePlan(null)

@@ -9,30 +9,26 @@ export function AuthProvider({ children }) {
 
   // Function to verify token and get user data
   const verifyToken = async () => {
-    const token = localStorage.getItem('token')
-
-    if (!token) {
-      setIsLoading(false)
-      return
-    }
-
     try {
-      // Call backend to verify token and get user data
+      // Call backend to verify token (stored in httpOnly cookie)
       const response = await api.get('/auth/me')
       setUser(response.data.user)
     } catch (error) {
-      // Token is invalid or expired, remove it
-      localStorage.removeItem('token')
       setUser(null)
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Logout function
-  const logout = () => {
-    localStorage.removeItem('token')
-    setUser(null)
+  const logout = async () => {
+    try {
+      // clear cookie
+      await api.post('/auth/logout')
+    } catch (error) {
+      console.error('Logout error:', error)
+    } finally {
+      setUser(null)
+    }
   }
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 
@@ -13,9 +13,11 @@ import {
   Leaf,
 } from 'lucide-react'
 import { useProfile } from '../context/ProfileContext'
+import { AuthContext } from '../context/AuthContext'
 
 export default function ProfileForm() {
   const { refreshProfile } = useProfile()
+  const { user } = useContext(AuthContext)
   const navigate = useNavigate()
   const [currentStep, setCurrentStep] = useState(1)
   const [isLoading, setIsLoading] = useState(true)
@@ -50,6 +52,12 @@ export default function ProfileForm() {
   // Load existing profile data on mount
   useEffect(() => {
     const loadExistingProfile = async () => {
+      // Don't try to load if user hasn't completed profile
+      if (!user?.profileCompleted) {
+        setIsLoading(false)
+        return
+      }
+
       try {
         setIsLoading(true)
         const response = await api.get('/profile')

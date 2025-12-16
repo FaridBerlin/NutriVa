@@ -26,7 +26,6 @@ export default function LoginForm() {
     setError('')
     try {
       const response = await api.post('/auth/login', formData)
-      localStorage.setItem('token', response.data.token)
       setUser(response.data.user)
 
       if (!response.data.user.profileCompleted) {
