@@ -3,20 +3,6 @@ import { User, Activity, Utensils, Target } from 'lucide-react'
 export default function ProfileOverview({ profile }) {
   const cards = [
     {
-      title: 'Personal Details',
-      icon: User,
-      color: 'blue',
-      data: [
-        { label: 'Name', value: profile?.name || 'Not set' },
-        { label: 'Email', value: profile?.email || 'Not set' },
-        {
-          label: 'Age',
-          value: profile?.age ? `${profile.age} years` : 'Not set',
-        },
-        { label: 'Gender', value: profile?.gender || 'Not set' },
-      ],
-    },
-    {
       title: 'Body Metrics',
       icon: Activity,
       color: 'green',
