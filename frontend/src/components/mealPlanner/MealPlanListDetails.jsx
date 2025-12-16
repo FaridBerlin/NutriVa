@@ -1,4 +1,4 @@
-import { useMealPlan } from '../context/mealPlanContext'
+import { useMealPlan } from '../../context/mealPlanContext'
 
 export default function MealPlanListDetails({ onBack }) {
   const { activePlan } = useMealPlan()
@@ -12,15 +12,11 @@ export default function MealPlanListDetails({ onBack }) {
         ← Back to plans
       </button>
 
-      <h2 className="text-2xl font-bold">
-        {activePlan.name}
-      </h2>
+      <h2 className="text-2xl font-bold">{activePlan.name}</h2>
 
       {activePlan.days.map((day, index) => (
         <div key={index} className="border rounded p-4">
-          <h3 className="font-semibold mb-2">
-            Day {index + 1}
-          </h3>
+          <h3 className="font-semibold mb-2">Day {index + 1}</h3>
 
           {day.meals.map((meal, i) => (
             <p key={i} className="text-sm">

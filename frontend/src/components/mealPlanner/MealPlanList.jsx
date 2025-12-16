@@ -1,10 +1,12 @@
 // my meal planner in seidebar
 
-import { useState, useEffect } from 'react'
-import { useMealPlan } from '../context/mealPlanContext'
-import MealPlanListDetails from './MealPlanListDetails'// 2 steps to detail view
+import { useState, useEffect, useContext } from 'react'
+import { AuthContext } from '../../context/AuthContext'
+import { useMealPlan } from '../../context/mealPlanContext'
+import MealPlanListDetails from './MealPlanListDetails' // 2 steps to detail view
 
 export default function MealPlanList() {
+  const { user } = useContext(AuthContext)
   const {
     allPlans,
     fetchAllPlans,
@@ -18,8 +20,11 @@ export default function MealPlanList() {
   const [showDetails, setShowDetails] = useState(false)
 
   useEffect(() => {
-    fetchAllPlans()
-  }, [])
+    // Only fetch plans if user is logged in
+    if (user) {
+      fetchAllPlans()
+    }
+  }, [user])
 
   const handleView = async (planId) => {
     await setActiveById(planId)
