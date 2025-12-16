@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import mealApi from '../api/mealApi'
 
 const DIET_TYPES = ['veg', 'non-veg', 'vegan', 'eggetarian']
 const ALLERGENS = ['dairy', 'gluten', 'nuts', 'soy', 'eggs', 'shellfish']
@@ -56,8 +57,8 @@ export default function MealPlanner() {
     }
     setLoading(true)
     try {
-      // TODO: Replace with real API call
-      await new Promise((res) => setTimeout(res, 1200))
+      // Call backend API to generate meal plan
+      await mealApi.generateMealPlan(form)
       setSuccess('Meal plan generated successfully!')
       setForm({
         planName: '',

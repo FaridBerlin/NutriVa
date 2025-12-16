@@ -1,6 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
+
+import {
+  User,
+  BarChart2,
+  Dumbbell,
+  Utensils,
+  Target,
+  Flame,
+  Drumstick,
+  Leaf,
+} from 'lucide-react'
 import { useProfile } from '../context/ProfileContext'
 
 export default function ProfileForm() {
@@ -102,13 +113,13 @@ export default function ProfileForm() {
   // Progress Percentage
   const progressPercentage = (currentStep / totalSteps) * 100
 
-  // Steps Configuration
+  // Steps Configuration (lucide-react icons)
   const steps = [
-    { number: 1, label: 'Basic', icon: '👤' },
-    { number: 2, label: 'Metrics', icon: '📊' },
-    { number: 3, label: 'Activity', icon: '💪' },
-    { number: 4, label: 'Diet', icon: '🍽️' },
-    { number: 5, label: 'Goals', icon: '🎯' },
+    { number: 1, label: 'Basic', icon: <User className="w-6 h-6" /> },
+    { number: 2, label: 'Metrics', icon: <BarChart2 className="w-6 h-6" /> },
+    { number: 3, label: 'Activity', icon: <Dumbbell className="w-6 h-6" /> },
+    { number: 4, label: 'Diet', icon: <Utensils className="w-6 h-6" /> },
+    { number: 5, label: 'Goals', icon: <Target className="w-6 h-6" /> },
   ]
 
   // Handle Input Change
@@ -317,7 +328,7 @@ export default function ProfileForm() {
                   ${currentStep === step.number ? 'ring-4 ring-primaryLight70' : ''}
                 `}
                 >
-                  {currentStep > step.number ? '✓' : step.number}
+                  {currentStep > step.number ? '✓' : step.icon}
                 </div>
                 <span className="text-xs mt-1 text-textLight font-medium">
                   {step.label}
@@ -380,7 +391,7 @@ function Step1BasicInfo({ formData, handleChange }) {
     <div>
       <div className="flex items-center gap-3 mb-6">
         <div className="w-12 h-12 bg-primaryLight40 rounded-full flex items-center justify-center text-2xl">
-          👤
+          <User className="w-7 h-7 text-primary" />
         </div>
         <div>
           <h2 className="text-2xl font-bold text-textDark">
@@ -429,24 +440,36 @@ function Step1BasicInfo({ formData, handleChange }) {
         </label>
         <div className="grid grid-cols-3 gap-4">
           {[
-            { value: 'male', label: 'Male', emoji: '👨' },
-            { value: 'female', label: 'Female', emoji: '👩' },
-            { value: 'other', label: 'Other', emoji: '🧑' },
+            {
+              value: 'male',
+              label: 'Male',
+              color: 'text-blue-500',
+            },
+            {
+              value: 'female',
+              label: 'Female',
+              color: 'text-pink-500',
+            },
+            {
+              value: 'other',
+              label: 'Other',
+              color: 'text-gray-400',
+            },
           ].map((option) => (
             <button
               key={option.value}
               type="button"
               onClick={() => handleChange('gender', option.value)}
-              className={`
-                p-4 border-2 rounded-lg text-center transition-all
-                ${
-                  formData.gender === option.value
-                    ? 'border-primary bg-primaryLight40 shadow-md'
-                    : 'border-gray-200 hover:border-primary hover:bg-primaryLight40'
-                }
-              `}
+              className={
+                `p-4 border-2 rounded-lg text-center transition-all ` +
+                (formData.gender === option.value
+                  ? 'border-primary bg-primaryLight40 shadow-md'
+                  : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
+              }
             >
-              <div className="text-3xl mb-2">{option.emoji}</div>
+              <div className={`mb-2 flex justify-center`}>
+                <User className={`w-7 h-7 mx-auto ${option.color}`} />
+              </div>
               <div className="font-medium text-textDark">{option.label}</div>
             </button>
           ))}
@@ -564,31 +587,31 @@ function Step3Activity({ formData, handleChange }) {
       value: 'sedentary',
       label: 'Sedentary',
       description: 'Little or no exercise, desk job',
-      emoji: '🪑',
+      icon: <User className="w-7 h-7 mx-auto text-gray-400" />,
     },
     {
       value: 'light',
       label: 'Lightly Active',
       description: 'Light exercise 1-3 days/week',
-      emoji: '🚶',
+      icon: <User className="w-7 h-7 mx-auto text-green-400" />,
     },
     {
       value: 'moderate',
       label: 'Moderately Active',
       description: 'Moderate exercise 3-5 days/week',
-      emoji: '🏃',
+      icon: <BarChart2 className="w-7 h-7 mx-auto text-blue-400" />,
     },
     {
       value: 'active',
       label: 'Very Active',
       description: 'Hard exercise 6-7 days/week',
-      emoji: '🏋️',
+      icon: <Dumbbell className="w-7 h-7 mx-auto text-purple-500" />,
     },
     {
       value: 'very_active',
       label: 'Extra Active',
       description: 'Very hard exercise, physical job',
-      emoji: '💪',
+      icon: <Flame className="w-7 h-7 mx-auto text-orange-500" />,
     },
   ]
 
@@ -610,18 +633,15 @@ function Step3Activity({ formData, handleChange }) {
             key={activity.value}
             type="button"
             onClick={() => handleChange('activityLevel', activity.value)}
-            className={`
-              w-full p-4 border-2 rounded-xl text-left transition-all
-              hover:shadow-md
-              ${
-                formData.activityLevel === activity.value
-                  ? 'border-primary bg-primaryLight40 ring-2 ring-primaryLight70'
-                  : 'border-gray-200 hover:border-primary hover:bg-primaryLight40'
-              }
-            `}
+            className={
+              `w-full p-4 border-2 rounded-xl text-left transition-all hover:shadow-md ` +
+              (formData.activityLevel === activity.value
+                ? 'border-primary bg-primaryLight40 ring-2 ring-primaryLight70'
+                : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
+            }
           >
             <div className="flex items-center gap-4">
-              <span className="text-3xl">{activity.emoji}</span>
+              <span>{activity.icon}</span>
               <div className="flex-1">
                 <div className="font-semibold text-textDark text-lg">
                   {activity.label}
@@ -647,9 +667,21 @@ function Step4Diet({ formData, handleChange }) {
   const [allergyInput, setAllergyInput] = useState('')
 
   const dietOptions = [
-    { value: 'veg', label: 'Vegetarian', emoji: '🥗' },
-    { value: 'nonveg', label: 'Non-Veg', emoji: '🍗' },
-    { value: 'vegan', label: 'Vegan', emoji: '🌱' },
+    {
+      value: 'veg',
+      label: 'Vegetarian',
+      icon: <Utensils className="w-7 h-7 mx-auto text-green-500" />,
+    },
+    {
+      value: 'nonveg',
+      label: 'Non-Veg',
+      icon: <Drumstick className="w-7 h-7 mx-auto text-orange-500" />,
+    },
+    {
+      value: 'vegan',
+      label: 'Vegan',
+      icon: <Leaf className="w-7 h-7 mx-auto text-lime-600" />,
+    },
   ]
 
   const addAllergy = () => {
@@ -687,16 +719,14 @@ function Step4Diet({ formData, handleChange }) {
               key={option.value}
               type="button"
               onClick={() => handleChange('dietaryPreference', option.value)}
-              className={`
-                p-4 border-2 rounded-lg text-center transition-all
-                ${
-                  formData.dietaryPreference === option.value
-                    ? 'border-primary bg-primaryLight40 shadow-md'
-                    : 'border-gray-200 hover:border-primary hover:bg-primaryLight40'
-                }
-              `}
+              className={
+                `p-4 border-2 rounded-lg text-center transition-all ` +
+                (formData.dietaryPreference === option.value
+                  ? 'border-primary bg-primaryLight40 shadow-md'
+                  : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
+              }
             >
-              <div className="text-3xl mb-2">{option.emoji}</div>
+              <div className="mb-2 flex justify-center">{option.icon}</div>
               <div className="font-medium text-textDark">{option.label}</div>
             </button>
           ))}
@@ -791,22 +821,22 @@ function Step5Goals({ formData, handleChange }) {
     {
       value: 'lose_weight',
       label: 'Lose Weight',
-      icon: '📉',
+      icon: <BarChart2 className="w-8 h-8 mx-auto text-blue-500" />, // Downward trend
     },
     {
       value: 'gain_weight',
       label: 'Gain Weight',
-      icon: '📈',
+      icon: <BarChart2 className="w-8 h-8 mx-auto text-green-500 rotate-180" />, // Upward trend (rotated)
     },
     {
       value: 'build_muscle',
       label: 'Build Muscle',
-      icon: '💪',
+      icon: <Dumbbell className="w-8 h-8 mx-auto text-purple-500" />, // Muscle
     },
     {
       value: 'maintain_weight',
       label: 'Maintain',
-      icon: '⚖️',
+      icon: <Target className="w-8 h-8 mx-auto text-gray-500" />, // Target/Balance
     },
   ]
 
@@ -855,7 +885,7 @@ function Step5Goals({ formData, handleChange }) {
                 }
               `}
             >
-              <div className="text-4xl mb-2">{goal.icon}</div>
+              <div className="mb-2 flex justify-center">{goal.icon}</div>
               <div className="font-semibold text-textDark">{goal.label}</div>
             </button>
           ))}

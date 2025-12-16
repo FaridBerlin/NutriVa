@@ -1,6 +1,8 @@
+// my meal planner in seidebar
+
 import { useState, useEffect } from 'react'
 import { useMealPlan } from '../context/mealPlanContext'
-import MealPlanListDetails from './MealPlanListDetails'
+import MealPlanListDetails from './MealPlanListDetails'// 2 steps to detail view
 
 export default function MealPlanList() {
   const {

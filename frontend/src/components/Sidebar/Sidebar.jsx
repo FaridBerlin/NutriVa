@@ -5,23 +5,29 @@ import NutrivaLogo from '../NutrivaLogo'
 // Icon imports from lucide-react
 import {
   LayoutDashboard,
-  User,
-  Activity,
-  Heart,
-  Apple,
-  Calendar,
   Utensils,
-  List,
-  MessageSquare,
-  PlusCircle,
   Wand2,
   LogOut,
   Settings,
   Home,
-  Droplet,
+  PlusCircle,
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
+  // Add My Meal Planner to the sidebar
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    {
+      id: 'my-meal-plans',
+      label: 'My Meal Plans',
+      icon: Utensils,
+    },
+    {
+      id: 'create-plan',
+      label: 'Create Your Meal Plans',
+      icon: PlusCircle,
+    },
+  ]
   const { logout } = useContext(AuthContext)
   const navigate = useNavigate()
 
@@ -29,34 +35,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
     logout()
     navigate('/')
   }
-  const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'profile', label: 'Profile', icon: User },
-    { id: 'bmi', label: 'BMI & Goals', icon: Activity },
-    { id: 'metrics', label: 'Health Metrics', icon: Heart },
-    { id: 'plan', label: 'Your Plan', icon: Apple },
-    { id: 'calendar', label: 'Calendar', icon: Calendar },
-    {
-      id: 'meals',
-      label: 'Meal Planner',
-      icon: Utensils,
-      badge: 'Soon',
-      badgeColor: 'orange',
-    },
-     {id: 'meal-plans',
-    label: 'Mealplan List',
-    icon: List
-    },
-    {
-      id: 'ai',
-      label: 'AI Assistant',
-      icon: MessageSquare,
-      badge: 'New',
-      badgeColor: 'green',
-    },
-    { id: 'create-meal', label: 'Create Meal', icon: PlusCircle },
-    { id: 'water-tracker', label: 'Water Tracker', icon: Droplet },
-  ]
+  // (duplicate removed above)
 
   return (
     <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm">
@@ -109,27 +88,20 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           {/* Separator */}
           <li className="pt-2 border-t border-gray-200"></li>
 
-          {/* Create Your Plan - AI */}
+          {/* Create Your Plan - AI ( onClick) */}
           <li>
-            <button
-              onClick={() => onSectionChange('create-plan')}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 hover:from-purple-100 hover:to-pink-100 hover:shadow-md hover:scale-[1.02] hover:border-purple-300 group ${
-                activeSection === 'create-plan'
-                  ? 'ring-2 ring-purple-300 shadow-md'
-                  : ''
-              }`}
-            >
+            <div className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 mt-2 select-none opacity-80 cursor-not-allowed">
               <Wand2
                 size={18}
-                className="text-purple-600 transition-transform duration-200 group-hover:rotate-12"
+                className="text-purple-600 transition-transform duration-200"
               />
               <span className="font-semibold text-purple-900 flex-1">
-                Create Your Plan
+                Create Your Meal Plans
               </span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white font-semibold">
                 AI
               </span>
-            </button>
+            </div>
           </li>
         </ul>
 
@@ -144,7 +116,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               size={18}
               className="transition-transform duration-200 group-hover:scale-110"
             />
-            <span className="font-medium">Back to Home</span>
+            <span className="font-medium"> Home Page</span>
           </Link>
 
           {/* Settings */}
