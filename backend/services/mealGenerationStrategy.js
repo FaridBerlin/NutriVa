@@ -30,8 +30,8 @@ export class MealGenerationStrategy {
 export class MockMealGenerator extends MealGenerationStrategy {
   async generate(params) {
     // Import utility functions
-    const { calculateBMR, calculateTDEE } = await import('../utils/nutritionCalculations.js')
-    const mealPlanService = await import('./mealPlanService.js')
+    const { calculateBMR, calculateTDEE } =
+      await import('../utils/nutritionCalculations.js')
     const {
       adjustCaloriesForGoal,
       calculateMacroTargets,
@@ -40,7 +40,7 @@ export class MockMealGenerator extends MealGenerationStrategy {
       calculateMacroPercentages,
       validateNutrition,
       generatePlanNutritionSummary,
-    } = mealPlanService.default
+    } = await import('../utils/mealPlanUtils.js')
 
     // Replicate the current generateMealPlan logic
     const {
@@ -250,7 +250,9 @@ export class OllamaMealGenerator extends MealGenerationStrategy {
     // 5. Validate and repair JSON if needed
     // 6. Return structured meal plan
 
-    throw new Error('OllamaMealGenerator not yet implemented. Use MOCK generator.')
+    throw new Error(
+      'OllamaMealGenerator not yet implemented. Use MOCK generator.',
+    )
   }
 }
 
@@ -269,6 +271,8 @@ export class OpenAIMealGenerator extends MealGenerationStrategy {
     // 6. Validate and repair JSON if needed
     // 7. Return structured meal plan
 
-    throw new Error('OpenAIMealGenerator not yet implemented. Use MOCK generator.')
+    throw new Error(
+      'OpenAIMealGenerator not yet implemented. Use MOCK generator.',
+    )
   }
 }
