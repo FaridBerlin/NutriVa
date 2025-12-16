@@ -2,7 +2,6 @@ import { Schema, model } from 'mongoose'
 import {
   calculateBMR,
   calculateTDEE,
-  calculateMacros,
 } from '../utils/nutritionCalculations.js'
 
 const profileSchema = new Schema(
@@ -91,12 +90,6 @@ profileSchema.methods.getDailyCalories = function () {
   }
 
   return Math.round(dailyCalories)
-}
-
-// Method to calculate daily macros based on foodType
-profileSchema.methods.getDailyMacros = function () {
-  const dailyCalories = this.getDailyCalories()
-  return calculateMacros(dailyCalories, this.foodType || 'balanced')
 }
 
 // Include virtuals in JSON
