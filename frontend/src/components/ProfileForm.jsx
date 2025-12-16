@@ -51,13 +51,20 @@ export default function ProfileForm() {
 
   // Load existing profile data on mount
   useEffect(() => {
-    const loadExistingProfile = async () => {
-      // Don't try to load if user hasn't completed profile
-      if (!user?.profileCompleted) {
-        setIsLoading(false)
-        return
-      }
+    if (!user) {
+      // No user yet; wait for authentication to finish
+      return
+    }
 
+    // If user exists but hasn't completed profile, prefill name and stop.
+    if (!user.profileCompleted) {
+      setFormData((prev) => ({ ...prev, name: user.name || prev.name }))
+      setIsEditMode(false)
+      setIsLoading(false)
+      return
+    }
+
+    const loadExistingProfile = async () => {
       try {
         setIsLoading(true)
         const response = await api.get('/profile')
@@ -90,6 +97,7 @@ export default function ProfileForm() {
       }
     }
 
+    // Only attempt to load the profile if the backend marks it completed
     loadExistingProfile()
   }, [])
 
