@@ -1,6 +1,7 @@
 import express from 'express'
 import connectDB from './config/dbConnect.js'
 import cors from 'cors'
+import cookieParser from 'cookie-parser'
 import authRoutes from './routes/auth.js'
 
 import userRouter from './routes/userRoutes.js'
@@ -16,6 +17,7 @@ const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173' // from 
 const app = express()
 
 app.use(express.json())
+app.use(cookieParser())
 
 app.use(
   cors({

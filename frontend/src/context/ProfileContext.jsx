@@ -227,10 +227,11 @@ export function ProfileProvider({ children }) {
 
   // Fetch profile when user changes
   useEffect(() => {
-    if (user) {
+    if (user && user.profileCompleted) {
+      // Only fetch if user has completed profile
       fetchProfile()
     } else {
-      // Clear profile when user logs out
+      // Clear profile when user logs out or hasn't completed profile
       setProfile(null)
       setNutritionTargets(null)
       setLastFetch(null)

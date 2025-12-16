@@ -1,5 +1,10 @@
 import express from 'express'
-import { signup, login, getUser } from '../controllers/authController.js'
+import {
+  signup,
+  login,
+  getUser,
+  logout,
+} from '../controllers/authController.js'
 import { protect } from '../middleware/authMiddleware.js'
 import {
   validateSignup,
@@ -17,5 +22,8 @@ router.post('/login', validateLogin, handleValidationErrors, login)
 
 // GET /api/auth/me - Get current authenticated user (verify token)
 router.get('/me', protect, getUser)
+
+// POST /api/auth/logout - Logout user (clear cookie)
+router.post('/logout', logout)
 
 export default router

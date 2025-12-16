@@ -35,7 +35,6 @@ export default function SignupForm() {
     setError('')
     try {
       const response = await api.post('/auth/signup', formData)
-      localStorage.setItem('token', response.data.token)
       setUser(response.data.user)
       navigate('/profile')
     } catch (err) {
