@@ -11,7 +11,6 @@ export default function DashboardStats({ stats }) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
 
-  // حساب السعرات بناءً على الوزن الجديد
   const calories = stats?.dailyCalories || 2000
   const bmi = stats?.bmi || 24.5
   const daysLeft = stats?.daysLeft || 30
