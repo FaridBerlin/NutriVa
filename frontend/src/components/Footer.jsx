@@ -154,22 +154,22 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/privacy"
                   className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  to="/terms"
                   className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Terms of Service
-                </a>
+                </Link>
               </li>
             </ul>
 
@@ -237,24 +237,24 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-6 text-sm">
-              <a
-                href="#"
+              <Link
+                to="/privacy"
                 className="text-gray-500 hover:text-primary transition-colors"
               >
                 Privacy
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/terms"
                 className="text-gray-500 hover:text-primary transition-colors"
               >
                 Terms
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/privacy#cookies"
                 className="text-gray-500 hover:text-primary transition-colors"
               >
                 Cookies
-              </a>
+              </Link>
             </div>
 
             <p className="text-gray-600 text-sm flex items-center gap-2">
