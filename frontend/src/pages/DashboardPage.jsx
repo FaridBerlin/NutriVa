@@ -178,7 +178,6 @@ export default function DashboardPage() {
               />
               <HealthMetrics metrics={metricsData} />
               <PlanSummary plan={planData} />
-              <WaterTracker />
             </>
           )}
         </div>

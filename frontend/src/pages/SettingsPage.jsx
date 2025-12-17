@@ -205,12 +205,13 @@ export default function SettingsPage() {
       }
 
       if (warnings.length > 0) {
-        // Show warnings and keep user on settings so they can review
+        // Show warnings but still navigate to profile as before
         setMessage({
           type: 'warning',
           text: warnings.join(' · '),
         })
-        // Do not navigate away automatically when there are warnings
+        // navigate to profile even if there are warnings
+        navigate('/profile')
         return
       }
 

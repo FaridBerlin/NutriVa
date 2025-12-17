@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-export default function WaterTracker({ weight = 70 }) {
+export default function WaterTracker({ weight = 70, compact = false }) {
   // default weight 70 kg if not provided
   const dailyGoal = Math.round(weight * 35) // daily goal based on weight (35 ml per kg)
   const [waterIntake, setWaterIntake] = useState(0) // amount of water consumed
@@ -45,6 +45,46 @@ export default function WaterTracker({ weight = 70 }) {
   }
 
   const isGoalReached = waterIntake >= dailyGoal // if goal is reached
+
+  if (compact) {
+    // compact card style matching dashboard cards
+    return (
+      <div className="bg-white rounded-xl shadow-md p-4 border border-gray-100 hover:shadow-lg transition-shadow">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-sm text-textLight">Water</h3>
+          <span className="text-lg font-semibold text-textDark">
+            {Math.min(waterIntake, dailyGoal)} ml
+          </span>
+        </div>
+        <p className="text-xs text-textLight">Goal: {dailyGoal} ml</p>
+
+        {/* compact controls */}
+        <div className="flex items-center gap-2 mt-3">
+          <button
+            className="bg-blue-500 text-white text-xs px-2 py-1 rounded hover:bg-blue-600"
+            onClick={() => handleAddWater(250)}
+            title="Add 250ml"
+          >
+            +250
+          </button>
+          <button
+            className="bg-red-500 text-white text-xs px-2 py-1 rounded hover:bg-red-600"
+            onClick={() => handleSubtractWater(250)}
+            title="Remove 250ml"
+          >
+            -250
+          </button>
+          <button
+            className="bg-gray-500 text-white text-xs px-2 py-1 rounded hover:bg-gray-600 ml-auto"
+            onClick={resetIntake}
+            title="Reset"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="bg-blue-100 p-4 rounded-lg shadow-md relative">
