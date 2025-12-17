@@ -1,4 +1,3 @@
-// AuthContext import for user data
 export default function DashboardHeader({ userName }) {
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
@@ -10,15 +9,16 @@ export default function DashboardHeader({ userName }) {
   return (
     <div className="bg-gradient-to-r from-primary to-primaryDark p-6 shadow-md rounded-b-2xl">
       <div className="flex items-center justify-between">
-        <div>
+        {/* Left: Weight (fixed 50kg, inline) */}
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-white/90">Weight</span>
+          <span className="text-lg font-semibold text-white">50 kg</span>
+        </div>
+
+        {/* Right: Username + date */}
+        <div className="text-right">
           <h1 className="text-3xl font-bold text-white">{userName}</h1>
           <p className="text-white/90 mt-1">{currentDate}</p>
-        </div>
-        <div className="flex items-center gap-3">
-          <div className="text-right text-white/90">
-            <p className="text-sm">Daily Progress</p>
-            <p className="text-lg font-semibold">72%</p>
-          </div>
         </div>
       </div>
     </div>
