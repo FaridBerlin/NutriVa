@@ -1,5 +1,9 @@
 import Profile from '../models/Profile.js'
 import User from '../models/User.js'
+import {
+  bmiPercent as calcBmiPercent,
+  bmiCategory as calcBmiCategory,
+} from '../utils/nutritionCalculations.js'
 
 export const completeProfile = async (req, res, next) => {
   try {
@@ -66,6 +70,8 @@ export const completeProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: calcBmiPercent(profile.bmi),
+          bmiCategory: calcBmiCategory(profile.bmi),
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),
@@ -121,6 +127,8 @@ export const getProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: calcBmiPercent(profile.bmi),
+          bmiCategory: calcBmiCategory(profile.bmi),
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),
@@ -190,6 +198,8 @@ export const updateProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: calcBmiPercent(profile.bmi),
+          bmiCategory: calcBmiCategory(profile.bmi),
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),

@@ -7,8 +7,20 @@ import {
   RadialBar,
   Legend,
 } from 'recharts'
+import {
+  getBMIColor,
+  bmiPercent as calcBmiPercent,
+  bmiCategory as calcBmiCategory,
+} from '../../utils/bmiUtils'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
 
-export default function BMIGoals({ bmi, bmiCategory, goals }) {
+export default function BMIGoals({
+  bmi,
+  bmiCategory: bmiCategoryProp,
+  bmiPercent: bmiPercentProp,
+  goals,
+}) {
   const progressData = [
     {
       name: 'Calories',
@@ -57,13 +69,7 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
     { name: 'Fats', value: goals?.fatsCurrent || 45, fill: '#f97316' },
   ]
 
-  const getBMIColor = (bmi) => {
-    if (!bmi) return '#83D385'
-    if (bmi < 18.5) return '#3b82f6'
-    if (bmi < 25) return '#83D385'
-    if (bmi < 30) return '#f97316'
-    return '#ef4444'
-  }
+  // use centralized BMI color helper from utils
 
   return (
     <div>
@@ -72,47 +78,45 @@ export default function BMIGoals({ bmi, bmiCategory, goals }) {
       </h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* BMI Analysis with Gauge */}
+        {/* BMI Analysis with Circular Progress (consistent with other cards) */}
         <div className="bg-white rounded-xl shadow-md p-6 border border-gray-100">
           <h3 className="text-xl font-semibold text-center mb-4">
             BMI Analysis
           </h3>
           <div className="flex flex-col items-center">
-            <div className="relative w-48 h-48">
-              <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={[
-                      { value: bmi || 24.5, fill: getBMIColor(bmi) },
-                      { value: 40 - (bmi || 24.5), fill: '#e5e7eb' },
-                    ]}
-                    cx="50%"
-                    cy="50%"
-                    startAngle={180}
-                    endAngle={0}
-                    innerRadius={60}
-                    outerRadius={80}
-                    dataKey="value"
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-              <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span
-                  className="text-4xl font-bold"
-                  style={{ color: getBMIColor(bmi) }}
-                >
-                  {bmi?.toFixed(1) || '24.5'}
-                </span>
-                <span className="text-sm text-textLight">BMI</span>
-              </div>
+            <div className="relative">
+              {/* prefer backend-provided percent if available, otherwise calculate */}
+              {(() => {
+                const displayPercent =
+                  typeof bmiPercentProp !== 'undefined'
+                    ? bmiPercentProp
+                    : calcBmiPercent(bmi)
+                const displayCategory = bmiCategoryProp || calcBmiCategory(bmi)
+                const color = getBMIColor(bmi)
+                return (
+                  <div className="flex flex-col items-center">
+                    <div style={{ width: 140, height: 140 }}>
+                      <CircularProgressbar
+                        value={displayPercent}
+                        text={`${(bmi || 0).toFixed(1)}`}
+                        styles={buildStyles({
+                          pathColor: color,
+                          textColor: color,
+                          trailColor: '#e5e7eb',
+                          textSize: '20px',
+                        })}
+                      />
+                    </div>
+                    <p className="text-lg font-semibold mt-2" style={{ color }}>
+                      {displayCategory}
+                    </p>
+                    <p className="text-sm text-textLight">
+                      Healthy Range: 18.5 - 24.9
+                    </p>
+                  </div>
+                )
+              })()}
             </div>
-            <p
-              className="text-lg font-semibold mt-2"
-              style={{ color: getBMIColor(bmi) }}
-            >
-              {bmiCategory || 'Healthy'}
-            </p>
-            <p className="text-sm text-textLight">Healthy Range: 18.5 - 24.9</p>
           </div>
         </div>
 
