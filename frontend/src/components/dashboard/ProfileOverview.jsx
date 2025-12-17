@@ -64,6 +64,22 @@ export default function ProfileOverview({ profile }) {
     },
   ]
 
+  // Compute simple progress toward target weight
+  let progressPercent = null
+  let remainingKg = null
+  if (profile?.weight && profile?.targetWeight) {
+    const current = Number(profile.weight)
+    const target = Number(profile.targetWeight)
+    const diff = Math.abs(current - target)
+    // Simple closeness metric: percent = 100 when equal, else reduce proportionally
+    // We use current as denominator to avoid division by zero
+    progressPercent =
+      current > 0
+        ? Math.round(Math.max(0, Math.min(100, (1 - diff / current) * 100)))
+        : 0
+    remainingKg = Math.round(diff * 10) / 10
+  }
+
   const colorClasses = {
     blue: { bg: 'bg-blue-50', text: 'text-blue-500' },
     green: { bg: 'bg-green-50', text: 'text-green-500' },
@@ -102,6 +118,32 @@ export default function ProfileOverview({ profile }) {
                     </span>
                   </div>
                 ))}
+                {/* Progress bar for target weight (show only in Fitness Goals card) */}
+                {card.title === 'Fitness Goals' &&
+                  profile?.weight &&
+                  profile?.targetWeight && (
+                    <div className="mt-3">
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="text-textLight">
+                          Progress to target
+                        </span>
+                        <span className="font-semibold text-textDark">
+                          {progressPercent}%
+                        </span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                        <div
+                          className="h-3 rounded-full bg-gradient-to-r from-green-400 to-teal-500"
+                          style={{ width: `${progressPercent}%` }}
+                        />
+                      </div>
+                      <div className="text-xs text-textLight mt-2">
+                        {remainingKg === 0
+                          ? 'At target weight ✅'
+                          : `${remainingKg} kg to go`}
+                      </div>
+                    </div>
+                  )}
               </div>
             </div>
           )

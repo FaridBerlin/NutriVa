@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
+import { useProfile } from '../context/ProfileContext'
 import api from '../services/api'
 import {
   Settings,
@@ -24,6 +25,7 @@ import {
 
 export default function SettingsPage() {
   const { user } = useContext(AuthContext)
+  const { refreshProfile } = useProfile()
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
@@ -39,6 +41,9 @@ export default function SettingsPage() {
     gender: '',
     height: '',
     weight: '',
+    // target weight fields
+    targetWeight: '',
+    targetWeightUnit: 'kg',
     activityLevel: '',
     dietaryGoal: '',
     foodType: '',
@@ -69,6 +74,10 @@ export default function SettingsPage() {
             gender: profileData.gender || '',
             height: profileData.height?.toString() || '',
             weight: profileData.weight?.toString() || '',
+            targetWeight: profileData.targetWeight
+              ? profileData.targetWeight.toString()
+              : '',
+            targetWeightUnit: profileData.targetWeight ? 'kg' : 'kg',
             activityLevel: profileData.activityLevel || '',
             dietaryGoal: profileData.dietaryGoal || '',
             foodType: profileData.foodType || '',
@@ -173,8 +182,39 @@ export default function SettingsPage() {
         foodType: formData.foodType || undefined,
       }
 
-      await api.put('/profile', profileData)
-      // Navigate to profile page after successful save
+      // Normalize target weight to kg if provided
+      if (formData.targetWeight) {
+        const raw = parseFloat(formData.targetWeight)
+        if (!isNaN(raw)) {
+          const normalized =
+            formData.targetWeightUnit === 'lbs' ? raw * 0.453592 : raw
+          profileData.targetWeight = Math.round(normalized * 10) / 10
+        }
+      }
+
+      const response = await api.put('/profile', profileData)
+
+      // Check for server-side warnings
+      const warnings = response?.data?.data?.warnings || []
+
+      // Refresh profile context so UI updates everywhere
+      try {
+        await refreshProfile()
+      } catch (err) {
+        // ignore refresh errors
+      }
+
+      if (warnings.length > 0) {
+        // Show warnings and keep user on settings so they can review
+        setMessage({
+          type: 'warning',
+          text: warnings.join(' · '),
+        })
+        // Do not navigate away automatically when there are warnings
+        return
+      }
+
+      // No warnings, proceed to profile page
       navigate('/profile')
     } catch (error) {
       console.error('Error updating profile:', error)
@@ -239,7 +279,9 @@ export default function SettingsPage() {
             className={`mb-6 p-4 rounded-lg ${
               message.type === 'success'
                 ? 'bg-green-100 text-green-700 border border-green-300'
-                : 'bg-red-100 text-red-700 border border-red-300'
+                : message.type === 'warning'
+                  ? 'bg-amber-50 text-amber-800 border border-amber-300'
+                  : 'bg-red-100 text-red-700 border border-red-300'
             }`}
           >
             {message.text}
@@ -479,6 +521,38 @@ export default function SettingsPage() {
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                   placeholder="e.g., 70"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-textDark mb-2">
+                  Target Weight (optional)
+                </label>
+                <div className="flex gap-2">
+                  <input
+                    type="number"
+                    value={formData.targetWeight}
+                    onChange={(e) =>
+                      handleChange('targetWeight', e.target.value)
+                    }
+                    min="20"
+                    max="500"
+                    step="0.1"
+                    className="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    placeholder="e.g., 75"
+                  />
+                  <select
+                    value={formData.targetWeightUnit}
+                    onChange={(e) =>
+                      handleChange('targetWeightUnit', e.target.value)
+                    }
+                    className="px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  >
+                    <option value="kg">kg</option>
+                    <option value="lbs">lbs</option>
+                  </select>
+                </div>
+                <p className="text-xs text-textLight mt-1">
+                  Set a goal weight to track progress.
+                </p>
               </div>
             </div>
           </div>

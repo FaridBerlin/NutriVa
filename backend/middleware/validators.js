@@ -25,14 +25,37 @@ export const validateProfile = [
     .isFloat({ min: 50, max: 300 })
     .withMessage('Height must be between 50 and 300 cm'),
   body('weight')
-    .isFloat({ min: 20, max: 500 })
-    .withMessage('Weight must be between 20 and 500 kg'),
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Weight must be between 40 and 150 kg'),
   body('activityLevel')
     .isIn(['sedentary', 'light', 'moderate', 'active', 'very_active'])
     .withMessage('Invalid activity level'),
   body('dietaryGoal')
     .isIn(['lose_weight', 'maintain_weight', 'gain_weight', 'build_muscle'])
     .withMessage('Invalid dietary goal'),
+  // Optional target weight (kg)
+  body('targetWeight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Target weight must be between 40 and 150 kg'),
+  // Optional start weight (kg) - initial point for progress tracking
+  body('startWeight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Start weight must be between 40 and 150 kg'),
+  // Optional weight history: array of { weight, date }
+  body('weightHistory')
+    .optional()
+    .isArray()
+    .withMessage('weightHistory must be an array'),
+  body('weightHistory.*.weight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Each history weight must be between 40 and 150 kg'),
+  body('weightHistory.*.date')
+    .optional()
+    .isISO8601()
+    .withMessage('Each history date must be a valid ISO8601 date'),
 ]
 
 export const validateProfileUpdate = [
@@ -50,8 +73,8 @@ export const validateProfileUpdate = [
     .withMessage('Height must be between 50 and 300 cm'),
   body('weight')
     .optional()
-    .isFloat({ min: 20, max: 500 })
-    .withMessage('Weight must be between 20 and 500 kg'),
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Weight must be between 40 and 150 kg'),
   body('activityLevel')
     .optional()
     .isIn(['sedentary', 'light', 'moderate', 'active', 'very_active'])
@@ -60,6 +83,29 @@ export const validateProfileUpdate = [
     .optional()
     .isIn(['lose_weight', 'maintain_weight', 'gain_weight', 'build_muscle'])
     .withMessage('Invalid dietary goal'),
+  // Optional target weight (kg)
+  body('targetWeight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Target weight must be between 40 and 150 kg'),
+  // Optional start weight (kg) - initial point for progress tracking
+  body('startWeight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Start weight must be between 40 and 150 kg'),
+  // Optional weight history: array of { weight, date }
+  body('weightHistory')
+    .optional()
+    .isArray()
+    .withMessage('weightHistory must be an array'),
+  body('weightHistory.*.weight')
+    .optional()
+    .isFloat({ min: 40, max: 150 })
+    .withMessage('Each history weight must be between 40 and 150 kg'),
+  body('weightHistory.*.date')
+    .optional()
+    .isISO8601()
+    .withMessage('Each history date must be a valid ISO8601 date'),
 ]
 
 // Meal validation
