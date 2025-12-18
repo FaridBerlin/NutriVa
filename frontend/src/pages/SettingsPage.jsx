@@ -348,7 +348,7 @@ export default function SettingsPage() {
               </div>
             )}
 
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid md:grid-cols-3 gap-6">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Current Password
@@ -449,7 +449,7 @@ export default function SettingsPage() {
                 <select
                   value={formData.gender}
                   onChange={(e) => handleChange('gender', e.target.value)}
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="w-full px-4 py-3 h-14 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -458,24 +458,24 @@ export default function SettingsPage() {
                 </select>
               </div>
 
-              <div>
+              <div className="md:col-span-3">
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Food Preference
                 </label>
-                <div className="flex gap-2">
+                <div className="flex gap-3 items-stretch">
                   {foodTypes.map((type) => (
                     <button
                       key={type.value}
                       type="button"
                       onClick={() => handleChange('foodType', type.value)}
-                      className={`flex-1 p-3 rounded-lg border-2 flex items-center justify-center gap-2 transition-all ${
+                      className={`flex-1 h-14 p-4 rounded-lg border-2 flex items-center justify-center gap-3 transition-all ${
                         formData.foodType === type.value
                           ? 'border-primary bg-primaryLight40'
                           : 'border-gray-200 hover:border-primary'
                       }`}
                     >
                       <type.Icon
-                        className={`w-5 h-5 ${formData.foodType === type.value ? 'text-primary' : 'text-textLight'}`}
+                        className={`w-6 h-6 ${formData.foodType === type.value ? 'text-primary' : 'text-textLight'}`}
                       />
                       <span className="text-sm font-medium">{type.label}</span>
                     </button>
