@@ -26,6 +26,7 @@ export default function ProfileForm() {
   const totalSteps = 5
   const [formError, setFormError] = useState('')
   const [showError, setShowError] = useState(false)
+  const [serverWarnings, setServerWarnings] = useState([])
 
   // Form Data State
   const [formData, setFormData] = useState({
@@ -47,6 +48,10 @@ export default function ProfileForm() {
     dietaryPreference: '',
     mealsPerDay: 3,
     allergies: [],
+
+    // Target weight (optional)
+    targetWeight: '',
+    targetWeightUnit: 'kg',
 
     // Step 5: Goals
     fitnessGoal: '',
@@ -89,6 +94,12 @@ export default function ProfileForm() {
             activityLevel: profile.activityLevel || '',
             dietaryPreference: profile.foodType || '',
             fitnessGoal: profile.dietaryGoal || '',
+            targetWeight: profile.targetWeight
+              ? profile.targetWeight.toString()
+              : '',
+            targetWeightUnit: profile.targetWeight
+              ? 'kg'
+              : prev.targetWeightUnit,
           }))
         }
       } catch (error) {
@@ -245,6 +256,16 @@ export default function ProfileForm() {
       }
 
       // Transform data to match Backend expected format
+      // Convert targetWeight to kg if provided
+      let normalizedTargetWeight = undefined
+      if (formData.targetWeight) {
+        const raw = parseFloat(formData.targetWeight)
+        if (!isNaN(raw)) {
+          normalizedTargetWeight =
+            formData.targetWeightUnit === 'lbs' ? raw * 0.453592 : raw
+        }
+      }
+
       const profileData = {
         age: parseInt(formData.age),
         gender: formData.gender.toLowerCase(), // male, female, other
@@ -252,6 +273,9 @@ export default function ProfileForm() {
         weight: parseFloat(formData.weight),
         activityLevel: formData.activityLevel, // sedentary, light, moderate, active, very_active
         dietaryGoal: formData.fitnessGoal, // lose_weight, maintain_weight, gain_weight, build_muscle
+        ...(normalizedTargetWeight
+          ? { targetWeight: Math.round(normalizedTargetWeight * 10) / 10 }
+          : {}),
       }
 
       console.log('Profile data to send:', JSON.stringify(profileData, null, 2))
@@ -269,8 +293,17 @@ export default function ProfileForm() {
 
       if (response.status === 200 || response.status === 201) {
         console.log('Profile created successfully:', response.data)
+        const warnings = response?.data?.data?.warnings || []
+
         // Refresh ProfileContext so Dashboard gets the new data
         await refreshProfile()
+
+        if (warnings.length > 0) {
+          // Show warnings and keep user on the form so they can review
+          setServerWarnings(warnings)
+          return
+        }
+
         navigate('/dashboard')
       }
     } catch (error) {
@@ -306,8 +339,16 @@ export default function ProfileForm() {
             const updateResponse = await api.put('/profile', profileData)
             if (updateResponse.status === 200) {
               console.log('Profile updated successfully')
+              const warnings = updateResponse?.data?.data?.warnings || []
+
               // Refresh ProfileContext so Dashboard gets the updated data
               await refreshProfile()
+
+              if (warnings.length > 0) {
+                setServerWarnings(warnings)
+                return
+              }
+
               navigate('/dashboard')
               return
             }
@@ -468,6 +509,29 @@ export default function ProfileForm() {
           >
             {formError}
           </div>
+          {serverWarnings.length > 0 && (
+            <div className="mb-4 p-3 rounded-md bg-amber-50 border border-amber-200 text-amber-800">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <strong className="block">Warning</strong>
+                  <ul className="mt-2 list-disc list-inside text-sm">
+                    {serverWarnings.map((w, i) => (
+                      <li key={i}>{w}</li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <button
+                    type="button"
+                    onClick={() => setServerWarnings([])}
+                    className="text-sm text-amber-700 underline"
+                  >
+                    Dismiss
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
           {renderStepContent()}
         </div>
 
@@ -1028,6 +1092,33 @@ function Step5Goals({ formData, handleChange }) {
             </button>
           ))}
         </div>
+      </div>
+
+      {/* Target Weight */}
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-textDark mb-3">
+          Target Weight (optional)
+        </label>
+        <div className="flex gap-3 items-center">
+          <input
+            type="number"
+            value={formData.targetWeight}
+            onChange={(e) => handleChange('targetWeight', e.target.value)}
+            placeholder="e.g., 75"
+            className="flex-1 px-5 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-3 focus:ring-primary"
+          />
+          <select
+            value={formData.targetWeightUnit}
+            onChange={(e) => handleChange('targetWeightUnit', e.target.value)}
+            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-3 focus:ring-primary"
+          >
+            <option value="kg">kg</option>
+            <option value="lbs">lbs</option>
+          </select>
+        </div>
+        <p className="text-sm text-textLight mt-2">
+          Optional: set a goal weight to track progress.
+        </p>
       </div>
 
       {/* Profile Summary */}

@@ -27,6 +27,7 @@ import {
   Clock,
   Loader2,
 } from 'lucide-react'
+import Card from '../components/ui/Card'
 
 export default function ProfilePage() {
   const { user } = useContext(AuthContext)
@@ -203,39 +204,37 @@ export default function ProfilePage() {
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-          <div className="bg-white rounded-xl shadow p-4 text-center">
+          <Card className="text-center">
             <Ruler className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-textDark">
               {profile.height || '—'}
             </p>
             <p className="text-xs text-textLight">Height (cm)</p>
-          </div>
+          </Card>
 
-          <div className="bg-white rounded-xl shadow p-4 text-center">
+          <Card className="text-center">
             <Weight className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-textDark">
               {profile.weight || '—'}
             </p>
             <p className="text-xs text-textLight">Weight (kg)</p>
-          </div>
+          </Card>
 
-          <div
-            className={`rounded-xl shadow p-4 text-center ${bmiCategory.bg}`}
-          >
+          <Card className={`text-center ${bmiCategory.bg}`}>
             <Heart className="w-6 h-6 text-primary mx-auto mb-2" />
             <p className="text-2xl font-bold text-textDark">{bmi || '—'}</p>
             <p className={`text-xs font-medium ${bmiCategory.color}`}>
               {bmiCategory.text}
             </p>
-          </div>
+          </Card>
 
-          <div className="bg-white rounded-xl shadow p-4 text-center">
+          <Card className="text-center">
             <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
             <p className="text-2xl font-bold text-textDark">
               {nutritionTargets?.dailyCalories || '—'}
             </p>
             <p className="text-xs text-textLight">Daily Calories</p>
-          </div>
+          </Card>
         </div>
 
         {/* Personal Information */}

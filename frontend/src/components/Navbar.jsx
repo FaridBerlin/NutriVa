@@ -59,17 +59,9 @@ export default function Navbar() {
                   className="flex items-center text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-200 hover:ring-4 hover:ring-gray-200 transition-all duration-300"
                 >
                   <span className="sr-only">Open user menu</span>
-                  {user.profileImage ? (
-                    <img
-                      className="w-9 h-9 rounded-full object-cover ring-2 ring-gray-300"
-                      src={user.profileImage}
-                      alt={user.name}
-                    />
-                  ) : (
-                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-sm ring-2 ring-gray-300">
-                      {getUserInitials()}
-                    </div>
-                  )}
+                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-sm ring-2 ring-gray-300">
+                    {getUserInitials()}
+                  </div>
                 </button>
 
                 {/* Dropdown Menu */}

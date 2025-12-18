@@ -12,9 +12,20 @@ export const completeProfile = async (req, res, next) => {
       })
     }
 
-    const { age, gender, height, weight, activityLevel, dietaryGoal } = req.body
+    const {
+      age,
+      gender,
+      height,
+      weight,
+      activityLevel,
+      dietaryGoal,
+      targetWeight,
+      startWeight,
+      weightHistory,
+    } = req.body
 
-    const profile = await Profile.create({
+    // Build create payload and ensure startWeight/weightHistory are initialized
+    const createData = {
       user: userId,
       age,
       gender,
@@ -22,7 +33,28 @@ export const completeProfile = async (req, res, next) => {
       weight,
       activityLevel,
       dietaryGoal,
-    })
+      targetWeight,
+    }
+
+    // If a startWeight was provided, use it; otherwise default to current weight
+    if (typeof startWeight !== 'undefined' && startWeight !== null) {
+      createData.startWeight = startWeight
+    } else if (typeof weight !== 'undefined' && weight !== null) {
+      createData.startWeight = weight
+    }
+
+    // Initialize weightHistory: prefer provided history, else add the current weight point
+    if (Array.isArray(weightHistory) && weightHistory.length > 0) {
+      // normalize entries: ensure { weight: Number, date: Date }
+      createData.weightHistory = weightHistory.map((entry) => ({
+        weight: Number(entry.weight),
+        date: entry.date ? new Date(entry.date) : new Date(),
+      }))
+    } else if (typeof weight !== 'undefined' && weight !== null) {
+      createData.weightHistory = [{ weight: Number(weight), date: new Date() }]
+    }
+
+    const profile = await Profile.create(createData)
 
     //we need to import User here - this is very important to be updated
     await User.findByIdAndUpdate(userId, { profileCompleted: true })
@@ -34,10 +66,35 @@ export const completeProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: profile.bmiPercent ?? null,
+          bmiCategory: profile.bmiCategory ?? null,
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),
         },
+        warnings: (() => {
+          const warnings = []
+          try {
+            const current = Number(profile.weight)
+            const target = Number(profile.targetWeight)
+            if (target && current) {
+              const percentChange = Math.abs(target - current) / current
+              if (percentChange > 0.4) {
+                warnings.push(
+                  'Target weight differs from current weight by more than 40% — this may be unrealistic',
+                )
+              }
+              if (target < 30) {
+                warnings.push(
+                  'Target weight is below the recommended safety threshold',
+                )
+              }
+            }
+          } catch (err) {
+            // ignore
+          }
+          return warnings
+        })(),
       },
     })
   } catch (error) {
@@ -66,6 +123,8 @@ export const getProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: profile.bmiPercent ?? null,
+          bmiCategory: profile.bmiCategory ?? null,
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),
@@ -81,17 +140,52 @@ export const updateProfile = async (req, res, next) => {
   try {
     const userId = req.user._id
 
-    const profile = await Profile.findOneAndUpdate({ user: userId }, req.body, {
-      new: true,
-      runValidators: true,
+    // Load existing profile to allow appending to history when weight changes
+    const existingProfile = await Profile.findOne({ user: userId })
+    if (!existingProfile) {
+      return res
+        .status(404)
+        .json({ success: false, message: 'Profile not found' })
+    }
+
+    const { weight, startWeight, weightHistory } = req.body
+
+    // If weight provided and different, append to history
+    if (typeof weight !== 'undefined' && weight !== null) {
+      const newWeight = Number(weight)
+      if (!isNaN(newWeight) && newWeight !== existingProfile.weight) {
+        existingProfile.weightHistory = existingProfile.weightHistory || []
+        existingProfile.weightHistory.push({
+          weight: newWeight,
+          date: new Date(),
+        })
+      }
+    }
+
+    // If explicit weightHistory provided, merge/replace (here we append provided entries)
+    if (Array.isArray(weightHistory) && weightHistory.length > 0) {
+      existingProfile.weightHistory = existingProfile.weightHistory || []
+      const normalized = weightHistory.map((entry) => ({
+        weight: Number(entry.weight),
+        date: entry.date ? new Date(entry.date) : new Date(),
+      }))
+      existingProfile.weightHistory.push(...normalized)
+    }
+
+    // If startWeight provided, update it
+    if (typeof startWeight !== 'undefined' && startWeight !== null) {
+      existingProfile.startWeight = Number(startWeight)
+    }
+
+    // Apply other updates from body (excluding weightHistory which we've handled)
+    const updatable = { ...req.body }
+    delete updatable.weightHistory
+    // assign remaining fields onto the document
+    Object.keys(updatable).forEach((k) => {
+      existingProfile[k] = updatable[k]
     })
 
-    if (!profile) {
-      return res.status(404).json({
-        success: false,
-        message: 'Profile not found',
-      })
-    }
+    const profile = await existingProfile.save()
 
     res.status(200).json({
       success: true,
@@ -100,10 +194,35 @@ export const updateProfile = async (req, res, next) => {
         profile: profile.toJSON(),
         nutritionTargets: {
           bmi: profile.bmi,
+          bmiPercent: profile.bmiPercent ?? null,
+          bmiCategory: profile.bmiCategory ?? null,
           bmr: profile.bmr,
           tdee: profile.getTDEE(),
           targetCalories: profile.getDailyCalories(),
         },
+        warnings: (() => {
+          const warnings = []
+          try {
+            const current = Number(profile.weight)
+            const target = Number(profile.targetWeight)
+            if (target && current) {
+              const percentChange = Math.abs(target - current) / current
+              if (percentChange > 0.4) {
+                warnings.push(
+                  'Target weight differs from current weight by more than 40% — this may be unrealistic',
+                )
+              }
+              if (target < 30) {
+                warnings.push(
+                  'Target weight is below the recommended safety threshold',
+                )
+              }
+            }
+          } catch (err) {
+            // ignore
+          }
+          return warnings
+        })(),
       },
     })
   } catch (error) {

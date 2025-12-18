@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import  { useState, useEffect } from 'react'
 import { Droplet, Plus, Minus } from 'lucide-react'
 import { useProfile } from '../../context/ProfileContext'
 
@@ -24,7 +24,6 @@ const WaterTracker = () => {
     const reached = consumed >= dailyLiters
     console.log('Checking goal reached:', { consumed, dailyLiters, reached })
     setShowBanner(reached)
-    // alert removed: only show green banner as requested
   }, [consumed, dailyLiters])
 
   const handleAdd = () => {
@@ -56,7 +55,6 @@ const WaterTracker = () => {
     <div
       className={`relative mx-auto mt-10 max-w-lg w-full transform transition-all duration-300 rounded-2xl p-8 bg-gradient-to-br from-white to-blue-50 shadow-2xl flex flex-col items-center ${showBanner ? 'ring-4 ring-green-300' : 'ring-0'}`}
     >
-      {/* Inline success message inside the card (no background) */}
       {showBanner && (
         <p className="mt-2 text-green-600 font-bold">✅ Goal reached!</p>
       )}

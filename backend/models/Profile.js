@@ -1,8 +1,5 @@
 import { Schema, model } from 'mongoose'
-import {
-  calculateBMR,
-  calculateTDEE,
-} from '../utils/nutritionCalculations.js'
+import { calculateBMR, calculateTDEE } from '../utils/nutritionCalculations.js'
 
 const profileSchema = new Schema(
   {
@@ -28,6 +25,8 @@ const profileSchema = new Schema(
     weight: {
       type: Number,
       required: true,
+      min: 40,
+      max: 150,
     },
     activityLevel: {
       type: String,
@@ -44,6 +43,26 @@ const profileSchema = new Schema(
       required: true,
       default: 'maintain_weight',
     },
+    // Optional: target weight (in kilograms). Stored in kg for consistency.
+    // Apply logical bounds: 40-150 kg.
+    targetWeight: {
+      type: Number,
+      min: 40,
+      max: 150,
+    },
+    // Optional: starting weight used as baseline for progress tracking
+    startWeight: {
+      type: Number,
+      min: 40,
+      max: 150,
+    },
+    // Weight history: array of records { weight, date }
+    weightHistory: [
+      {
+        weight: { type: Number, min: 40, max: 150 },
+        date: { type: Date, default: Date.now },
+      },
+    ],
   },
   { timestamps: true },
 )

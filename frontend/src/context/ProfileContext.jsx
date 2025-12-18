@@ -88,8 +88,11 @@ export function ProfileProvider({ children }) {
     setProfile(optimisticProfile)
 
     try {
-      const { data, error: apiError } =
-        await profileApi.createProfile(profileData)
+      const {
+        data,
+        calculations,
+        error: apiError,
+      } = await profileApi.createProfile(profileData)
 
       if (apiError) {
         // Rollback on error
@@ -98,10 +101,13 @@ export function ProfileProvider({ children }) {
         setError(apiError)
         return { success: false, error: apiError }
       }
-
       // Update with actual data from server
-      setProfile(data.profile)
-      setNutritionTargets(data.nutritionTargets)
+      // profileApi may return different shapes; normalize
+      const profileObj = data?.profile || data || null
+      const nutritionObj = data?.nutritionTargets || calculations || null
+
+      setProfile(profileObj)
+      setNutritionTargets(nutritionObj)
       setLastFetch(Date.now())
 
       return { success: true, data }
@@ -130,8 +136,11 @@ export function ProfileProvider({ children }) {
     setProfile({ ...profile, ...profileData })
 
     try {
-      const { data, error: apiError } =
-        await profileApi.updateProfile(profileData)
+      const {
+        data,
+        calculations,
+        error: apiError,
+      } = await profileApi.updateProfile(profileData)
 
       if (apiError) {
         // Rollback on error
@@ -140,10 +149,12 @@ export function ProfileProvider({ children }) {
         setError(apiError)
         return { success: false, error: apiError }
       }
-
       // Update with actual data from server
-      setProfile(data.profile)
-      setNutritionTargets(data.nutritionTargets)
+      const profileObj = data?.profile || data || null
+      const nutritionObj = data?.nutritionTargets || calculations || null
+
+      setProfile(profileObj)
+      setNutritionTargets(nutritionObj)
       setLastFetch(Date.now())
 
       return { success: true, data }
