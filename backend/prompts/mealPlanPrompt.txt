@@ -1,0 +1,44 @@
+Create a {{planDuration}}-day meal plan ({{mealPerDay}} meals/day):
+
+USER PROFILE:
+Age: {{age}} | Gender: {{gender}} | Weight: {{weight}}kg | Height: {{height}}cm
+Activity: {{activityLevel}} | Goal: {{fitnessGoal}}
+Diet Type: {{foodType}} | Allergies: {{restrictionsAndAllergies}}
+
+DIETARY RULES FOR "{{foodType}}":
+- veg: Only plant-based + dairy (no meat, fish, eggs, poultry)
+- non-veg: Include meat, fish, poultry, eggs + plant-based
+- both: Mix of vegetarian and non-vegetarian meals
+
+MEAL REQUIREMENTS:
+• {{mealPerDay}} meals/day (Breakfast, Lunch, Dinner, Snack)
+• International cuisines (Indian, Mediterranean, Asian, Western, etc.)
+• Each meal needs:
+  {
+    "type": "Breakfast/Lunch/Dinner/Snack",
+    "dishName": "Meal name",
+    "description": "Brief 15-20 word description",
+    "cookingMethod": "Grilled/Boiled/Stir-fried/etc",
+    "nutrition": {"calories": 0, "protein": 0, "carbs": 0, "fat": 0},
+    "keyIngredients": ["item1", "item2", "item3"]
+  }
+
+REQUIRED JSON OUTPUT (no markdown, no extra text):
+{
+  "days": [
+    {
+      "dayNumber": 1,
+      "meals": [
+        /* {{mealPerDay}} meals here */
+      ]
+    }
+    /* ... continue for all {{planDuration}} days */
+  ]
+}
+
+CRITICAL:
+✓ Return EXACTLY {{planDuration}} days
+✓ Each day has EXACTLY {{mealPerDay}} meals
+✓ Respect "{{foodType}}" dietary preference
+✓ Calculate realistic nutrition values
+✓ Pure JSON only - no comments or markdown

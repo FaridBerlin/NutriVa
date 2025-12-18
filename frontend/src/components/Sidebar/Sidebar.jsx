@@ -88,20 +88,27 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           {/* Separator */}
           <li className="pt-2 border-t border-gray-200"></li>
 
-          {/* Create Your Plan - AI ( onClick) */}
+          {/* AI Diet Planner with Ollama */}
           <li>
-            <div className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 mt-2 select-none opacity-80 cursor-not-allowed">
+            <button
+              onClick={() => onSectionChange('ai-diet-planner')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 mt-2 transition-all duration-200 hover:shadow-lg hover:scale-[1.02] group ${
+                activeSection === 'ai-diet-planner'
+                  ? 'ring-2 ring-purple-400 shadow-md'
+                  : ''
+              }`}
+            >
               <Wand2
                 size={18}
-                className="text-purple-600 transition-transform duration-200"
+                className="text-purple-600 transition-transform duration-200 group-hover:rotate-12"
               />
               <span className="font-semibold text-purple-900 flex-1">
-                Create Your Meal Plans
+                AI Diet Planner
               </span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white font-semibold">
                 AI
               </span>
-            </div>
+            </button>
           </li>
         </ul>
 
