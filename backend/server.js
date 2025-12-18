@@ -8,6 +8,7 @@ import userRouter from './routes/userRoutes.js'
 import profileRouter from './routes/profileRoutes.js'
 import mealRouter from './routes/mealRoutes.js'
 import mealPlanRouter from './routes/mealPlanRoutes.js'
+import aiMealPlanRouter from './routes/aiMealPlanRoutes.js'
 
 connectDB()
 
@@ -34,10 +35,17 @@ app.use('/api/profile', profileRouter)
 app.use('/api/meal', mealRouter)
 app.use('/api/meal-plans', mealPlanRouter)
 
+app.use('/api/ai-meal-plans', aiMealPlanRouter)
+
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || 'Server Error' })
 })
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is listening on port: ${PORT}`)
 })
+
+// Increase timeout for LLM processing (3 minutes)
+server.timeout = 180000
+server.keepAliveTimeout = 185000
+server.headersTimeout = 190000

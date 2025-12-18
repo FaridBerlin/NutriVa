@@ -7,6 +7,7 @@
  */
 
 import mealDatabase from '../data/mealDatabase.js'
+import mealTemplates from '../data/mealTemplates.js'
 import { calculateBMR, calculateTDEE } from './nutritionCalculations.js'
 
 /**
@@ -343,4 +344,97 @@ export function generatePlanNutritionSummary(planData, targets) {
       averageFatVariance: Math.round(averages.fat - targets.fat),
     },
   }
+}
+
+/**
+ * Generate a meal plan using templates (fallback/fast generation)
+ * @param {number} planDuration - Number of days (3-30)
+ * @param {number} mealPerDay - Meals per day (2-6)
+ * @param {string} foodType - 'veg', 'nonveg', or 'both'
+ * @returns {Object} - Meal plan structure with days array
+ */
+export function generateTemplateMealPlan(planDuration, mealPerDay, foodType) {
+  const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'].slice(
+    0,
+    mealPerDay,
+  )
+  const days = []
+
+  for (let dayNum = 1; dayNum <= planDuration; dayNum++) {
+    const dayMeals = []
+
+    for (const mealType of mealTypes) {
+      const dietType =
+        foodType === 'both'
+          ? Math.random() > 0.5
+            ? 'veg'
+            : 'nonveg'
+          : foodType
+      const availableMeals =
+        mealTemplates[dietType]?.[mealType] || mealTemplates.veg[mealType]
+
+      // Select random meal from comprehensive templates
+      const randomMeal =
+        availableMeals[Math.floor(Math.random() * availableMeals.length)]
+
+      dayMeals.push({
+        type: mealType,
+        dishName: randomMeal.dishName,
+        description: randomMeal.description,
+        nutrition: randomMeal.nutrition,
+        keyIngredients: randomMeal.keyIngredients || [],
+        cookingMethod: randomMeal.cookingMethod || 'Cooked',
+      })
+    }
+
+    days.push({
+      dayNumber: dayNum,
+      meals: dayMeals,
+    })
+  }
+
+  return { days }
+}
+
+/**
+ * Validate and fix AI-generated meal plan
+ * @param {Object} aiResult - Raw AI output
+ * @param {number} planDuration - Expected number of days
+ * @param {number} mealPerDay - Expected meals per day
+ * @param {string} foodType - Diet preference
+ * @returns {Object} - Validated meal plan
+ */
+export function validateAndFixMealPlan(
+  aiResult,
+  planDuration,
+  mealPerDay,
+  foodType,
+) {
+  if (!aiResult?.days || !Array.isArray(aiResult.days)) {
+    console.warn('Invalid AI result structure, using template fallback')
+    return generateTemplateMealPlan(planDuration, mealPerDay, foodType)
+  }
+
+  const validatedDays = []
+
+  for (let i = 0; i < planDuration; i++) {
+    const day = aiResult.days[i]
+
+    if (!day || !day.meals || day.meals.length !== mealPerDay) {
+      console.warn(`Day ${i + 1} invalid, generating template day`)
+      const templateDay = generateTemplateMealPlan(1, mealPerDay, foodType)
+        .days[0]
+      validatedDays.push({
+        ...templateDay,
+        dayNumber: i + 1,
+      })
+    } else {
+      validatedDays.push({
+        ...day,
+        dayNumber: i + 1,
+      })
+    }
+  }
+
+  return { days: validatedDays }
 }
