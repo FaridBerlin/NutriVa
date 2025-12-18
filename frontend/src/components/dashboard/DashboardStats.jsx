@@ -1,4 +1,4 @@
-//info from ProfileContext
+
 
 import { Flame, Target, TrendingUp } from 'lucide-react'
 import WaterTracker from '../WaterTracker'

@@ -1,8 +1,6 @@
-import React from 'react'
 
 export default function Card({ children, className = '' }) {
-  // Use a subtle base shadow, and on hover elevate with a stronger shadow + slight lift/scale.
-  // This creates a 4-level perceived depth: none -> sm -> md -> 2xl on hover (visually prominent).
+
   const base = [
     'bg-white',
     'rounded-xl',
