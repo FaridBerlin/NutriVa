@@ -95,6 +95,11 @@ profileSchema.methods.getTDEE = function () {
 // Method to calculate daily calorie goal based on dietary goal
 profileSchema.methods.getDailyCalories = function () {
   const tdee = this.getTDEE()
+
+   if (!Number.isFinite(tdee)) {
+    throw new Error('Invalid TDEE calculation. Profile data incomplete.')
+  }
+
   let dailyCalories = tdee
 
   // Adjust calories based on dietary goal
@@ -108,6 +113,10 @@ profileSchema.methods.getDailyCalories = function () {
     dailyCalories += 400 // 400 calorie surplus for muscle building
   }
 
+   if (!Number.isFinite(dailyCalories) || dailyCalories <= 0) {
+    throw new Error('Invalid daily calorie result')
+  }
+  
   return Math.round(dailyCalories)
 }
 
