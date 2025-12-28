@@ -1,5 +1,3 @@
-
-
 import { Flame, Target, TrendingUp } from 'lucide-react'
 import WaterTracker from '../WaterTracker'
 import SleepTracker from '../SleepTracker'
@@ -82,7 +80,14 @@ export default function DashboardStats({ stats }) {
           {/* BMI circular progress (matches Water/Sleep look) */}
           <div className="mt-4">
             <div className="flex justify-center">
-              <div style={{ width: '140px', height: '140px', minWidth: '140px', minHeight: '140px' }}>
+              <div
+                style={{
+                  width: '140px',
+                  height: '140px',
+                  minWidth: '140px',
+                  minHeight: '140px',
+                }}
+              >
                 <CircularProgressbar
                   value={bmiPercent}
                   text={`${bmi.toFixed(1)}`}

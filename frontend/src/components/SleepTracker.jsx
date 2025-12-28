@@ -52,7 +52,14 @@ export default function SleepTracker({ compact = false, stats = {} }) {
         </div>
 
         <div className="flex flex-col items-center justify-center min-h-[220px]">
-          <div style={{ width: '96px', height: '96px', minWidth: '96px', minHeight: '96px' }}>
+          <div
+            style={{
+              width: '96px',
+              height: '96px',
+              minWidth: '96px',
+              minHeight: '96px',
+            }}
+          >
             <CircularProgressbar
               value={percent}
               text={`${consumedCups}/${goalCups}`}

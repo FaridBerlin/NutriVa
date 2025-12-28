@@ -95,7 +95,14 @@ export default function BMIGoals({
                 const color = getBMIColor(bmi)
                 return (
                   <div className="flex flex-col items-center">
-                    <div style={{ width: '140px', height: '140px', minWidth: '140px', minHeight: '140px' }}>
+                    <div
+                      style={{
+                        width: '140px',
+                        height: '140px',
+                        minWidth: '140px',
+                        minHeight: '140px',
+                      }}
+                    >
                       <CircularProgressbar
                         value={displayPercent}
                         text={`${(bmi || 0).toFixed(1)}`}
@@ -126,26 +133,26 @@ export default function BMIGoals({
             Macros Distribution
           </h3>
           <div style={{ width: '100%', height: '200px', minHeight: '200px' }}>
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={macrosData}
-                cx="50%"
-                cy="50%"
-                innerRadius={50}
-                outerRadius={80}
-                paddingAngle={5}
-                dataKey="value"
-                label={({ name, percent }) =>
-                  `${name} ${(percent * 100).toFixed(0)}%`
-                }
-              >
-                {macrosData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.fill} />
-                ))}
-              </Pie>
-            </PieChart>
-          </ResponsiveContainer>
+            <ResponsiveContainer width="100%" height={200}>
+              <PieChart>
+                <Pie
+                  data={macrosData}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={50}
+                  outerRadius={80}
+                  paddingAngle={5}
+                  dataKey="value"
+                  label={({ name, percent }) =>
+                    `${name} ${(percent * 100).toFixed(0)}%`
+                  }
+                >
+                  {macrosData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Pie>
+              </PieChart>
+            </ResponsiveContainer>
           </div>
           <div className="flex justify-center gap-4 mt-2">
             {macrosData.map((item) => (
@@ -169,29 +176,29 @@ export default function BMIGoals({
           Daily Goals Progress
         </h3>
         <div style={{ width: '100%', height: '300px', minHeight: '300px' }}>
-        <ResponsiveContainer width="100%" height={300}>
-          <RadialBarChart
-            cx="50%"
-            cy="50%"
-            innerRadius="20%"
-            outerRadius="90%"
-            barSize={20}
-            data={radialData}
-            startAngle={180}
-            endAngle={-180}
-          >
-            <RadialBar background dataKey="value" cornerRadius={10} />
-            <Legend
-              iconSize={10}
-              layout="horizontal"
-              verticalAlign="bottom"
-              formatter={(value, entry) => {
-                const item = radialData.find((d) => d.name === value)
-                return `${value}: ${item?.current}/${item?.target} ${item?.unit}`
-              }}
-            />
-          </RadialBarChart>
-        </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={300}>
+            <RadialBarChart
+              cx="50%"
+              cy="50%"
+              innerRadius="20%"
+              outerRadius="90%"
+              barSize={20}
+              data={radialData}
+              startAngle={180}
+              endAngle={-180}
+            >
+              <RadialBar background dataKey="value" cornerRadius={10} />
+              <Legend
+                iconSize={10}
+                layout="horizontal"
+                verticalAlign="bottom"
+                formatter={(value, entry) => {
+                  const item = radialData.find((d) => d.name === value)
+                  return `${value}: ${item?.current}/${item?.target} ${item?.unit}`
+                }}
+              />
+            </RadialBarChart>
+          </ResponsiveContainer>
         </div>
       </div>
     </div>
