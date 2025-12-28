@@ -82,7 +82,7 @@ export default function DashboardStats({ stats }) {
           {/* BMI circular progress (matches Water/Sleep look) */}
           <div className="mt-4">
             <div className="flex justify-center">
-              <div style={{ width: 140, height: 140 }}>
+              <div style={{ width: '140px', height: '140px', minWidth: '140px', minHeight: '140px' }}>
                 <CircularProgressbar
                   value={bmiPercent}
                   text={`${bmi.toFixed(1)}`}
@@ -147,8 +147,8 @@ export default function DashboardStats({ stats }) {
           </div>
 
           <div className="mt-4">
-            <div style={{ width: '100%', height: 120 }}>
-              <ResponsiveContainer width="100%" height="100%">
+            <div style={{ width: '100%', height: '120px', minHeight: '120px' }}>
+              <ResponsiveContainer width="100%" height={120}>
                 <LineChart
                   data={chartData}
                   margin={{ top: 5, right: 10, left: 0, bottom: 5 }}

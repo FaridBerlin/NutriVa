@@ -95,7 +95,7 @@ export default function BMIGoals({
                 const color = getBMIColor(bmi)
                 return (
                   <div className="flex flex-col items-center">
-                    <div style={{ width: 140, height: 140 }}>
+                    <div style={{ width: '140px', height: '140px', minWidth: '140px', minHeight: '140px' }}>
                       <CircularProgressbar
                         value={displayPercent}
                         text={`${(bmi || 0).toFixed(1)}`}
@@ -125,6 +125,7 @@ export default function BMIGoals({
           <h3 className="text-xl font-semibold text-center mb-4">
             Macros Distribution
           </h3>
+          <div style={{ width: '100%', height: '200px', minHeight: '200px' }}>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
               <Pie
@@ -145,6 +146,7 @@ export default function BMIGoals({
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+          </div>
           <div className="flex justify-center gap-4 mt-2">
             {macrosData.map((item) => (
               <div key={item.name} className="flex items-center gap-2">
@@ -166,6 +168,7 @@ export default function BMIGoals({
         <h3 className="text-xl font-semibold text-center mb-4">
           Daily Goals Progress
         </h3>
+        <div style={{ width: '100%', height: '300px', minHeight: '300px' }}>
         <ResponsiveContainer width="100%" height={300}>
           <RadialBarChart
             cx="50%"
@@ -189,6 +192,7 @@ export default function BMIGoals({
             />
           </RadialBarChart>
         </ResponsiveContainer>
+        </div>
       </div>
     </div>
   )
