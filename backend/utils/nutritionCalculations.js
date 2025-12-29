@@ -11,7 +11,11 @@
 // }
 
 export const calculateBMR = ({ weight, height, age, gender }) => {
-  if (!Number.isFinite(weight) || !Number.isFinite(height) || !Number.isFinite(age)) {
+  if (
+    !Number.isFinite(weight) ||
+    !Number.isFinite(height) ||
+    !Number.isFinite(age)
+  ) {
     throw new Error('Invalid data for BMR calculation')
   }
 
@@ -21,8 +25,6 @@ export const calculateBMR = ({ weight, height, age, gender }) => {
 
   return Math.round(10 * weight + 6.25 * height - 5 * age - 161)
 }
-
-
 
 /**
  * Calculate Total Daily Energy Expenditure (TDEE)
