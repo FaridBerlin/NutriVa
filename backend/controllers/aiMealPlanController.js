@@ -73,8 +73,8 @@ export const createMealPlan = async (req, res, next) => {
     }
 
     // Calculate nutrition
-    const bmr = calculateBMR(weight, height, age, gender)
-    const tdee = calculateTDEE(bmr, activityLevel)
+    const bmr = calculateBMR({ weight, height, age, gender })
+    const tdee = calculateTDEE({ bmr, activityLevel })
     const dailyCalories = calculateCalories(tdee, goal)
     const dailyMacros = calculateMacros(dailyCalories, weight, goal)
 

@@ -52,15 +52,19 @@ export const calculateTDEE = ({ bmr, activityLevel }) => {
   const activityMultipliers = {
     sedentary: 1.2,
     light: 1.375,
+    'lightly-active': 1.375,
     moderate: 1.55,
+    'moderately-active': 1.55,
     active: 1.725,
+    'very-active': 1.725,
     very_active: 1.9,
+    'extra-active': 1.9,
   }
 
   const multiplier = activityMultipliers[activityLevel]
 
   if (!multiplier) {
-    throw new Error('Invalid activity level')
+    throw new Error(`Invalid activity level: ${activityLevel}`)
   }
 
   return Math.round(bmr * multiplier)
