@@ -103,6 +103,16 @@ const mealPlanSchema = new Schema(
       enum: ['veg', 'nonveg', 'vegan', 'both'],
       required: true,
     },
+    // NEW: Allergens and dietary restrictions
+    allergens: {
+      type: [String],
+      default: [],
+      enum: ['dairy-free', 'gluten-free', 'nut-free', 'soy-free', 'none', ''],
+    },
+    restrictionsAndAllergies: {
+      type: String,
+      default: '',
+    },
     dailyCalories: {
       type: Number,
       required: true,
@@ -113,11 +123,15 @@ const mealPlanSchema = new Schema(
       fat: Number,
     },
     days: [dayPlanSchema],
+    // Quick generate option
+    useTemplates: {
+      type: Boolean,
+      default: false,
+    },
     // Legacy fields for backward compatibility
     duration: Number,
     mealsPerDay: Number,
     dietType: String,
-    allergens: [String],
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true },
