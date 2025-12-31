@@ -25,16 +25,19 @@ const male30 = {
   gender: 'male',
 }
 
-const bmr_male = mealPlanService.calculateBMR(
-  male30.weight,
-  male30.height,
-  male30.age,
-  male30.gender,
-)
+const bmr_male = mealPlanService.calculateBMR({
+  weight: male30.weight,
+  height: male30.height,
+  age: male30.age,
+  gender: male30.gender,
+})
 
 console.log(`BMR (Resting): ${Math.round(bmr_male)} calories`)
 
-const tdee_male = mealPlanService.calculateTDEE(bmr_male, 'moderate')
+const tdee_male = mealPlanService.calculateTDEE({
+  bmr: bmr_male,
+  activityLevel: 'moderate',
+})
 console.log(`TDEE (Moderate Activity): ${Math.round(tdee_male)} calories`)
 
 const maintenance_calories = mealPlanService.adjustCaloriesForGoal(
@@ -133,13 +136,16 @@ const profiles = [
 ]
 
 profiles.forEach((profile) => {
-  const bmr = mealPlanService.calculateBMR(
-    profile.weight,
-    profile.height,
-    profile.age,
-    profile.gender,
-  )
-  const tdee = mealPlanService.calculateTDEE(bmr, profile.activity)
+  const bmr = mealPlanService.calculateBMR({
+    weight: profile.weight,
+    height: profile.height,
+    age: profile.age,
+    gender: profile.gender,
+  })
+  const tdee = mealPlanService.calculateTDEE({
+    bmr,
+    activityLevel: profile.activity,
+  })
   const target = mealPlanService.adjustCaloriesForGoal(tdee, profile.goal)
 
   console.log(`\n${profile.name}`)

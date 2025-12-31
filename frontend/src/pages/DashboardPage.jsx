@@ -3,6 +3,7 @@ import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import MealPlanList from '../components/mealPlanner/MealPlanList'
+import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
 
 import {
@@ -170,6 +171,8 @@ export default function DashboardPage() {
             />
           ) : activeSection === 'ai-diet-planner' ? (
             <AiDietPlannerPage />
+          ) : activeSection === 'ai-meal-plans' ? (
+            <AiMealPlanList />
           ) : (
             <>
               <DashboardStats stats={statsData} />

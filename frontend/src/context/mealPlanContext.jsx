@@ -46,10 +46,12 @@ export function MealPlanProvider({ children }) {
       setActivePlan(response.mealPlan)
       setLastFetch(Date.now())
     } catch (err) {
-      // 404 means no plans yet - not an error
+      // 404 means no plans yet - not an error, silently handle it
       if (err.response?.status === 404) {
         setActivePlan(null)
+        // Don't set error for 404 - it's expected when user has no plans
       } else {
+        console.error('Error fetching meal plan:', err)
         setError(
           err.response?.data?.message || 'Failed to fetch last meal plan',
         )

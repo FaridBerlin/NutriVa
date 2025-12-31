@@ -32,6 +32,7 @@ export const createMealPlan = async (req, res, next) => {
       mealPerDay,
       foodType,
       restrictionsAndAllergies,
+      allergens, // NEW: Array of allergens from 4-step form
       useTemplates = false, // NEW: Option to use templates directly
     } = req.body
 
@@ -73,8 +74,8 @@ export const createMealPlan = async (req, res, next) => {
     }
 
     // Calculate nutrition
-    const bmr = calculateBMR(weight, height, age, gender)
-    const tdee = calculateTDEE(bmr, activityLevel)
+    const bmr = calculateBMR({ weight, height, age, gender })
+    const tdee = calculateTDEE({ bmr, activityLevel })
     const dailyCalories = calculateCalories(tdee, goal)
     const dailyMacros = calculateMacros(dailyCalories, weight, goal)
 
@@ -100,6 +101,21 @@ export const createMealPlan = async (req, res, next) => {
         console.log(
           `Attempting AI generation with Ollama (${planDuration} days)`,
         )
+
+        // Build restrictions string including allergens
+        let allRestrictions = restrictionsAndAllergies || ''
+        if (allergens && allergens.length > 0 && !allergens.includes('none')) {
+          const allergenString = allergens
+            .filter((a) => a !== 'none' && a !== '')
+            .join(', ')
+          allRestrictions = allRestrictions
+            ? `${allRestrictions}, ${allergenString}`
+            : allergenString
+        }
+        if (!allRestrictions) {
+          allRestrictions = 'None'
+        }
+
         const aiResult = await generateMealPlan({
           age,
           weight,
@@ -110,7 +126,7 @@ export const createMealPlan = async (req, res, next) => {
           planDuration,
           fitnessGoal: goal,
           foodType: normalizedFoodType,
-          restrictionsAndAllergies: restrictionsAndAllergies || 'None',
+          restrictionsAndAllergies: allRestrictions,
           mealPerDay,
         })
 
@@ -149,6 +165,9 @@ export const createMealPlan = async (req, res, next) => {
       goal,
       planDuration,
       foodType: normalizedFoodType,
+      allergens: allergens || [], // NEW: Store allergens array
+      restrictionsAndAllergies: restrictionsAndAllergies || '',
+      useTemplates: useTemplates || false, // NEW: Store generation method
       dailyCalories,
       dailyMacros,
       days: mealPlanData.days,

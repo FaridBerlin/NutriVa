@@ -11,6 +11,7 @@ import {
   Settings,
   Home,
   PlusCircle,
+  List,
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
@@ -107,6 +108,26 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               </span>
               <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white font-semibold">
                 AI
+              </span>
+            </button>
+          </li>
+
+          {/* AI Meal Plans List */}
+          <li>
+            <button
+              onClick={() => onSectionChange('ai-meal-plans')}
+              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 hover:translate-x-1 group ${
+                activeSection === 'ai-meal-plans'
+                  ? 'bg-purple-100 text-green-900 shadow-sm'
+                  : 'text-green-900 hover:bg-purple-50'
+              }`}
+            >
+              <List
+                size={18}
+                className="transition-transform duration-200 group-hover:scale-110"
+              />
+              <span className="font-medium text-green-700 flex-1">
+                AI Meal Plans
               </span>
             </button>
           </li>

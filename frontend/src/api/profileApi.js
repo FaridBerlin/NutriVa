@@ -1,19 +1,27 @@
 import api from '../services/api'
 
-// Request/Response logging for debugging
+// Request/Response logging for debugging (only in development)
+const isDevelopment = import.meta.env.DEV
+
 const logRequest = (method, url, data) => {
-  console.log(`[Profile API] ${method} ${url}`, data || '')
+  if (isDevelopment) {
+    console.log(`[Profile API] ${method} ${url}`, data || '')
+  }
 }
 
 const logResponse = (method, url, response) => {
-  console.log(`[Profile API] ${method} ${url} - Success:`, response.data)
+  if (isDevelopment) {
+    console.log(`[Profile API] ${method} ${url} - Success:`, response.data)
+  }
 }
 
 const logError = (method, url, error) => {
-  console.error(
-    `[Profile API] ${method} ${url} - Error:`,
-    error.response?.data || error.message,
-  )
+  if (isDevelopment) {
+    console.error(
+      `[Profile API] ${method} ${url} - Error:`,
+      error.response?.data || error.message,
+    )
+  }
 }
 
 // Retry logic for failed requests

@@ -44,7 +44,14 @@ export default function WaterTracker({ weight = 70, compact = false }) {
         </div>
 
         <div className="flex flex-col items-center justify-center min-h-[220px]">
-          <div style={{ width: 96, height: 96 }}>
+          <div
+            style={{
+              width: '96px',
+              height: '96px',
+              minWidth: '96px',
+              minHeight: '96px',
+            }}
+          >
             <CircularProgressbar
               value={percent}
               text={`${consumedCups}/${goalCups}`}

@@ -11,7 +11,11 @@
 // }
 
 export const calculateBMR = ({ weight, height, age, gender }) => {
-  if (!Number.isFinite(weight) || !Number.isFinite(height) || !Number.isFinite(age)) {
+  if (
+    !Number.isFinite(weight) ||
+    !Number.isFinite(height) ||
+    !Number.isFinite(age)
+  ) {
     throw new Error('Invalid data for BMR calculation')
   }
 
@@ -21,8 +25,6 @@ export const calculateBMR = ({ weight, height, age, gender }) => {
 
   return Math.round(10 * weight + 6.25 * height - 5 * age - 161)
 }
-
-
 
 /**
  * Calculate Total Daily Energy Expenditure (TDEE)
@@ -52,15 +54,19 @@ export const calculateTDEE = ({ bmr, activityLevel }) => {
   const activityMultipliers = {
     sedentary: 1.2,
     light: 1.375,
+    'lightly-active': 1.375,
     moderate: 1.55,
+    'moderately-active': 1.55,
     active: 1.725,
+    'very-active': 1.725,
     very_active: 1.9,
+    'extra-active': 1.9,
   }
 
   const multiplier = activityMultipliers[activityLevel]
 
   if (!multiplier) {
-    throw new Error('Invalid activity level')
+    throw new Error(`Invalid activity level: ${activityLevel}`)
   }
 
   return Math.round(bmr * multiplier)
