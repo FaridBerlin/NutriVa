@@ -27,6 +27,7 @@ import ScrollToTop from './components/ScrollToTop'
 import { AuthProvider } from './context/AuthContext'
 import { ProfileProvider } from './context/ProfileContext'
 import { MealPlanProvider } from './context/mealPlanContext'
+import { AiMealPlanProvider } from './context/aiMealPlanContext'
 
 // Layout wrapper to handle conditional Navbar/Footer
 function AppLayout({ children }) {
@@ -53,7 +54,7 @@ function App() {
   return (
     <AuthProvider>
       <ProfileProvider>
-        <MealPlanProvider>
+        <AiMealPlanProvider>
           <Router>
             <ScrollToTop />
             <AppLayout>
@@ -97,7 +98,7 @@ function App() {
               </Routes>
             </AppLayout>
           </Router>
-        </MealPlanProvider>
+        </AiMealPlanProvider>
       </ProfileProvider>
     </AuthProvider>
   )

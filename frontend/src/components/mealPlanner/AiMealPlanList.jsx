@@ -1,54 +1,40 @@
-import { useState, useEffect, useContext } from 'react'
-import { AuthContext } from '../../context/AuthContext'
-import api from '../../services/api'
+import { useState, useEffect } from 'react'
+import { useMealPlan } from '../../context/aiMealPlanContext'
 import AiMealPlanListDetails from './AiMealPlanListDetails'
 
 export default function AiMealPlanList() {
-  const { user } = useContext(AuthContext)
-  const [allPlans, setAllPlans] = useState([])
-  const [activePlan, setActivePlan] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
+  const {
+    allPlans,
+    loading,
+    error: contextError,
+    fetchAllPlans,
+    getMealPlanById,
+    deleteMealPlan: deletePlanFromContext,
+  } = useMealPlan()
+
+  const [viewPlan, setViewPlan] = useState(null)
   const [showDetails, setShowDetails] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    // Only fetch plans if user is logged in
-    if (user) {
-      fetchAllPlans()
-    }
-  }, [user])
+    // Fetch all plans on mount
+    fetchAllPlans()
+  }, [])
 
-  const fetchAllPlans = async () => {
-    setLoading(true)
-    setError('')
-    try {
-      const response = await api.get('/ai-meal-plans')
-
-      if (response.data?.mealPlans) {
-        setAllPlans(response.data.mealPlans)
-      }
-    } catch (err) {
-      console.error('Error fetching AI meal plans:', err)
-      // Only show error if it's not a 404 (no plans found)
-      if (err.response?.status !== 404) {
-        setError('Failed to load meal plans')
-      }
-    } finally {
-      setLoading(false)
+  // Update local error when context error changes
+  useEffect(() => {
+    if (contextError) {
+      setError(contextError)
     }
-  }
+  }, [contextError])
 
   const handleView = async (planId) => {
-    try {
-      const response = await api.get(`/ai-meal-plans/${planId}`)
-
-      if (response.data?.mealPlan) {
-        setActivePlan(response.data.mealPlan)
-        setShowDetails(true)
-      }
-    } catch (err) {
-      console.error('Error fetching plan details:', err)
-      setError('Failed to load plan details')
+    const result = await getMealPlanById(planId)
+    if (result.success) {
+      setViewPlan(result.data)
+      setShowDetails(true)
+    } else {
+      setError(result.error || 'Failed to load plan details')
     }
   }
 
@@ -59,14 +45,9 @@ export default function AiMealPlanList() {
 
     if (!confirmed) return
 
-    try {
-      await api.delete(`/ai-meal-plans/${planId}`)
-
-      // Remove from local state
-      setAllPlans((prev) => prev.filter((plan) => plan._id !== planId))
-    } catch (err) {
-      console.error('Error deleting plan:', err)
-      setError('Failed to delete plan')
+    const result = await deletePlanFromContext(planId)
+    if (!result.success) {
+      setError(result.error || 'Failed to delete plan')
     }
   }
 
@@ -74,10 +55,10 @@ export default function AiMealPlanList() {
   if (error) return <p className="text-red-500">{error}</p>
 
   // DETAILS VIEW
-  if (showDetails && activePlan) {
+  if (showDetails && viewPlan) {
     return (
       <AiMealPlanListDetails
-        plan={activePlan}
+        plan={viewPlan}
         onBack={() => setShowDetails(false)}
       />
     )
