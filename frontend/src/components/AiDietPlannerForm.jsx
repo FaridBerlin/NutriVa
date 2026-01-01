@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
-import api from '../services/api'
+import { useState, useEffect, useContext } from 'react'
+import { useProfile } from '../context/ProfileContext'
+import { useMealPlan } from '../context/aiMealPlanContext'
 import {
   Calendar,
   Utensils,
@@ -17,6 +18,9 @@ const ALLERGENS = ['dairy-free', 'gluten-free', 'nut-free', 'soy-free', 'none']
 const DURATION_OPTIONS = [3, 7, 14, 21, 30]
 
 export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
+  const { profile: userProfile, loading: profileLoading } = useProfile()
+  const { generateMealPlan, loading: planLoading } = useMealPlan()
+
   const [currentStep, setCurrentStep] = useState(0) // Start at 0 for profile info
   const totalSteps = 5 // Profile + 4 steps
 
@@ -41,55 +45,41 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
     useTemplates: false,
   })
 
-  const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
-  const [userProfile, setUserProfile] = useState(null)
+  const loading = profileLoading || planLoading
 
-  // Fetch user profile on mount
+  // Auto-fill from profile when it loads
   useEffect(() => {
-    const fetchUserProfile = async () => {
-      try {
-        const response = await api.get('/profile')
-        const profile = response.data?.data?.profile || response.data
-
-        if (profile) {
-          setUserProfile(profile)
-
-          // Auto-fill from profile
-          const activityLevelMap = {
-            sedentary: 'sedentary',
-            light: 'lightly-active',
-            moderate: 'moderately-active',
-            active: 'very-active',
-            very_active: 'extra-active',
-          }
-
-          const goalMap = {
-            lose_weight: 'weight-loss',
-            maintain_weight: 'maintenance',
-            gain_weight: 'weight-gain',
-            build_muscle: 'weight-gain',
-          }
-
-          setForm((prev) => ({
-            ...prev,
-            age: profile.age?.toString() || '',
-            weight: profile.weight?.toString() || '',
-            height: profile.height?.toString() || '',
-            gender: profile.gender || prev.gender,
-            activityLevel:
-              activityLevelMap[profile.activityLevel] || prev.activityLevel,
-            goal: goalMap[profile.dietaryGoal] || prev.goal,
-          }))
-        }
-      } catch (err) {
-        console.error('Error fetching profile:', err)
+    if (userProfile) {
+      // Auto-fill from profile
+      const activityLevelMap = {
+        sedentary: 'sedentary',
+        light: 'lightly-active',
+        moderate: 'moderately-active',
+        active: 'very-active',
+        very_active: 'extra-active',
       }
-    }
 
-    fetchUserProfile()
-  }, [])
+      const goalMap = {
+        lose_weight: 'weight-loss',
+        maintain_weight: 'maintenance',
+        gain_weight: 'weight-gain',
+        build_muscle: 'weight-gain',
+      }
+
+      setForm((prev) => ({
+        ...prev,
+        age: userProfile.age?.toString() || '',
+        weight: userProfile.weight?.toString() || '',
+        height: userProfile.height?.toString() || '',
+        gender: userProfile.gender || prev.gender,
+        activityLevel:
+          activityLevelMap[userProfile.activityLevel] || prev.activityLevel,
+        goal: goalMap[userProfile.dietaryGoal] || prev.goal,
+      }))
+    }
+  }, [userProfile])
 
   // Progress Percentage
   const progressPercentage = (currentStep / totalSteps) * 100
@@ -178,8 +168,6 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
       return
     }
 
-    setLoading(true)
-
     try {
       // Map form data to API format
       const payload = {
@@ -197,28 +185,19 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         useTemplates: form.useTemplates,
       }
 
-      const response = await api.post('/ai-meal-plans', payload, {
-        timeout: form.useTemplates ? 30000 : 180000,
-      })
+      const result = await generateMealPlan(payload)
 
-      if (response.data?.mealPlan) {
+      if (result.success) {
         setSuccess('Meal plan generated successfully!')
         setTimeout(() => {
-          onPlanGenerated(response.data.mealPlan)
+          onPlanGenerated(result.data)
         }, 1000)
+      } else {
+        setError(result.error || 'Failed to generate plan')
       }
     } catch (err) {
       console.error('Error generating meal plan:', err)
-
-      if (err.code === 'ECONNABORTED') {
-        setError('Request timed out. Please try again.')
-      } else if (err.response?.status === 401) {
-        setError('Session expired. Please login again.')
-      } else {
-        setError(err.response?.data?.message || 'Failed to generate plan')
-      }
-    } finally {
-      setLoading(false)
+      setError('An unexpected error occurred. Please try again.')
     }
   }
 
@@ -658,26 +637,26 @@ function Step2MealsConfig({ form, handleChange }) {
 
 // Step 3: Diet Type
 function Step3DietType({ form, handleChange }) {
-  const dietOptions = [
-    {
-      value: 'veg',
-      label: 'Vegetarian',
-      icon: <Leaf className="w-8 h-8 mx-auto text-green-500" />,
-      description: 'Plant-based with dairy & eggs',
-    },
-    {
-      value: 'non-veg',
-      label: 'Non-Vegetarian',
-      icon: <Drumstick className="w-8 h-8 mx-auto text-orange-500" />,
-      description: 'Includes meat & seafood',
-    },
-    {
-      value: 'vegan',
-      label: 'Vegan',
-      icon: <Leaf className="w-8 h-8 mx-auto text-lime-600" />,
-      description: 'Fully plant-based',
-    },
-  ]
+  const dietOptions = DIET_TYPES.map((type) => {
+    const configs = {
+      veg: {
+        label: 'Vegetarian',
+        icon: <Leaf className="w-8 h-8 mx-auto text-green-500" />,
+        description: 'Plant-based with dairy & eggs',
+      },
+      'non-veg': {
+        label: 'Non-Vegetarian',
+        icon: <Drumstick className="w-8 h-8 mx-auto text-orange-500" />,
+        description: 'Includes meat & seafood',
+      },
+      vegan: {
+        label: 'Vegan',
+        icon: <Leaf className="w-8 h-8 mx-auto text-lime-600" />,
+        description: 'Fully plant-based',
+      },
+    }
+    return { value: type, ...configs[type] }
+  })
 
   return (
     <div>
@@ -734,13 +713,16 @@ function Step3DietType({ form, handleChange }) {
 
 // Step 4: Allergens
 function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
-  const allergenOptions = [
-    { value: 'dairy-free', label: 'Dairy Free', emoji: '🥛' },
-    { value: 'gluten-free', label: 'Gluten Free', emoji: '🌾' },
-    { value: 'nut-free', label: 'Nut Free', emoji: '🥜' },
-    { value: 'soy-free', label: 'Soy Free', emoji: '🫘' },
-    { value: 'none', label: 'No Restrictions', emoji: '✅' },
-  ]
+  const allergenOptions = ALLERGENS.map((allergen) => {
+    const configs = {
+      'dairy-free': { label: 'Dairy Free', emoji: '🥛' },
+      'gluten-free': { label: 'Gluten Free', emoji: '🌾' },
+      'nut-free': { label: 'Nut Free', emoji: '🥜' },
+      'soy-free': { label: 'Soy Free', emoji: '🫘' },
+      none: { label: 'No Restrictions', emoji: '✅' },
+    }
+    return { value: allergen, ...configs[allergen] }
+  })
 
   return (
     <div>
