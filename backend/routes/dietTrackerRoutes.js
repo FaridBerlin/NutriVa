@@ -13,11 +13,11 @@ const dietTrackerRouter = Router()
 
 dietTrackerRouter.use(protect)
 dietTrackerRouter
-        .post('/:mealPlanId', createDietTracker) 
-        .get('/active', getActiveTracker)  
-        .get('/day/:dayNumber', getTrackerDay)  
-        .post('/day/:dayNumber/meals/:mealId/eat', markMealAsEaten)
-        .post('/day/:dayNumber/meals/:mealId/undo', undoMeal)
-        .get('/', getAllTrackers)   
+  .post('/:aiMealPlanId', createDietTracker)
+  .get('/active', getActiveTracker)
+  .get('/day/:dayNumber', getTrackerDay)
+  .post('/day/:dayNumber/meals/:mealId/eat', markMealAsEaten)
+  .post('/day/:dayNumber/meals/:mealId/undo', undoMeal)
+  .get('/', getAllTrackers)
 
 export default dietTrackerRouter

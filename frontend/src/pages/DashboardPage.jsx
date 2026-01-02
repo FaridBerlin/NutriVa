@@ -1,4 +1,5 @@
-import { useState, useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
@@ -21,7 +22,15 @@ import MealPlanner from './MealPlanner'
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
   const { profile, nutritionTargets, loading } = useProfile()
+  const location = useLocation()
   const [activeSection, setActiveSection] = useState('dashboard')
+
+  // Check if navigated from another page with section state
+  useEffect(() => {
+    if (location.state?.section) {
+      setActiveSection(location.state.section)
+    }
+  }, [location.state])
 
   if (loading) {
     return (

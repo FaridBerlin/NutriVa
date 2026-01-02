@@ -12,6 +12,7 @@ import {
   Home,
   PlusCircle,
   List,
+  Target,
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
@@ -36,7 +37,16 @@ export default function Sidebar({ activeSection, onSectionChange }) {
     logout()
     navigate('/')
   }
-  // (duplicate removed above)
+
+  // Handle menu item clicks - navigate to dashboard if onSectionChange not provided
+  const handleMenuItemClick = (itemId) => {
+    if (onSectionChange) {
+      onSectionChange(itemId)
+    } else {
+      // Standalone page - navigate to dashboard with section state
+      navigate('/dashboard', { state: { section: itemId } })
+    }
+  }
 
   return (
     <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm">
@@ -57,7 +67,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             return (
               <li key={item.id}>
                 <button
-                  onClick={() => onSectionChange(item.id)}
+                  onClick={() => handleMenuItemClick(item.id)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
                     isActive
                       ? 'bg-primary/10 text-primary shadow-sm'
@@ -92,7 +102,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           {/* AI Diet Planner with Ollama */}
           <li>
             <button
-              onClick={() => onSectionChange('ai-diet-planner')}
+              onClick={() => handleMenuItemClick('ai-diet-planner')}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 mt-2 transition-all duration-200 hover:shadow-lg hover:scale-[1.02] group ${
                 activeSection === 'ai-diet-planner'
                   ? 'ring-2 ring-purple-400 shadow-md'
@@ -115,7 +125,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           {/* AI Meal Plans List */}
           <li>
             <button
-              onClick={() => onSectionChange('ai-meal-plans')}
+              onClick={() => handleMenuItemClick('ai-meal-plans')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 hover:translate-x-1 group ${
                 activeSection === 'ai-meal-plans'
                   ? 'bg-purple-100 text-green-900 shadow-sm'
@@ -130,6 +140,28 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 AI Meal Plans
               </span>
             </button>
+          </li>
+
+          {/* Separator */}
+          <li className="pt-2 border-t border-gray-200"></li>
+
+          {/* Diet Tracker */}
+          <li>
+            <Link
+              to="/diet-tracker"
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 hover:translate-x-1 group bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 hover:shadow-lg"
+            >
+              <Target
+                size={18}
+                className="text-green-600 transition-transform duration-200 group-hover:scale-110"
+              />
+              <span className="font-semibold text-green-900 flex-1">
+                Diet Tracker
+              </span>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-green-600 text-white font-semibold">
+                Track
+              </span>
+            </Link>
           </li>
         </ul>
 
