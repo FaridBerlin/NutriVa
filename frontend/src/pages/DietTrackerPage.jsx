@@ -1,9 +1,39 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { useDietTracker } from '../context/DietTrackerContext'
 import { useAiMealPlan } from '../context/aiMealPlanContext'
+import { useProfile } from '../context/ProfileContext'
+import { AuthContext } from '../context/AuthContext'
 import Sidebar from '../components/Sidebar/Sidebar'
+import WaterTracker from '../components/WaterTracker'
+import SleepTracker from '../components/SleepTracker'
+import Card from '../components/ui/Card'
+import { Target, TrendingUp } from 'lucide-react'
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
+import 'react-circular-progressbar/dist/styles.css'
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  PieChart,
+  Pie,
+  Cell,
+  BarChart,
+  Bar,
+  Legend,
+} from 'recharts'
+import {
+  bmiPercent as calcBmiPercent,
+  bmiCategory as calcBmiCategory,
+  getBMIColor,
+} from '../utils/bmiUtils'
 
 export default function DietTrackerPage() {
+  const { user } = useContext(AuthContext)
+
   const {
     activeTracker,
     loading: trackerLoading,
@@ -21,6 +51,8 @@ export default function DietTrackerPage() {
     fetchLatestPlan,
     fetchAllPlans,
   } = useAiMealPlan()
+
+  const { profile, nutritionTargets, updateProfile } = useProfile()
 
   const [selectedDay, setSelectedDay] = useState(1)
   const [actionLoading, setActionLoading] = useState(false)
@@ -207,6 +239,95 @@ export default function DietTrackerPage() {
     (d) => d.dayNumber === selectedDay,
   )
 
+  // Calculate stats for dashboard overview
+  const bmi = nutritionTargets?.bmi || profile?.bmi || 24.5
+  const bmiPercent = calcBmiPercent(bmi)
+  const bmiCategory = calcBmiCategory(bmi)
+  const planDuration = profile?.planDuration || 30
+  const createdAtRaw =
+    profile?.createdAt || profile?.created_at || profile?.created || null
+
+  let elapsedDays = 0
+  if (createdAtRaw) {
+    try {
+      const created = new Date(createdAtRaw)
+      const now = new Date()
+      const diffMs = now - created
+      elapsedDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
+      if (elapsedDays < 0) elapsedDays = 0
+    } catch (e) {
+      elapsedDays = 0
+    }
+  }
+
+  const cappedElapsed = Math.min(elapsedDays, planDuration)
+  const daysLeft = Math.max(0, planDuration - cappedElapsed)
+
+  // Prepare line chart data for plan progress
+  const chartData = Array.from({ length: planDuration }, (_, i) => {
+    const day = i + 1
+    const val = Math.round((Math.min(day, cappedElapsed) / planDuration) * 100)
+    return { day: `${day}`, value: val }
+  })
+
+  // Calculate macros data for pie chart
+  const targetCalories = nutritionTargets?.dailyCalories || 2189
+  const targetProtein = nutritionTargets?.protein || 137
+  const targetCarbs = nutritionTargets?.carbs || 322
+  const targetFat = nutritionTargets?.fats || 32
+
+  const consumedCalories = currentDayTracker?.consumed?.calories || 0
+  const consumedProtein = currentDayTracker?.consumed?.protein || 0
+  const consumedCarbs = currentDayTracker?.consumed?.carbs || 0
+  const consumedFat = currentDayTracker?.consumed?.fat || 0
+
+  // Pie chart data for macros target
+  const macrosData = [
+    {
+      name: 'Protein',
+      value: Math.round(((targetProtein * 4) / targetCalories) * 100),
+      color: '#3b82f6',
+    },
+    {
+      name: 'Carbs',
+      value: Math.round(((targetCarbs * 4) / targetCalories) * 100),
+      color: '#10b981',
+    },
+    {
+      name: 'Fat',
+      value: Math.round(((targetFat * 9) / targetCalories) * 100),
+      color: '#f59e0b',
+    },
+  ]
+
+  // Bar chart data for nutrition progress
+  const nutritionProgressData = [
+    {
+      name: 'Calories',
+      Consumed: Math.round(consumedCalories),
+      Remaining: Math.max(0, Math.round(targetCalories - consumedCalories)),
+    },
+    {
+      name: 'Protein',
+      Consumed: Math.round(consumedProtein),
+      Remaining: Math.max(0, Math.round(targetProtein - consumedProtein)),
+    },
+    {
+      name: 'Carbs',
+      Consumed: Math.round(consumedCarbs),
+      Remaining: Math.max(0, Math.round(targetCarbs - consumedCarbs)),
+    },
+    {
+      name: 'Fat',
+      Consumed: Math.round(consumedFat),
+      Remaining: Math.max(0, Math.round(targetFat - consumedFat)),
+    },
+  ]
+
+  const targetWeight = profile?.targetWeight || profile?.weight || 67.2
+  const currentWeight = profile?.weight || 67.2
+  const weightLoss = currentWeight - targetWeight
+
   return (
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
@@ -215,123 +336,259 @@ export default function DietTrackerPage() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">Diet Tracker</h1>
+            <h1 className="text-3xl font-bold text-gray-800">
+              {user?.name || 'User'} Progress
+            </h1>
             <p className="text-gray-600">{aiMealPlan.planName}</p>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="text-sm text-gray-600">Current Day</div>
-              <div className="text-2xl font-bold text-blue-600">
-                {activeTracker.currentDay} / {activeTracker.totalDays}
-              </div>
-            </div>
+          {/* Plan Overview - Dashboard widgets */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            {/* Water Tracker */}
+            <WaterTracker compact weight={profile?.weight} />
 
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="text-sm text-gray-600">Streak</div>
-              <div className="text-2xl font-bold text-orange-600">
-                {activeTracker.streak} days 🔥
-              </div>
-            </div>
+            {/* Sleep Tracker */}
+            <SleepTracker
+              compact
+              stats={{ age: profile?.age, sleepHours: profile?.sleepHours }}
+            />
 
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="text-sm text-gray-600">Adherence Score</div>
-              <div className="text-2xl font-bold text-green-600">
-                {activeTracker.adherenceScore}%
+            {/* BMI Card */}
+            <Card>
+              <div className="flex items-center justify-between mb-4">
+                <Target className="text-primary" size={28} />
+                <span className="text-3xl font-bold text-textDark">
+                  {bmi.toFixed(1)}
+                </span>
               </div>
-            </div>
+              <h3 className="text-sm text-textLight">BMI</h3>
 
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="text-sm text-gray-600">Overall Progress</div>
-              <div className="text-2xl font-bold text-purple-600">
-                {activeTracker.overallCompletionPercentage}%
+              <div className="mt-4">
+                <div className="flex justify-center">
+                  <div
+                    style={{
+                      width: '140px',
+                      height: '140px',
+                      minWidth: '140px',
+                      minHeight: '140px',
+                    }}
+                  >
+                    <CircularProgressbar
+                      value={bmiPercent}
+                      text={`${bmi.toFixed(1)}`}
+                      styles={buildStyles({
+                        pathColor: getBMIColor(bmi),
+                        textColor: '#1e293b',
+                        trailColor: '#e5e7eb',
+                        textSize: '16px',
+                      })}
+                    />
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between mt-2">
+                  <span className="text-xs text-textLight">{bmiCategory}</span>
+                  <span className="text-xs text-textLight">
+                    {Math.round(bmiPercent)}%
+                  </span>
+                </div>
               </div>
-            </div>
+            </Card>
+
+            {/* Plan Progress Card */}
+            <Card>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <TrendingUp className="text-primary" size={28} />
+                  <div className="text-sm text-textLight">
+                    Plan ({planDuration} days)
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-3xl font-bold text-textDark">
+                    {daysLeft}
+                  </div>
+                  <div className="text-xs text-textLight">Days Left</div>
+                </div>
+              </div>
+
+              <div className="mt-4">
+                <div
+                  style={{ width: '100%', height: '120px', minHeight: '120px' }}
+                >
+                  <ResponsiveContainer width="100%" height={120}>
+                    <LineChart
+                      data={chartData}
+                      margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="day" tick={{ fontSize: 10 }} />
+                      <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
+                      <Tooltip formatter={(val) => `${val}%`} />
+                      <Line
+                        type="monotone"
+                        dataKey="value"
+                        stroke="#06b6d4"
+                        strokeWidth={2}
+                        dot={false}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+
+                <div className="flex items-center justify-between mt-2">
+                  <div className="text-sm text-textLight">
+                    Elapsed: {cappedElapsed} / {planDuration} days
+                  </div>
+                  <div className="text-sm text-textLight">
+                    Remaining: {daysLeft} days
+                  </div>
+                </div>
+              </div>
+            </Card>
           </div>
 
           {/* Day Selector */}
-          <div className="mb-8">
-            <div className="flex gap-2 overflow-x-auto pb-2">
-              {aiMealPlan.days.map((day) => {
-                const dayTracker = activeTracker.dailyTrackers.find(
-                  (t) => t.dayNumber === day.dayNumber,
-                )
-                const completionPercentage =
-                  dayTracker?.completionPercentage || 0
-
-                return (
+          <div className="mb-6">
+            <div className="bg-white rounded-lg shadow p-4">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
+                Select Day:
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {aiMealPlan.days.map((day) => (
                   <button
                     key={day.dayNumber}
                     onClick={() => setSelectedDay(day.dayNumber)}
-                    className={`px-4 py-2 rounded-lg font-medium whitespace-nowrap transition-colors ${
+                    className={`px-4 py-2 rounded-lg font-medium transition-all ${
                       selectedDay === day.dayNumber
-                        ? 'bg-blue-600 text-white'
-                        : completionPercentage === 100
-                          ? 'bg-green-100 text-green-800'
-                          : completionPercentage > 0
-                            ? 'bg-yellow-100 text-yellow-800'
-                            : 'bg-gray-100 text-gray-600'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-gray-200 text-gray-700 hover:bg-blue-500 hover:text-white'
                     }`}
                   >
                     Day {day.dayNumber}
-                    {completionPercentage > 0 && (
-                      <span className="ml-1 text-xs">
-                        ({completionPercentage}%)
-                      </span>
-                    )}
                   </button>
-                )
-              })}
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Day Progress */}
-          {currentDayTracker && (
-            <div className="bg-white rounded-lg shadow p-6 mb-8">
-              <h3 className="text-xl font-bold mb-4">
-                Day {selectedDay} Progress
-              </h3>
-              <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                <div>
-                  <div className="text-sm text-gray-600">Meals</div>
-                  <div className="text-lg font-bold">
-                    {currentDayTracker.mealsCompleted} /{' '}
-                    {currentDayTracker.totalMeals}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Calories</div>
-                  <div className="text-lg font-bold">
-                    {Math.round(currentDayTracker.consumed.calories)} /{' '}
-                    {Math.round(currentDayTracker.target.calories)}
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Protein</div>
-                  <div className="text-lg font-bold">
-                    {Math.round(currentDayTracker.consumed.protein)}g /{' '}
-                    {Math.round(currentDayTracker.target.protein)}g
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Carbs</div>
-                  <div className="text-lg font-bold">
-                    {Math.round(currentDayTracker.consumed.carbs)}g /{' '}
-                    {Math.round(currentDayTracker.target.carbs)}g
-                  </div>
-                </div>
-                <div>
-                  <div className="text-sm text-gray-600">Completion</div>
-                  <div className="text-lg font-bold text-green-600">
-                    {currentDayTracker.completionPercentage}%
-                  </div>
-                </div>
+          {/* Overview Cards Row */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            {/* Daily Calories Card */}
+            <Card className="border-l-4 border-blue-500">
+              <div className="text-sm text-gray-600 mb-2">Daily Calories</div>
+              <div className="text-3xl font-bold text-blue-600">
+                {Math.round(consumedCalories)} / {Math.round(targetCalories)}
               </div>
-            </div>
-          )}
+              <div className="text-sm text-gray-500 mt-1">
+                Remaining: {Math.round(targetCalories - consumedCalories)}
+              </div>
+            </Card>
 
-          {/* Meals List */}
+            {/* Current BMI Card */}
+            <Card className="border-l-4 border-green-500">
+              <div className="text-sm text-gray-600 mb-2">Current BMI</div>
+              <div className="text-3xl font-bold text-green-600">
+                {bmi.toFixed(1)}
+              </div>
+              <div className="text-sm text-gray-500 mt-1">{bmiCategory}</div>
+            </Card>
+
+            {/* Predicted Weight Card */}
+            <Card className="border-l-4 border-purple-500">
+              <div className="text-sm text-gray-600 mb-2">Predicted Weight</div>
+              <div className="text-3xl font-bold text-purple-600">
+                {targetWeight} kg
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                Loss: {weightLoss.toFixed(1)} kg
+              </div>
+            </Card>
+
+            {/* Meal Completion Card */}
+            <Card className="border-l-4 border-yellow-500">
+              <div className="text-sm text-gray-600 mb-2">Meal Completion</div>
+              <div className="text-3xl font-bold text-yellow-600">
+                {currentDayTracker?.mealsCompleted || 0} /{' '}
+                {currentDayTracker?.totalMeals || 3}
+              </div>
+              <div className="text-sm text-gray-500 mt-1">
+                {currentDayTracker?.completionPercentage || 0}% completed
+              </div>
+            </Card>
+          </div>
+
+          {/* Macros and Nutrition Progress Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+            {/* Daily Macros Target */}
+            <Card key={`macros-${selectedDay}`}>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Daily Macros Target
+              </h3>
+              <div
+                className="flex justify-center items-center"
+                style={{ height: '280px' }}
+              >
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={macrosData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      dataKey="value"
+                      label={({ name, value }) => `${name} ${value}%`}
+                      animationBegin={0}
+                      animationDuration={800}
+                    >
+                      {macrosData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+
+            {/* Daily Nutrition Progress */}
+            <Card key={`nutrition-${selectedDay}`}>
+              <h3 className="text-xl font-bold text-gray-800 mb-4">
+                Daily Nutrition Progress
+              </h3>
+              <div style={{ height: '280px' }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={nutritionProgressData}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis dataKey="name" type="category" width={80} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="Consumed"
+                      stackId="a"
+                      fill="#10b981"
+                      animationDuration={800}
+                    />
+                    <Bar
+                      dataKey="Remaining"
+                      stackId="a"
+                      fill="#fbbf24"
+                      animationDuration={800}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </Card>
+          </div>
+
+          {/* Meals for Selected Day */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <h3 className="text-xl font-bold mb-6">
               Meals for Day {selectedDay}
@@ -344,7 +601,7 @@ export default function DietTrackerPage() {
             )}
 
             {currentDay && (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {currentDay.meals.map((meal) => {
                   const mealInTracker = currentDayTracker?.meals.find(
                     (m) => m.mealId === meal._id.toString(),
@@ -357,46 +614,48 @@ export default function DietTrackerPage() {
                       onClick={() =>
                         !actionLoading && handleToggleMeal(meal._id, isEaten)
                       }
-                      className={`p-4 rounded-lg cursor-pointer transition-all border-2 ${
+                      className={`p-6 rounded-lg cursor-pointer transition-all border-2 ${
                         isEaten
                           ? 'bg-green-50 border-green-300'
-                          : 'bg-white border-gray-200 hover:border-blue-300'
+                          : 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-md'
                       } ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      <div className="flex justify-between items-start mb-2">
-                        <div>
-                          <div className="text-xs text-gray-500 uppercase font-medium">
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="flex-1">
+                          <div className="text-xs text-gray-500 uppercase font-semibold mb-1">
                             {meal.type}
                           </div>
-                          <h4 className="font-bold text-lg text-gray-800">
+                          <h4 className="font-bold text-lg text-gray-800 leading-tight">
                             {meal.dishName}
                           </h4>
                         </div>
                         <div
-                          className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                          className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ml-2 ${
                             isEaten ? 'bg-green-600' : 'bg-gray-300'
                           }`}
                         >
                           {isEaten && (
-                            <span className="text-white text-lg">✓</span>
+                            <span className="text-white text-xl font-bold">
+                              ✓
+                            </span>
                           )}
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3 line-clamp-2">
+                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
                         {meal.description}
                       </p>
                       <div className="flex gap-2 flex-wrap">
-                        <span className="text-xs px-2 py-1 bg-blue-100 text-blue-800 rounded">
-                          {Math.round(meal.nutrition.calories)} cal
+                        <span className="text-xs px-3 py-1 bg-blue-100 text-blue-800 rounded-full font-medium">
+                          Cal: {Math.round(meal.nutrition.calories)}
                         </span>
-                        <span className="text-xs px-2 py-1 bg-green-100 text-green-800 rounded">
-                          P: {Math.round(meal.nutrition.protein)}g
+                        <span className="text-xs px-3 py-1 bg-green-100 text-green-800 rounded-full font-medium">
+                          P: {Math.round(meal.nutrition.protein)}
                         </span>
-                        <span className="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded">
-                          C: {Math.round(meal.nutrition.carbs)}g
+                        <span className="text-xs px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full font-medium">
+                          C: {Math.round(meal.nutrition.carbs)}
                         </span>
-                        <span className="text-xs px-2 py-1 bg-red-100 text-red-800 rounded">
-                          F: {Math.round(meal.nutrition.fat)}g
+                        <span className="text-xs px-3 py-1 bg-red-100 text-red-800 rounded-full font-medium">
+                          F: {Math.round(meal.nutrition.fat)}
                         </span>
                       </div>
                     </div>
