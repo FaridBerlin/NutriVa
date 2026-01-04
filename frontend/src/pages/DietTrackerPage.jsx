@@ -4,12 +4,7 @@ import { useAiMealPlan } from '../context/aiMealPlanContext'
 import { useProfile } from '../context/ProfileContext'
 import { AuthContext } from '../context/AuthContext'
 import Sidebar from '../components/Sidebar/Sidebar'
-import WaterTracker from '../components/WaterTracker'
-import SleepTracker from '../components/SleepTracker'
 import Card from '../components/ui/Card'
-import { Target, TrendingUp } from 'lucide-react'
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
-import 'react-circular-progressbar/dist/styles.css'
 import {
   ResponsiveContainer,
   LineChart,
@@ -28,7 +23,6 @@ import {
 import {
   bmiPercent as calcBmiPercent,
   bmiCategory as calcBmiCategory,
-  getBMIColor,
 } from '../utils/bmiUtils'
 
 export default function DietTrackerPage() {
@@ -342,112 +336,6 @@ export default function DietTrackerPage() {
             <p className="text-gray-600">{aiMealPlan.planName}</p>
           </div>
 
-          {/* Plan Overview - Dashboard widgets */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            {/* Water Tracker */}
-            <WaterTracker compact weight={profile?.weight} />
-
-            {/* Sleep Tracker */}
-            <SleepTracker
-              compact
-              stats={{ age: profile?.age, sleepHours: profile?.sleepHours }}
-            />
-
-            {/* BMI Card */}
-            <Card>
-              <div className="flex items-center justify-between mb-4">
-                <Target className="text-primary" size={28} />
-                <span className="text-3xl font-bold text-textDark">
-                  {bmi.toFixed(1)}
-                </span>
-              </div>
-              <h3 className="text-sm text-textLight">BMI</h3>
-
-              <div className="mt-4">
-                <div className="flex justify-center">
-                  <div
-                    style={{
-                      width: '140px',
-                      height: '140px',
-                      minWidth: '140px',
-                      minHeight: '140px',
-                    }}
-                  >
-                    <CircularProgressbar
-                      value={bmiPercent}
-                      text={`${bmi.toFixed(1)}`}
-                      styles={buildStyles({
-                        pathColor: getBMIColor(bmi),
-                        textColor: '#1e293b',
-                        trailColor: '#e5e7eb',
-                        textSize: '16px',
-                      })}
-                    />
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between mt-2">
-                  <span className="text-xs text-textLight">{bmiCategory}</span>
-                  <span className="text-xs text-textLight">
-                    {Math.round(bmiPercent)}%
-                  </span>
-                </div>
-              </div>
-            </Card>
-
-            {/* Plan Progress Card */}
-            <Card>
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <TrendingUp className="text-primary" size={28} />
-                  <div className="text-sm text-textLight">
-                    Plan ({planDuration} days)
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-3xl font-bold text-textDark">
-                    {daysLeft}
-                  </div>
-                  <div className="text-xs text-textLight">Days Left</div>
-                </div>
-              </div>
-
-              <div className="mt-4">
-                <div
-                  style={{ width: '100%', height: '120px', minHeight: '120px' }}
-                >
-                  <ResponsiveContainer width="100%" height={120}>
-                    <LineChart
-                      data={chartData}
-                      margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="day" tick={{ fontSize: 10 }} />
-                      <YAxis domain={[0, 100]} tick={{ fontSize: 10 }} />
-                      <Tooltip formatter={(val) => `${val}%`} />
-                      <Line
-                        type="monotone"
-                        dataKey="value"
-                        stroke="#06b6d4"
-                        strokeWidth={2}
-                        dot={false}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
-
-                <div className="flex items-center justify-between mt-2">
-                  <div className="text-sm text-textLight">
-                    Elapsed: {cappedElapsed} / {planDuration} days
-                  </div>
-                  <div className="text-sm text-textLight">
-                    Remaining: {daysLeft} days
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </div>
-
           {/* Day Selector */}
           <div className="mb-6">
             <div className="bg-white rounded-lg shadow p-4">
@@ -521,70 +409,63 @@ export default function DietTrackerPage() {
           {/* Macros and Nutrition Progress Row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Daily Macros Target */}
-            <Card key={`macros-${selectedDay}`}>
+            <Card>
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Macros Target
               </h3>
-              <div
-                className="flex justify-center items-center"
-                style={{ height: '280px' }}
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={macrosData}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={2}
-                      dataKey="value"
-                      label={({ name, value }) => `${name} ${value}%`}
-                      animationBegin={0}
-                      animationDuration={800}
-                    >
-                      {macrosData.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+              <ResponsiveContainer width="100%" height={280}>
+                <PieChart>
+                  <Pie
+                    data={macrosData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={100}
+                    paddingAngle={2}
+                    dataKey="value"
+                    label={({ name, value }) => `${name} ${value}%`}
+                    animationBegin={0}
+                    animationDuration={800}
+                  >
+                    {macrosData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                </PieChart>
+              </ResponsiveContainer>
             </Card>
 
             {/* Daily Nutrition Progress */}
-            <Card key={`nutrition-${selectedDay}`}>
+            <Card>
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Nutrition Progress
               </h3>
-              <div style={{ height: '280px' }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={nutritionProgressData}
-                    layout="vertical"
-                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                  >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" width={80} />
-                    <Tooltip />
-                    <Legend />
-                    <Bar
-                      dataKey="Consumed"
-                      stackId="a"
-                      fill="#10b981"
-                      animationDuration={800}
-                    />
-                    <Bar
-                      dataKey="Remaining"
-                      stackId="a"
-                      fill="#fbbf24"
-                      animationDuration={800}
-                    />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+              <ResponsiveContainer width="100%" height={280}>
+                <BarChart
+                  data={nutritionProgressData}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis type="number" />
+                  <YAxis dataKey="name" type="category" width={80} />
+                  <Tooltip />
+                  <Legend />
+                  <Bar
+                    dataKey="Consumed"
+                    stackId="a"
+                    fill="#10b981"
+                    animationDuration={800}
+                  />
+                  <Bar
+                    dataKey="Remaining"
+                    stackId="a"
+                    fill="#fbbf24"
+                    animationDuration={800}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
             </Card>
           </div>
 
