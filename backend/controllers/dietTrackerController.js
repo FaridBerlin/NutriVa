@@ -197,7 +197,10 @@ export const markMealAsEaten = async (req, res, next) => {
       })
     }
 
-    const meal = dayTracker.meals.id(mealId)
+    // Find meal by mealId field or by subdocument _id
+    const meal = dayTracker.meals.find(
+      (m) => m.mealId === mealId || m._id.toString() === mealId
+    )
 
     if (!meal) {
       return res.status(404).json({
@@ -243,6 +246,9 @@ export const markMealAsEaten = async (req, res, next) => {
     tracker.adherenceScore = tracker.calculateAdherenceScore()
 
     await tracker.save()
+
+    // Populate the aiMealPlanId before sending response
+    await tracker.populate('aiMealPlanId')
 
     res.status(200).json({
       message: 'Meal marked as eaten',
@@ -311,7 +317,14 @@ export const undoMeal = async (req, res, next) => {
       (d) => d.dayNumber === Number(dayNumber),
     )
 
-    const meal = dayTracker?.meals.id(mealId)
+    if (!dayTracker) {
+      return res.status(404).json({ message: 'Day not found' })
+    }
+
+    // Find meal by mealId field or by subdocument _id
+    const meal = dayTracker.meals.find(
+      (m) => m.mealId === mealId || m._id.toString() === mealId
+    )
 
     if (!meal || !meal.isEaten) {
       return res.status(400).json({ message: 'Meal not eaten yet' })
@@ -335,9 +348,12 @@ export const undoMeal = async (req, res, next) => {
 
     await tracker.save()
 
+    // Populate the aiMealPlanId before sending response
+    await tracker.populate('aiMealPlanId')
+
     res.json({
       message: 'Meal undone',
-      dayTracker,
+      tracker,
     })
   } catch (error) {
     next(error)
