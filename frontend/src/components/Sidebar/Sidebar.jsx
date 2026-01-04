@@ -5,12 +5,10 @@ import NutrivaLogo from '../NutrivaLogo'
 // Icon imports from lucide-react
 import {
   LayoutDashboard,
-  Utensils,
   Wand2,
   LogOut,
   Settings,
   Home,
-  PlusCircle,
   List,
   Target,
 } from 'lucide-react'
@@ -19,16 +17,6 @@ export default function Sidebar({ activeSection, onSectionChange }) {
   // Add My Meal Planner to the sidebar
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    {
-      id: 'my-meal-plans',
-      label: 'My Meal Plans',
-      icon: Utensils,
-    },
-    {
-      id: 'create-plan',
-      label: 'Create Your Meal Plans',
-      icon: PlusCircle,
-    },
   ]
   const { logout } = useContext(AuthContext)
   const navigate = useNavigate()

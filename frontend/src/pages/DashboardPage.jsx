@@ -3,7 +3,6 @@ import { useLocation } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import Sidebar from '../components/Sidebar/Sidebar'
-import MealPlanList from '../components/mealPlanner/MealPlanList'
 import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
 
@@ -16,8 +15,6 @@ import {
   PlanSummary,
   WaterTracker,
 } from '../components/dashboard'
-
-import MealPlanner from './MealPlanner'
 
 export default function DashboardPage() {
   const { user } = useContext(AuthContext)
@@ -172,13 +169,7 @@ export default function DashboardPage() {
 
         {/* Content Area: Switch between dashboard and meal planner */}
         <div className="p-8 space-y-8">
-          {activeSection === 'my-meal-plans' ? (
-            <MealPlanList />
-          ) : activeSection === 'create-plan' ? (
-            <MealPlanner
-              onPlanCreated={() => setActiveSection('my-meal-plans')}
-            />
-          ) : activeSection === 'ai-diet-planner' ? (
+          {activeSection === 'ai-diet-planner' ? (
             <AiDietPlannerPage />
           ) : activeSection === 'ai-meal-plans' ? (
             <AiMealPlanList />

@@ -27,7 +27,6 @@ import ScrollToTop from './components/ScrollToTop'
 // Context Providers
 import { AuthProvider } from './context/AuthContext'
 import { ProfileProvider } from './context/ProfileContext'
-import { MealPlanProvider } from './context/mealPlanContext'
 import { AiMealPlanProvider } from './context/aiMealPlanContext'
 import { DietTrackerProvider } from './context/DietTrackerContext'
 
