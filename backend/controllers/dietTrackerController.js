@@ -199,7 +199,7 @@ export const markMealAsEaten = async (req, res, next) => {
 
     // Find meal by mealId field or by subdocument _id
     const meal = dayTracker.meals.find(
-      (m) => m.mealId === mealId || m._id.toString() === mealId
+      (m) => m.mealId === mealId || m._id.toString() === mealId,
     )
 
     if (!meal) {
@@ -323,7 +323,7 @@ export const undoMeal = async (req, res, next) => {
 
     // Find meal by mealId field or by subdocument _id
     const meal = dayTracker.meals.find(
-      (m) => m.mealId === mealId || m._id.toString() === mealId
+      (m) => m.mealId === mealId || m._id.toString() === mealId,
     )
 
     if (!meal || !meal.isEaten) {
