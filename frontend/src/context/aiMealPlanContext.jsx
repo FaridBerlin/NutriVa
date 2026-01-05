@@ -46,7 +46,7 @@ export function AiMealPlanProvider({ children }) {
     try {
       const response = await aiMealPlanApi.getLatestMealPlan()
       setActivePlan(response.mealPlan)
-      console.log(`latest Meal PLan: ${response.mealPlan}`)
+      console.log('latest Meal PLan:', response.mealPlan)
       setLastFetch(Date.now())
     } catch (err) {
       // 404 means no plans yet - not an error, silently handle it
@@ -74,7 +74,7 @@ export function AiMealPlanProvider({ children }) {
     try {
       const response = await aiMealPlanApi.getAllMealPlans()
       setAllPlans(response.mealPlans || [])
-      console.log(`All Meal PLans: ${response.mealPlans}`)
+      console.log('All Meal PLans: ', response.mealPlans)
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to fetch all meal plans')
     } finally {

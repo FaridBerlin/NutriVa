@@ -76,17 +76,32 @@ export const calculateTDEE = ({ bmr, activityLevel }) => {
  * Adjust calories based on fitness goal
  */
 export const calculateCalories = (tdee, goal) => {
+  if (!Number.isFinite(tdee)) {
+    throw new Error('Invalid TDEE for calorie calculation')
+  }
+
   const adjustments = {
     'weight-loss': -500,
     lose_weight: -500,
     maintenance: 0,
     maintain_weight: 0,
     'weight-gain': 300,
-    gain_weight: 300,
+    gain_weight: 500,
     build_muscle: 300,
   }
 
-  return Math.round(tdee + (adjustments[goal] || 0))
+  const adjustment = adjustments[goal]
+  if (adjustment === undefined) {
+    throw new Error(`Invalid dietary goal: ${goal}`)
+  }
+
+  const calories = Math.round(tdee + adjustment)
+
+  if (!Number.isFinite(calories) || calories <= 0) {
+    throw new Error('Invalid daily calorie result')
+  }
+
+  return calories
 }
 
 /**
@@ -123,5 +138,10 @@ export const calculateMacros = (calories, weight, goal) => {
  * Calculate BMI
  */
 export const calculateBMI = (weight, height) => {
-  return (weight / (height / 100) ** 2).toFixed(1)
+  if (!Number.isFinite(weight) || !Number.isFinite(height) || height <= 0) {
+    throw new Error('Invalid data for BMI calculation')
+  }
+
+  const bmi = weight / (height / 100) ** 2
+  return parseFloat(bmi.toFixed(1))
 }
