@@ -12,6 +12,40 @@ body {
   );
 }
 
+/* Dark mode overrides: make common light classes look darker when `.dark` is set on <html> */
+/* These are intentionally broad to give immediate visible feedback. Add more specific overrides as needed. */
+@layer utilities {
+  .dark body {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.9) 0%,
+      #0b1220 50%,
+      rgba(2, 6, 23, 0.9) 100%
+    );
+    color: #e5e7eb;
+  }
+
+  .dark .bg-white {
+    background-color: rgba(255,255,255,0.03) !important;
+  }
+
+  .dark .text-textDark {
+    color: #e5e7eb !important;
+  }
+
+  .dark .text-textLight {
+    color: #9ca3af !important;
+  }
+
+  .dark .border-gray-200 {
+    border-color: rgba(148,163,184,0.12) !important;
+  }
+
+  .dark .ring-gray-200 {
+    box-shadow: 0 0 0 3px rgba(148,163,184,0.06) !important;
+  }
+}
+
 html,
 body,
 #root {

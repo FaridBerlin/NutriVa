@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../context/AuthContext'
+import ThemeToggle from './ui/ThemeToggle'
 import NutrivaLogo from './NutrivaLogo'
 
 export default function Navbar() {
@@ -49,6 +50,7 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0">
+          <ThemeToggle className="mr-2" />
           {user ? (
             <>
               {/* User Avatar Button & profile image */}
