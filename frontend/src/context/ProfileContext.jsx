@@ -217,7 +217,7 @@ export function ProfileProvider({ children }) {
     profile.weight,
   )
 
-  const calorieGoal = nutritionTargets?.targetCalories || 0
+  const calorieGoal = nutritionTargets?.dailyCalories || 0
 
   const profileProgress = profile
     ? (() => {

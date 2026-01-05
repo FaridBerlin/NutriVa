@@ -1,5 +1,11 @@
 import { Schema, model } from 'mongoose'
-import { calculateBMR, calculateTDEE } from '../utils/nutritionCalculations.js'
+import {
+  calculateBMR,
+  calculateTDEE,
+  calculateBMI,
+  calculateCalories,
+  calculateMacros,
+} from '../utils/nutritionCalculations.js'
 
 const profileSchema = new Schema(
   {
@@ -79,9 +85,7 @@ profileSchema.virtual('bmr').get(function () {
 
 // Virtual field for BMI calculation (Body Mass Index)
 profileSchema.virtual('bmi').get(function () {
-  const heightInMeters = this.height / 100
-  const bmi = this.weight / (heightInMeters * heightInMeters)
-  return Math.round(bmi * 10) / 10 // Round to 1 decimal
+  return calculateBMI(this.weight, this.height)
 })
 
 // Method to calculate TDEE (Total Daily Energy Expenditure)
@@ -95,29 +99,30 @@ profileSchema.methods.getTDEE = function () {
 // Method to calculate daily calorie goal based on dietary goal
 profileSchema.methods.getDailyCalories = function () {
   const tdee = this.getTDEE()
+  return calculateCalories(tdee, this.dietaryGoal)
+}
 
-   if (!Number.isFinite(tdee)) {
-    throw new Error('Invalid TDEE calculation. Profile data incomplete.')
+// Method to calculate macronutrient targets
+profileSchema.methods.getMacros = function () {
+  const calories = this.getDailyCalories()
+  return calculateMacros(calories, this.weight, this.dietaryGoal)
+}
+
+// Method to get comprehensive nutrition targets
+profileSchema.methods.getNutritionTargets = function () {
+  const calories = this.getDailyCalories()
+  const macros = this.getMacros()
+
+  return {
+    dailyCalories: calories,
+    bmr: this.bmr,
+    tdee: this.getTDEE(),
+    macros: {
+      protein: macros.protein,
+      carbs: macros.carbs,
+      fat: macros.fat,
+    },
   }
-
-  let dailyCalories = tdee
-
-  // Adjust calories based on dietary goal
-  if (this.dietaryGoal === 'lose_weight') {
-    dailyCalories -= 500 // 500 calorie deficit for weight loss
-  } else if (this.dietaryGoal === 'maintain_weight') {
-    dailyCalories = tdee // Keep TDEE as-is to maintain current weight
-  } else if (this.dietaryGoal === 'gain_weight') {
-    dailyCalories += 300 // 300 calorie surplus for weight gain
-  } else if (this.dietaryGoal === 'build_muscle') {
-    dailyCalories += 400 // 400 calorie surplus for muscle building
-  }
-
-   if (!Number.isFinite(dailyCalories) || dailyCalories <= 0) {
-    throw new Error('Invalid daily calorie result')
-  }
-  
-  return Math.round(dailyCalories)
 }
 
 // Include virtuals in JSON
