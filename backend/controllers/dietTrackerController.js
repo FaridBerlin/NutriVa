@@ -1,28 +1,28 @@
 import DietTracker from '../models/DietTracker.js'
-import MealPlan from '../models/MealPlan.js'
+import AiMealPlan from '../models/AiMealPlan.js'
 import User from '../models/User.js'
 
 // create DietTracker
 export const createDietTracker = async (req, res, next) => {
   try {
-    const { mealPlanId } = req.params
+    const { aiMealPlanId } = req.params
     const userId = req.user._id
 
-    const mealPlan = await MealPlan.findById(mealPlanId)
+    const aiMealPlan = await AiMealPlan.findById(aiMealPlanId)
 
-    if (!mealPlan) {
+    if (!aiMealPlan) {
       res.status(404)
-      throw new Error('Meal plan not found')
+      throw new Error('AI Meal plan not found')
     }
 
-    if (mealPlan.userId.toString() !== userId.toString()) {
+    if (aiMealPlan.userId.toString() !== userId.toString()) {
       res.status(403)
       throw new Error('Not authorized to track this meal plan')
     }
 
     const existingTracker = await DietTracker.findOne({
       userId,
-      mealPlanId,
+      aiMealPlanId,
       status: 'active',
     })
 
@@ -31,7 +31,34 @@ export const createDietTracker = async (req, res, next) => {
       throw new Error('Active tracker already exists for this meal plan')
     }
 
-    const day1Data = mealPlan.days.find((day) => day.dayNumber === 1)
+    // Check for orphaned trackers (active but meal plan deleted) and mark as abandoned
+    try {
+      const orphanedTrackers = await DietTracker.find({
+        userId,
+        status: 'active',
+      })
+
+      for (const tracker of orphanedTrackers) {
+        try {
+          const planExists = await AiMealPlan.findById(tracker.aiMealPlanId)
+          if (!planExists) {
+            console.log(
+              `Marking tracker ${tracker._id} as abandoned (orphaned)`,
+            )
+            tracker.status = 'abandoned'
+            await tracker.save()
+          }
+        } catch (error) {
+          console.error(`Error checking tracker ${tracker._id}:`, error)
+          // Continue with other trackers
+        }
+      }
+    } catch (error) {
+      console.error('Error checking for orphaned trackers:', error)
+      // Don't fail the tracker creation if orphan check fails
+    }
+
+    const day1Data = aiMealPlan.days.find((day) => day.dayNumber === 1)
 
     if (!day1Data) {
       res.status(400)
@@ -42,17 +69,17 @@ export const createDietTracker = async (req, res, next) => {
       date: new Date(),
       dayNumber: 1,
       meals: day1Data.meals.map((meal) => ({
-        mealId: meal.mealId,
-        name: meal.name,
-        category: meal.category,
-        isEaten: false,
+        mealId: meal._id.toString(),
+        name: meal.dishName,
+        category: meal.type,
+        isEaten: meal.eaten || false,
         nutrition: meal.nutrition,
       })),
       target: {
-        calories: mealPlan.dailyCalories,
-        protein: mealPlan.dailyMacros?.protein || 0,
-        carbs: mealPlan.dailyMacros?.carbs || 0,
-        fat: mealPlan.dailyMacros?.fat || 0,
+        calories: aiMealPlan.dailyCalories,
+        protein: aiMealPlan.dailyMacros?.protein || 0,
+        carbs: aiMealPlan.dailyMacros?.carbs || 0,
+        fat: aiMealPlan.dailyMacros?.fat || 0,
       },
       totalMeals: day1Data.meals.length,
       mealsCompleted: 0,
@@ -61,12 +88,15 @@ export const createDietTracker = async (req, res, next) => {
 
     const dietTracker = await DietTracker.create({
       userId,
-      mealPlanId,
-      totalDays: mealPlan.duration,
+      aiMealPlanId,
+      totalDays: aiMealPlan.planDuration,
       startDate: new Date(),
       currentDay: 1,
       dailyTrackers: [dailyTracker],
     })
+
+    // Populate the aiMealPlanId before sending response
+    await dietTracker.populate('aiMealPlanId')
 
     res.status(201).json(dietTracker)
   } catch (error) {
@@ -82,9 +112,20 @@ export const getActiveTracker = async (req, res, next) => {
     const tracker = await DietTracker.findOne({
       userId,
       status: 'active',
-    }).populate('mealPlanId')
+    }).populate('aiMealPlanId')
 
     if (!tracker) {
+      return res.status(404).json({
+        message: 'No active diet tracker found',
+      })
+    }
+
+    // Check if the meal plan still exists
+    if (!tracker.aiMealPlanId) {
+      // Meal plan was deleted - mark tracker as abandoned
+      tracker.status = 'abandoned'
+      await tracker.save()
+
       return res.status(404).json({
         message: 'No active diet tracker found',
       })
@@ -156,7 +197,10 @@ export const markMealAsEaten = async (req, res, next) => {
       })
     }
 
-    const meal = dayTracker.meals.id(mealId)
+    // Find meal by mealId field or by subdocument _id
+    const meal = dayTracker.meals.find(
+      (m) => m.mealId === mealId || m._id.toString() === mealId,
+    )
 
     if (!meal) {
       return res.status(404).json({
@@ -188,10 +232,10 @@ export const markMealAsEaten = async (req, res, next) => {
 
     //Day completed ... use createNextDayTracker helper function
     if (dayTracker.completionPercentage === 100) {
-      const mealPlan = await MealPlan.findById(tracker.mealPlanId)
+      const aiMealPlan = await AiMealPlan.findById(tracker.aiMealPlanId)
 
       if (tracker.currentDay < tracker.totalDays) {
-        createNextDayTracker(tracker, mealPlan)
+        createNextDayTracker(tracker, aiMealPlan)
       } else {
         tracker.status = 'completed'
       }
@@ -203,6 +247,9 @@ export const markMealAsEaten = async (req, res, next) => {
 
     await tracker.save()
 
+    // Populate the aiMealPlanId before sending response
+    await tracker.populate('aiMealPlanId')
+
     res.status(200).json({
       message: 'Meal marked as eaten',
       tracker,
@@ -213,10 +260,10 @@ export const markMealAsEaten = async (req, res, next) => {
 }
 
 //AUTO-CREATE NEXT DAY  Helper function (clean & reusable)
-const createNextDayTracker = (tracker, mealPlan) => {
+const createNextDayTracker = (tracker, aiMealPlan) => {
   const nextDayNumber = tracker.currentDay + 1
 
-  const dayData = mealPlan.days.find((d) => d.dayNumber === nextDayNumber)
+  const dayData = aiMealPlan.days.find((d) => d.dayNumber === nextDayNumber)
 
   if (!dayData) return
 
@@ -224,10 +271,10 @@ const createNextDayTracker = (tracker, mealPlan) => {
     date: new Date(),
     dayNumber: nextDayNumber,
     meals: dayData.meals.map((meal) => ({
-      mealId: meal._id,
-      name: meal.name,
-      category: meal.category,
-      isEaten: false,
+      mealId: meal._id.toString(),
+      name: meal.dishName,
+      category: meal.type,
+      isEaten: meal.eaten || false,
       nutrition: meal.nutrition,
     })),
     consumed: {
@@ -237,10 +284,10 @@ const createNextDayTracker = (tracker, mealPlan) => {
       fat: 0,
     },
     target: {
-      calories: mealPlan.dailyCalories,
-      protein: mealPlan.dailyMacros.protein,
-      carbs: mealPlan.dailyMacros.carbs,
-      fat: mealPlan.dailyMacros.fat,
+      calories: aiMealPlan.dailyCalories,
+      protein: aiMealPlan.dailyMacros.protein,
+      carbs: aiMealPlan.dailyMacros.carbs,
+      fat: aiMealPlan.dailyMacros.fat,
     },
     mealsCompleted: 0,
     totalMeals: dayData.meals.length,
@@ -270,7 +317,14 @@ export const undoMeal = async (req, res, next) => {
       (d) => d.dayNumber === Number(dayNumber),
     )
 
-    const meal = dayTracker?.meals.id(mealId)
+    if (!dayTracker) {
+      return res.status(404).json({ message: 'Day not found' })
+    }
+
+    // Find meal by mealId field or by subdocument _id
+    const meal = dayTracker.meals.find(
+      (m) => m.mealId === mealId || m._id.toString() === mealId,
+    )
 
     if (!meal || !meal.isEaten) {
       return res.status(400).json({ message: 'Meal not eaten yet' })
@@ -294,9 +348,12 @@ export const undoMeal = async (req, res, next) => {
 
     await tracker.save()
 
+    // Populate the aiMealPlanId before sending response
+    await tracker.populate('aiMealPlanId')
+
     res.json({
       message: 'Meal undone',
-      dayTracker,
+      tracker,
     })
   } catch (error) {
     next(error)

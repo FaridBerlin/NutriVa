@@ -13,6 +13,7 @@ import SignupPage from './pages/SignupPage'
 import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
+import DietTrackerPage from './pages/DietTrackerPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
 
@@ -26,15 +27,15 @@ import ScrollToTop from './components/ScrollToTop'
 // Context Providers
 import { AuthProvider } from './context/AuthContext'
 import { ProfileProvider } from './context/ProfileContext'
-import { MealPlanProvider } from './context/mealPlanContext'
 import { AiMealPlanProvider } from './context/aiMealPlanContext'
+import { DietTrackerProvider } from './context/DietTrackerContext'
 
 // Layout wrapper to handle conditional Navbar/Footer
 function AppLayout({ children }) {
   const location = useLocation()
 
   // Pages that should NOT show Navbar and Footer (dashboard-style pages)
-  const dashboardRoutes = ['/dashboard', '/settings']
+  const dashboardRoutes = ['/dashboard', '/settings', '/diet-tracker']
   const isDashboardPage = dashboardRoutes.some((route) =>
     location.pathname.startsWith(route),
   )
@@ -55,49 +56,61 @@ function App() {
     <AuthProvider>
       <ProfileProvider>
         <AiMealPlanProvider>
-          <Router>
-            <ScrollToTop />
-            <AppLayout>
-              <Routes>
-                {/* Public Routes */}
-                <Route path="/" element={<LandingPage />} />
-                <Route path="/privacy" element={<PrivacyPolicy />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />} />
+          <DietTrackerProvider>
+            <Router>
+              <ScrollToTop />
+              <AppLayout>
+                <Routes>
+                  {/* Public Routes */}
+                  <Route path="/" element={<LandingPage />} />
+                  <Route path="/privacy" element={<PrivacyPolicy />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/signup" element={<SignupPage />} />
 
-                {/* Protected Routes */}
-                <Route
-                  path="/dashboard"
-                  element={
-                    <ProtectedRoute>
-                      <DashboardPage />
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Protected Routes */}
+                  <Route
+                    path="/dashboard"
+                    element={
+                      <ProtectedRoute>
+                        <DashboardPage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                {/* Profile - View user data */}
-                <Route
-                  path="/profile"
-                  element={
-                    <ProtectedRoute>
-                      <ProfilePage />
-                    </ProtectedRoute>
-                  }
-                />
+                  {/* Profile - View user data */}
+                  <Route
+                    path="/profile"
+                    element={
+                      <ProtectedRoute>
+                        <ProfilePage />
+                      </ProtectedRoute>
+                    }
+                  />
 
-                {/* Settings - Account settings and profile edit */}
-                <Route
-                  path="/settings"
-                  element={
-                    <ProtectedRoute>
-                      <SettingsPage />
-                    </ProtectedRoute>
-                  }
-                />
-              </Routes>
-            </AppLayout>
-          </Router>
+                  {/* Settings - Account settings and profile edit */}
+                  <Route
+                    path="/settings"
+                    element={
+                      <ProtectedRoute>
+                        <SettingsPage />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* Diet Tracker - Track meal completion */}
+                  <Route
+                    path="/diet-tracker"
+                    element={
+                      <ProtectedRoute>
+                        <DietTrackerPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </AppLayout>
+            </Router>
+          </DietTrackerProvider>
         </AiMealPlanProvider>
       </ProfileProvider>
     </AuthProvider>
