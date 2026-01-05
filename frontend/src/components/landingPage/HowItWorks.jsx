@@ -1,3 +1,5 @@
+import Card from '../ui/Card'
+
 export default function HowItWorks() {
   return (
     <>
@@ -13,7 +15,7 @@ export default function HowItWorks() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
             {/* Step 1 */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 1
               </div>
@@ -24,10 +26,10 @@ export default function HowItWorks() {
                 Share your age, weight, height, activity level, and health goals
                 to help us understand your needs
               </p>
-            </div>
+            </Card>
 
             {/* Step 2 */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 2
               </div>
@@ -38,10 +40,10 @@ export default function HowItWorks() {
                 Nutriva creates a personalized meal plan tailored to your unique
                 body and lifestyle
               </p>
-            </div>
+            </Card>
 
             {/* Step 3 */}
-            <div className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/60 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="w-16 h-16 bg-primary text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-6">
                 3
               </div>
@@ -52,7 +54,7 @@ export default function HowItWorks() {
                 Follow your plan, monitor progress, and watch your health
                 transform with real-time insights
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       </section>

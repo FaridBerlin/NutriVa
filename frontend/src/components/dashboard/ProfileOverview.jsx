@@ -1,4 +1,5 @@
 import { User, Activity, Utensils, Target } from 'lucide-react'
+import Card from '../ui/Card'
 
 export default function ProfileOverview({ profile }) {
   const cards = [
@@ -98,10 +99,7 @@ export default function ProfileOverview({ profile }) {
           const colors = colorClasses[card.color]
 
           return (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md p-6 border border-gray-100 hover:shadow-lg transition-shadow"
-            >
+            <Card key={index} className="p-6">
               <div className="flex items-center gap-3 mb-4">
                 <div className={`${colors.bg} p-3 rounded-lg`}>
                   <Icon className={colors.text} size={20} />
@@ -145,7 +143,7 @@ export default function ProfileOverview({ profile }) {
                     </div>
                   )}
               </div>
-            </div>
+            </Card>
           )
         })}
       </div>

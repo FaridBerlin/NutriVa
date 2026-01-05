@@ -68,13 +68,13 @@ export default function Navbar() {
 
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-2xl animate-fade-in">
+                  <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-2xl animate-fade-in dark:bg-slate-900 dark:border-slate-700">
                     {/* User Info */}
                     <div className="px-4 py-3 border-b border-gray-200">
-                      <span className="block text-sm font-semibold text-textDark">
+                      <span className="block text-sm font-semibold text-textDark dark:text-accentYellow">
                         {user.name}
                       </span>
-                      <span className="block text-sm text-textLight truncate">
+                      <span className="block text-sm text-textLight truncate dark:text-accentYellow/80">
                         {user.email}
                       </span>
                     </div>
@@ -85,7 +85,7 @@ export default function Navbar() {
                         <Link
                           to="/dashboard"
                           onClick={() => setIsDropdownOpen(false)}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium"
+                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium dark:text-accentYellow dark:hover:bg-slate-800 dark:hover:text-accentYellow/95"
                         >
                           <svg
                             className="w-5 h-5"
@@ -107,7 +107,7 @@ export default function Navbar() {
                         <Link
                           to="/profile"
                           onClick={() => setIsDropdownOpen(false)}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium"
+                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium dark:text-accentYellow dark:hover:bg-slate-800 dark:hover:text-accentYellow/95"
                         >
                           <svg
                             className="w-5 h-5"
@@ -129,7 +129,7 @@ export default function Navbar() {
                         <Link
                           to="/settings"
                           onClick={() => setIsDropdownOpen(false)}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium"
+                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-gray-50 text-textDark hover:text-primary rounded-lg transition-all duration-200 font-medium dark:text-accentYellow dark:hover:bg-slate-800 dark:hover:text-accentYellow/95"
                         >
                           <svg
                             className="w-5 h-5"
@@ -156,13 +156,13 @@ export default function Navbar() {
 
                       {/* Divider */}
                       <li className="my-2">
-                        <hr className="border-gray-200" />
+                        <hr className="border-gray-200 dark:border-slate-700" />
                       </li>
 
                       <li>
                         <button
                           onClick={handleLogout}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-red-50 text-red-600 hover:text-red-700 rounded-lg transition-all duration-200 font-medium"
+                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-red-50 text-red-600 hover:text-red-700 rounded-lg transition-all duration-200 font-medium dark:text-accentYellow dark:hover:bg-slate-800 dark:hover:text-accentYellow/95"
                         >
                           <svg
                             className="w-5 h-5"

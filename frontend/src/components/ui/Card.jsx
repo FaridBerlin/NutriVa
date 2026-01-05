@@ -1,8 +1,9 @@
-
 export default function Card({ children, className = '' }) {
-
   const base = [
     'bg-white',
+    'nv-card',
+    'dark:bg-accentYellow/10',
+    'dark:border-accentYellow/30',
     'rounded-xl',
     'p-4',
     'border',

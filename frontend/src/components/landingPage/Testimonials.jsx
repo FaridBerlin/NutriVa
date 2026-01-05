@@ -1,3 +1,5 @@
+import Card from '../ui/Card'
+
 export default function Testimonials() {
   return (
     <>
@@ -16,7 +18,7 @@ export default function Testimonials() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Testimonial Card 1 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
+            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
                   S
@@ -33,10 +35,10 @@ export default function Testimonials() {
                 energy!"
               </p>
               <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </div>
+            </Card>
 
             {/* Testimonial Card 2 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
+            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
                   M
@@ -52,10 +54,10 @@ export default function Testimonials() {
                 lifestyle, and I finally understand what my body needs."
               </p>
               <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </div>
+            </Card>
 
             {/* Testimonial Card 3 */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
+            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
                   P
@@ -71,7 +73,7 @@ export default function Testimonials() {
                 options are unmatched. It's a game-changer!"
               </p>
               <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </div>
+            </Card>
           </div>
         </div>
       </section>

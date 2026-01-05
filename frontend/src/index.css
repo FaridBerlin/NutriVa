@@ -12,10 +12,8 @@ body {
   );
 }
 
-/* Dark mode overrides: make common light classes look darker when `.dark` is set on <html> */
-/* These are intentionally broad to give immediate visible feedback. Add more specific overrides as needed. */
 @layer utilities {
-  .dark body {
+  html.dark body {
     background: linear-gradient(
       to bottom,
       rgba(15, 23, 42, 0.9) 0%,
@@ -24,45 +22,153 @@ body {
     );
     color: #e5e7eb;
   }
-
-  .dark .bg-white {
-    background-color: rgba(255,255,255,0.03) !important;
+  html.dark .bg-white.bg-white {
+    background-color: rgba(255, 255, 255, 0.03);
   }
 
   /* handle semi-transparent white utilities like bg-white/30 */
-  .dark .bg-white\/30 {
-    background-color: rgba(255,255,255,0.03) !important;
+  html.dark .bg-white\/20.bg-white\/20,
+  html.dark .bg-white\/30.bg-white\/30,
+  html.dark .bg-white\/60.bg-white\/60,
+  html.dark .bg-white\/70.bg-white\/70,
+  html.dark .bg-white\/80.bg-white\/80 {
+    background-color: rgba(255, 255, 255, 0.03);
   }
 
   /* Navbar specifically: make header darker when dark mode active */
-  .dark nav {
+  html.dark nav {
     background: linear-gradient(
       to bottom,
-      rgba(2,6,23,0.85),
-      rgba(8,12,20,0.85)
-    ) !important;
-    border-bottom-color: rgba(148,163,184,0.06) !important;
+      rgba(2, 6, 23, 0.85),
+      rgba(8, 12, 20, 0.85)
+    );
+    border-bottom-color: rgba(148, 163, 184, 0.06);
   }
 
   /* Backdrop blur elements (e.g. header) should be darker */
-  .dark .backdrop-blur-lg {
-    background-color: rgba(2,6,23,0.45) !important;
+  html.dark .backdrop-blur-lg.backdrop-blur-lg {
+    background-color: rgba(2, 6, 23, 0.45);
   }
 
-  .dark .text-textDark {
-    color: #e5e7eb !important;
+  html.dark .text-textDark.text-textDark {
+    color: #e5e7eb;
   }
 
-  .dark .text-textLight {
-    color: #9ca3af !important;
+  html.dark .text-textLight.text-textLight {
+    color: #9ca3af;
   }
 
-  .dark .border-gray-200 {
-    border-color: rgba(148,163,184,0.12) !important;
+  html.dark .border-gray-200.border-gray-200 {
+    border-color: rgba(148, 163, 184, 0.12);
   }
 
-  .dark .ring-gray-200 {
-    box-shadow: 0 0 0 3px rgba(148,163,184,0.06) !important;
+  html.dark .ring-gray-200.ring-gray-200 {
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.06);
+  }
+
+  /* Common gray/white backgrounds used across pages */
+  html.dark .bg-gray-50.bg-gray-50 {
+    background-color: #071421;
+  }
+
+  html.dark .bg-gray-100.bg-gray-100 {
+    background-color: #0b1724;
+  }
+
+  html.dark .bg-gray-200.bg-gray-200 {
+    background-color: #0f2330;
+  }
+
+  html.dark .bg-gray-300.bg-gray-300 {
+    background-color: #122a36;
+  }
+
+  /* Pages that use min-h-screen wrappers (e.g., signup) */
+  html.dark .min-h-screen.min-h-screen {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.95) 0%,
+      #0b1220 50%,
+      rgba(2, 6, 23, 0.95) 100%
+    );
+    color: #e5e7eb;
+  }
+
+  /* Text color overrides for common gray text classes */
+  html.dark .text-gray-700.text-gray-700 {
+    color: #e5e7eb;
+  }
+
+  html.dark .text-gray-500.text-gray-500 {
+    color: #9ca3af;
+  }
+
+  /*hover */
+  html.dark .bg-gray-100.bg-gray-100:hover,
+  html.dark .bg-gray-200.bg-gray-200:hover,
+  html.dark .bg-gray-50.bg-gray-50:hover {
+    background-color: #0b2030;
+  }
+
+  /* Yellow accent shadows for dark mode */
+  .shadow-yellow-sm {
+    box-shadow:
+      0 1px 2px 0 rgba(251, 191, 36, 0.08),
+      0 1px 3px 0 rgba(251, 191, 36, 0.04);
+  }
+
+  .shadow-yellow {
+    box-shadow:
+      0 4px 6px -1px rgba(251, 191, 36, 0.12),
+      0 2px 4px -1px rgba(251, 191, 36, 0.06);
+  }
+
+  .shadow-yellow-lg {
+    box-shadow:
+      0 10px 15px -3px rgba(251, 191, 36, 0.18),
+      0 4px 6px -2px rgba(251, 191, 36, 0.08);
+  }
+
+  /* stronger glow variant for prominent elements in dark mode */
+  html.dark .glow-yellow {
+    box-shadow:
+      0 6px 30px rgba(251, 191, 36, 0.12),
+      0 2px 10px rgba(251, 191, 36, 0.06) inset;
+  }
+
+  /* Apply yellow glow to dashboard cards on hover/focus when in dark mode */
+  html.dark .nv-card:hover,
+  html.dark .nv-card:focus,
+  html.dark .nv-card:focus-within {
+    box-shadow:
+      0 8px 30px rgba(251, 191, 36, 0.14),
+      0 4px 10px rgba(251, 191, 36, 0.06) inset;
+    transform: translateY(-6px) scale(1.03);
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease;
+  }
+
+  /* Landing page: replace green(primary) with yellow in dark mode */
+  html.dark .landing-page .text-primary.text-primary {
+    color: #fbbf24;
+  }
+
+  html.dark .landing-page .bg-primary.bg-primary {
+    background-color: #fbbf24;
+  }
+
+  /* Replace green avatar/circle backgrounds used in testimonials/steps */
+  html.dark .landing-page .bg-primary.text-white {
+    background-color: #fbbf24;
+    color: #0b1220;
+  }
+
+  /* Headings that use text-primary become yellow in landing dark mode */
+  html.dark .landing-page h1.text-primary.text-primary,
+  html.dark .landing-page h2.text-primary.text-primary,
+  html.dark .landing-page .text-primary.font-semibold.text-primary {
+    color: #fbbf24;
   }
 }
 

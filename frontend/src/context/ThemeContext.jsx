@@ -20,8 +20,18 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     const root = document.documentElement
-    if (theme === 'dark') root.classList.add('dark')
-    else root.classList.remove('dark')
+    if (theme === 'dark') {
+      root.classList.add('dark')
+      // Force body background/color to ensure whole page goes dark
+      document.body.style.background =
+        'linear-gradient(to bottom, rgba(15,23,42,0.95) 0%, #0b1220 50%, rgba(2,6,23,0.95) 100%)'
+      document.body.style.color = '#e5e7eb'
+    } else {
+      root.classList.remove('dark')
+      // Clear inline styles to restore CSS-controlled appearance
+      document.body.style.background = ''
+      document.body.style.color = ''
+    }
     try {
       localStorage.setItem('theme', theme)
     } catch (e) {}

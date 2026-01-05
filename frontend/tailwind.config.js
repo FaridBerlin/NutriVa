@@ -7,6 +7,8 @@ export default {
     extend: {
       colors: {
         primary: '#83D385', // main green color
+        accentYellow: '#FBBF24', // warm yellow for dark-mode accents
+        accentYellowDark: '#D97706', // warm yellow for dark-mode accents
         primaryDark: '#7FBC81', // Hover
         primarySoft: 'rgba(127,188,129,0.85)', // button bg
         primaryLight70: 'rgba(131, 211, 133, 0.7)', // 70% opacity
