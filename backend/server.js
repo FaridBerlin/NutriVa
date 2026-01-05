@@ -6,8 +6,6 @@ import authRoutes from './routes/auth.js'
 
 import userRouter from './routes/userRoutes.js'
 import profileRouter from './routes/profileRoutes.js'
-import mealRouter from './routes/mealRoutes.js'
-import mealPlanRouter from './routes/mealPlanRoutes.js'
 import dietTrackerRouter from './routes/dietTrackerRoutes.js'
 import aiMealPlanRouter from './routes/aiMealPlanRoutes.js'
 
@@ -33,8 +31,6 @@ app.use('/api/auth', authRoutes)
 
 app.use('/api/user', userRouter)
 app.use('/api/profile', profileRouter)
-app.use('/api/meal', mealRouter)
-app.use('/api/meal-plans', mealPlanRouter)
 app.use('/api/diet-trackers', dietTrackerRouter)
 
 app.use('/api/ai-meal-plans', aiMealPlanRouter)
