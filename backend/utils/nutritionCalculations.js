@@ -86,8 +86,8 @@ export const calculateCalories = (tdee, goal) => {
     maintenance: 0,
     maintain_weight: 0,
     'weight-gain': 300,
-    gain_weight: 300,
-    build_muscle: 400, // Higher surplus for muscle building
+    gain_weight: 500,
+    build_muscle: 300,
   }
 
   const adjustment = adjustments[goal]
