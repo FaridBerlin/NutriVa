@@ -27,7 +27,7 @@ export function DietTrackerProvider({ children }) {
 
   // Fetch active tracker
   const fetchActiveTracker = async () => {
-    if (!user) {
+    if (!user & activeTracker) {
       setActiveTracker(null)
       return
     }

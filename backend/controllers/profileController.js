@@ -19,6 +19,7 @@ export const completeProfile = async (req, res, next) => {
       weight,
       activityLevel,
       dietaryGoal,
+      foodType,
       targetWeight,
       startWeight,
       weightHistory,
@@ -33,6 +34,7 @@ export const completeProfile = async (req, res, next) => {
       weight,
       activityLevel,
       dietaryGoal,
+      foodType,
       targetWeight,
     }
 

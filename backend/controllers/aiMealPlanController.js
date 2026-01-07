@@ -343,7 +343,7 @@ export const getMealPlanDay = async (req, res, next) => {
         dayNumber: parseInt(dayNumber),
         date: dayData.date,
         meals: dayData.meals,
-        nutritionSummary: dayData.nutritionSummary,
+        totalNutrition: dayData.totalNutrition,
       },
     })
   } catch (error) {

@@ -387,9 +387,13 @@ export function generateTemplateMealPlan(planDuration, mealPerDay, foodType) {
       })
     }
 
+    // Calculate total nutrition for the day
+    const totalNutrition = calculateDayNutrition(dayMeals)
+
     days.push({
       dayNumber: dayNum,
       meals: dayMeals,
+      totalNutrition,
     })
   }
 
