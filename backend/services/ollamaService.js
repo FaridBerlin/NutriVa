@@ -43,7 +43,21 @@ export const generateMealPlan = async (params) => {
       foodType,
       restrictionsAndAllergies,
       mealPerDay,
+      dailyCalories, // 🎯 NEW: Get daily calorie target from controller
     } = params
+
+    // 🎯 Calculate target calories per meal for tier guidance
+    const caloriesPerMeal = dailyCalories
+      ? Math.round(dailyCalories / mealPerDay)
+      : 500
+
+    // 🎯 Determine calorie range based on meals per day
+    let calorieRange = '500-600'
+    if (caloriesPerMeal > 900) {
+      calorieRange = '900-1200'
+    } else if (caloriesPerMeal > 600) {
+      calorieRange = '600-900'
+    }
 
     // Load prompt template
     const promptPath = path.join(__dirname, '../prompts/mealPlanPrompt.txt')
@@ -65,8 +79,14 @@ export const generateMealPlan = async (params) => {
         restrictionsAndAllergies || 'None',
       )
       .replace(/{{mealPerDay}}/g, mealPerDay || 4)
+      .replace(/{{dailyCalories}}/g, dailyCalories || 2000) // 🎯 NEW
+      .replace(/{{caloriesPerMeal}}/g, caloriesPerMeal) // 🎯 NEW
+      .replace(/{{calorieRange}}/g, calorieRange) // 🎯 NEW
 
     console.log('Generating meal plan with qwen2.5:3b...')
+    console.log(
+      `🎯 Target: ${dailyCalories} cal/day, ${caloriesPerMeal} cal/meal (${calorieRange} range)`,
+    )
     const startTime = Date.now()
 
     // Calculate tokens based on plan duration (more aggressive reduction)

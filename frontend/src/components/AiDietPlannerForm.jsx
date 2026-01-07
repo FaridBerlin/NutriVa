@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 
 const DIET_TYPES = ['veg', 'non-veg', 'vegan']
-const ALLERGENS = ['dairy-free', 'gluten-free', 'nut-free', 'soy-free', 'none']
+const ALLERGENS = ['dairy', 'gluten', 'nuts', 'none']
 const DURATION_OPTIONS = [3, 7, 14, 21, 30]
 
 export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
@@ -715,11 +715,26 @@ function Step3DietType({ form, handleChange }) {
 function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
   const allergenOptions = ALLERGENS.map((allergen) => {
     const configs = {
-      'dairy-free': { label: 'Dairy Free', emoji: '🥛' },
-      'gluten-free': { label: 'Gluten Free', emoji: '🌾' },
-      'nut-free': { label: 'Nut Free', emoji: '🥜' },
-      'soy-free': { label: 'Soy Free', emoji: '🫘' },
-      none: { label: 'No Restrictions', emoji: '✅' },
+      dairy: {
+        label: 'Dairy Free',
+        emoji: '🥛',
+        description: 'Avoid milk, cheese, yogurt',
+      },
+      gluten: {
+        label: 'Gluten Free',
+        emoji: '🌾',
+        description: 'Avoid wheat, barley, rye',
+      },
+      nuts: {
+        label: 'Nut Free',
+        emoji: '🥜',
+        description: 'Avoid all tree nuts and peanuts',
+      },
+      none: {
+        label: 'No Restrictions',
+        emoji: '✅',
+        description: 'All foods allowed',
+      },
     }
     return { value: allergen, ...configs[allergen] }
   })
@@ -759,6 +774,11 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
                 <div className="font-semibold text-textDark">
                   {allergen.label}
                 </div>
+                {allergen.description && (
+                  <div className="text-xs text-textLight mt-1">
+                    {allergen.description}
+                  </div>
+                )}
               </div>
               {form.allergens.includes(allergen.value) && (
                 <span className="text-primary text-2xl">✓</span>

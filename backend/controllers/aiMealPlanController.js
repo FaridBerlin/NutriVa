@@ -36,6 +36,15 @@ export const createMealPlan = async (req, res, next) => {
       useTemplates = false, // NEW: Option to use templates directly
     } = req.body
 
+    console.log('📥 Received meal plan request:', {
+      planName,
+      planDuration,
+      mealPerDay,
+      foodType,
+      allergens,
+      useTemplates,
+    })
+
     // Validate required fields
     if (
       !planName ||
@@ -84,6 +93,11 @@ export const createMealPlan = async (req, res, next) => {
     // Normalize foodType for backend processing
     const normalizedFoodType = foodType === 'non-veg' ? 'nonveg' : foodType
 
+    // Normalize allergens: remove 'none' and empty strings
+    const normalizedAllergens = allergens
+      ? allergens.filter((a) => a && a !== 'none' && a.trim() !== '')
+      : []
+
     let mealPlanData
 
     // Decision: Use templates for faster generation or AI for variety
@@ -94,6 +108,8 @@ export const createMealPlan = async (req, res, next) => {
         planDuration,
         mealPerDay,
         normalizedFoodType,
+        dailyCalories, // 🎯 NEW: Pass dailyCalories for tier selection
+        normalizedAllergens, // 🚫 NEW: Pass allergens for filtering
       )
     } else {
       // Try AI generation with fallback to templates
@@ -128,6 +144,7 @@ export const createMealPlan = async (req, res, next) => {
           foodType: normalizedFoodType,
           restrictionsAndAllergies: allRestrictions,
           mealPerDay,
+          dailyCalories, // 🎯 NEW: Pass dailyCalories to Ollama for per-meal targets
         })
 
         // Validate and fix AI result
@@ -136,6 +153,8 @@ export const createMealPlan = async (req, res, next) => {
           planDuration,
           mealPerDay,
           normalizedFoodType,
+          dailyCalories, // 🎯 NEW: Pass dailyCalories for tier-based scaling
+          normalizedAllergens, // 🚫 NEW: Pass allergens for fallback filtering
         )
         console.log('AI generation completed successfully')
       } catch (aiError) {
@@ -148,6 +167,8 @@ export const createMealPlan = async (req, res, next) => {
           planDuration,
           mealPerDay,
           normalizedFoodType,
+          dailyCalories, // 🎯 NEW: Pass dailyCalories for tier selection
+          normalizedAllergens, // 🚫 NEW: Pass allergens for filtering
         )
       }
     }
@@ -165,7 +186,7 @@ export const createMealPlan = async (req, res, next) => {
       goal,
       planDuration,
       foodType: normalizedFoodType,
-      allergens: allergens || [], // NEW: Store allergens array
+      allergens: normalizedAllergens || [], // NEW: Store normalized allergens array
       restrictionsAndAllergies: restrictionsAndAllergies || '',
       useTemplates: useTemplates || false, // NEW: Store generation method
       dailyCalories,
@@ -183,7 +204,8 @@ export const createMealPlan = async (req, res, next) => {
         useTemplates || planDuration > 14 ? 'templates' : 'ai-with-fallback',
     })
   } catch (error) {
-    console.error('Error generating diet plan:', error)
+    console.error('❌ Error generating diet plan:', error)
+    console.error('Error stack:', error.stack)
 
     // Handle Ollama-specific errors
     if (error.message && error.message.includes('OLLAMA')) {

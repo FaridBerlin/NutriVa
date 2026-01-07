@@ -1,21 +1,27 @@
 /**
+ * ❌ DEPRECATED - NOT IN USE
+ * 
  * Comprehensive Meal Database for NutriMind
  * Days 6-10 Sprint: Mock Data Implementation
  *
- * Features:
+ * STATUS: This file is NO LONGER USED in the current implementation.
+ * REPLACED BY: Tier-based templates (mealTier1-500-600.js, mealTier2-600-900.js, mealTier3-900-1200.js)
+ * 
+ * REASON: The tier system provides:
+ * - Better calorie accuracy (meals grouped by calorie ranges)
+ * - Proper allergen filtering built into templates
+ * - Simpler structure without helper functions
+ *
+ * Original Purpose:
  * - 100+ meals across 4 categories (breakfast, lunch, dinner, snacks)
  * - Multiple diet types (veg, non-veg, vegan)
  * - International cuisines with realistic nutrition data
  * - Allergen tracking
  * - Helper functions for smart meal selection
- *
- * Architecture note: Designed for easy swap to Ollama AI/API later
- * Simply replace getRandomMeals() calls in mealPlanService.js
  */
 
-// ============================================================================
-// BREAKFAST MEALS (5-30 meals) - 250-400 calories
-// ============================================================================
+/*
+// COMMENTED OUT - File kept for reference only
 
 const breakfastMeals = [
   // VEG - European
@@ -1342,22 +1348,42 @@ function filterByCuisine(meals, cuisine) {
 /**
  * Filter meals by allergens - exclude meals containing allergens
  * @param {array} meals - Array of meals to filter
- * @param {array} allergens - Array of allergen strings to exclude
+ * @param {array} allergens - Array of allergen strings to exclude (e.g., ['dairy', 'gluten'])
  * @returns {array} Meals without those allergens
  */
 function filterByAllergens(meals, allergens) {
   if (!allergens || allergens.length === 0) return meals
 
+  // Filter out 'none' from user allergens
+  const validAllergens = allergens.filter(a => a && a !== 'none' && a.trim() !== '')
+  if (validAllergens.length === 0) return meals
+
   return meals.filter((meal) => {
-    const mealAllergens = Array.isArray(meal.allergens)
-      ? meal.allergens.map((a) => a.toLowerCase())
-      : meal.allergens
-          .toLowerCase()
-          .split(',')
-          .map((a) => a.trim())
-    return !allergens.some((allergen) =>
-      mealAllergens.includes(allergen.toLowerCase()),
+    // If meal has no allergens property, include it
+    if (!meal.allergens) return true
+    
+    // Handle both array and string formats
+    const mealAllergensList = Array.isArray(meal.allergens)
+      ? meal.allergens
+      : [meal.allergens]
+    
+    // If meal allergens include 'none', it's safe for everyone
+    if (mealAllergensList.includes('none') || mealAllergensList.includes('[]')) {
+      return true
+    }
+    
+    // Convert meal allergens to lowercase for comparison
+    const mealAllergensLower = mealAllergensList.map((a) => 
+      typeof a === 'string' ? a.toLowerCase().trim() : ''
     )
+    
+    // Check if any user allergen is in the meal
+    const hasAllergen = validAllergens.some((userAllergen) =>
+      mealAllergensLower.includes(userAllergen.toLowerCase().trim())
+    )
+    
+    // Exclude meal if it contains any of the user's allergens
+    return !hasAllergen
   })
 }
 
@@ -1455,11 +1481,19 @@ export default {
   getByCalorieRange,
   getAllMeals,
   getMealStats,
-
-  // Utility: Get all meals in a category matching multiple filters
   getMeals: function (category, dietType, cuisine, allergens) {
     let meals = this.getMealsByCategory(category)
     if (dietType) meals = this.filterByDietType(meals, dietType)
+    if (cuisine) meals = this.filterByCuisine(meals, cuisine)
+    if (allergens) meals = this.filterByAllergens(meals, allergens)
+    return meals
+  },
+}
+
+export default mealDatabase
+
+// END OF COMMENTED CODE
+*/
     if (cuisine) meals = this.filterByCuisine(meals, cuisine)
     if (allergens) meals = this.filterByAllergens(meals, allergens)
     return meals

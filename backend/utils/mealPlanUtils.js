@@ -6,9 +6,52 @@
  * Extracted from mealPlanService.js to avoid circular imports.
  */
 
-import mealDatabase from '../data/mealDatabase.js'
-import mealTemplates from '../data/mealTemplates.js'
+import { mealTemplatesTier1 } from '../data/mealTier1-500-600.js'
+import { mealTemplatesTier2 } from '../data/mealTier2-600-900.js'
+import { mealTemplatesTier3 } from '../data/mealTier3-900-1200.js'
 import { calculateBMR, calculateTDEE } from './nutritionCalculations.js'
+
+/**
+ * Determine which meal tier to use based on calories per meal
+ *
+ * @param {number} dailyCalories - Total daily calorie target
+ * @param {number} mealsPerDay - Number of meals per day
+ * @returns {object} Tier info with templates and calorie range
+ */
+export function selectMealTier(dailyCalories, mealsPerDay) {
+  const caloriesPerMeal = dailyCalories / mealsPerDay
+
+  // Tier 1: 500-600 cal/meal (4-5+ meals/day)
+  if (caloriesPerMeal <= 600) {
+    return {
+      tier: 1,
+      templates: mealTemplatesTier1,
+      minCalories: 500,
+      maxCalories: 600,
+      name: 'Tier 1 (500-600 cal/meal)',
+    }
+  }
+  // Tier 2: 600-900 cal/meal (3 meals/day)
+  else if (caloriesPerMeal <= 900) {
+    return {
+      tier: 2,
+      templates: mealTemplatesTier2,
+      minCalories: 600,
+      maxCalories: 900,
+      name: 'Tier 2 (600-900 cal/meal)',
+    }
+  }
+  // Tier 3: 900-1200 cal/meal (2 meals/day)
+  else {
+    return {
+      tier: 3,
+      templates: mealTemplatesTier3,
+      minCalories: 900,
+      maxCalories: 1200,
+      name: 'Tier 3 (900-1200 cal/meal)',
+    }
+  }
+}
 
 /**
  * Adjust calories based on user goal
@@ -17,7 +60,7 @@ import { calculateBMR, calculateTDEE } from './nutritionCalculations.js'
  * - maintain_weight: no change
  * - lose_weight: -500 calories/day (0.5 kg/week loss)
  * - gain_weight: +500 calories/day (0.5 kg/week gain)
- * - build_muscle: +300 calories/day (muscle building surplus)
+ * - build_muscle: +500 calories/day (muscle building surplus)
  *
  * @param {number} tdee - Total daily energy expenditure
  * @param {string} goal - User's goal
@@ -28,7 +71,7 @@ export function adjustCaloriesForGoal(tdee, goal) {
     maintain_weight: 0,
     lose_weight: -500,
     gain_weight: 500,
-    build_muscle: 300,
+    build_muscle: 500,
   }
 
   const adjustment = adjustments[goal.toLowerCase()]
@@ -86,85 +129,15 @@ export function calculateMacroTargets(dailyCalories, goal) {
 
 /**
  * Select a single meal for a specific category
- * Applies all filters and ensures variety
+ * NOTE: This function is deprecated - use tier-based template selection instead
+ * Kept for backward compatibility with mealGenerationStrategy.js
  *
- * @param {object} params - Selection parameters
- * @returns {object} Selected meal or throws error
+ * @deprecated Use generateTemplateMealPlan with tier templates instead
  */
 export function selectMealForCategory(params) {
-  const {
-    category, // breakfast, lunch, dinner, snack
-    dietType, // veg, non-veg
-    allergens = [], // array of allergen strings
-    usedMealIds = [], // array of meal IDs to exclude
-    calorieTarget, // optional: target calories
-    cuisine, // optional: preferred cuisine
-  } = params
-
-  try {
-    // Step 1: Get all meals in category
-    let meals = mealDatabase.getMealsByCategory(category)
-
-    if (!meals || meals.length === 0) {
-      throw new Error(`No meals found for category: ${category}`)
-    }
-
-    // Step 2: Filter by diet type
-    if (dietType) {
-      meals = mealDatabase.filterByDietType(meals, dietType)
-      if (meals.length === 0) {
-        throw new Error(`No ${dietType} meals available for ${category}`)
-      }
-    }
-
-    // Step 3: CRITICAL - Filter by allergens
-    if (allergens && allergens.length > 0) {
-      meals = mealDatabase.filterByAllergens(meals, allergens)
-      if (meals.length === 0) {
-        throw new Error(
-          `No safe meals available for ${category} with allergies: ${allergens.join(', ')}`,
-        )
-      }
-    }
-
-    // Step 4: Optional - Filter by cuisine preference
-    if (cuisine) {
-      const cuisineFiltered = mealDatabase.filterByCuisine(meals, cuisine)
-      // Only use cuisine filter if it leaves options
-      if (cuisineFiltered.length > 0) {
-        meals = cuisineFiltered
-      }
-      // Otherwise continue with all meals
-    }
-
-    // Step 5: Optional - Filter by calorie target
-    if (calorieTarget && calorieTarget > 0) {
-      const tolerance = 50 // ±50 calories
-      const mealsByCalorie = mealDatabase.getByCalorieRange(
-        meals,
-        calorieTarget - tolerance,
-        calorieTarget + tolerance,
-      )
-
-      // Only apply if we have options, otherwise use all
-      if (mealsByCalorie.length > 0) {
-        meals = mealsByCalorie
-      }
-    }
-
-    // Step 6: Get random meal without repeats
-    const selected = mealDatabase.getRandomMeals(meals, 1, usedMealIds)
-
-    if (!selected || selected.length === 0) {
-      throw new Error(
-        `Could not select meal for ${category} - all options exhausted`,
-      )
-    }
-
-    return selected[0]
-  } catch (error) {
-    throw new Error(`Meal selection failed for ${category}: ${error.message}`)
-  }
+  throw new Error(
+    'selectMealForCategory is deprecated. Use generateTemplateMealPlan with tier templates instead.',
+  )
 }
 
 /**
@@ -348,60 +321,223 @@ export function generatePlanNutritionSummary(planData, targets) {
 
 /**
  * Generate a meal plan using templates (fallback/fast generation)
+ * NOW WITH TIER SYSTEM: Automatically selects correct calorie tier
+ * AND ALLERGEN FILTERING: Filters meals based on user allergens
+ *
  * @param {number} planDuration - Number of days (3-30)
  * @param {number} mealPerDay - Meals per day (2-6)
  * @param {string} foodType - 'veg', 'nonveg', or 'both'
+ * @param {number} dailyCalories - Daily calorie target (for tier selection)
+ * @param {array} allergens - Array of allergens to avoid (e.g., ['dairy', 'gluten'])
  * @returns {Object} - Meal plan structure with days array
  */
-export function generateTemplateMealPlan(planDuration, mealPerDay, foodType) {
-  const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'].slice(
-    0,
-    mealPerDay,
-  )
-  const days = []
+export function generateTemplateMealPlan(
+  planDuration,
+  mealPerDay,
+  foodType,
+  dailyCalories = 2000,
+  allergens = [],
+) {
+  try {
+    // 🎯 SELECT THE RIGHT TIER based on calories per meal
+    const tierInfo = selectMealTier(dailyCalories, mealPerDay)
+    const mealTemplatesFromTier = tierInfo.templates
 
-  for (let dayNum = 1; dayNum <= planDuration; dayNum++) {
-    const dayMeals = []
+    console.log(
+      `🎯 Using ${tierInfo.name} for ${dailyCalories} cal/day with ${mealPerDay} meals`,
+    )
+    console.log(
+      `📊 Target per meal: ${Math.round(dailyCalories / mealPerDay)} cal (${tierInfo.minCalories}-${tierInfo.maxCalories} cal range)`,
+    )
 
-    for (const mealType of mealTypes) {
-      const dietType =
-        foodType === 'both'
-          ? Math.random() > 0.5
-            ? 'veg'
-            : 'nonveg'
-          : foodType
-      const availableMeals =
-        mealTemplates[dietType]?.[mealType] || mealTemplates.veg[mealType]
+    // Normalize allergens: remove 'none' and filter empty strings
+    const normalizedAllergens = allergens
+      ? allergens.filter((a) => a && a !== 'none' && a.trim() !== '')
+      : []
 
-      // Select random meal from comprehensive templates
-      const randomMeal =
-        availableMeals[Math.floor(Math.random() * availableMeals.length)]
+    if (normalizedAllergens.length > 0) {
+      console.log(
+        `🚫 Filtering meals to avoid: ${normalizedAllergens.join(', ')}`,
+      )
+    }
 
-      dayMeals.push({
-        type: mealType,
-        dishName: randomMeal.dishName,
-        description: randomMeal.description,
-        nutrition: randomMeal.nutrition,
-        keyIngredients: randomMeal.keyIngredients || [],
-        cookingMethod: randomMeal.cookingMethod || 'Cooked',
+    const mealTypes = ['Breakfast', 'Lunch', 'Dinner', 'Snack'].slice(
+      0,
+      mealPerDay,
+    )
+    const days = []
+
+    // Track used meals to maximize variety (avoid repeats within 3 days)
+    const recentMeals = new Set()
+    const varietyWindow = Math.min(3, planDuration)
+
+    for (let dayNum = 1; dayNum <= planDuration; dayNum++) {
+      const dayMeals = []
+
+      for (const mealType of mealTypes) {
+        // Determine diet type for this meal
+        const dietType =
+          foodType === 'both'
+            ? Math.random() > 0.5
+              ? 'veg'
+              : 'non-veg'
+            : foodType === 'nonveg'
+              ? 'non-veg'
+              : foodType
+
+        // Get meals from the correct tier and diet type
+        const availableMeals =
+          mealTemplatesFromTier[dietType]?.[mealType] ||
+          mealTemplatesFromTier.veg?.[mealType] ||
+          []
+
+        if (availableMeals.length === 0) {
+          console.warn(
+            `⚠️  No meals found for ${dietType}/${mealType} in ${tierInfo.name}`,
+          )
+          continue
+        }
+
+        // 🚫 FILTER OUT MEALS WITH ALLERGENS
+        let filteredMeals = availableMeals
+        if (normalizedAllergens.length > 0) {
+          filteredMeals = availableMeals.filter((meal) => {
+            // Check if meal has allergens property
+            if (!meal.allergens) return true // If no allergens specified, include meal
+
+            // Handle both array and string formats
+            const mealAllergensList = Array.isArray(meal.allergens)
+              ? meal.allergens
+              : [meal.allergens]
+
+            // Check if meal contains 'none' allergen - safe for all
+            if (
+              mealAllergensList.includes('none') ||
+              mealAllergensList.includes('[]')
+            ) {
+              return true
+            }
+
+            // Check if any of the user's allergens are in the meal
+            const hasAllergen = normalizedAllergens.some((userAllergen) =>
+              mealAllergensList.some((mealAllergen) =>
+                mealAllergen.toLowerCase().includes(userAllergen.toLowerCase()),
+              ),
+            )
+
+            return !hasAllergen // Include meal only if it doesn't have user's allergens
+          })
+
+          // If filtering removed all meals, fall back to unfiltered list with warning
+          if (filteredMeals.length === 0) {
+            console.warn(
+              `⚠️  All meals filtered out for ${dietType}/${mealType}. Using unfiltered list.`,
+            )
+            filteredMeals = availableMeals
+          }
+        }
+
+        // Filter out recently used meals for variety
+        const freshMeals = filteredMeals.filter(
+          (meal) => !recentMeals.has(meal.dishName),
+        )
+        const mealsToChooseFrom =
+          freshMeals.length > 0 ? freshMeals : filteredMeals
+
+        // Select random meal
+        const randomMeal =
+          mealsToChooseFrom[
+            Math.floor(Math.random() * mealsToChooseFrom.length)
+          ]
+
+        if (!randomMeal) {
+          console.error(`❌ Failed to select meal for ${dietType}/${mealType}`)
+          continue
+        }
+
+        dayMeals.push({
+          type: mealType,
+          dishName: randomMeal.dishName || 'Unknown Dish',
+          description: randomMeal.description || '',
+          nutrition: randomMeal.nutrition || {
+            calories: 0,
+            protein: 0,
+            carbs: 0,
+            fat: 0,
+          },
+          keyIngredients: randomMeal.keyIngredients || [],
+          cookingMethod: randomMeal.cookingMethod || 'Prepared',
+        })
+
+        // Track for variety
+        recentMeals.add(randomMeal.dishName)
+        if (recentMeals.size > varietyWindow * mealPerDay) {
+          // Remove oldest meal from tracking
+          const firstMeal = Array.from(recentMeals)[0]
+          recentMeals.delete(firstMeal)
+        }
+      }
+
+      days.push({
+        dayNumber: dayNum,
+        meals: dayMeals,
       })
     }
 
-    days.push({
-      dayNumber: dayNum,
-      meals: dayMeals,
-    })
+    return {
+      days,
+      meta: {
+        tierUsed: tierInfo.tier,
+        tierName: tierInfo.name,
+        calorieRangePerMeal: `${tierInfo.minCalories}-${tierInfo.maxCalories}`,
+      },
+    }
+  } catch (error) {
+    console.error('❌ Error in generateTemplateMealPlan:', error)
+    console.error('Stack:', error.stack)
+    throw new Error(`Template meal plan generation failed: ${error.message}`)
+  }
+}
+
+/**
+ * Scale meal nutrition to target calorie range
+ * @param {Object} meal - Meal object with nutrition
+ * @param {number} targetCalories - Target calories for this meal
+ * @returns {Object} - Meal with adjusted nutrition
+ */
+export function scaleMealToTarget(meal, targetCalories) {
+  const currentCalories = meal.nutrition?.calories || 500
+
+  // If meal is already close (within 15%), don't scale
+  const variance = Math.abs(currentCalories - targetCalories) / targetCalories
+  if (variance <= 0.15) {
+    return meal
   }
 
-  return { days }
+  // Calculate scaling factor
+  const scaleFactor = targetCalories / currentCalories
+
+  return {
+    ...meal,
+    nutrition: {
+      calories: Math.round(meal.nutrition.calories * scaleFactor),
+      protein: Math.round(meal.nutrition.protein * scaleFactor),
+      carbs: Math.round(meal.nutrition.carbs * scaleFactor),
+      fat: Math.round(meal.nutrition.fat * scaleFactor),
+    },
+  }
 }
 
 /**
  * Validate and fix AI-generated meal plan
+ * NOW WITH CALORIE SCALING to match tier targets!
+ *
  * @param {Object} aiResult - Raw AI output
  * @param {number} planDuration - Expected number of days
  * @param {number} mealPerDay - Expected meals per day
  * @param {string} foodType - Diet preference
+ * @param {number} dailyCalories - Daily calorie target for tier selection
+ * @param {array} allergens - Array of allergens to avoid (for fallback)
  * @returns {Object} - Validated meal plan
  */
 export function validateAndFixMealPlan(
@@ -409,11 +545,28 @@ export function validateAndFixMealPlan(
   planDuration,
   mealPerDay,
   foodType,
+  dailyCalories = 2000,
+  allergens = [],
 ) {
   if (!aiResult?.days || !Array.isArray(aiResult.days)) {
     console.warn('Invalid AI result structure, using template fallback')
-    return generateTemplateMealPlan(planDuration, mealPerDay, foodType)
+    return generateTemplateMealPlan(
+      planDuration,
+      mealPerDay,
+      foodType,
+      dailyCalories,
+      allergens, // Pass allergens to fallback
+    )
   }
+
+  // 🎯 Get tier info to know target calorie range
+  const tierInfo = selectMealTier(dailyCalories, mealPerDay)
+  const targetCaloriesPerMeal = Math.round(dailyCalories / mealPerDay)
+
+  console.log(`🎯 Validating AI meals against ${tierInfo.name}`)
+  console.log(
+    `   Target: ${targetCaloriesPerMeal} cal/meal (${tierInfo.minCalories}-${tierInfo.maxCalories} range)`,
+  )
 
   const validatedDays = []
 
@@ -422,16 +575,39 @@ export function validateAndFixMealPlan(
 
     if (!day || !day.meals || day.meals.length !== mealPerDay) {
       console.warn(`Day ${i + 1} invalid, generating template day`)
-      const templateDay = generateTemplateMealPlan(1, mealPerDay, foodType)
-        .days[0]
+      const templateDay = generateTemplateMealPlan(
+        1,
+        mealPerDay,
+        foodType,
+        dailyCalories,
+      ).days[0]
       validatedDays.push({
         ...templateDay,
         dayNumber: i + 1,
       })
     } else {
+      // ✅ Validate and scale each meal to target calories
+      const scaledMeals = day.meals.map((meal) => {
+        const mealCalories = meal.nutrition?.calories || 500
+
+        // If meal is way off (outside tier range), scale it
+        if (
+          mealCalories < tierInfo.minCalories * 0.8 ||
+          mealCalories > tierInfo.maxCalories * 1.2
+        ) {
+          console.log(
+            `   📊 Scaling meal "${meal.dishName}" from ${mealCalories} to ~${targetCaloriesPerMeal} cal`,
+          )
+          return scaleMealToTarget(meal, targetCaloriesPerMeal)
+        }
+
+        return meal
+      })
+
       validatedDays.push({
         ...day,
         dayNumber: i + 1,
+        meals: scaledMeals,
       })
     }
   }

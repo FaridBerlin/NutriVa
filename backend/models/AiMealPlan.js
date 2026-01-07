@@ -107,7 +107,7 @@ const mealPlanSchema = new Schema(
     allergens: {
       type: [String],
       default: [],
-      enum: ['dairy-free', 'gluten-free', 'nut-free', 'soy-free', 'none', ''],
+      enum: ['dairy', 'gluten', 'nuts', 'none', ''],
     },
     restrictionsAndAllergies: {
       type: String,
