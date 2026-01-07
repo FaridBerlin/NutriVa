@@ -1,70 +1,6 @@
-import { User, Activity, Utensils, Target } from 'lucide-react'
-import Card from '../ui/Card'
+import { Target } from 'lucide-react'
 
 export default function ProfileOverview({ profile }) {
-  const cards = [
-    {
-      title: 'Body Metrics',
-      icon: Activity,
-      color: 'green',
-      data: [
-        {
-          label: 'Height',
-          value: profile?.height ? `${profile.height} cm` : 'Not set',
-        },
-        {
-          label: 'Weight',
-          value: profile?.weight ? `${profile.weight} kg` : 'Not set',
-        },
-        {
-          label: 'BMI',
-          value: profile?.bmi ? profile.bmi.toFixed(1) : 'Not set',
-        },
-        { label: 'Category', value: profile?.bmiCategory || 'Not set' },
-      ],
-    },
-    {
-      title: 'Diet Preferences',
-      icon: Utensils,
-      color: 'orange',
-      data: [
-        {
-          label: 'Goal',
-          value: profile?.dietaryGoal?.replace('_', ' ') || 'Not set',
-        },
-        { label: 'Meals/Day', value: profile?.mealsPerDay || 'Not set' },
-        {
-          label: 'Duration',
-          value: profile?.planDuration
-            ? `${profile.planDuration} days`
-            : 'Not set',
-        },
-        { label: 'Type', value: profile?.dietType || 'None' },
-      ],
-    },
-    {
-      title: 'Fitness Goals',
-      icon: Target,
-      color: 'purple',
-      data: [
-        { label: 'Goal', value: profile?.fitnessGoal || 'Weight loss' },
-        {
-          label: 'Calories',
-          value: profile?.dailyCalories
-            ? `${profile.dailyCalories} kcal`
-            : 'Not set',
-        },
-        { label: 'Target BMI', value: profile?.targetBMI || '22.5' },
-        {
-          label: 'Target Weight',
-          value: profile?.targetWeight
-            ? `${profile.targetWeight} kg`
-            : 'Not set',
-        },
-      ],
-    },
-  ]
-
   // Compute simple progress toward target weight
   let progressPercent = null
   let remainingKg = null
@@ -73,7 +9,6 @@ export default function ProfileOverview({ profile }) {
     const target = Number(profile.targetWeight)
     const diff = Math.abs(current - target)
     // Simple closeness metric: percent = 100 when equal, else reduce proportionally
-    // We use current as denominator to avoid division by zero
     progressPercent =
       current > 0
         ? Math.round(Math.max(0, Math.min(100, (1 - diff / current) * 100)))
@@ -81,71 +16,79 @@ export default function ProfileOverview({ profile }) {
     remainingKg = Math.round(diff * 10) / 10
   }
 
-  const colorClasses = {
-    blue: { bg: 'bg-blue-50', text: 'text-blue-500' },
-    green: { bg: 'bg-green-50', text: 'text-green-500' },
-    orange: { bg: 'bg-orange-50', text: 'text-orange-500' },
-    purple: { bg: 'bg-purple-50', text: 'text-purple-500' },
-  }
-
   return (
     <div>
       <h2 className="text-2xl font-bold text-textDark mb-6">
         Profile Overview
       </h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {cards.map((card, index) => {
-          const Icon = card.icon
-          const colors = colorClasses[card.color]
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Fitness Goals Card */}
+        <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl shadow-md p-6 border border-primary/20 hover:shadow-lg transition-all">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="bg-primary/20 p-3 rounded-lg">
+              <Target className="text-primary" size={24} />
+            </div>
+            <h3 className="font-semibold text-textDark text-lg">
+              Fitness Goals
+            </h3>
+          </div>
 
-          return (
-            <Card key={index} className="p-6">
-              <div className="flex items-center gap-3 mb-4">
-                <div className={`${colors.bg} p-3 rounded-lg`}>
-                  <Icon className={colors.text} size={20} />
+          <div className="space-y-3">
+            <div className="flex justify-between text-sm">
+              <span className="text-textLight">Goal:</span>
+              <span className="font-semibold text-textDark">
+                {profile?.dietaryGoal?.replace('_', ' ') || 'Weight loss'}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-textLight">Daily Calories:</span>
+              <span className="font-semibold text-textDark">
+                {profile?.dailyCalories
+                  ? `${profile.dailyCalories} kcal`
+                  : 'Not set'}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-textLight">Target BMI:</span>
+              <span className="font-semibold text-textDark">
+                {profile?.targetBMI || '22.5'}
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
+              <span className="text-textLight">Target Weight:</span>
+              <span className="font-semibold text-textDark">
+                {profile?.targetWeight
+                  ? `${profile.targetWeight} kg`
+                  : 'Not set'}
+              </span>
+            </div>
+
+            {/* Progress bar for target weight */}
+            {profile?.weight && profile?.targetWeight && (
+              <div className="mt-4 pt-4 border-t border-primary/20">
+                <div className="flex items-center justify-between text-sm mb-2">
+                  <span className="text-textLight font-medium">
+                    Progress to Target
+                  </span>
+                  <span className="font-bold text-primary">
+                    {progressPercent}%
+                  </span>
                 </div>
-                <h3 className="font-semibold text-textDark">{card.title}</h3>
+                <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+                  <div
+                    className="h-3 rounded-full bg-gradient-to-r from-primary to-primaryDark transition-all duration-500"
+                    style={{ width: `${progressPercent}%` }}
+                  />
+                </div>
+                <div className="text-xs text-textLight mt-2">
+                  {remainingKg === 0
+                    ? '🎉 Target achieved!'
+                    : `${remainingKg} kg to go`}
+                </div>
               </div>
-
-              <div className="space-y-2">
-                {card.data.map((item, idx) => (
-                  <div key={idx} className="flex justify-between text-sm">
-                    <span className="text-textLight">{item.label}:</span>
-                    <span className="font-medium text-textDark">
-                      {item.value}
-                    </span>
-                  </div>
-                ))}
-                {/* Progress bar for target weight (show only in Fitness Goals card) */}
-                {card.title === 'Fitness Goals' &&
-                  profile?.weight &&
-                  profile?.targetWeight && (
-                    <div className="mt-3">
-                      <div className="flex items-center justify-between text-sm mb-1">
-                        <span className="text-textLight">
-                          Progress to target
-                        </span>
-                        <span className="font-semibold text-textDark">
-                          {progressPercent}%
-                        </span>
-                      </div>
-                      <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
-                        <div
-                          className="h-3 rounded-full bg-gradient-to-r from-green-400 to-teal-500"
-                          style={{ width: `${progressPercent}%` }}
-                        />
-                      </div>
-                      <div className="text-xs text-textLight mt-2">
-                        {remainingKg === 0
-                          ? 'At target weight ✅'
-                          : `${remainingKg} kg to go`}
-                      </div>
-                    </div>
-                  )}
-              </div>
-            </Card>
-          )
-        })}
+            )}
+          </div>
+        </div>
       </div>
     </div>
   )

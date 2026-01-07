@@ -19,6 +19,7 @@ export const completeProfile = async (req, res, next) => {
       weight,
       activityLevel,
       dietaryGoal,
+      foodType,
       targetWeight,
       startWeight,
       weightHistory,
@@ -33,6 +34,7 @@ export const completeProfile = async (req, res, next) => {
       weight,
       activityLevel,
       dietaryGoal,
+      foodType,
       targetWeight,
     }
 
@@ -59,42 +61,35 @@ export const completeProfile = async (req, res, next) => {
     //we need to import User here - this is very important to be updated
     await User.findByIdAndUpdate(userId, { profileCompleted: true })
 
+    // Calculate warnings
+    const warnings = []
+    try {
+      const current = Number(profile.weight)
+      const target = Number(profile.targetWeight)
+      if (target && current) {
+        const percentChange = Math.abs(target - current) / current
+        if (percentChange > 0.4) {
+          warnings.push(
+            'Target weight differs from current weight by more than 40% — this may be unrealistic',
+          )
+        }
+        if (target < 30) {
+          warnings.push(
+            'Target weight is below the recommended safety threshold',
+          )
+        }
+      }
+    } catch (err) {
+      // ignore
+    }
+
     res.status(201).json({
       success: true,
       message: 'Profile created successfully.',
       data: {
         profile: profile.toJSON(),
-        nutritionTargets: {
-          bmi: profile.bmi,
-          bmiPercent: profile.bmiPercent ?? null,
-          bmiCategory: profile.bmiCategory ?? null,
-          bmr: profile.bmr,
-          tdee: profile.getTDEE(),
-          targetCalories: profile.getDailyCalories(),
-        },
-        warnings: (() => {
-          const warnings = []
-          try {
-            const current = Number(profile.weight)
-            const target = Number(profile.targetWeight)
-            if (target && current) {
-              const percentChange = Math.abs(target - current) / current
-              if (percentChange > 0.4) {
-                warnings.push(
-                  'Target weight differs from current weight by more than 40% — this may be unrealistic',
-                )
-              }
-              if (target < 30) {
-                warnings.push(
-                  'Target weight is below the recommended safety threshold',
-                )
-              }
-            }
-          } catch (err) {
-            // ignore
-          }
-          return warnings
-        })(),
+        nutritionTargets: profile.getNutritionTargets(),
+        warnings,
       },
     })
   } catch (error) {
@@ -121,14 +116,7 @@ export const getProfile = async (req, res, next) => {
       message: 'User Profile.',
       data: {
         profile: profile.toJSON(),
-        nutritionTargets: {
-          bmi: profile.bmi,
-          bmiPercent: profile.bmiPercent ?? null,
-          bmiCategory: profile.bmiCategory ?? null,
-          bmr: profile.bmr,
-          tdee: profile.getTDEE(),
-          targetCalories: profile.getDailyCalories(),
-        },
+        nutritionTargets: profile.getNutritionTargets(),
       },
     })
   } catch (error) {
@@ -187,42 +175,35 @@ export const updateProfile = async (req, res, next) => {
 
     const profile = await existingProfile.save()
 
+    // Calculate warnings
+    const warnings = []
+    try {
+      const current = Number(profile.weight)
+      const target = Number(profile.targetWeight)
+      if (target && current) {
+        const percentChange = Math.abs(target - current) / current
+        if (percentChange > 0.4) {
+          warnings.push(
+            'Target weight differs from current weight by more than 40% — this may be unrealistic',
+          )
+        }
+        if (target < 30) {
+          warnings.push(
+            'Target weight is below the recommended safety threshold',
+          )
+        }
+      }
+    } catch (err) {
+      // ignore
+    }
+
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully.',
       data: {
         profile: profile.toJSON(),
-        nutritionTargets: {
-          bmi: profile.bmi,
-          bmiPercent: profile.bmiPercent ?? null,
-          bmiCategory: profile.bmiCategory ?? null,
-          bmr: profile.bmr,
-          tdee: profile.getTDEE(),
-          targetCalories: profile.getDailyCalories(),
-        },
-        warnings: (() => {
-          const warnings = []
-          try {
-            const current = Number(profile.weight)
-            const target = Number(profile.targetWeight)
-            if (target && current) {
-              const percentChange = Math.abs(target - current) / current
-              if (percentChange > 0.4) {
-                warnings.push(
-                  'Target weight differs from current weight by more than 40% — this may be unrealistic',
-                )
-              }
-              if (target < 30) {
-                warnings.push(
-                  'Target weight is below the recommended safety threshold',
-                )
-              }
-            }
-          } catch (err) {
-            // ignore
-          }
-          return warnings
-        })(),
+        nutritionTargets: profile.getNutritionTargets(),
+        warnings,
       },
     })
   } catch (error) {
