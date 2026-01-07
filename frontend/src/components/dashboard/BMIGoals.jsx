@@ -16,12 +16,13 @@ import {
 } from 'recharts'
 import { useState } from 'react'
 
-import { TrendingUp, Flame } from 'lucide-react'
+import { TrendingUp, Flame, Target, Utensils } from 'lucide-react'
 
 export default function BMIGoals({ bmi, goals, activePlan }) {
   const [selectedMetric, setSelectedMetric] = useState('calories')
 
-  // Today's nutrition data from real goals
+  // Today's Summary
+
   const progressData = [
     {
       name: 'Calories',
@@ -29,7 +30,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
       target: goals?.caloriesTarget || 2000,
       unit: 'kcal',
       fill: '#8b5cf6', // purple
-      icon: '🔥',
+      Icon: Flame,
     },
     {
       name: 'Protein',
@@ -37,7 +38,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
       target: goals?.proteinTarget || 150,
       unit: 'g',
       fill: '#83D385', // green (primary)
-      icon: '💪',
+      Icon: TrendingUp,
     },
     {
       name: 'Carbs',
@@ -45,7 +46,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
       target: goals?.carbsTarget || 250,
       unit: 'g',
       fill: '#3b82f6', // blue
-      icon: '🌾',
+      Icon: Utensils,
     },
     {
       name: 'Fats',
@@ -53,15 +54,30 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
       target: goals?.fatsTarget || 65,
       unit: 'g',
       fill: '#f97316', // orange
-      icon: '🥑',
+      Icon: Target,
     },
   ]
 
-  // Macros distribution for Pie Chart - using real data
+  // Macros Split
   const macrosData = [
-    { name: 'Protein', value: goals?.proteinCurrent || 0, fill: '#83D385' },
-    { name: 'Carbs', value: goals?.carbsCurrent || 0, fill: '#3b82f6' },
-    { name: 'Fats', value: goals?.fatsCurrent || 0, fill: '#f97316' },
+    {
+      name: 'Protein',
+      value: goals?.proteinCurrent || 0,
+      fill: '#83D385',
+      Icon: TrendingUp,
+    },
+    {
+      name: 'Carbs',
+      value: goals?.carbsCurrent || 0,
+      fill: '#3b82f6',
+      Icon: Utensils,
+    },
+    {
+      name: 'Fats',
+      value: goals?.fatsCurrent || 0,
+      fill: '#f97316',
+      Icon: Target,
+    },
   ]
 
   // Get macro data for the selected metric using real weekly data from meal plan
@@ -142,11 +158,8 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
           </div>
           <div className="flex justify-center gap-3 mt-2 flex-wrap">
             {macrosData.map((item) => (
-              <div key={item.name} className="flex items-center gap-1.5">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: item.fill }}
-                />
+              <div key={item.name} className="flex items-center gap-2">
+                <item.Icon size={16} className="text-muted" />
                 <span className="text-xs text-textLight font-medium">
                   {item.name}
                 </span>
@@ -167,8 +180,8 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
                 key={item.name}
                 className="flex items-center justify-between"
               >
-                <span className="text-sm text-textLight flex items-center gap-1">
-                  <span>{item.icon}</span>
+                <span className="text-sm text-textLight flex items-center gap-2">
+                  <item.Icon size={16} className="text-primary" />
                   {item.name}
                 </span>
                 <span className="text-sm font-semibold text-textDark">

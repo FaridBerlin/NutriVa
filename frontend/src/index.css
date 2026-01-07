@@ -149,6 +149,15 @@ body {
       transform 200ms ease;
   }
 
+  /* When `nv-no-hover` is present we opt-out of the dark-mode hover transforms */
+  html.dark .nv-card.nv-no-hover:hover,
+  html.dark .nv-card.nv-no-hover:focus,
+  html.dark .nv-card.nv-no-hover:focus-within {
+    box-shadow: none;
+    transform: none;
+    transition: none;
+  }
+
   /* Landing page: replace green(primary) with yellow in dark mode */
   html.dark .landing-page .text-primary.text-primary {
     color: #fbbf24;

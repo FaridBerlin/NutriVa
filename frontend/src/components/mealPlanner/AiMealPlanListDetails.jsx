@@ -1,3 +1,5 @@
+import Card from '../ui/Card'
+
 export default function AiMealPlanListDetails({ plan, onBack }) {
   if (!plan) return null
 
@@ -91,7 +93,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
             {/* Meals */}
             <div className="grid grid-cols-1 gap-4">
               {day.meals.map((meal, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-md p-6">
+                <Card key={index} noHover className="p-6 shadow-md">
                   {/* Header with meal type and calories */}
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -147,7 +149,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                       </div>
                     </div>
                   )}
-                </div>
+                </Card>
               ))}
             </div>
 
