@@ -16,14 +16,22 @@ export default function Card({ children, className = '', noHover = false }) {
   ]
 
   if (!noHover) {
-    baseArray.push('hover:shadow-2xl', 'hover:-translate-y-1', 'hover:scale-105')
+    baseArray.push(
+      'hover:shadow-2xl',
+      'hover:-translate-y-1',
+      'hover:scale-105',
+    )
   }
 
   if (noHover) {
     baseArray.push('nv-no-hover')
   }
 
-  baseArray.push('focus:outline-none', 'focus-visible:ring-2', 'focus-visible:ring-primary/30')
+  baseArray.push(
+    'focus:outline-none',
+    'focus-visible:ring-2',
+    'focus-visible:ring-primary/30',
+  )
 
   const base = baseArray.join(' ')
 

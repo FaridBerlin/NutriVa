@@ -84,7 +84,9 @@ export default function TodayMeals() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-textDark dark:text-accentYellow mb-6">Today's Meals</h2>
+      <h2 className="text-2xl font-bold text-textDark dark:text-accentYellow mb-6">
+        Today's Meals
+      </h2>
 
       {/* Today's AI Meal Plan */}
       <Card noHover className="p-6">
@@ -140,7 +142,9 @@ export default function TodayMeals() {
                           {meal.time}
                         </span>
                       </div>
-                      <h4 className="text-gray-900 font-medium dark:text-accentYellow">{meal.name}</h4>
+                      <h4 className="text-gray-900 font-medium dark:text-accentYellow">
+                        {meal.name}
+                      </h4>
                     </div>
                   </div>
                   <div className="text-right text-sm">
