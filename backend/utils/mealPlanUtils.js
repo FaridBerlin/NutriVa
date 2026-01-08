@@ -512,6 +512,14 @@ export function scaleMealToTarget(meal, targetCalories) {
   const variance = Math.abs(currentCalories - targetCalories) / targetCalories
   if (variance <= 0.15) {
     return meal
+    // Calculate total nutrition for the day
+    const totalNutrition = calculateDayNutrition(dayMeals)
+
+    days.push({
+      dayNumber: dayNum,
+      meals: dayMeals,
+      totalNutrition,
+    })
   }
 
   // Calculate scaling factor
