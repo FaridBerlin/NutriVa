@@ -76,11 +76,11 @@ export default function AiMealPlanList() {
       {allPlans.map((plan) => (
         <div
           key={plan._id}
-          className="border rounded-lg p-4 flex justify-between items-center bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200"
+          className="border rounded-lg p-4 flex justify-between items-center bg-gradient-to-r from-green-50 to-green-100 border-green-200"
         >
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-extrabold">{plan.planName}</h3>
+              <h3 className="font-extrabold capitalize">{plan.planName}</h3>
               <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white font-semibold">
                 AI
               </span>
@@ -101,14 +101,20 @@ export default function AiMealPlanList() {
           <div className="flex gap-3">
             <button
               onClick={() => handleView(plan._id)}
-              className="text-purple-600 hover:underline font-medium"
+              //className="text-purple-600 hover:underline font-medium"
+              className="px-8 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
+                       text-white rounded-lg font-semibold hover:shadow-lg 
+                       transition-all transform hover:scale-105 disabled:opacity-50"
             >
               View
             </button>
 
             <button
               onClick={() => handleDelete(plan._id)}
-              className="text-red-600 hover:underline font-medium"
+              //className="text-red-600 hover:underline font-medium"
+              className="px-8 py-2.5 bg-gradient-to-r from-red-500 to-red-400 
+                       text-white rounded-lg font-semibold hover:shadow-lg 
+                       transition-all transform hover:scale-105 disabled:opacity-50"
             >
               Delete
             </button>
