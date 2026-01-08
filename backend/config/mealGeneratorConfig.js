@@ -1,22 +1,25 @@
 /**
+ * ❌ DEPRECATED - NOT IN USE
+ * 
  * Meal Generator Configuration
  * backend/config/mealGeneratorConfig.js
  *
- * Controls which meal generation strategy to use.
- * Supports easy switching between mock data, AI models, and external APIs.
+ * STATUS: This file is NO LONGER USED in the current implementation.
+ * REPLACED BY: Direct usage of generateTemplateMealPlan() in aiMealPlanController.js
+ * 
+ * REASON: We simplified the architecture by removing the strategy pattern.
+ * Controllers now directly call generateTemplateMealPlan() from mealPlanUtils.js
  *
- * Environment Variables:
- * - MEAL_GENERATOR: "mock" | "ollama" | "openai" (default: "mock")
- * - OLLAMA_BASE_URL: Base URL for Ollama API (default: "http://localhost:11434")
- * - OPENAI_API_KEY: API key for OpenAI (required if using openai)
+ * Original Purpose:
+ * - Controls which meal generation strategy to use
+ * - Supports easy switching between mock data, AI models, and external APIs
  */
+
+/*
+// COMMENTED OUT - File kept for reference only
 
 import { MockMealGenerator, OllamaMealGenerator, OpenAIMealGenerator } from '../services/mealGenerationStrategy.js'
 
-/**
- * Get the current meal generator based on environment configuration
- * @returns {MealGenerationStrategy} Configured meal generator instance
- */
 function getMealGenerator() {
   const generatorType = process.env.MEAL_GENERATOR || 'mock'
 
@@ -50,6 +53,12 @@ function getGeneratorConfig() {
 }
 
 export default {
+  getMealGenerator,
+  getGeneratorConfig,
+}
+
+// END OF COMMENTED CODE
+*/
   getMealGenerator,
   getGeneratorConfig,
 }

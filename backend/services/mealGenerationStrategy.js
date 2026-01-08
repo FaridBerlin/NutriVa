@@ -1,32 +1,35 @@
 /**
+ * ❌ DEPRECATED - NOT IN USE
+ * 
  * Meal Generation Strategy - Abstract Base Class
  * backend/services/mealGenerationStrategy.js
  *
- * Defines the interface for meal plan generation strategies.
- * Allows easy swapping between mock data, AI models, and external APIs.
+ * STATUS: This file is NO LONGER USED in the current implementation.
+ * REPLACED BY: Direct usage of generateTemplateMealPlan() in aiMealPlanController.js
+ * 
+ * REASON: We simplified the architecture to use tier-based templates directly
+ * instead of the strategy pattern. The tier system (mealTier1/2/3) provides
+ * better calorie accuracy and allergen filtering.
+ *
+ * Original Purpose:
+ * - Defines the interface for meal plan generation strategies
+ * - Allows easy swapping between mock data, AI models, and external APIs
  *
  * Strategy Pattern Implementation:
- * - MockMealGenerator: Uses local meal database
- * - OllamaMealGenerator: Uses local Ollama AI
- * - OpenAIMealGenerator: Uses OpenAI API
- * - Future: External API generators
+ * - MockMealGenerator: Uses local meal database (deprecated - used mealDatabase.js)
+ * - OllamaMealGenerator: Uses local Ollama AI (not implemented)
+ * - OpenAIMealGenerator: Uses OpenAI API (not implemented)
  */
 
+/*
+// COMMENTED OUT - File kept for reference only
+
 export class MealGenerationStrategy {
-  /**
-   * Generate a complete meal plan
-   * @param {object} params - Generation parameters
-   * @returns {Promise<object>} Generated meal plan
-   */
   async generate(params) {
     throw new Error('generate() method must be implemented by subclass')
   }
 }
 
-/**
- * Mock Meal Generator - Current Implementation
- * Uses the existing mealDatabase.js and selection logic
- */
 export class MockMealGenerator extends MealGenerationStrategy {
   async generate(params) {
     // Import utility functions
@@ -236,43 +239,23 @@ export class MockMealGenerator extends MealGenerationStrategy {
   }
 }
 
-/**
- * Ollama Meal Generator - Future AI Implementation
- * Will use local Ollama API for meal generation
- */
 export class OllamaMealGenerator extends MealGenerationStrategy {
   async generate(params) {
-    // TODO: Implement Ollama integration
-    // 1. Install ollama npm package
-    // 2. Create prompt templates
-    // 3. Call Ollama API
-    // 4. Parse JSON response
-    // 5. Validate and repair JSON if needed
-    // 6. Return structured meal plan
-
     throw new Error(
       'OllamaMealGenerator not yet implemented. Use MOCK generator.',
     )
   }
 }
 
-/**
- * OpenAI Meal Generator - Future AI Implementation
- * Will use OpenAI API for meal generation
- */
 export class OpenAIMealGenerator extends MealGenerationStrategy {
   async generate(params) {
-    // TODO: Implement OpenAI integration
-    // 1. Install openai npm package
-    // 2. Set up API key
-    // 3. Create prompt templates
-    // 4. Call OpenAI API
-    // 5. Parse JSON response
-    // 6. Validate and repair JSON if needed
-    // 7. Return structured meal plan
-
     throw new Error(
       'OpenAIMealGenerator not yet implemented. Use MOCK generator.',
     )
+  }
+}
+
+// END OF COMMENTED CODE
+*/
   }
 }
