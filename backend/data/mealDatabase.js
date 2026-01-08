@@ -1,12 +1,12 @@
 /**
  * ❌ DEPRECATED - NOT IN USE
- * 
+ *
  * Comprehensive Meal Database for NutriMind
  * Days 6-10 Sprint: Mock Data Implementation
  *
  * STATUS: This file is NO LONGER USED in the current implementation.
  * REPLACED BY: Tier-based templates (mealTier1-500-600.js, mealTier2-600-900.js, mealTier3-900-1200.js)
- * 
+ *
  * REASON: The tier system provides:
  * - Better calorie accuracy (meals grouped by calorie ranges)
  * - Proper allergen filtering built into templates
@@ -1355,33 +1355,38 @@ function filterByAllergens(meals, allergens) {
   if (!allergens || allergens.length === 0) return meals
 
   // Filter out 'none' from user allergens
-  const validAllergens = allergens.filter(a => a && a !== 'none' && a.trim() !== '')
+  const validAllergens = allergens.filter(
+    (a) => a && a !== 'none' && a.trim() !== '',
+  )
   if (validAllergens.length === 0) return meals
 
   return meals.filter((meal) => {
     // If meal has no allergens property, include it
     if (!meal.allergens) return true
-    
+
     // Handle both array and string formats
     const mealAllergensList = Array.isArray(meal.allergens)
       ? meal.allergens
       : [meal.allergens]
-    
+
     // If meal allergens include 'none', it's safe for everyone
-    if (mealAllergensList.includes('none') || mealAllergensList.includes('[]')) {
+    if (
+      mealAllergensList.includes('none') ||
+      mealAllergensList.includes('[]')
+    ) {
       return true
     }
-    
+
     // Convert meal allergens to lowercase for comparison
-    const mealAllergensLower = mealAllergensList.map((a) => 
-      typeof a === 'string' ? a.toLowerCase().trim() : ''
+    const mealAllergensLower = mealAllergensList.map((a) =>
+      typeof a === 'string' ? a.toLowerCase().trim() : '',
     )
-    
+
     // Check if any user allergen is in the meal
     const hasAllergen = validAllergens.some((userAllergen) =>
-      mealAllergensLower.includes(userAllergen.toLowerCase().trim())
+      mealAllergensLower.includes(userAllergen.toLowerCase().trim()),
     )
-    
+
     // Exclude meal if it contains any of the user's allergens
     return !hasAllergen
   })
@@ -1464,7 +1469,7 @@ function getMealStats() {
 // EXPORTS
 // ============================================================================
 
-export default {
+/* export default {
   // Meal arrays
   breakfastMeals,
   lunchMeals,
@@ -1488,14 +1493,4 @@ export default {
     if (allergens) meals = this.filterByAllergens(meals, allergens)
     return meals
   },
-}
-
-export default mealDatabase
-
-// END OF COMMENTED CODE
-*/
-    if (cuisine) meals = this.filterByCuisine(meals, cuisine)
-    if (allergens) meals = this.filterByAllergens(meals, allergens)
-    return meals
-  },
-}
+} */

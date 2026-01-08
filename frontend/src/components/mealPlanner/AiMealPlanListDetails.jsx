@@ -29,12 +29,13 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
 
       {/* Title */}
       <div className="flex items-center gap-2 justify-center">
-        <h2 className="text-2xl font-bold text-center capitalize">{plan.planName}</h2>
+        <h2 className="text-2xl font-bold text-center capitalize">
+          {plan.planName}
+        </h2>
         <span className="text-xs px-2 py-1 rounded-full bg-purple-600 text-white font-semibold">
           AI
         </span>
       </div>
-
 
       {/* Plan Info */}
       <div className="bg-gradient-to-r from-green-50 to-green-100 border border-green-200 rounded-lg p-4">
@@ -128,66 +129,73 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                 <Card key={index} noHover className="p-6 shadow-md">
                   {/* Header with meal type and calories */}
                   <div className="flex items-start justify-between mb-3">
-                <div
-                  key={index}
-                  className="border rounded-lg p-4 bg-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
-                  onClick={() => setSelectedMeal(meal)}
-                >
-                  {/* Meal Header */}
-                  <div className="flex justify-between items-start mb-2">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        {mealIcons[meal.type?.toLowerCase()] || (
-                          <Utensils size={24} className="text-gray-400" />
+                    <div
+                      key={index}
+                      className="border rounded-lg p-4 bg-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
+                      onClick={() => setSelectedMeal(meal)}
+                    >
+                      {/* Meal Header */}
+                      <div className="flex justify-between items-start mb-2">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            {mealIcons[meal.type?.toLowerCase()] || (
+                              <Utensils size={24} className="text-gray-400" />
+                            )}
+                            <span className="text-xs font-semibold uppercase text-gray-600">
+                              {meal.type}
+                            </span>
+                          </div>
+
+                          <h4 className="font-bold text-gray-800">
+                            {meal.dishName}
+                          </h4>
+                        </div>
+
+                        {meal.nutrition && (
+                          <span className="text-sm font-semibold text-teal-600">
+                            {meal.nutrition.calories} cal
+                          </span>
                         )}
-                        <span className="text-xs font-semibold uppercase text-gray-600">
-                          {meal.type}
-                        </span>
                       </div>
 
-                      <h4 className="font-bold text-gray-800">
-                        {meal.dishName}
-                      </h4>
-                    </div>
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 mb-2">
+                        {meal.description}
+                      </p>
 
-                    {meal.nutrition && (
-                      <span className="text-sm font-semibold text-teal-600">
-                        {meal.nutrition.calories} cal
-                      </span>
-                    )}
+                      {/* Ingredients */}
+                      {meal.keyIngredients &&
+                        meal.keyIngredients.length > 0 && (
+                          <p className="text-xs text-gray-500 mb-3">
+                            🥘 {meal.keyIngredients.join(', ')}
+                          </p>
+                        )}
+
+                      {/* Macros */}
+                      {meal.nutrition && (
+                        <div className="grid grid-cols-3 text-center text-xs border-t pt-2">
+                          <div>
+                            <p className="font-semibold">
+                              {meal.nutrition.protein}g
+                            </p>
+                            <p className="text-gray-500">Protein</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold">
+                              {meal.nutrition.carbs}g
+                            </p>
+                            <p className="text-gray-500">Carbs</p>
+                          </div>
+                          <div>
+                            <p className="font-semibold">
+                              {meal.nutrition.fat}g
+                            </p>
+                            <p className="text-gray-500">Fat</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
-
-                  {/* Description */}
-                  <p className="text-sm text-gray-600 mb-2">
-                    {meal.description}
-                  </p>
-
-                  {/* Ingredients */}
-                  {meal.keyIngredients && meal.keyIngredients.length > 0 && (
-                    <p className="text-xs text-gray-500 mb-3">
-                      🥘 {meal.keyIngredients.join(', ')}
-                    </p>
-                  )}
-
-                  {/* Macros */}
-                  {meal.nutrition && (
-                    <div className="grid grid-cols-3 text-center text-xs border-t pt-2">
-                      <div>
-                        <p className="font-semibold">
-                          {meal.nutrition.protein}g
-                        </p>
-                        <p className="text-gray-500">Protein</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">{meal.nutrition.carbs}g</p>
-                        <p className="text-gray-500">Carbs</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">{meal.nutrition.fat}g</p>
-                        <p className="text-gray-500">Fat</p>
-                      </div>
-                    </div>
-                  )}
                 </Card>
               ))}
             </div>
@@ -227,7 +235,6 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                 </h2>
               </div>
             </div>
-
 
             {/* Description */}
             <div className="mb-6">
