@@ -24,7 +24,10 @@ export default function DashboardStats({ stats }) {
   const calories = stats?.dailyCalories || 2000
   const bmi = stats?.bmi || 24.5
   const { profile, updateProfile } = useProfile()
-  const planDuration = profile?.planDuration || stats?.daysLeft || 30
+  // Prefer explicit planDuration passed in `stats` (from DashboardPage),
+  // otherwise fall back to profile or a sensible default.
+  const planDuration =
+    stats?.planDuration || profile?.planDuration || stats?.daysLeft || 30
 
   // Determine profile creation date (support multiple possible fields)
   const createdAtRaw =
@@ -42,9 +45,19 @@ export default function DashboardStats({ stats }) {
     }
   }
 
+  // If `stats.daysLeft` was provided (from DashboardPage using activePlan/activeTracker),
+  // prefer that as the authoritative remaining days. Otherwise compute from elapsed days.
+  const providedDaysLeft =
+    typeof stats?.daysLeft === 'number' ? stats.daysLeft : null
   const cappedElapsed = Math.min(elapsedDays, planDuration)
-  const daysLeft = Math.max(0, planDuration - cappedElapsed)
-  const percentElapsed = Math.round((cappedElapsed / planDuration) * 100)
+  const daysLeft =
+    providedDaysLeft != null
+      ? providedDaysLeft
+      : Math.max(0, planDuration - cappedElapsed)
+  const percentElapsed =
+    providedDaysLeft != null
+      ? Math.round(((planDuration - providedDaysLeft) / planDuration) * 100)
+      : Math.round((cappedElapsed / planDuration) * 100)
 
   // Prepare line chart data: value is percent complete at each day
   const chartData = Array.from({ length: planDuration }, (_, i) => {

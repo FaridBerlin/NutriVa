@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext'
 import { useProfile } from '../context/ProfileContext'
 import { useAiMealPlan } from '../context/aiMealPlanContext'
+import { useDietTracker } from '../context/DietTrackerContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
@@ -11,7 +12,6 @@ import { bmiCategory, bmiPercent } from '../utils/bmiUtils'
 import {
   DashboardHeader,
   DashboardStats,
-  ProfileOverview,
   BMIGoals,
   TodayMeals,
 } from '../components/dashboard'
@@ -20,6 +20,7 @@ export default function DashboardPage() {
   const { user } = useContext(AuthContext)
   const { profile, nutritionTargets, loading } = useProfile()
   const { activePlan } = useAiMealPlan()
+  const { activeTracker } = useDietTracker()
   const location = useLocation()
   const [activeSection, setActiveSection] = useState('dashboard')
 
@@ -46,7 +47,13 @@ export default function DashboardPage() {
     bmiPercent: bmiPercent(profile?.bmi),
     bmiCategory: bmiCategory(profile?.bmi),
     targetWeight: profile?.targetWeight,
-    daysLeft: profile?.planDuration || 30,
+    // prefer planDuration from activePlan (header) when available
+    planDuration: activePlan?.planDuration || profile?.planDuration || 30,
+    // compute daysLeft using activeTracker.currentDay when available so stats match header
+    daysLeft:
+      activePlan?.planDuration != null && activeTracker?.currentDay != null
+        ? Math.max(0, activePlan.planDuration - activeTracker.currentDay)
+        : profile?.planDuration || 30,
   }
 
   const profileData = {
@@ -72,8 +79,14 @@ export default function DashboardPage() {
     proteinCurrent: todayNutrition.protein || 0,
     proteinTarget: nutritionTargets?.macros.protein,
     carbsCurrent: todayNutrition.carbs || 0,
-    carbsTarget: nutritionTargets?.macros.carbs,
-    fatsCurrent: todayNutrition.fat || 0,
+    targetWeight: profile?.targetWeight,
+    // prefer plan info coming from activePlan (header) if available
+    planDuration: activePlan?.planDuration || profile?.planDuration || 30,
+    // compute daysLeft using activeTracker.currentDay when available
+    daysLeft:
+      activePlan?.planDuration != null && activeTracker?.currentDay != null
+        ? Math.max(0, activePlan.planDuration - activeTracker.currentDay)
+        : profile?.planDuration || 30,
     fatsTarget: nutritionTargets?.macros.fat,
   }
 
@@ -117,7 +130,6 @@ export default function DashboardPage() {
                 activePlan={activePlan}
               />
               <TodayMeals />
-              <ProfileOverview profile={profileData} />
             </>
           )}
         </div>

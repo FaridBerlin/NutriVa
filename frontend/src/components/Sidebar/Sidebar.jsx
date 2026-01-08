@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import NutrivaLogo from '../NutrivaLogo'
+import ThemeToggle from '../ui/ThemeToggle'
 // Icon imports from lucide-react
 import {
   LayoutDashboard,
@@ -178,6 +179,14 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             />
             <span className="font-medium">Settings</span>
           </Link>
+
+          {/* Theme toggle (above logout) */}
+          <div className="px-4 py-2">
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <span className="text-sm text-gray-600">Theme</span>
+            </div>
+          </div>
 
           {/* Logout */}
           <button

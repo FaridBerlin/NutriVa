@@ -1,3 +1,4 @@
+import Card from '../ui/Card'
 import { Coffee, Sun, Moon, Utensils } from 'lucide-react'
 import { useState } from 'react'
 
@@ -124,6 +125,9 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
             {/* Meals */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {day.meals.map((meal, index) => (
+                <Card key={index} noHover className="p-6 shadow-md">
+                  {/* Header with meal type and calories */}
+                  <div className="flex items-start justify-between mb-3">
                 <div
                   key={index}
                   className="border rounded-lg p-4 bg-white shadow-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 cursor-pointer"
@@ -184,7 +188,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                       </div>
                     </div>
                   )}
-                </div>
+                </Card>
               ))}
             </div>
           </div>

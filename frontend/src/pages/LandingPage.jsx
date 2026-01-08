@@ -9,7 +9,7 @@ export default function LandingPage() {
   const navigate = useNavigate()
 
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full overflow-hidden landing-page">
       <HeroSection />
       <HowItWorks />
       <Tools />
