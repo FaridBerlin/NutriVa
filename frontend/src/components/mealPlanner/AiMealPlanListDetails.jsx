@@ -208,7 +208,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                 <Utensils size={32} className="text-gray-400" />
               )}
               <div>
-                <span className="text-lg font-semibold uppercase text-gray-500 block">
+                <span className="text-lg font-semibold uppercase text-gray-500 block dark:text-accentYellow">
                   {selectedMeal.type}
                 </span>
                 <h2 className="text-3xl font-bold text-gray-800">
