@@ -1,10 +1,20 @@
 /**
+ * ❌ DEPRECATED - NOT IN USE
+ * 
  * PRACTICAL EXAMPLES - mealPlanService.js Usage
  * Test these in your Node REPL or Jest tests
  *
- * Copy this file as: backend/test-mealPlanService.js
- * Run with: node test-mealPlanService.js
+ * STATUS: This is a TEST FILE - not used in production
+ * REPLACED BY: Direct testing in development or proper unit tests
+ * 
+ * Original Purpose:
+ * - Test file for old meal plan service
+ * - Copy this file as: backend/test-mealPlanService.js
+ * - Run with: node test-mealPlanService.js
  */
+
+/*
+// COMMENTED OUT - File kept for reference only
 
 import mealPlanService from './mealPlanService.js'
 
@@ -385,7 +395,14 @@ goals.forEach((goal) => {
   })
 
   console.log(`\n  ${goal.toUpperCase()}`)
-  console.log(
+  console.log(`  Calories: ${Math.round(dailyCals)}`)
+  console.log(`  Protein: ${macros.protein}g (${percentages.proteinPercent}%)`)
+  console.log(`  Carbs: ${macros.carbs}g (${percentages.carbsPercent}%)`)
+  console.log(`  Fat: ${macros.fat}g (${percentages.fatPercent}%)`)
+}
+
+// END OF COMMENTED CODE
+*/
     `    Protein: ${macros.protein}g (${percentages.proteinPercent}%)`,
   )
   console.log(`    Carbs: ${macros.carbs}g (${percentages.carbsPercent}%)`)
