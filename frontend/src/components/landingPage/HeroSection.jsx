@@ -2,7 +2,7 @@ import HeroAnimation from './HeroAnimation'
 
 export default function HeroSection() {
   return (
-    <div className="flex flex-col md:flex-row items-center justify-center min-h-screen px-6 sm:px-10 md:px-20 gap-6 md:gap-10">
+    <div className="flex flex-col md:flex-row items-center justify-center min-h-[80vh] px-6 sm:px-10 md:px-20 gap-6 md:gap-5">
       {/* Left Text */}
       <div className="max-w-xl text-center md:text-left space-y-4 md:space-y-5">
         <h1 className="text-black text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">

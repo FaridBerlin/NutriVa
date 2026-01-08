@@ -3,7 +3,7 @@ import nutritionAnim from '../../assets/animations/nutrition.json'
 
 export default function HeroAnimation() {
   return (
-    <div className="w-[400px] h-[450px]">
+    <div className="w-[600px] h-[350px]">
       <Lottie animationData={nutritionAnim} loop={true} />
     </div>
   )
