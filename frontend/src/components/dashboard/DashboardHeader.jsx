@@ -53,10 +53,10 @@ export default function DashboardHeader({ userName }) {
     : 'text-2xl font-bold text-gray-900'
   const subtitleClass = isDark
     ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-gray-600'
+    : 'text-sm text-muted'
   const weightLabelClass = isDark
     ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-gray-500'
+    : 'text-sm text-muted'
   const weightValueClass = isDark
     ? 'text-lg font-semibold text-accentYellow'
     : 'text-lg font-semibold text-gray-900'

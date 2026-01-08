@@ -5,6 +5,12 @@ export default {
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['CustomSans', 'ui-sans-serif', 'system-ui'],
+        display: ['Newsreader', 'CustomSans'],
+        serif: ['Times New Roman', 'serif'],
+      },
+
       colors: {
         primary: '#83D385', // main green color
         accentYellow: '#FBBF24', // warm yellow for dark-mode accents

@@ -95,7 +95,7 @@ export default function TodayMeals() {
             <h2 className="text-xl font-semibold text-gray-900 dark:text-accentYellow mb-1 capitalize">
               {activePlan.planName} Plan
             </h2>
-            <p className="text-gray-600 text-sm dark:text-accentYellow/80">
+            <p className="text-muted text-sm dark:text-accentYellow/80">
               Day {currentDay} - {todayMeals.length} meals scheduled
             </p>
           </div>
@@ -134,11 +134,11 @@ export default function TodayMeals() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs uppercase tracking-wide font-medium text-gray-500 dark:text-accentYellow/80">
+                        <span className="text-xs uppercase tracking-wide font-medium text-muted dark:text-accentYellow/80">
                           {meal.type}
                         </span>
-                        <span className="text-gray-400">•</span>
-                        <span className="text-xs text-gray-500 dark:text-accentYellow/80">
+                        <span className="text-muted">•</span>
+                        <span className="text-xs text-muted dark:text-accentYellow/80">
                           {meal.time}
                         </span>
                       </div>
@@ -151,7 +151,7 @@ export default function TodayMeals() {
                     <div className="text-gray-900 font-semibold dark:text-accentYellow">
                       {meal.calories} cal
                     </div>
-                    <div className="text-gray-500 text-xs dark:text-accentYellow/80">
+                    <div className="text-muted text-xs dark:text-accentYellow/80">
                       P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fats}g
                     </div>
                   </div>

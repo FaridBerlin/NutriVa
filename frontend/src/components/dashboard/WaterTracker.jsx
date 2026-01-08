@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Droplet, Plus, Minus } from 'lucide-react'
 import { useProfile } from '../../context/ProfileContext'
 
@@ -113,7 +113,7 @@ const WaterTracker = () => {
             >
               Reset
             </button>
-            <div className="ml-2 text-sm text-gray-600 flex items-center gap-3">
+            <div className="ml-2 text-sm text-muted flex items-center gap-3">
               <span className="inline-block w-3 h-3 rounded-full bg-blue-500" />
               <span className="font-medium">
                 Goal: {dailyLiters.toFixed(2)} L
@@ -121,7 +121,7 @@ const WaterTracker = () => {
             </div>
           </div>
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted">
             Click + or - to track your water intake.
           </p>
         </>

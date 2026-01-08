@@ -1,11 +1,14 @@
-export default function Card({ children, className = '', noHover = false }) {
+export default function Card({
+  children,
+  className = '',
+  noHover = false,
+  ...props
+}) {
   const baseArray = [
-    'bg-white',
     'nv-card',
-    'dark:bg-accentYellow/10',
-    'dark:border-accentYellow/30',
+    'dark:border-accentYellow/60',
+    'dark:text-textDark',
     'rounded-xl',
-    'p-4',
     'border',
     'border-gray-100',
     'shadow-sm',
@@ -34,9 +37,22 @@ export default function Card({ children, className = '', noHover = false }) {
   )
 
   const base = baseArray.join(' ')
+  const mergedStyle = {
+    backgroundColor: 'var(--nv-card-bg)',
+    color: undefined, // keep text color controlled by classes unless overridden
+    ...(props.style || {}),
+  }
+
+  const { style: _s, ...restProps } = props
 
   return (
-    <div className={`${base} ${className}`.trim()} role="group" tabIndex={0}>
+    <div
+      {...restProps}
+      style={mergedStyle}
+      className={`${base} ${className}`.trim()}
+      role={props.role ?? 'group'}
+      tabIndex={props.tabIndex ?? 0}
+    >
       {children}
     </div>
   )
