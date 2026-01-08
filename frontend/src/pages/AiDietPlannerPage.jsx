@@ -155,9 +155,12 @@ const AiDietPlannerPage = () => {
 
         {/* Meals */}
         {dayData && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
             {dayData.day.meals.map((meal, index) => (
-              <div key={index} className="bg-white rounded-lg shadow-md p-6">
+              <div
+                key={index}
+                className="bg-white rounded-lg shadow-md p-6 h-full flex flex-col justify-between"
+              >
                 <div className="flex items-start justify-between mb-3">
                   <div>
                     <span className="text-xs font-semibold text-teal-600 uppercase">
@@ -175,7 +178,9 @@ const AiDietPlannerPage = () => {
                   </div>
                 </div>
 
-                <p className="text-gray-600 text-sm mb-4">{meal.description}</p>
+                <p className="text-gray-600 text-sm mb-4 flex-1 overflow-hidden">
+                  {meal.description}
+                </p>
 
                 {meal.nutrition && (
                   <div className="grid grid-cols-3 gap-2 pt-4 border-t">
