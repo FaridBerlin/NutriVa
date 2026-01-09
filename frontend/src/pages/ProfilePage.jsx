@@ -169,7 +169,7 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Profile Header Card */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <Card className="p-6 mb-6 mt-6">
           <div className="flex items-center gap-4">
             {/* Avatar */}
             <div className="w-20 h-20 bg-gradient-to-br from-primary to-primaryDark rounded-full flex items-center justify-center">
@@ -200,7 +200,7 @@ export default function ProfilePage() {
               <Settings className="w-5 h-5 text-textLight" />
             </button>
           </div>
-        </div>
+        </Card>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -238,7 +238,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Personal Information */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <Card className="p-6 mb-6">
           <h2 className="text-lg font-bold text-textDark mb-4 flex items-center gap-2">
             <User className="w-5 h-5 text-primary" />
             Personal Information
@@ -295,10 +295,10 @@ export default function ProfilePage() {
               </span>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Fitness & Diet */}
-        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+        <Card className="p-6 mb-6">
           <h2 className="text-lg font-bold text-textDark mb-4 flex items-center gap-2">
             <Activity className="w-5 h-5 text-primary" />
             Fitness & Diet
@@ -335,11 +335,11 @@ export default function ProfilePage() {
               </span>
             </div>
           </div>
-        </div>
+        </Card>
 
         {/* Nutrition Targets */}
         {nutritionTargets && (
-          <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+          <Card className="p-6 mb-6">
             <h2 className="text-lg font-bold text-textDark mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" />
               Daily Nutrition Targets
@@ -371,7 +371,7 @@ export default function ProfilePage() {
                 <p className="text-sm text-textLight">Fats</p>
               </div>
             </div>
-          </div>
+          </Card>
         )}
 
         {/* Action Buttons */}
