@@ -1,12 +1,15 @@
+import { useContext } from 'react'
 import { useProfile } from '../../context/ProfileContext'
 import { useMealPlan } from '../../context/aiMealPlanContext'
 import { useDietTracker } from '../../context/DietTrackerContext'
+import { ThemeContext } from '../../context/ThemeContext'
 import { TrendingDown, User, Target, TrendingUp } from 'lucide-react'
 
 export default function DashboardHeader({ userName }) {
-  const { profile } = useProfile()
+  const { profile, loading } = useProfile()
   const { activePlan } = useMealPlan()
   const { activeTracker } = useDietTracker()
+  const { theme } = useContext(ThemeContext)
 
   const capitalizedName = (name) => {
     if (!name) return 'User'
@@ -39,78 +42,102 @@ export default function DashboardHeader({ userName }) {
   const currentDay = getCurrentDay()
   const weight = weightDifference()
   const planDuration = activePlan?.planDuration || ''
+  const currentDate = new Date().toLocaleDateString()
+
+  const isDark = theme === 'dark'
+  const containerClass = isDark
+    ? 'p-6 rounded-2xl bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10 text-accentYellow nv-header mb-8 mt-5'
+    : 'p-6 rounded-2xl bg-white shadow-sm border border-gray-100 mb-8 mt-5'
+  const titleClass = isDark
+    ? 'text-2xl font-bold text-accentYellow'
+    : 'text-2xl font-bold text-gray-900'
+  const subtitleClass = isDark
+    ? 'text-sm text-accentYellow/80'
+    : 'text-sm text-muted'
+  const weightLabelClass = isDark
+    ? 'text-sm text-accentYellow/80'
+    : 'text-sm text-muted'
+  const weightValueClass = isDark
+    ? 'text-lg font-semibold text-accentYellow'
+    : 'text-lg font-semibold text-gray-900'
+  const iconBg = isDark ? 'bg-amber-600/20' : 'bg-emerald-400/10'
+  const iconColor = isDark ? 'text-amber-400' : 'text-emerald-600'
 
   return (
-    <div className="mb-8 mt-5 ">
+    <div className={containerClass}>
       <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-gray-900 font-bold text-3xl mb-2 ">
-            Welcome back, {capitalizedName(userName || profile?.name || 'User')}
-            ! 👋
-          </h1>
-          {activePlan ? (
-            <p className="text-gray-600">
-              Day {currentDay} of your {activePlan?.planName || ' health plan '}{' '}
-              -{planDuration} days journey
-            </p>
-          ) : (
-            ' Ready to start? Create your first plan! '
-          )}
+        <div className="flex items-center gap-4">
+          <div
+            className={`w-14 h-14 ${iconBg} rounded-full flex items-center justify-center`}
+          >
+            <User className={iconColor} size={28} />
+          </div>
+          <div>
+            <h1 className={titleClass}>
+              Welcome back,{' '}
+              {capitalizedName(userName || profile?.name || 'User')}!
+            </h1>
+            {activePlan ? (
+              <>
+                <p className={subtitleClass}>
+                  Day {currentDay} of your{' '}
+                  {activePlan?.planName || 'health plan'} — {planDuration} days
+                </p>
+                <div
+                  className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}
+                >
+                  <span>{profile?.age || 0} years</span>
+                  <span>•</span>
+                  <span>{profile?.height || 0} cm</span>
+                  <span>•</span>
+                  <span className="flex items-center gap-1">
+                    <Target size={14} />
+                    {profile?.dietaryGoal?.replace('_', ' ') || 'Not set'}
+                  </span>
+                </div>
+              </>
+            ) : (
+              <>
+                <p className={subtitleClass}>
+                  Ready to start? Create your first plan!
+                </p>
+                <div
+                  className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}
+                >
+                  <span>{profile?.age || 0} years</span>
+                  <span>•</span>
+                  <span>{profile?.height || 0} cm</span>
+                </div>
+              </>
+            )}
+          </div>
         </div>
-        <div className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div>
-              <div className="flex items-center gap-3 text-sm text-gray-600 mb-1">
-                <span>{profile?.age || 0} years</span>
-                <span>•</span>
-                <span>{profile?.height || 0} cm</span>
-                <span>•</span>
-                <span className="flex items-center gap-1">
-                  <Target size={14} />
-                  {profile?.dietaryGoal?.replace('_', ' ') || 'Not set'}
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <div className="text-gray-900" style={{ fontSize: '20px' }}>
-                  {profile?.weight || 0}kg
-                </div>
-                <div className="flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs">
-                  {weight < 0 ? (
-                    <TrendingDown size={14} />
-                  ) : (
-                    <TrendingUp size={14} />
-                  )}
-                  {weight} kg
-                </div>
-                <span className="text-gray-500 text-sm">
-                  → {profile?.targetWeight || 0}kg
-                </span>
-              </div>
-            </div>
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-400 to-teal-600 rounded-full flex items-center justify-center">
-              <User className="text-white" size={24} />
+
+        <div className="text-right">
+          <div className="flex items-center justify-end gap-3">
+            <div className={weightLabelClass}>Weight</div>
+            <div className={weightValueClass}>
+              {loading ? '...' : profile?.weight ? `${profile.weight} kg` : '—'}
             </div>
           </div>
+          <div className="flex items-center justify-end gap-2 mt-2">
+            <div
+              className={`${isDark ? 'bg-amber-900/20 text-amber-300' : 'bg-emerald-100 text-emerald-700'} px-4 py-1 rounded-full text-xl md:text-2xl flex items-center gap-3 font-semibold`}
+            >
+              {weight < 0 ? (
+                <TrendingDown size={20} />
+              ) : (
+                <TrendingUp size={20} />
+              )}
+              <span>{Math.abs(weight)} kg</span>
+            </div>
+            <div className={`text-xl md:text-2xl ${subtitleClass}`}>
+              → {profile?.targetWeight || 55} kg
+            </div>
+          </div>
+          <div className={`${subtitleClass} mt-2`}>{currentDate}</div>
         </div>
       </div>
     </div>
   )
 }
-/* 
-  return (
-    <div className="p-6 rounded-b-2xl bg-gradient-to-r from-gray-100 to-gray-200 shadow-sm border-b border-gray-200">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-sm text-gray-600">Weight</span>
-          <span className="text-lg font-semibold text-gray-900">
-            {loading ? '...' : profile?.weight ? `${profile.weight} kg` : '—'}
-          </span>
-        </div>
-
-        <div className="text-right">
-          <h1 className="text-3xl font-bold text-gray-900">{userName}</h1>
-          <p className="text-gray-600 mt-1">{currentDate}</p>
-        </div>
-      </div>
-    </div>
-  ) */

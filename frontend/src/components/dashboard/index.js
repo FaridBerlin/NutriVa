@@ -1,6 +1,5 @@
 export { default as DashboardHeader } from './DashboardHeader'
 export { default as DashboardStats } from './DashboardStats'
-export { default as ProfileOverview } from './ProfileOverview'
 export { default as BMIGoals } from './BMIGoals'
 export { default as TodayMeals } from './TodayMeals'
 export { default as WaterTracker } from './WaterTracker'

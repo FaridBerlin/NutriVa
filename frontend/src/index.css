@@ -2,6 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Font-face declarations (test fonts). Replace files in /src/assets/fonts/ as needed. */
+@font-face {
+  font-family: 'CustomSans';
+  src: url('/src/assets/fonts/CustomSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CustomSans';
+  src: url('/src/assets/fonts/CustomSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Newsreader';
+  src: url('/src/assets/fonts/Newsreader_60pt-SemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* Global styles */
 body {
   background: linear-gradient(
@@ -12,10 +35,216 @@ body {
   );
 }
 
+@layer utilities {
+  html.dark body {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.9) 0%,
+      #0b1220 50%,
+      rgba(2, 6, 23, 0.9) 100%
+    );
+    color: #e5e7eb;
+  }
+  /* Make explicit bg-white utility opaque in dark mode by mapping to card bg variable */
+  html.dark .bg-white.bg-white {
+    background-color: var(--nv-card-bg) !important;
+    color: var(--nv-card-text) !important;
+  }
+
+  /* Convert common semi-transparent white utilities to opaque card background in dark mode */
+  html.dark .bg-white\/20,
+  html.dark .bg-white\/30,
+  html.dark .bg-white\/50,
+  html.dark .bg-white\/60,
+  html.dark .bg-white\/70,
+  html.dark .bg-white\/80 {
+    background-color: var(--nv-card-bg) !important;
+    color: var(--nv-card-text) !important;
+  }
+
+  /* Navbar specifically: make header darker when dark mode active */
+  html.dark nav {
+    background: linear-gradient(
+      to bottom,
+      rgba(2, 6, 23, 0.85),
+      rgba(8, 12, 20, 0.85)
+    );
+    border-bottom-color: rgba(148, 163, 184, 0.06);
+  }
+
+  /* Backdrop blur elements (e.g. header) should be darker */
+  html.dark .backdrop-blur-lg.backdrop-blur-lg {
+    background-color: rgba(2, 6, 23, 0.45);
+  }
+
+  html.dark .text-textDark.text-textDark {
+    color: #e5e7eb;
+  }
+
+  html.dark .text-textLight.text-textLight {
+    color: #9ca3af;
+  }
+
+  html.dark .border-gray-200.border-gray-200 {
+    border-color: rgba(148, 163, 184, 0.12);
+  }
+
+  html.dark .ring-gray-200.ring-gray-200 {
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.06);
+  }
+
+  /* Common gray/white backgrounds used across pages */
+  html.dark .bg-gray-50.bg-gray-50 {
+    background-color: #071421;
+  }
+
+  html.dark .bg-gray-100.bg-gray-100 {
+    background-color: #0b1724;
+  }
+
+  html.dark .bg-gray-200.bg-gray-200 {
+    background-color: #0f2330;
+  }
+
+  html.dark .bg-gray-300.bg-gray-300 {
+    background-color: #122a36;
+  }
+
+  /* Pages that use min-h-screen wrappers (e.g., signup) */
+  html.dark .min-h-screen.min-h-screen {
+    background: linear-gradient(
+      to bottom,
+      rgba(15, 23, 42, 0.95) 0%,
+      #0b1220 50%,
+      rgba(2, 6, 23, 0.95) 100%
+    );
+    color: #e5e7eb;
+  }
+
+  /* Text color overrides for common gray text classes */
+  html.dark .text-gray-700.text-gray-700 {
+    color: #e5e7eb;
+  }
+
+  html.dark .text-gray-500.text-gray-500 {
+    color: #9ca3af;
+  }
+
+  /*hover */
+  html.dark .bg-gray-100.bg-gray-100:hover,
+  html.dark .bg-gray-200.bg-gray-200:hover,
+  html.dark .bg-gray-50.bg-gray-50:hover {
+    background-color: #0b2030;
+  }
+
+  /* Yellow accent shadows for dark mode */
+  .shadow-yellow-sm {
+    box-shadow:
+      0 1px 2px 0 rgba(251, 191, 36, 0.08),
+      0 1px 3px 0 rgba(251, 191, 36, 0.04);
+  }
+
+  .shadow-yellow {
+    box-shadow:
+      0 4px 6px -1px rgba(251, 191, 36, 0.12),
+      0 2px 4px -1px rgba(251, 191, 36, 0.06);
+  }
+
+  .shadow-yellow-lg {
+    box-shadow:
+      0 10px 15px -3px rgba(251, 191, 36, 0.18),
+      0 4px 6px -2px rgba(251, 191, 36, 0.08);
+  }
+
+  /* stronger glow variant for prominent elements in dark mode */
+  html.dark .glow-yellow {
+    box-shadow:
+      0 6px 30px rgba(251, 191, 36, 0.12),
+      0 2px 10px rgba(251, 191, 36, 0.06) inset;
+  }
+
+  /* Apply yellow glow to dashboard cards on hover/focus when in dark mode */
+  html.dark .nv-card:hover,
+  html.dark .nv-card:focus,
+  html.dark .nv-card:focus-within {
+    box-shadow:
+      0 8px 30px rgba(251, 191, 36, 0.14),
+      0 4px 10px rgba(251, 191, 36, 0.06) inset;
+    transform: translateY(-6px) scale(1.03);
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease;
+  }
+
+  /* When `nv-no-hover` is present we opt-out of the dark-mode hover transforms */
+  html.dark .nv-card.nv-no-hover:hover,
+  html.dark .nv-card.nv-no-hover:focus,
+  html.dark .nv-card.nv-no-hover:focus-within {
+    box-shadow: none;
+    transform: none;
+    transition: none;
+  }
+
+  /* Landing page: replace green(primary) with yellow in dark mode */
+  html.dark .landing-page .text-primary.text-primary {
+    color: #fbbf24;
+  }
+
+  html.dark .landing-page .bg-primary.bg-primary {
+    background-color: #fbbf24;
+  }
+
+  /* Replace green avatar/circle backgrounds used in testimonials/steps */
+  html.dark .landing-page .bg-primary.text-white {
+    background-color: #fbbf24;
+    color: #0b1220;
+  }
+
+  /* Headings that use text-primary become yellow in landing dark mode */
+  html.dark .landing-page h1.text-primary.text-primary,
+  html.dark .landing-page h2.text-primary.text-primary,
+  html.dark .landing-page .text-primary.font-semibold.text-primary {
+    color: #fbbf24;
+  }
+}
+
 html,
 body,
 #root {
   height: 100%;
+}
+
+/* Set base font using CSS variable so Tailwind font families can fallback gracefully */
+html {
+  font-family: var(--font-sans);
+}
+
+/* Light-mode tweak: make the common muted gray slightly lighter (closer to white)
+   to improve readability on the app's light gradients/backgrounds. Dark-mode
+   rules remain unchanged and will override this where applicable. */
+.text-gray-500.text-gray-500 {
+  color: #9ca3af; /* tailwind gray-400 — lighter than default 500 */
+}
+
+/* Card background variables */
+:root {
+  --nv-card-bg: #ffffff;
+  --nv-card-text: #111827;
+  --nv-muted-text: #9ca3af; /* default muted text (light mode) */
+  --font-sans:
+    'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
+  --font-display: 'Newsreader', var(--font-sans);
+  --nv-input-bg: #ffffff;
+  --nv-input-text: #111827;
+}
+
+html.dark {
+  --nv-card-bg: #0b1220; /* dark slate background for cards */
+  --nv-card-text: #fbbf24; /* accent yellow for readable text */
+  --nv-muted-text: #c8cea4; /* muted text in dark mode */
+  --nv-input-bg: #071421;
+  --nv-input-text: #e4eace;
 }
 
 /* Dropdown animation */
@@ -32,4 +261,93 @@ body,
 
 .animate-fade-in {
   animation: fade-in 0.2s ease-out;
+}
+
+@layer components {
+  /* Ensure nv-card always uses the card background variable and is opaque */
+  .nv-card {
+    background-color: var(--nv-card-bg) !important;
+    color: var(--nv-card-text) !important;
+  }
+
+  /* Central muted text utility that respects light/dark variables */
+  .text-muted {
+    color: var(--nv-muted-text) !important;
+  }
+
+  /* Shared input styles */
+  .nv-input {
+    @apply w-full px-4 py-3 rounded-lg border transition-all;
+    background-color: var(--nv-input-bg);
+    color: var(--nv-input-text);
+    border-color: rgba(0, 0, 0, 0.06);
+  }
+
+  .nv-input:focus {
+    @apply outline-none ring-2;
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+  }
+
+  .nv-input[disabled],
+  .nv-input:disabled {
+    opacity: 0.9;
+    cursor: not-allowed;
+  }
+
+  /* Base button used across the app */
+  .nv-btn {
+    @apply rounded-lg font-semibold transition-all transform disabled:opacity-50;
+  }
+
+  /* Size variants */
+  .nv-btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+
+  .nv-btn {
+    @apply px-4 py-2;
+  }
+
+  .nv-btn-lg {
+    @apply px-8 py-2.5;
+  }
+
+  /* Themed button variants */
+  .nv-btn-primary {
+    @apply nv-btn bg-primary hover:bg-primaryDark text-white;
+  }
+
+  .nv-btn-danger {
+    @apply nv-btn bg-red-500 hover:bg-red-600 text-white;
+  }
+
+  .nv-btn-ghost {
+    @apply nv-btn bg-transparent text-primary hover:bg-primary/10;
+  }
+}
+@font-face {
+  font-family: 'CustomSans';
+  src: url('/src/assets/fonts/CustomSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'CustomDisplay';
+  src: url('/src/assets/fonts/CustomDisplay-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Base */
+:root {
+  --font-sans:
+    'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
+  --font-display: 'CustomDisplay', var(--font-sans);
+}
+
+html {
+  font-family: var(--font-sans);
 }

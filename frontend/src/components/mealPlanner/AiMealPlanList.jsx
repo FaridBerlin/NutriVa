@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import { useMealPlan } from '../../context/aiMealPlanContext'
 import AiMealPlanListDetails from './AiMealPlanListDetails'
+import Card from '../ui/Card'
+import { Shield } from 'lucide-react'
 
 export default function AiMealPlanList() {
   const {
@@ -70,30 +72,34 @@ export default function AiMealPlanList() {
       <h2 className="text-xl font-bold">AI Meal Plans</h2>
 
       {allPlans.length === 0 && (
-        <p className="text-gray-500">No AI meal plans created yet.</p>
+        <p className="text-muted">No AI meal plans created yet.</p>
       )}
 
       {allPlans.map((plan) => (
-        <div
+        <Card
           key={plan._id}
-          className="border rounded-lg p-4 flex justify-between items-center bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200"
+          noHover
+          className="p-4 flex justify-between items-center"
         >
           <div>
             <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-extrabold">{plan.planName}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-purple-600 text-white font-semibold">
+              <h3 className="font-extrabold capitalize">{plan.planName}</h3>
+              <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-semibold">
                 AI
               </span>
             </div>
             <h3 className="font-medium capitalize">{plan.foodType}</h3>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-muted">
               {plan.planDuration} days • {plan.mealPerDay} meals/day
             </p>
             {plan.allergens &&
               plan.allergens.length > 0 &&
               !plan.allergens.includes('none') && (
-                <p className="text-xs text-purple-600 mt-1">
-                  🛡️ {plan.allergens.filter((a) => a !== 'none').join(', ')}
+                <p className="text-xs text-purple-600 mt-1 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary dark:text-accentYellow" />
+                  <span>
+                    {plan.allergens.filter((a) => a !== 'none').join(', ')}
+                  </span>
                 </p>
               )}
           </div>
@@ -101,19 +107,19 @@ export default function AiMealPlanList() {
           <div className="flex gap-3">
             <button
               onClick={() => handleView(plan._id)}
-              className="text-purple-600 hover:underline font-medium"
+              className="nv-btn-primary nv-btn-lg"
             >
               View
             </button>
 
             <button
               onClick={() => handleDelete(plan._id)}
-              className="text-red-600 hover:underline font-medium"
+              className="nv-btn-danger nv-btn-lg"
             >
               Delete
             </button>
           </div>
-        </div>
+        </Card>
       ))}
     </div>
   )

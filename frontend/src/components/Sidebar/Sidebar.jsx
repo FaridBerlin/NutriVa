@@ -2,6 +2,7 @@ import { useContext } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import NutrivaLogo from '../NutrivaLogo'
+import ThemeToggle from '../ui/ThemeToggle'
 // Icon imports from lucide-react
 import {
   LayoutDashboard,
@@ -37,7 +38,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
   }
 
   return (
-    <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm">
+    <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm font-display">
       <div className="h-full flex flex-col">
         {/* Logo */}
         <div className="flex items-center justify-center px-3 py-3 border-b border-gray-100">
@@ -178,6 +179,14 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             />
             <span className="font-medium">Settings</span>
           </Link>
+
+          {/* Theme toggle (above logout) */}
+          <div className="px-4 py-2">
+            <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-800 hover:translate-x-1 transition-all duration-200 group">
+              <ThemeToggle className="transition-transform duration-200 group-hover:scale-110" />
+              <span className="text-sm font-medium">Theme</span>
+            </div>
+          </div>
 
           {/* Logout */}
           <button

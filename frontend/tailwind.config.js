@@ -1,11 +1,20 @@
 import plugin from 'tailwindcss/plugin'
 
 export default {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['CustomSans', 'ui-sans-serif', 'system-ui'],
+        display: ['Newsreader', 'CustomSans'],
+        serif: ['Times New Roman', 'serif'],
+      },
+
       colors: {
         primary: '#83D385', // main green color
+        accentYellow: '#FBBF24', // warm yellow for dark-mode accents
+        accentYellowDark: '#D97706', // warm yellow for dark-mode accents
         primaryDark: '#7FBC81', // Hover
         primarySoft: 'rgba(127,188,129,0.85)', // button bg
         primaryLight70: 'rgba(131, 211, 133, 0.7)', // 70% opacity

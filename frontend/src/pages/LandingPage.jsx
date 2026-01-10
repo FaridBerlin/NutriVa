@@ -6,7 +6,7 @@ import FAQ from '../components/landingPage/FAQ'
 
 export default function LandingPage() {
   return (
-    <div className="relative w-full overflow-hidden">
+    <div className="relative w-full overflow-hidden landing-page">
       <HeroSection />
       <HowItWorks />
       <Tools />

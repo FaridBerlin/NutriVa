@@ -1,6 +1,7 @@
 import { Brain, Utensils, CheckCircle, Clock } from 'lucide-react'
 import { useAiMealPlan } from '../../context/aiMealPlanContext'
 import { useProfile } from '../../context/ProfileContext'
+import Card from '../ui/Card'
 
 export default function TodayMeals() {
   const { activePlan } = useAiMealPlan()
@@ -83,21 +84,23 @@ export default function TodayMeals() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-textDark mb-6">Today's Meals</h2>
+      <h2 className="text-2xl font-bold text-textDark dark:text-accentYellow mb-6">
+        Today's Meals
+      </h2>
 
       {/* Today's AI Meal Plan */}
-      <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+      <Card noHover className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 mb-1 capitalize">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-accentYellow mb-1 capitalize">
               {activePlan.planName} Plan
             </h2>
-            <p className="text-gray-600 text-sm">
+            <p className="text-muted text-sm dark:text-accentYellow/80">
               Day {currentDay} - {todayMeals.length} meals scheduled
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm flex items-center gap-1">
+            <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm flex items-center gap-1 dark:bg-accentYellow/10 dark:text-accentYellow">
               <Brain size={14} />
               AI Generated
             </div>
@@ -107,9 +110,10 @@ export default function TodayMeals() {
         {todayMeals.length > 0 ? (
           <div className="space-y-3">
             {todayMeals.map((meal) => (
-              <div
+              <Card
                 key={meal.id}
-                className={`p-4 rounded-xl border-2 transition-all ${
+                noHover
+                className={`p-4 border-2 transition-all ${
                   meal.isPast
                     ? 'bg-emerald-50 border-emerald-200'
                     : 'bg-gray-50 border-gray-200 hover:border-primary/30'
@@ -130,27 +134,29 @@ export default function TodayMeals() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs uppercase tracking-wide font-medium text-gray-500">
+                        <span className="text-xs uppercase tracking-wide font-medium text-muted dark:text-accentYellow/80">
                           {meal.type}
                         </span>
-                        <span className="text-gray-400">•</span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-muted">•</span>
+                        <span className="text-xs text-muted dark:text-accentYellow/80">
                           {meal.time}
                         </span>
                       </div>
-                      <h4 className="text-gray-900 font-medium">{meal.name}</h4>
+                      <h4 className="text-gray-900 font-medium dark:text-accentYellow">
+                        {meal.name}
+                      </h4>
                     </div>
                   </div>
                   <div className="text-right text-sm">
-                    <div className="text-gray-900 font-semibold">
+                    <div className="text-gray-900 font-semibold dark:text-accentYellow">
                       {meal.calories} cal
                     </div>
-                    <div className="text-gray-500 text-xs">
+                    <div className="text-muted text-xs dark:text-accentYellow/80">
                       P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fats}g
                     </div>
                   </div>
                 </div>
-              </div>
+              </Card>
             ))}
           </div>
         ) : (
@@ -159,7 +165,7 @@ export default function TodayMeals() {
             <p className="text-textLight">No meals scheduled for today</p>
           </div>
         )}
-      </div>
+      </Card>
     </div>
   )
 }

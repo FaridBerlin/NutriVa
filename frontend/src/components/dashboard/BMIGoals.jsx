@@ -1,68 +1,20 @@
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
   ResponsiveContainer,
-  Cell,
-  PieChart,
-  Pie,
-  LineChart,
-  Line,
   AreaChart,
   Area,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Line,
 } from 'recharts'
 import { useState } from 'react'
 
-import { TrendingUp, Flame } from 'lucide-react'
+import { TrendingUp } from 'lucide-react'
+import Card from '../ui/Card'
 
 export default function BMIGoals({ bmi, goals, activePlan }) {
   const [selectedMetric, setSelectedMetric] = useState('calories')
-
-  // Today's nutrition data from real goals
-  const progressData = [
-    {
-      name: 'Calories',
-      current: goals?.caloriesCurrent || 0,
-      target: goals?.caloriesTarget || 2000,
-      unit: 'kcal',
-      fill: '#8b5cf6', // purple
-      icon: '🔥',
-    },
-    {
-      name: 'Protein',
-      current: goals?.proteinCurrent || 0,
-      target: goals?.proteinTarget || 150,
-      unit: 'g',
-      fill: '#83D385', // green (primary)
-      icon: '💪',
-    },
-    {
-      name: 'Carbs',
-      current: goals?.carbsCurrent || 0,
-      target: goals?.carbsTarget || 250,
-      unit: 'g',
-      fill: '#3b82f6', // blue
-      icon: '🌾',
-    },
-    {
-      name: 'Fats',
-      current: goals?.fatsCurrent || 0,
-      target: goals?.fatsTarget || 65,
-      unit: 'g',
-      fill: '#f97316', // orange
-      icon: '🥑',
-    },
-  ]
-
-  // Macros distribution for Pie Chart - using real data
-  const macrosData = [
-    { name: 'Protein', value: goals?.proteinCurrent || 0, fill: '#83D385' },
-    { name: 'Carbs', value: goals?.carbsCurrent || 0, fill: '#3b82f6' },
-    { name: 'Fats', value: goals?.fatsCurrent || 0, fill: '#f97316' },
-  ]
 
   // Get macro data for the selected metric using real weekly data from meal plan
   const getMacroData = () => {
@@ -108,6 +60,14 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
     { id: 'fats', label: 'Fats', color: 'yellow' },
   ]
 
+  // Explicit Tailwind classes for metrics to avoid dynamic class generation
+  const metricStyles = {
+    calories: 'bg-emerald-500',
+    protein: 'bg-blue-500',
+    carbs: 'bg-purple-500',
+    fats: 'bg-yellow-400',
+  }
+
   return (
     <div>
       <h2 className="text-2xl font-bold text-textDark mb-6 flex items-center gap-2">
@@ -115,78 +75,14 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
         Nutrition & Goals
       </h2>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Macros Distribution Donut Chart */}
-        <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl shadow-md p-6 border border-blue-200/50 hover:shadow-lg transition-all">
-          <h3 className="text-lg font-semibold mb-4 text-textDark">
-            Macros Split
-          </h3>
-          <div style={{ width: '100%', height: '160px' }}>
-            <ResponsiveContainer width="100%" height={160}>
-              <PieChart>
-                <Pie
-                  data={macrosData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}
-                  outerRadius={65}
-                  paddingAngle={3}
-                  dataKey="value"
-                >
-                  {macrosData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
-          <div className="flex justify-center gap-3 mt-2 flex-wrap">
-            {macrosData.map((item) => (
-              <div key={item.name} className="flex items-center gap-1.5">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: item.fill }}
-                />
-                <span className="text-xs text-textLight font-medium">
-                  {item.name}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Quick Stats */}
-        <div className="bg-gradient-to-br from-orange-50 to-yellow-50 rounded-xl shadow-md p-6 border border-orange-200/50 hover:shadow-lg transition-all">
-          <h3 className="text-lg font-semibold mb-4 text-textDark flex items-center gap-2">
-            <Flame className="text-orange-500" size={20} />
-            Today's Summary
-          </h3>
-          <div className="space-y-3">
-            {progressData.slice(0, 3).map((item) => (
-              <div
-                key={item.name}
-                className="flex items-center justify-between"
-              >
-                <span className="text-sm text-textLight flex items-center gap-1">
-                  <span>{item.icon}</span>
-                  {item.name}
-                </span>
-                <span className="text-sm font-semibold text-textDark">
-                  {item.current}/{item.target}
-                  {item.unit}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      {/* Macros Split and Today's Summary removed */}
 
       {/* Weekly Nutrition Chart */}
-      <div className="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm">
+      <Card noHover className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-gray-900">Weekly Nutrition Plan</h2>
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-muted mt-1">
               7-day meal plan nutrition vs. daily targets
             </p>
           </div>
@@ -197,8 +93,8 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
                 onClick={() => setSelectedMetric(metric.id)}
                 className={`px-3 py-1 rounded-lg text-xs transition-all ${
                   selectedMetric === metric.id
-                    ? `bg-${metric.color}-500 text-white`
-                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                    ? `${metricStyles[metric.id]} text-white`
+                    : 'bg-gray-100 dark:bg-gray-800 text-muted dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
                 }`}
               >
                 {metric.label}
@@ -242,7 +138,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
             />
           </AreaChart>
         </ResponsiveContainer>
-      </div>
+      </Card>
     </div>
   )
 }

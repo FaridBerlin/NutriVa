@@ -1,3 +1,5 @@
+import Card from '../ui/Card'
+
 export default function Tools() {
   return (
     <>
@@ -13,7 +15,7 @@ export default function Tools() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Feature 1 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">🤖</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 AI Diet Plans
@@ -22,10 +24,10 @@ export default function Tools() {
                 Get personalized meal plans created by advanced AI tailored to
                 your unique goals and preferences
               </p>
-            </div>
+            </Card>
 
             {/* Feature 2 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">🍽️</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 Food Information
@@ -34,10 +36,10 @@ export default function Tools() {
                 Search and discover detailed nutritional information for
                 thousands of foods and dishes
               </p>
-            </div>
+            </Card>
 
             {/* Feature 3 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">🏥</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 Health Guidance
@@ -46,10 +48,10 @@ export default function Tools() {
                 Receive expert dietary recommendations based on your specific
                 health conditions and needs
               </p>
-            </div>
+            </Card>
 
             {/* Feature 4 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">📊</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 Progress Tracking
@@ -58,10 +60,10 @@ export default function Tools() {
                 Monitor your nutrition journey with comprehensive analytics and
                 visual progress reports
               </p>
-            </div>
+            </Card>
 
             {/* Feature 5 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">👨‍🍳</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 Cooking Guidance
@@ -70,10 +72,10 @@ export default function Tools() {
                 Learn optimal preparation methods and cooking techniques for
                 healthier meals
               </p>
-            </div>
+            </Card>
 
             {/* Feature 6 */}
-            <div className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <Card className="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
               <div className="text-5xl mb-4">💡</div>
               <h3 className="text-xl font-bold text-textDark mb-3">
                 Smart Suggestions
@@ -82,7 +84,7 @@ export default function Tools() {
                 Get intelligent meal recommendations and timing suggestions
                 optimized for your lifestyle
               </p>
-            </div>
+            </Card>
           </div>
         </div>
       </section>

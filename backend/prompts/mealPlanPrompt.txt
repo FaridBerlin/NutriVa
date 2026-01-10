@@ -5,6 +5,12 @@ Age: {{age}} | Gender: {{gender}} | Weight: {{weight}}kg | Height: {{height}}cm
 Activity: {{activityLevel}} | Goal: {{fitnessGoal}}
 Diet Type: {{foodType}} | Allergies: {{restrictionsAndAllergies}}
 
+🎯 CALORIE GUIDANCE:
+Daily Target: {{dailyCalories}} calories
+Suggested Per Meal: ~{{caloriesPerMeal}} calories
+Recommended Range: {{calorieRange}} calories per meal
+(Aim to get close to daily target across all meals)
+
 DIETARY RULES FOR "{{foodType}}":
 - veg: Only plant-based + dairy (no meat, fish, eggs, poultry)
 - non-veg: Include meat, fish, poultry, eggs + plant-based
@@ -13,6 +19,7 @@ DIETARY RULES FOR "{{foodType}}":
 MEAL REQUIREMENTS:
 • {{mealPerDay}} meals/day (Breakfast, Lunch, Dinner, Snack)
 • International cuisines (Indian, Mediterranean, Asian, Western, etc.)
+• Try to keep meals in the {{calorieRange}} calorie range when possible
 • Each meal needs:
   {
     "type": "Breakfast/Lunch/Dinner/Snack",
@@ -39,6 +46,7 @@ REQUIRED JSON OUTPUT (no markdown, no extra text):
 CRITICAL:
 ✓ Return EXACTLY {{planDuration}} days
 ✓ Each day has EXACTLY {{mealPerDay}} meals
+✓ Daily total should aim for ~{{dailyCalories}} calories
 ✓ Respect "{{foodType}}" dietary preference
-✓ Calculate realistic nutrition values
+✓ Calculate realistic nutrition values (protein, carbs, fat)
 ✓ Pure JSON only - no comments or markdown
