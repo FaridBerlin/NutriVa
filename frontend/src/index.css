@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* Font-face declarations (test fonts). Replace files in /src/assets/fonts/ as needed. */
-@font-face {
+/* @font-face {
   font-family: 'CustomSans';
   src: url('/src/assets/fonts/CustomSans-Regular.woff2') format('woff2');
   font-weight: 400;
@@ -23,7 +23,7 @@
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-}
+} */
 
 /* Global styles */
 body {

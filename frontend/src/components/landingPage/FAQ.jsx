@@ -1,5 +1,10 @@
 import { useState } from 'react'
 import { ChevronDown, Mail, MessageCircle } from 'lucide-react'
+import ScrollAnimationWrapper, {
+  ScrollStaggerWrapper,
+  ScrollStaggerItem,
+} from './ScrollAnimationWrapper'
+import { motion } from 'framer-motion'
 
 const faqs = [
   {
@@ -42,37 +47,39 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-24 bg-white">
+    <section id="faq" className="py-24 bg-white dark:bg-gray-900">
       <div className="max-w-4xl mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 rounded-full mb-6">
-            <span className="text-sm font-medium">Got Questions?</span>
+        <ScrollAnimationWrapper>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
+              <span className="text-sm font-medium">Got Questions?</span>
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-xl text-textLight dark:text-gray-400">
+              Everything you need to know about Nutriva
+            </p>
           </div>
-          <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-xl text-gray-600">
-            Everything you need to know about Nutriva
-          </p>
-        </div>
+        </ScrollAnimationWrapper>
 
         {/* FAQ Accordion */}
-        <div className="space-y-4 mb-12">
+        <ScrollStaggerWrapper className="space-y-4 mb-12" staggerDelay={0.1}>
           {faqs.map((faq, index) => (
-            <div
+            <ScrollStaggerItem
               key={index}
-              className="bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-emerald-300 transition-all"
+              className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary dark:hover:border-teal-500 transition-all"
             >
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 transition-colors"
+                className="w-full px-6 py-5 flex items-center justify-between text-left hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
               >
-                <span className="font-semibold text-gray-900 pr-8">
+                <span className="font-semibold text-textDark dark:text-white pr-8">
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-emerald-600 transition-transform flex-shrink-0 ${
+                  className={`w-5 h-5 text-primary dark:text-teal-400 transition-transform flex-shrink-0 ${
                     openIndex === index ? 'rotate-180' : ''
                   }`}
                 />
@@ -83,57 +90,61 @@ export default function FAQ() {
                   openIndex === index ? 'max-h-96' : 'max-h-0'
                 }`}
               >
-                <div className="px-6 pb-5 text-gray-600 leading-relaxed border-t border-gray-100 pt-4">
+                <div className="px-6 pb-5 text-textLight dark:text-gray-300 leading-relaxed border-t border-gray-100 dark:border-gray-700 pt-4">
                   {faq.answer}
                 </div>
               </div>
-            </div>
+            </ScrollStaggerItem>
           ))}
-        </div>
+        </ScrollStaggerWrapper>
 
         {/* Contact CTA */}
-        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-8 border border-emerald-200">
-          <div className="text-center mb-6">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">
-              Still have questions?
-            </h3>
-            <p className="text-gray-600">
-              Our support team is here to help you get started
-            </p>
-          </div>
+        <ScrollAnimationWrapper delay={0.3}>
+          <div className="bg-gradient-to-br from-primary/5 to-teal-50/50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl p-8 border border-primary/20 dark:border-teal-700/30">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-textDark dark:text-white mb-2">
+                Still have questions?
+              </h3>
+              <p className="text-textLight dark:text-gray-400">
+                Our support team is here to help you get started
+              </p>
+            </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-6 py-3 bg-grye-50 text-gray-700 rounded-xl hover:bg-emerald-500 transition-all border border-gray-200 flex items-center justify-center gap-2">
-              <Mail className="w-5 h-5" />
-              Email Support
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button className="px-6 py-3 bg-primary hover:bg-primaryDark dark:bg-teal-600 dark:hover:bg-teal-500 text-white rounded-xl transition-all flex items-center justify-center gap-2">
+                <Mail className="w-5 h-5" />
+                Email Support
+              </button>
+            </div>
           </div>
-        </div>
+        </ScrollAnimationWrapper>
       </div>
 
       {/* Final CTA Section */}
       <div className="max-w-4xl mx-auto px-6 mt-24">
-        <div className="bg-gradient-to-br from-emerald-500 to-teal-600 rounded-3xl p-12 text-center text-white relative overflow-hidden">
-          {/* Decorative Elements */}
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
+        <ScrollAnimationWrapper delay={0.4}>
+          <div className="bg-gradient-to-br from-primary to-primaryDark dark:from-teal-700 dark:to-emerald-700 rounded-3xl p-12 text-center text-white relative overflow-hidden">
+            {/* Decorative Elements */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
+            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
 
-          <div className="relative z-10">
-            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
-              Ready to Transform Your Nutrition?
-            </h2>
-            <p className="text-xl text-emerald-50 mb-8 max-w-2xl mx-auto">
-              Join thousands of users who are achieving their health goals with
-              Nutriva's AI-powered platform
-            </p>
+            <div className="relative z-10">
+              <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                Ready to Transform Your Nutrition?
+              </h2>
+              <p className="text-xl text-green-50 dark:text-teal-50 mb-8 max-w-2xl mx-auto">
+                Join thousands of users who are achieving their health goals
+                with Nutriva's AI-powered platform
+              </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 bg-white text-emerald-600 rounded-xl hover:bg-emerald-50 transition-all shadow-lg font-semibold">
-                Start Free
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <button className="px-8 py-4 bg-white text-primary hover:bg-green-50 dark:text-teal-700 dark:hover:bg-teal-50 rounded-xl transition-all shadow-lg font-semibold">
+                  Start Free
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </ScrollAnimationWrapper>
       </div>
     </section>
   )

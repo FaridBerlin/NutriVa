@@ -12,13 +12,19 @@ export default {
       },
 
       colors: {
-        primary: '#83D385', // main green color
+        primary2: '#83D385', // main green color
+        primary: '#34d399',
         accentYellow: '#FBBF24', // warm yellow for dark-mode accents
         accentYellowDark: '#D97706', // warm yellow for dark-mode accents
-        primaryDark: '#7FBC81', // Hover
+        primaryDark2: '#7FBC81', // Hover
+        primaryDark: '#0d9488',
         primarySoft: 'rgba(127,188,129,0.85)', // button bg
         primaryLight70: 'rgba(131, 211, 133, 0.7)', // 70% opacity
         primaryLight40: 'rgba(131, 211, 133, 0.4)', // 40% opacity
+        bg_gradient:
+          'bg-gradient-to-br from-emerald-500 via-emerald-600 to-teal-600 shadow-lg',
+        light_gradient:
+          'bg-gradient-to-br from-emerald-50 to-teal-50 rounded-xl border border-emerald-200',
         textDark: '#2E2E2E', // almost black
         textLight: '#6B7280', // gray-700
         gray: {
