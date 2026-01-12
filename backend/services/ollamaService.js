@@ -1,4 +1,5 @@
 import { Ollama } from 'ollama'
+import dotenv from 'dotenv'
 import { jsonrepair } from 'jsonrepair'
 import fs from 'fs'
 import path from 'path'
@@ -7,29 +8,22 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+dotenv.config({ path: '../.env' })
+
 // Initialize Ollama client
-let ollama
-try {
-  ollama = new Ollama({ host: 'http://127.0.0.1:11434' })
-  console.log('Ollama client initialized successfully')
-} catch (error) {
-  console.error('Failed to initialize Ollama client:', error)
-}
+const ollama = new Ollama({
+  host: 'https://ollama.com',
+  headers: {
+    Authorization: 'Bearer ' + process.env.OLLAMA_API_KEY,
+  },
+})
+
+console.log('Ollama client initialized successfully')
 
 /**
- * Generate a meal plan using Ollama with qwen2.5:3b model
+ * Generate a meal plan using Ollama with gpt-oss:120b model
  */
 export const generateMealPlan = async (params) => {
-  if (!ollama) {
-    throw new Error(
-      JSON.stringify({
-        code: 'OLLAMA_NOT_INITIALIZED',
-        message: 'Ollama client not initialized',
-        details: 'Make sure Ollama is running with: ollama serve',
-      }),
-    )
-  }
-
   try {
     const {
       age,
@@ -83,7 +77,7 @@ export const generateMealPlan = async (params) => {
       .replace(/{{caloriesPerMeal}}/g, caloriesPerMeal) // 🎯 NEW
       .replace(/{{calorieRange}}/g, calorieRange) // 🎯 NEW
 
-    console.log('Generating meal plan with qwen2.5:3b...')
+    console.log('Generating meal plan with gpt-oss:120b...')
     console.log(
       `🎯 Target: ${dailyCalories} cal/day, ${caloriesPerMeal} cal/meal (${calorieRange} range)`,
     )
@@ -109,7 +103,7 @@ export const generateMealPlan = async (params) => {
     })
 
     const generationPromise = ollama.generate({
-      model: 'qwen2.5:3b',
+      model: 'gpt-oss:120b',
       prompt: prompt,
       stream: false,
       format: 'json',
