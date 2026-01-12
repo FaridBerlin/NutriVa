@@ -33,14 +33,21 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     // Skip token verification on public pages
-    const publicPages = ['/', '/login', '/signup']
+    const publicPages = ['/', '/login', '/signup', '/forgot-password']
     const currentPath = window.location.pathname
+    const isPublicPage = publicPages.includes(currentPath) || currentPath.startsWith('/reset-password')
 
-    if (!publicPages.includes(currentPath)) {
-      verifyToken()
-    } else {
-      setIsLoading(false)
-    }
+
+    if (!isPublicPage) {
+    verifyToken()
+  } else {
+    setIsLoading(false)
+  }
+    // if (!publicPages.includes(currentPath)) {
+    //   verifyToken()
+    // } else {
+    //   setIsLoading(false)
+    // }
   }, [])
 
   return (

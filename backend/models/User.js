@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import bcryptjs from 'bcryptjs'
+import crypto from 'crypto'
 import { Schema, model } from 'mongoose'
 
 const userSchema = new Schema(
@@ -24,6 +25,10 @@ const userSchema = new Schema(
       minlength: 6,
       select: false,
     },
+
+    resetPasswordToken: String,
+    resetPasswordExpire: Date,
+
     profileCompleted: {
       type: Boolean,
       default: false,
@@ -35,15 +40,32 @@ const userSchema = new Schema(
   },
   { timestamps: true },
 )
-userSchema.pre('save', async function (next) {
+// userSchema.pre('save', async function (next) {
+//   if (!this.isModified('password')) {
+//     next()
+//   }
+
+  userSchema.pre('save', async function () {
   if (!this.isModified('password')) {
-    next()
+    return
   }
   const salt = await bcryptjs.genSalt(10)
   this.password = await bcryptjs.hash(this.password, salt)
 })
 userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcryptjs.compare(enteredPassword, this.password)
+}
+userSchema.methods.getResetPasswordToken = function () {
+  const resetToken = crypto.randomBytes(32).toString('hex')
+
+  this.resetPasswordToken = crypto
+    .createHash('sha256')
+    .update(resetToken)
+    .digest('hex')
+
+  this.resetPasswordExpire = Date.now() + 15 * 60 * 1000 // 15 mins
+
+  return resetToken
 }
 
 export default model('User', userSchema)

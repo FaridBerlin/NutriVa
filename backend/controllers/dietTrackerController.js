@@ -1,6 +1,7 @@
 import DietTracker from '../models/DietTracker.js'
 import AiMealPlan from '../models/AiMealPlan.js'
 import User from '../models/User.js'
+import { enrichMealsWithTimingStatus } from '../utils/mealTimeUtils.js'
 
 // create DietTracker
 export const createDietTracker = async (req, res, next) => {
@@ -164,7 +165,15 @@ export const getTrackerDay = async (req, res, next) => {
       })
     }
 
-    res.status(200).json(dayTracker)
+    // res.status(200).json(dayTracker)
+
+  // ADD timing status
+    const mealsWithStatus = enrichMealsWithTimingStatus(dayTracker.meals)
+
+    res.status(200).json({
+      ...dayTracker.toObject(),
+      meals: mealsWithStatus,
+    })
   } catch (error) {
     next(error)
   }

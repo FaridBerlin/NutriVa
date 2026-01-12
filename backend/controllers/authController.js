@@ -1,5 +1,7 @@
 import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
+import crypto from 'crypto'
+import sendEmail from '../utils/sendEmail.js'
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -105,4 +107,82 @@ export const logout = async (req, res) => {
       success: true,
       message: 'Logged out successfully',
     })
+}
+
+//Forgot Password
+export const forgotPassword = async (req, res) => {
+  const { email } = req.body
+
+  try {
+    const user = await User.findOne({ email: email.toLowerCase() })
+
+    // same response even if user doesn't exist
+    if (!user) {
+      return res.status(200).json({
+        success: true,
+        message: 'If that email exists, a reset link has been sent, Check your Email',
+      })
+    }
+
+    const resetToken = user.getResetPasswordToken()
+    await user.save({ validateBeforeSave: false })
+
+    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
+
+    const message = `
+You requested a password reset.
+
+Click the link below to reset your password:
+${resetUrl}
+
+This link will expire in 15 minutes.
+`
+
+    await sendEmail({
+      to: user.email,
+      subject: 'Password Reset - Nutriva MealPlanner',
+      text: message,
+    })
+
+    res.status(200).json({
+      success: true,
+      message: 'Reset link sent to email, Goto your Email',
+    })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+}
+
+// Reset Password
+export const resetPassword = async (req, res) => {
+  const hashedToken = crypto
+    .createHash('sha256')
+    .update(req.params.token)
+    .digest('hex')
+
+  try {
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    }).select('+password')
+
+    if (!user) {
+      return res.status(400).json({
+        message: 'Invalid or expired reset token',
+      })
+    }
+
+    user.password = req.body.password
+    user.resetPasswordToken = undefined
+    user.resetPasswordExpire = undefined
+
+    await user.save()
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful.... Goto login',
+    })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 }
