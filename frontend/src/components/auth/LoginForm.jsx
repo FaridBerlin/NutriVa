@@ -82,6 +82,12 @@ export default function LoginForm() {
         <button type="submit" disabled={isLoading} className={greenButtonClass}>
           {isLoading ? 'Logging in...' : 'Login'}
         </button>
+        {/* Forgot Password */}
+        <p className="text-sm text-right">
+          <a href="/forgot-password" className="text-green-600 hover:underline">
+            Forgot your password?
+          </a>
+        </p>
       </form>
 
       <p className="text-sm">
