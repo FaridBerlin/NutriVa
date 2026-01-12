@@ -1,8 +1,5 @@
 import { Star, Quote } from 'lucide-react'
-import ScrollAnimationWrapper, {
-  ScrollStaggerWrapper,
-  ScrollStaggerItem,
-} from './ScrollAnimationWrapper'
+import ScrollAnimationWrapper from './ScrollAnimationWrapper'
 
 const testimonials = [
   {
@@ -79,13 +76,12 @@ export default function Testimonials() {
         </ScrollAnimationWrapper>
 
         {/* Testimonials Grid */}
-        <ScrollStaggerWrapper
-          className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
-          staggerDelay={0.15}
-        >
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => (
-            <ScrollStaggerItem
+            <ScrollAnimationWrapper
               key={index}
+              delay={index * 0.1}
+              direction="up"
               className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-teal-500 hover:shadow-xl dark:hover:shadow-teal-500/20 transition-all duration-300 relative"
             >
               {/* Quote Icon */}
@@ -129,9 +125,9 @@ export default function Testimonials() {
                   </div>
                 </div>
               </div>
-            </ScrollStaggerItem>
+            </ScrollAnimationWrapper>
           ))}
-        </ScrollStaggerWrapper>
+        </div>
 
         {/* Bottom Stats */}
         <ScrollAnimationWrapper delay={0.4}>

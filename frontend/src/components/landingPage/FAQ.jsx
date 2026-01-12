@@ -1,10 +1,7 @@
 import { useState } from 'react'
 import { ChevronDown, Mail, MessageCircle } from 'lucide-react'
-import ScrollAnimationWrapper, {
-  ScrollStaggerWrapper,
-  ScrollStaggerItem,
-} from './ScrollAnimationWrapper'
-import { motion } from 'framer-motion'
+import { useNavigate } from 'react-router-dom'
+import ScrollAnimationWrapper from './ScrollAnimationWrapper'
 
 const faqs = [
   {
@@ -42,6 +39,7 @@ const faqs = [
 export default function FAQ() {
   const [openIndex, setOpenIndex] = useState(0)
 
+  const navigate = useNavigate()
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index)
   }
@@ -65,10 +63,11 @@ export default function FAQ() {
         </ScrollAnimationWrapper>
 
         {/* FAQ Accordion */}
-        <ScrollStaggerWrapper className="space-y-4 mb-12" staggerDelay={0.1}>
+        <div className="space-y-4 mb-12">
           {faqs.map((faq, index) => (
-            <ScrollStaggerItem
+            <ScrollAnimationWrapper
               key={index}
+              delay={index * 0.1}
               className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:border-primary dark:hover:border-teal-500 transition-all"
             >
               <button
@@ -94,9 +93,9 @@ export default function FAQ() {
                   {faq.answer}
                 </div>
               </div>
-            </ScrollStaggerItem>
+            </ScrollAnimationWrapper>
           ))}
-        </ScrollStaggerWrapper>
+        </div>
 
         {/* Contact CTA */}
         <ScrollAnimationWrapper delay={0.3}>
@@ -138,7 +137,10 @@ export default function FAQ() {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="px-8 py-4 bg-white text-primary hover:bg-green-50 dark:text-teal-700 dark:hover:bg-teal-50 rounded-xl transition-all shadow-lg font-semibold">
+                <button
+                  onClick={() => navigate('/login')}
+                  className="px-8 py-4 bg-white text-primary hover:bg-green-50 dark:text-teal-700 dark:hover:bg-teal-50 rounded-xl transition-all shadow-lg font-semibold cursor-pointer"
+                >
                   Start Free
                 </button>
               </div>
