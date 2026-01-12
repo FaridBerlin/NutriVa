@@ -41,24 +41,24 @@ function getMealGenerator() {
  * Useful for logging and debugging
  * @returns {object} Configuration details
  */
-function getGeneratorConfig() {
-  const generatorType = process.env.MEAL_GENERATOR || 'mock'
+// function getGeneratorConfig() {
+//   const generatorType = process.env.MEAL_GENERATOR || 'mock'
 
-  return {
-    type: generatorType,
-    ollamaUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
-    hasOpenAIKey: !!process.env.OPENAI_API_KEY,
-    timestamp: new Date().toISOString(),
-  }
-}
+//   return {
+//     type: generatorType,
+//     ollamaUrl: process.env.OLLAMA_BASE_URL || 'http://localhost:11434',
+//     hasOpenAIKey: !!process.env.OPENAI_API_KEY,
+//     timestamp: new Date().toISOString(),
+//   }
+// }
 
-export default {
-  getMealGenerator,
-  getGeneratorConfig,
-}
+// export default {
+//   getMealGenerator,
+//   getGeneratorConfig,
+// }
 
 // END OF COMMENTED CODE
-*/
-  getMealGenerator,
-  getGeneratorConfig,
-}
+// */
+//   getMealGenerator,
+//   getGeneratorConfig,
+// }
