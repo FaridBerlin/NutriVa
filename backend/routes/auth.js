@@ -4,6 +4,8 @@ import {
   login,
   getUser,
   logout,
+  forgotPassword,
+  resetPassword,
 } from '../controllers/authController.js'
 import { protect } from '../middleware/authMiddleware.js'
 import {
@@ -11,6 +13,8 @@ import {
   validateLogin,
   handleValidationErrors,
 } from '../middleware/validators.js'
+
+
 
 const router = express.Router()
 
@@ -25,5 +29,13 @@ router.get('/me', protect, getUser)
 
 // POST /api/auth/logout - Logout user (clear cookie)
 router.post('/logout', logout)
+
+// POST /api/auth/forgot-password
+router.post('/forgot-password', forgotPassword)
+
+// POST /api/auth/reset-password/:token
+router.post('/reset-password/:token', resetPassword)
+
+
 
 export default router
