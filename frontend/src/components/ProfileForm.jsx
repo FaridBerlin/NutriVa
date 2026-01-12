@@ -498,7 +498,7 @@ export default function ProfileForm() {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10 mb-6 ring-1 ring-black/5">
+        <Card className="p-8 md:p-10 mb-6 ring-1 ring-black/5 shadow-2xl">
           <div
             className={`mb-4 p-3 rounded-md bg-red-50 border border-red-200 text-red-700 transform transition-all duration-300 ${
               showError
@@ -533,7 +533,7 @@ export default function ProfileForm() {
             </div>
           )}
           {renderStepContent()}
-        </div>
+        </Card>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between">
@@ -603,9 +603,7 @@ function Step1BasicInfo({ formData, handleChange }) {
           value={formData.name}
           onChange={(e) => handleChange('name', e.target.value)}
           placeholder="Enter your name"
-          className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
-                     focus:ring-3 focus:ring-primary focus:border-transparent
-                     transition-all"
+          className="nv-input text-lg"
         />
       </div>
 
@@ -619,9 +617,7 @@ function Step1BasicInfo({ formData, handleChange }) {
           value={formData.age}
           onChange={(e) => handleChange('age', e.target.value)}
           placeholder="22"
-          className="w-full px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
-                     focus:ring-3 focus:ring-primary focus:border-transparent
-                     transition-all"
+          className="nv-input text-lg"
         />
       </div>
 
@@ -704,15 +700,12 @@ function Step2Metrics({
             value={formData.height}
             onChange={(e) => handleChange('height', e.target.value)}
             placeholder="188"
-            className="flex-1 px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
-                       focus:ring-3 focus:ring-primary focus:border-transparent
-                       transition-all"
+            className="nv-input flex-1 text-lg"
           />
           <select
             value={formData.heightUnit}
             onChange={(e) => handleChange('heightUnit', e.target.value)}
-            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm
-                       focus:ring-3 focus:ring-primary transition-all"
+            className="nv-input text-lg"
           >
             <option value="cm">cm</option>
             <option value="ft">ft</option>
@@ -731,15 +724,12 @@ function Step2Metrics({
             value={formData.weight}
             onChange={(e) => handleChange('weight', e.target.value)}
             placeholder="90"
-            className="flex-1 px-5 py-4 text-lg border border-gray-300 rounded-lg shadow-sm
-                       focus:ring-3 focus:ring-primary focus:border-transparent
-                       transition-all"
+            className="nv-input flex-1 text-lg"
           />
           <select
             value={formData.weightUnit}
             onChange={(e) => handleChange('weightUnit', e.target.value)}
-            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm
-                       focus:ring-3 focus:ring-primary transition-all"
+            className="nv-input text-lg"
           >
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>
@@ -971,9 +961,7 @@ function Step4Diet({ formData, handleChange }) {
             onChange={(e) => setAllergyInput(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && addAllergy()}
             placeholder="e.g., peanuts, dairy"
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary
-                       transition-all"
+            className="nv-input"
           />
           <button
             type="button"
@@ -1105,12 +1093,12 @@ function Step5Goals({ formData, handleChange }) {
             value={formData.targetWeight}
             onChange={(e) => handleChange('targetWeight', e.target.value)}
             placeholder="e.g., 75"
-            className="flex-1 px-5 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-3 focus:ring-primary"
+            className="nv-input flex-1 text-lg"
           />
           <select
             value={formData.targetWeightUnit}
             onChange={(e) => handleChange('targetWeightUnit', e.target.value)}
-            className="px-4 py-3 text-lg border border-gray-300 rounded-lg shadow-sm focus:ring-3 focus:ring-primary"
+            className="nv-input text-lg"
           >
             <option value="kg">kg</option>
             <option value="lbs">lbs</option>

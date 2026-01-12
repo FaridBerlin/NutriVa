@@ -103,7 +103,7 @@ export default function DashboardPage() {
 
   // Render content based on active section
   return (
-    <div className="flex min-h-screen bg-transparent">
+    <div className="flex min-h-screen bg-transparent landing-page">
       {/* Sidebar */}
       <Sidebar
         activeSection={activeSection}

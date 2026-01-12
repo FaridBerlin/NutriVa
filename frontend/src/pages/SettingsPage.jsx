@@ -22,6 +22,7 @@ import {
   Ruler,
   Weight,
 } from 'lucide-react'
+import Card from '../components/ui/Card'
 
 export default function SettingsPage() {
   const { user } = useContext(AuthContext)
@@ -291,7 +292,7 @@ export default function SettingsPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Account Information */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Account Information
             </h2>
@@ -305,7 +306,7 @@ export default function SettingsPage() {
                   type="text"
                   value={formData.name}
                   disabled
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500"
+                  className="nv-input font-medium"
                 />
                 <p className="text-xs text-textLight mt-1">
                   Contact support to change name
@@ -320,17 +321,17 @@ export default function SettingsPage() {
                   type="email"
                   value={formData.email}
                   disabled
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-500"
+                  className="nv-input font-medium"
                 />
                 <p className="text-xs text-textLight mt-1">
                   Email cannot be changed
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Change Password Section */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Lock className="w-5 h-5 text-primary" /> Change Password
             </h2>
@@ -359,7 +360,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     handlePasswordChange('currentPassword', e.target.value)
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                   placeholder="Enter current password"
                 />
               </div>
@@ -374,7 +375,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     handlePasswordChange('newPassword', e.target.value)
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                   placeholder="Enter new password"
                 />
               </div>
@@ -389,7 +390,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     handlePasswordChange('confirmPassword', e.target.value)
                   }
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                   placeholder="Confirm new password"
                 />
               </div>
@@ -418,10 +419,10 @@ export default function SettingsPage() {
                 )}
               </button>
             </div>
-          </div>
+          </Card>
 
           {/* Personal Information */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-primary" /> Personal
               Information
@@ -438,7 +439,7 @@ export default function SettingsPage() {
                   onChange={(e) => handleChange('age', e.target.value)}
                   min="13"
                   max="120"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                 />
               </div>
 
@@ -449,7 +450,7 @@ export default function SettingsPage() {
                 <select
                   value={formData.gender}
                   onChange={(e) => handleChange('gender', e.target.value)}
-                  className="w-full px-4 py-3 h-14 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input h-14"
                 >
                   <option value="">Select gender</option>
                   <option value="male">Male</option>
@@ -483,10 +484,10 @@ export default function SettingsPage() {
                 </div>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Body Metrics */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Ruler className="w-5 h-5 text-primary" /> Body Metrics
             </h2>
@@ -503,7 +504,7 @@ export default function SettingsPage() {
                   min="50"
                   max="300"
                   step="0.1"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                   placeholder="e.g., 175"
                 />
               </div>
@@ -519,7 +520,7 @@ export default function SettingsPage() {
                   min="20"
                   max="500"
                   step="0.1"
-                  className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                  className="nv-input"
                   placeholder="e.g., 70"
                 />
               </div>
@@ -537,7 +538,7 @@ export default function SettingsPage() {
                     min="20"
                     max="500"
                     step="0.1"
-                    className="flex-1 px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="nv-input"
                     placeholder="e.g., 75"
                   />
                   <select
@@ -545,7 +546,7 @@ export default function SettingsPage() {
                     onChange={(e) =>
                       handleChange('targetWeightUnit', e.target.value)
                     }
-                    className="px-4 py-3 rounded-lg border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all"
+                    className="nv-input"
                   >
                     <option value="kg">kg</option>
                     <option value="lbs">lbs</option>
@@ -556,10 +557,10 @@ export default function SettingsPage() {
                 </p>
               </div>
             </div>
-          </div>
+          </Card>
 
           {/* Activity Level */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary" /> Activity Level
             </h2>
@@ -585,10 +586,10 @@ export default function SettingsPage() {
                 </button>
               ))}
             </div>
-          </div>
+          </Card>
 
           {/* Dietary Goal */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <Card className="p-6">
             <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" /> Dietary Goal
             </h2>
@@ -616,7 +617,7 @@ export default function SettingsPage() {
                 </button>
               ))}
             </div>
-          </div>
+          </Card>
 
           {/* Save Button */}
           <div className="flex justify-end">
