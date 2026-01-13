@@ -1,20 +1,18 @@
 import { Ollama } from 'ollama'
-import dotenv from 'dotenv'
 import { jsonrepair } from 'jsonrepair'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import config from '../config/config.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
-
-dotenv.config({ path: '../.env' })
 
 // Initialize Ollama client
 const ollama = new Ollama({
   host: 'https://ollama.com',
   headers: {
-    Authorization: 'Bearer ' + process.env.OLLAMA_API_KEY,
+    Authorization: 'Bearer ' + config.OLLAMA_API_KEY,
   },
 })
 

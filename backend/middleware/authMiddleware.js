@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/User.js'
+import config from '../config/config.js'
 
 export const protect = async (req, res, next) => {
   let token
@@ -19,13 +20,13 @@ export const protect = async (req, res, next) => {
       .json({ message: 'Not authorized to access this route' })
   }
   try {
-    if (!process.env.JWT_SECRET) {
+    if (!config.JWT_SECRET) {
       return res
         .status(500)
         .json({ message: 'JWT_SECRET is not configured on the server' })
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
+    const decoded = jwt.verify(token, config.JWT_SECRET)
 
     // Verify user still exists in database
     const user = await User.findById(decoded.id).select('-password')

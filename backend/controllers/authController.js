@@ -2,18 +2,19 @@ import User from '../models/User.js'
 import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import sendEmail from '../utils/sendEmail.js'
+import config from '../config/config.js'
 
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRE,
+  return jwt.sign({ id }, config.JWT_SECRET, {
+    expiresIn: config.JWT_EXPIRE,
   })
 }
 
 const sendTokenResponse = (user, statusCode, res) => {
   const token = generateToken(user._id)
 
-  const cookieExpireHours = Number(process.env.COOKIE_EXPIRE || 24)
-  const isProduction = process.env.NODE_ENV === 'production'
+  const cookieExpireHours = config.COOKIE_EXPIRE
+  const isProduction = config.NODE_ENV === 'production'
 
   const options = {
     expires: new Date(Date.now() + cookieExpireHours * 60 * 60 * 1000),
@@ -120,14 +121,15 @@ export const forgotPassword = async (req, res) => {
     if (!user) {
       return res.status(200).json({
         success: true,
-        message: 'If that email exists, a reset link has been sent, Check your Email',
+        message:
+          'If that email exists, a reset link has been sent, Check your Email',
       })
     }
 
     const resetToken = user.getResetPasswordToken()
     await user.save({ validateBeforeSave: false })
 
-    const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`
+    const resetUrl = `${config.FRONTEND_URL}/reset-password/${resetToken}`
 
     const message = `
 You requested a password reset.
