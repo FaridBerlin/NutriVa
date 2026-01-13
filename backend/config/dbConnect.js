@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import config from './config.js'
 
 mongoose.connection.on('error', (error) => {
   console.log('DB after initial connection:', error)
@@ -6,8 +7,8 @@ mongoose.connection.on('error', (error) => {
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URL, {
-      dbName: process.env.DATABASE,
+    await mongoose.connect(config.MONGO_URL, {
+      dbName: config.DATABASE,
     })
     console.log('Connected to MongoDB!')
   } catch (error) {

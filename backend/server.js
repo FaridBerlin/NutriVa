@@ -1,3 +1,4 @@
+import config from './config/config.js' // Load dotenv via config
 import express from 'express'
 import connectDB from './config/dbConnect.js'
 import cors from 'cors'
@@ -11,8 +12,8 @@ import aiMealPlanRouter from './routes/aiMealPlanRoutes.js'
 
 connectDB()
 
-const PORT = process.env.PORT || 3000
-const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173' // from .env file
+const PORT = config.PORT
+const frontendUrl = config.FRONTEND_URL
 
 const app = express()
 
