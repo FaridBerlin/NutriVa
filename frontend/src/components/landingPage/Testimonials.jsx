@@ -1,82 +1,172 @@
-import Card from '../ui/Card'
+import { Star, Quote } from 'lucide-react'
+import ScrollAnimationWrapper from './ScrollAnimationWrapper'
+
+const testimonials = [
+  {
+    name: 'Sarah Mitch',
+    role: 'Fitness Enthusiast',
+    image: '👩‍💼',
+    rating: 5,
+    text: "Nutriva has completely transformed how I approach nutrition. The AI meal plans are so easy to follow and actually fit my lifestyle. I've lost 15 pounds in 3 months!",
+    highlight: 'Lost 15 pounds in 3 months',
+  },
+  {
+    name: 'Lisa Johnson',
+    role: 'Working Mom',
+    image: '👩‍👧',
+    rating: 5,
+    text: "Between work and kids, I struggled with healthy eating. Nutriva's meal plans are family-friendly and the shopping list feature saves me so much time!",
+    highlight: 'Whole family eats healthier',
+  },
+  {
+    name: 'Suganda Wilson',
+    role: 'Weight Loss Journey',
+    image: '💪',
+    rating: 4,
+    text: 'Down 40 pounds and feeling amazing! Nutriva made it sustainable by showing me how to eat foods I love while hitting my goals. The progress tracking keeps me motivated.',
+    highlight: 'Down 40 pounds',
+  },
+  {
+    name: 'Marwa Rodriguez',
+    role: 'Health Coach',
+    image: '👩‍⚕️',
+    rating: 5,
+    text: "I recommend Nutriva to all my clients. The macro tracking is precise, the interface is beautiful, and the AI recommendations are genuinely helpful. It's a game-changer!",
+    highlight: 'Recommends to clients',
+  },
+  {
+    name: 'Farid Thompson',
+    role: 'Athlete',
+    image: '🏃‍♂️',
+    rating: 4,
+    text: 'The ability to customize meal plans based on my training schedule is incredible. Nutriva helps me fuel my workouts properly and track every macro with ease.',
+    highlight: 'Improved performance by 20%',
+  },
+  {
+    name: 'Anas Chen',
+    role: 'Busy Professional',
+    image: '👨‍💻',
+    rating: 4,
+    text: 'As someone with a hectic schedule, Nutriva makes meal planning effortless. The app does all the thinking for me, and I love seeing my progress visualized so clearly.',
+    highlight: 'Saves 5 hours per week',
+  },
+]
 
 export default function Testimonials() {
   return (
-    <>
-      <section
-        id="testimonials"
-        className="py-20 px-6 sm:px-10 md:px-20 bg-white/30"
-      >
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">
-            What the world is saying
-          </h2>
-          <p className="text-textLight text-base md:text-lg mb-12 max-w-2xl mx-auto">
-            Discover how Nutriva has helped people transform their health and
-            nutrition habits
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Testimonial Card 1 */}
-            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
-                  S
-                </div>
-                <div>
-                  <h4 className="font-bold text-textDark">Sarah Johnson</h4>
-                  <p className="text-sm text-textLight">Fitness Enthusiast</p>
-                </div>
-              </div>
-              <p className="text-textLight text-sm leading-relaxed italic">
-                "Nutriva has completely transformed my approach to nutrition.
-                The AI-powered meal plans are incredibly detailed and adapt to
-                my fitness goals. I've lost 7kg in 3 months while maintaining my
-                energy!"
-              </p>
-              <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </Card>
-
-            {/* Testimonial Card 2 */}
-            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
-                  M
-                </div>
-                <div>
-                  <h4 className="font-bold text-textDark">Michael Chen</h4>
-                  <p className="text-sm text-textLight">Working Professional</p>
-                </div>
-              </div>
-              <p className="text-textLight text-sm leading-relaxed italic">
-                "As someone with a busy schedule, Nutriva made healthy eating so
-                easy. The personalized recommendations fit perfectly into my
-                lifestyle, and I finally understand what my body needs."
-              </p>
-              <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </Card>
-
-            {/* Testimonial Card 3 */}
-            <Card className="bg-white/80 backdrop-blur-sm rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow text-left">
-              <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-lg mr-3">
-                  P
-                </div>
-                <div>
-                  <h4 className="font-bold text-textDark">Priya Sharma</h4>
-                  <p className="text-sm text-textLight">Health Coach</p>
-                </div>
-              </div>
-              <p className="text-textLight text-sm leading-relaxed italic">
-                "I recommend Nutriva to all my clients. The AI recommendations
-                are backed by solid nutritional science, and the customization
-                options are unmatched. It's a game-changer!"
-              </p>
-              <div className="flex mt-4 text-yellow-500">⭐⭐⭐⭐⭐</div>
-            </Card>
+    <section
+      id="testimonials"
+      className="py-24 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800"
+    >
+      <div className="max-w-7xl mx-auto px-6">
+        {/* Section Header */}
+        <ScrollAnimationWrapper>
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
+              <span className="text-sm font-medium">Success Stories</span>
+            </div>
+            <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
+              Loved by Thousands of Users
+            </h2>
+            <p className="text-xl text-textLight dark:text-gray-400 max-w-2xl mx-auto">
+              Join our community of health-conscious individuals achieving their
+              goals with Nutriva
+            </p>
           </div>
+        </ScrollAnimationWrapper>
+
+        {/* Testimonials Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {testimonials.map((testimonial, index) => (
+            <ScrollAnimationWrapper
+              key={index}
+              delay={index * 0.1}
+              direction="up"
+              className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-teal-500 hover:shadow-xl dark:hover:shadow-teal-500/20 transition-all duration-300 relative"
+            >
+              {/* Quote Icon */}
+              <div className="absolute top-6 right-6 opacity-10 dark:opacity-20">
+                <Quote className="w-12 h-12 text-primary dark:text-teal-400" />
+              </div>
+
+              {/* Rating */}
+              <div className="flex gap-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-5 h-5 fill-accentYellow text-accentYellow dark:fill-yellow-500 dark:text-yellow-500"
+                  />
+                ))}
+              </div>
+
+              {/* Testimonial Text */}
+              <p className="text-textLight dark:text-gray-300 leading-relaxed mb-6">
+                "{testimonial.text}"
+              </p>
+
+              {/* Highlight Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
+                <span className="text-xs font-medium">
+                  {testimonial.highlight}
+                </span>
+              </div>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-6 border-t border-gray-100 dark:border-gray-700">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-primaryDark dark:from-teal-600 dark:to-emerald-600 rounded-full flex items-center justify-center text-2xl">
+                  {testimonial.image}
+                </div>
+                <div>
+                  <div className="font-bold text-textDark dark:text-white">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-sm text-textLight dark:text-gray-400">
+                    {testimonial.role}
+                  </div>
+                </div>
+              </div>
+            </ScrollAnimationWrapper>
+          ))}
         </div>
-      </section>
-    </>
+
+        {/* Bottom Stats */}
+        <ScrollAnimationWrapper delay={0.4}>
+          <div className="mt-16 grid md:grid-cols-4 gap-8 p-8 bg-gradient-to-br from-primary/5 to-teal-50/50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl border border-primary/20 dark:border-teal-700/30">
+            <div className="text-center">
+              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+                50,000+
+              </div>
+              <div className="text-textLight dark:text-gray-400">
+                Happy Users
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+                4.9/5
+              </div>
+              <div className="text-textLight dark:text-gray-400">
+                Average Rating
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+                2M+
+              </div>
+              <div className="text-textLight dark:text-gray-400">
+                Meals Tracked
+              </div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+                95%
+              </div>
+              <div className="text-textLight dark:text-gray-400">
+                Would Recommend
+              </div>
+            </div>
+          </div>
+        </ScrollAnimationWrapper>
+      </div>
+    </section>
   )
 }

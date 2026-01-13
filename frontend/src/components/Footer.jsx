@@ -1,8 +1,20 @@
 import { Link } from 'react-router-dom'
+import { useState } from 'react'
 import NutrivaLogo from './NutrivaLogo'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
+  const [email, setEmail] = useState('')
+  const [subscribed, setSubscribed] = useState(false)
+
+  const handleSubscribe = (e) => {
+    e.preventDefault()
+    if (email) {
+      setSubscribed(true)
+      setEmail('')
+      setTimeout(() => setSubscribed(false), 3000)
+    }
+  }
 
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white mt-auto overflow-hidden">
@@ -25,11 +37,6 @@ export default function Footer() {
                 <NutrivaLogo />
               </Link>
             </div>
-            <p className="text-gray-400 leading-relaxed mb-6">
-              Transform your health journey with personalized nutrition
-              tracking, AI-powered insights, and expert guidance tailored just
-              for you.
-            </p>
 
             {/* Social Links */}
             <div className="flex gap-3">
@@ -100,26 +107,66 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Company Links */}
+          {/* Quick Links */}
           <div>
             <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
               <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Company
+              Quick Links
             </h4>
             <ul className="space-y-4">
               <li>
                 <a
-                  href="#about"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
+                  href="#home"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                  }}
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  About Us
+                  Home
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
+                  href="#how-it-works"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document
+                      .getElementById('how-it-works')
+                      ?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
+                  How It Works
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#tools"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document
+                      .getElementById('tools')
+                      ?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                >
+                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
+                  Features
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#faq"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document
+                      .getElementById('faq')
+                      ?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   FAQ
@@ -138,38 +185,17 @@ export default function Footer() {
               <li>
                 <a
                   href="#faq"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    document
+                      .getElementById('faq')
+                      ?.scrollIntoView({ behavior: 'smooth' })
+                  }}
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
                   <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Help Center
                 </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Imprint
-                </a>
-              </li>
-              <li>
-                <Link
-                  to="/privacy"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/terms"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
-                >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
-                  Terms of Service
-                </Link>
               </li>
             </ul>
 
@@ -208,22 +234,48 @@ export default function Footer() {
                 Get nutrition tips and updates delivered to your inbox.
               </p>
             </div>
-            <div className="flex w-full md:w-auto gap-3">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 md:w-72 px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl 
-                           text-white placeholder-gray-500 focus:outline-none focus:border-primary 
-                           focus:ring-2 focus:ring-primary/20 transition-all"
-              />
-              <button
-                className="px-6 py-3 bg-gradient-to-r from-primary to-green-400 text-white 
-                                 font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 
-                                 transition-all hover:scale-105 whitespace-nowrap"
+            {subscribed ? (
+              <div className="flex items-center gap-2 text-green-400 font-semibold animate-pulse">
+                <svg
+                  className="w-6 h-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+                Thanks for subscribing!
+              </div>
+            ) : (
+              <form
+                onSubmit={handleSubscribe}
+                className="flex w-full md:w-auto gap-3"
               >
-                Subscribe
-              </button>
-            </div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                  className="flex-1 md:w-72 px-5 py-3 bg-gray-900 border border-gray-700 rounded-xl 
+                             text-white placeholder-gray-500 focus:outline-none focus:border-primary 
+                             focus:ring-2 focus:ring-primary/20 transition-all"
+                />
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-gradient-to-r from-primary to-green-400 text-white 
+                                   font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 
+                                   transition-all hover:scale-105 whitespace-nowrap"
+                >
+                  Subscribe
+                </button>
+              </form>
+            )}
           </div>
         </div>
 
@@ -249,12 +301,12 @@ export default function Footer() {
               >
                 Terms
               </Link>
-              <Link
-                to="/privacy#cookies"
+              {/*   <Link
+                to="/imprint"
                 className="text-gray-500 hover:text-primary transition-colors"
               >
-                Cookies
-              </Link>
+                Imprint
+              </Link> */}
             </div>
 
             <p className="text-gray-600 text-sm flex items-center gap-2">
