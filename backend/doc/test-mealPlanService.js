@@ -403,12 +403,12 @@ goals.forEach((goal) => {
 
 // END OF COMMENTED CODE
 */
-    `    Protein: ${macros.protein}g (${percentages.proteinPercent}%)`,
-  )
-  console.log(`    Carbs: ${macros.carbs}g (${percentages.carbsPercent}%)`)
-  console.log(`    Fat: ${macros.fat}g (${percentages.fatPercent}%)`)
-})
+//     `    Protein: ${macros.protein}g (${percentages.proteinPercent}%)`,
+//   )
+//   console.log(`    Carbs: ${macros.carbs}g (${percentages.carbsPercent}%)`)
+//   console.log(`    Fat: ${macros.fat}g (${percentages.fatPercent}%)`)
+// })
 
-console.log('\n' + '='.repeat(80))
-console.log('✅ All Examples Completed!')
-console.log('='.repeat(80))
+// console.log('\n' + '='.repeat(80))
+// console.log('✅ All Examples Completed!')
+// console.log('='.repeat(80))

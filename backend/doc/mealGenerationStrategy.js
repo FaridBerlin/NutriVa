@@ -257,5 +257,4 @@ export class OpenAIMealGenerator extends MealGenerationStrategy {
 
 // END OF COMMENTED CODE
 */
-  }
-}
+  
