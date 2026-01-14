@@ -108,8 +108,9 @@ export const createMealPlan = async (req, res, next) => {
         planDuration,
         mealPerDay,
         normalizedFoodType,
-        dailyCalories, // 🎯 NEW: Pass dailyCalories for tier selection
-        normalizedAllergens, // 🚫 NEW: Pass allergens for filtering
+        dailyCalories,
+        normalizedAllergens,
+        goal, // 🎯 Pass goal for calorie tolerance scaling
       )
     } else {
       // Try AI generation with fallback to templates
@@ -153,8 +154,9 @@ export const createMealPlan = async (req, res, next) => {
           planDuration,
           mealPerDay,
           normalizedFoodType,
-          dailyCalories, // 🎯 NEW: Pass dailyCalories for tier-based scaling
-          normalizedAllergens, // 🚫 NEW: Pass allergens for fallback filtering
+          dailyCalories, // 🎯 Pass dailyCalories for tier-based scaling
+          normalizedAllergens, // 🚫 Pass allergens for fallback filtering
+          goal, // 🎯 Pass goal for tolerance-based calorie scaling
         )
         console.log('AI generation completed successfully')
       } catch (aiError) {
@@ -167,8 +169,9 @@ export const createMealPlan = async (req, res, next) => {
           planDuration,
           mealPerDay,
           normalizedFoodType,
-          dailyCalories, // 🎯 NEW: Pass dailyCalories for tier selection
-          normalizedAllergens, // 🚫 NEW: Pass allergens for filtering
+          dailyCalories,
+          normalizedAllergens,
+          goal, // 🎯 Pass goal for calorie tolerance scaling
         )
       }
     }

@@ -323,12 +323,14 @@ export function generatePlanNutritionSummary(planData, targets) {
  * Generate a meal plan using templates (fallback/fast generation)
  * NOW WITH TIER SYSTEM: Automatically selects correct calorie tier
  * AND ALLERGEN FILTERING: Filters meals based on user allergens
+ * AND GOAL-BASED CALORIE SCALING: Ensures daily totals match target
  *
  * @param {number} planDuration - Number of days (3-30)
  * @param {number} mealPerDay - Meals per day (2-6)
  * @param {string} foodType - 'veg', 'nonveg', or 'both'
  * @param {number} dailyCalories - Daily calorie target (for tier selection)
  * @param {array} allergens - Array of allergens to avoid (e.g., ['dairy', 'gluten'])
+ * @param {string} goal - User's goal for calorie tolerance (maintenance, weight-loss, etc.)
  * @returns {Object} - Meal plan structure with days array
  */
 export function generateTemplateMealPlan(
@@ -337,6 +339,7 @@ export function generateTemplateMealPlan(
   foodType,
   dailyCalories = 2000,
   allergens = [],
+  goal = 'maintenance',
 ) {
   try {
     // 🎯 SELECT THE RIGHT TIER based on calories per meal
@@ -478,12 +481,16 @@ export function generateTemplateMealPlan(
         }
       }
 
-      // Calculate total nutrition for the day
-      const totalNutrition = calculateDayNutrition(dayMeals)
+      // 🎯 Scale day to match target daily calories based on goal
+      const { scaledMeals, totalNutrition } = scaleDayToTargetCalories(
+        dayMeals,
+        dailyCalories,
+        goal,
+      )
 
       days.push({
         dayNumber: dayNum,
-        meals: dayMeals,
+        meals: scaledMeals,
         totalNutrition,
       })
     }
@@ -533,8 +540,112 @@ export function scaleMealToTarget(meal, targetCalories) {
 }
 
 /**
+ * Get calorie tolerance based on user's goal
+ *
+ * @param {string} goal - User's goal (maintenance, weight-loss, weight-gain, build_muscle)
+ * @returns {Object} - Tolerance settings { minPercent, maxPercent, description }
+ */
+export function getCalorieToleranceForGoal(goal) {
+  const normalizedGoal = goal?.toLowerCase().replace(/_/g, '-') || 'maintenance'
+
+  switch (normalizedGoal) {
+    case 'weight-loss':
+    case 'lose-weight':
+      // Weight loss: Allow slightly under target, not over
+      return {
+        minPercent: -0.05, // Can be 5% under (helps weight loss)
+        maxPercent: 0.02, // Max 2% over target
+        description: 'Weight loss tolerance (strict upper limit)',
+      }
+    case 'weight-gain':
+    case 'gain-weight':
+    case 'build-muscle':
+      // Muscle/weight gain: Allow slightly over target, not under
+      return {
+        minPercent: -0.02, // Max 2% under target
+        maxPercent: 0.08, // Can be 8% over (helps muscle building)
+        description: 'Muscle gain tolerance (strict lower limit)',
+      }
+    case 'maintenance':
+    case 'maintain-weight':
+    default:
+      // Maintenance: Tight tolerance both ways (±3.5% ≈ ±100 cal for 2800 cal diet)
+      return {
+        minPercent: -0.035, // ~100 cal under for 2800 cal diet
+        maxPercent: 0.035, // ~100 cal over for 2800 cal diet
+        description: 'Maintenance tolerance (±100 calories)',
+      }
+  }
+}
+
+/**
+ * Scale all meals in a day to match target daily calories
+ *
+ * @param {Array} meals - Array of meal objects
+ * @param {number} targetDailyCalories - Target calories for the day
+ * @param {string} goal - User's goal for tolerance calculation
+ * @returns {Object} - { scaledMeals, totalNutrition, wasScaled }
+ */
+export function scaleDayToTargetCalories(meals, targetDailyCalories, goal) {
+  // Calculate current total
+  const currentTotal = meals.reduce(
+    (sum, meal) => sum + (meal.nutrition?.calories || 0),
+    0,
+  )
+
+  if (currentTotal === 0) {
+    return {
+      scaledMeals: meals,
+      totalNutrition: calculateDayNutrition(meals),
+      wasScaled: false,
+    }
+  }
+
+  // Get tolerance for this goal
+  const tolerance = getCalorieToleranceForGoal(goal)
+  const minAllowed = targetDailyCalories * (1 + tolerance.minPercent)
+  const maxAllowed = targetDailyCalories * (1 + tolerance.maxPercent)
+
+  // Check if scaling is needed
+  const isWithinTolerance =
+    currentTotal >= minAllowed && currentTotal <= maxAllowed
+
+  if (isWithinTolerance) {
+    return {
+      scaledMeals: meals,
+      totalNutrition: calculateDayNutrition(meals),
+      wasScaled: false,
+    }
+  }
+
+  // Calculate scaling factor to hit target exactly
+  const scaleFactor = targetDailyCalories / currentTotal
+
+  console.log(
+    `   🔧 Scaling day from ${currentTotal} to ${targetDailyCalories} cal (factor: ${scaleFactor.toFixed(3)})`,
+  )
+
+  // Scale all meals proportionally
+  const scaledMeals = meals.map((meal) => ({
+    ...meal,
+    nutrition: {
+      calories: Math.round((meal.nutrition?.calories || 0) * scaleFactor),
+      protein: Math.round((meal.nutrition?.protein || 0) * scaleFactor),
+      carbs: Math.round((meal.nutrition?.carbs || 0) * scaleFactor),
+      fat: Math.round((meal.nutrition?.fat || 0) * scaleFactor),
+    },
+  }))
+
+  return {
+    scaledMeals,
+    totalNutrition: calculateDayNutrition(scaledMeals),
+    wasScaled: true,
+  }
+}
+
+/**
  * Validate and fix AI-generated meal plan
- * NOW WITH CALORIE SCALING to match tier targets!
+ * NOW WITH GOAL-BASED CALORIE SCALING to match daily targets!
  *
  * @param {Object} aiResult - Raw AI output
  * @param {number} planDuration - Expected number of days
@@ -542,6 +653,7 @@ export function scaleMealToTarget(meal, targetCalories) {
  * @param {string} foodType - Diet preference
  * @param {number} dailyCalories - Daily calorie target for tier selection
  * @param {array} allergens - Array of allergens to avoid (for fallback)
+ * @param {string} goal - User's goal for tolerance calculation (maintenance, weight-loss, etc.)
  * @returns {Object} - Validated meal plan
  */
 export function validateAndFixMealPlan(
@@ -551,6 +663,7 @@ export function validateAndFixMealPlan(
   foodType,
   dailyCalories = 2000,
   allergens = [],
+  goal = 'maintenance',
 ) {
   if (!aiResult?.days || !Array.isArray(aiResult.days)) {
     console.warn('Invalid AI result structure, using template fallback')
@@ -559,20 +672,27 @@ export function validateAndFixMealPlan(
       mealPerDay,
       foodType,
       dailyCalories,
-      allergens, // Pass allergens to fallback
+      allergens,
+      goal, // Pass goal to fallback
     )
   }
 
-  // 🎯 Get tier info to know target calorie range
+  // 🎯 Get tier info and tolerance for this goal
   const tierInfo = selectMealTier(dailyCalories, mealPerDay)
+  const tolerance = getCalorieToleranceForGoal(goal)
   const targetCaloriesPerMeal = Math.round(dailyCalories / mealPerDay)
 
-  console.log(`🎯 Validating AI meals against ${tierInfo.name}`)
+  console.log(`🎯 Validating AI meals for goal: "${goal}"`)
+  console.log(`   Daily target: ${dailyCalories} cal`)
   console.log(
-    `   Target: ${targetCaloriesPerMeal} cal/meal (${tierInfo.minCalories}-${tierInfo.maxCalories} range)`,
+    `   Per-meal target: ${targetCaloriesPerMeal} cal (${tierInfo.name})`,
+  )
+  console.log(
+    `   Tolerance: ${(tolerance.minPercent * 100).toFixed(1)}% to +${(tolerance.maxPercent * 100).toFixed(1)}%`,
   )
 
   const validatedDays = []
+  let totalScaledDays = 0
 
   for (let i = 0; i < planDuration; i++) {
     const day = aiResult.days[i]
@@ -584,36 +704,34 @@ export function validateAndFixMealPlan(
         mealPerDay,
         foodType,
         dailyCalories,
+        allergens,
+        goal, // Pass goal to fallback
       ).days[0]
       validatedDays.push({
         ...templateDay,
         dayNumber: i + 1,
       })
     } else {
-      // ✅ Validate and scale each meal to target calories
-      const scaledMeals = day.meals.map((meal) => {
-        const mealCalories = meal.nutrition?.calories || 500
+      // 🎯 Scale entire day to match target daily calories based on goal
+      const { scaledMeals, totalNutrition, wasScaled } =
+        scaleDayToTargetCalories(day.meals, dailyCalories, goal)
 
-        // If meal is way off (outside tier range), scale it
-        if (
-          mealCalories < tierInfo.minCalories * 0.8 ||
-          mealCalories > tierInfo.maxCalories * 1.2
-        ) {
-          console.log(
-            `   📊 Scaling meal "${meal.dishName}" from ${mealCalories} to ~${targetCaloriesPerMeal} cal`,
-          )
-          return scaleMealToTarget(meal, targetCaloriesPerMeal)
-        }
-
-        return meal
-      })
+      if (wasScaled) {
+        totalScaledDays++
+      }
 
       validatedDays.push({
-        ...day,
         dayNumber: i + 1,
         meals: scaledMeals,
+        totalNutrition,
       })
     }
+  }
+
+  if (totalScaledDays > 0) {
+    console.log(
+      `✅ Scaled ${totalScaledDays}/${planDuration} days to match calorie target`,
+    )
   }
 
   return { days: validatedDays }
