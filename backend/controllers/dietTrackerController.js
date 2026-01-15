@@ -123,7 +123,6 @@ export const getActiveTracker = async (req, res, next) => {
 
     // Check if the meal plan still exists
     if (!tracker.aiMealPlanId) {
-      // Meal plan was deleted - mark tracker as abandoned
       tracker.status = 'abandoned'
       await tracker.save()
 
@@ -132,11 +131,22 @@ export const getActiveTracker = async (req, res, next) => {
       })
     }
 
-    res.status(200).json(tracker)
+    // Convert to plain object first
+    const enrichedTracker = tracker.toObject()
+    
+    // Enrich all daily trackers with timing status
+    enrichedTracker.dailyTrackers = enrichedTracker.dailyTrackers.map(dayTracker => ({
+      ...dayTracker,
+      meals: enrichMealsWithTimingStatus(dayTracker.meals)
+    }))
+
+    res.status(200).json(enrichedTracker)
   } catch (error) {
+    console.error('Error in getActiveTracker:', error) // Add logging
     next(error)
   }
 }
+
 
 //get TrackerDay
 export const getTrackerDay = async (req, res, next) => {
@@ -165,15 +175,8 @@ export const getTrackerDay = async (req, res, next) => {
       })
     }
 
-    // res.status(200).json(dayTracker)
+    res.status(200).json(dayTracker)
 
-  // ADD timing status
-    const mealsWithStatus = enrichMealsWithTimingStatus(dayTracker.meals)
-
-    res.status(200).json({
-      ...dayTracker.toObject(),
-      meals: mealsWithStatus,
-    })
   } catch (error) {
     next(error)
   }

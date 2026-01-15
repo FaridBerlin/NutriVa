@@ -101,7 +101,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
       {/* Days */}
       {plan.days &&
         plan.days.map((day) => (
-          <Card key={day.dayNumber} className="p-6 space-y-6 shadow">
+          <Card noHover key={day.dayNumber} className="p-6 space-y-6 shadow">
             {/* Day Header */}
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-bold text-gray-800">
@@ -122,7 +122,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
               {day.meals.map((meal, index) => (
                 <Card
                   key={index}
-                  noHover
+                  //noHover
                   className="p-6 shadow-md cursor-pointer"
                   onClick={() => setSelectedMeal(meal)}
                 >
