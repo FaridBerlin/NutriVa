@@ -25,6 +25,61 @@ import {
   bmiCategory as calcBmiCategory,
 } from '../utils/bmiUtils'
 
+// Timing Status Badge Component
+const MealTimingBadge = ({ timingStatus }) => {
+  const getStatusStyle = () => {
+    switch (timingStatus) {
+      case 'completed':
+        return {
+          bg: 'bg-green-100',
+          text: 'text-green-800',
+          label: '✓ Completed',
+          dotColor: 'bg-green-500'
+        }
+      case 'active':
+        return {
+          bg: 'bg-blue-100',
+          text: 'text-blue-800',
+          label: '🔔 Active Now',
+          dotColor: 'bg-blue-500'
+        }
+      case 'upcoming':
+        return {
+          bg: 'bg-yellow-100',
+          text: 'text-yellow-800',
+          label: '⏰ Upcoming',
+          dotColor: 'bg-yellow-500'
+        }
+      case 'missed':
+        return {
+          bg: 'bg-red-100',
+          text: 'text-red-800',
+          label: '⚠️ Missed',
+          dotColor: 'bg-red-500'
+        }
+      case 'anytime':
+      default:
+        return {
+          bg: 'bg-gray-100',
+          text: 'text-gray-800',
+          label: 'Anytime',
+          dotColor: 'bg-gray-500'
+        }
+    }
+  }
+
+  const style = getStatusStyle()
+
+  return (
+    <div className="flex items-center gap-2 mt-2">
+      <div className={`w-2 h-2 rounded-full ${style.dotColor} animate-pulse`}></div>
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-semibold ${style.bg} ${style.text}`}>
+        {style.label}
+      </span>
+    </div>
+  )
+}
+
 export default function DietTrackerPage() {
   const { user } = useContext(AuthContext)
 
@@ -571,7 +626,7 @@ export default function DietTrackerPage() {
             </Card>
           </div>
 
-          {/* Meals for Selected Day */}
+          {/* Meals for Selected Day - WITH TIMING STATUS */}
           <div className="bg-white rounded-xl shadow-md p-6">
             <h3 className="text-xl font-bold mb-6">
               Meals for Day {selectedDay}
@@ -590,6 +645,9 @@ export default function DietTrackerPage() {
                     (m) => m.mealId === meal._id.toString(),
                   )
                   const isEaten = mealInTracker?.isEaten || false
+                  
+                  // Get timing status from tracker data (backend enriches this)
+                  const timingStatus = mealInTracker?.timingStatus || 'anytime'
 
                   return (
                     <div
@@ -611,6 +669,9 @@ export default function DietTrackerPage() {
                           <h4 className="font-bold text-lg text-gray-800 leading-tight">
                             {meal.dishName}
                           </h4>
+                          
+                          {/* ADD TIMING STATUS BADGE */}
+                          <MealTimingBadge timingStatus={timingStatus} />
                         </div>
                         <div
                           className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ml-2 ${
@@ -641,6 +702,19 @@ export default function DietTrackerPage() {
                           F: {Math.round(meal.nutrition.fat)}
                         </span>
                       </div>
+                      
+                      {/* Show eaten timestamp if available */}
+                      {isEaten && mealInTracker?.eatenAt && (
+                        <div className="mt-3 pt-3 border-t border-gray-200">
+                          <p className="text-xs text-gray-500 flex items-center gap-1">
+                            <span>✓</span>
+                            Eaten at {new Date(mealInTracker.eatenAt).toLocaleTimeString('en-US', {
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   )
                 })}

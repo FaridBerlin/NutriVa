@@ -9,7 +9,7 @@ export const getMealTimeStatus = (category, isEaten) => {
   if (isEaten) return 'completed'
 
   const hour = new Date().getHours()
-  const window = MEAL_TIMES[category]
+  const window = MEAL_TIMES[category?.toLowerCase()] // Add optional chaining
 
   if (!window) return 'anytime'
 
@@ -22,8 +22,15 @@ export const getMealTimeStatus = (category, isEaten) => {
  * Add timing status to meals of a day
  */
 export const enrichMealsWithTimingStatus = (meals) => {
-  return meals.map(meal => ({
-    ...meal.toObject(),
-    timingStatus: getMealTimeStatus(meal.category, meal.isEaten),
-  }))
+  if (!meals || !Array.isArray(meals)) return []
+  
+  return meals.map(meal => {
+    // Handle both Mongoose documents and plain objects
+    const mealObj = meal.toObject ? meal.toObject() : { ...meal }
+    
+    return {
+      ...mealObj,
+      timingStatus: getMealTimeStatus(mealObj.category, mealObj.isEaten),
+    }
+  })
 }
