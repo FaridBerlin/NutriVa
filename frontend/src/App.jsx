@@ -4,6 +4,7 @@ import {
   Route,
   useLocation,
 } from 'react-router-dom'
+import { Toaster } from 'react-hot-toast'
 import './App.css'
 
 // Pages
@@ -61,6 +62,7 @@ function App() {
           <DietTrackerProvider>
             <Router>
               <ScrollToTop />
+              <Toaster />
               <AppLayout>
                 <Routes>
                   {/* Public Routes */}
@@ -69,9 +71,14 @@ function App() {
                   <Route path="/terms" element={<Terms />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/signup" element={<SignupPage />} />
-                  <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-                  <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
-
+                  <Route
+                    path="/forgot-password"
+                    element={<ForgotPasswordPage />}
+                  />
+                  <Route
+                    path="/reset-password/:token"
+                    element={<ResetPasswordPage />}
+                  />
 
                   {/* Protected Routes */}
                   <Route
