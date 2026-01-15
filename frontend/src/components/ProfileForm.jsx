@@ -2,6 +2,7 @@ import { useState, useEffect, useContext, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../services/api'
 import Card from './ui/Card'
+import { bmiCategory, getBMIColor } from '../utils/bmiUtils'
 
 import {
   User,
@@ -36,23 +37,18 @@ export default function ProfileForm() {
     age: '',
     gender: '',
 
-    // Step 2: Metrics
+    // Step 2: Metrics (cm and kg only)
     height: '',
     weight: '',
-    heightUnit: 'cm',
-    weightUnit: 'kg',
 
     // Step 3: Activity
     activityLevel: '',
 
     // Step 4: Diet
     dietaryPreference: '',
-    mealsPerDay: 3,
-    allergies: [],
 
-    // Target weight (optional)
+    // Target weight (optional, in kg)
     targetWeight: '',
-    targetWeightUnit: 'kg',
 
     // Step 5: Goals
     fitnessGoal: '',
@@ -85,7 +81,7 @@ export default function ProfileForm() {
           setIsEditMode(true)
           setFormData((prev) => ({
             ...prev,
-            name: profile.user?.name || prev.name,
+            name: profile.user.charAt(0).toUpperCase()?.name || prev.name,
             age: profile.age?.toString() || '',
             gender: profile.gender
               ? profile.gender.charAt(0).toUpperCase() + profile.gender.slice(1)
@@ -120,25 +116,11 @@ export default function ProfileForm() {
   const calculateBMI = () => {
     if (!formData.height || !formData.weight) return null
 
-    let heightInMeters = formData.height
-    if (formData.heightUnit === 'cm') {
-      heightInMeters = formData.height / 100
-    }
-
-    let weightInKg = formData.weight
-    if (formData.weightUnit === 'lbs') {
-      weightInKg = formData.weight * 0.453592
-    }
+    const heightInMeters = formData.height / 100 // Convert cm to meters
+    const weightInKg = formData.weight
 
     const bmi = (weightInKg / (heightInMeters * heightInMeters)).toFixed(1)
     return bmi
-  }
-
-  const getBMICategory = (bmi) => {
-    if (bmi < 18.5) return { text: 'Underweight', color: 'text-blue-500' }
-    if (bmi < 25) return { text: 'Normal', color: 'text-primary' }
-    if (bmi < 30) return { text: 'Overweight', color: 'text-orange-500' }
-    return { text: 'Obese', color: 'text-red-500' }
   }
 
   // Progress Percentage
@@ -257,25 +239,16 @@ export default function ProfileForm() {
       }
 
       // Transform data to match Backend expected format
-      // Convert targetWeight to kg if provided
-      let normalizedTargetWeight = undefined
-      if (formData.targetWeight) {
-        const raw = parseFloat(formData.targetWeight)
-        if (!isNaN(raw)) {
-          normalizedTargetWeight =
-            formData.targetWeightUnit === 'lbs' ? raw * 0.453592 : raw
-        }
-      }
-
+      // Height in cm, weight in kg
       const profileData = {
         age: parseInt(formData.age),
         gender: formData.gender.toLowerCase(), // male, female, other
-        height: parseFloat(formData.height),
-        weight: parseFloat(formData.weight),
+        height: parseFloat(formData.height), // in cm
+        weight: parseFloat(formData.weight), // in kg
         activityLevel: formData.activityLevel, // sedentary, light, moderate, active, very_active
         dietaryGoal: formData.fitnessGoal, // lose_weight, maintain_weight, gain_weight, build_muscle
-        ...(normalizedTargetWeight
-          ? { targetWeight: Math.round(normalizedTargetWeight * 10) / 10 }
+        ...(formData.targetWeight
+          ? { targetWeight: parseFloat(formData.targetWeight) }
           : {}),
       }
 
@@ -380,7 +353,6 @@ export default function ProfileForm() {
             formData={formData}
             handleChange={handleChange}
             calculateBMI={calculateBMI}
-            getBMICategory={getBMICategory}
           />
         )
       case 3:
@@ -669,14 +641,10 @@ function Step1BasicInfo({ formData, handleChange }) {
 }
 
 // Step 2: Body Metrics
-function Step2Metrics({
-  formData,
-  handleChange,
-  calculateBMI,
-  getBMICategory,
-}) {
+function Step2Metrics({ formData, handleChange, calculateBMI }) {
   const bmi = calculateBMI()
-  const bmiCategory = bmi ? getBMICategory(parseFloat(bmi)) : null
+  const category = bmi ? bmiCategory(parseFloat(bmi)) : null
+  const bmiColor = bmi ? getBMIColor(parseFloat(bmi)) : null
 
   return (
     <div>
@@ -686,56 +654,36 @@ function Step2Metrics({
         </div>
         <div>
           <h2 className="text-2xl font-bold text-textDark">Body Metrics</h2>
-          <p className="text-textLight">Help us calculate your BMI</p>
+          <p className="text-textLight">Enter your measurements</p>
         </div>
       </div>
 
       {/* Height */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-textDark mb-2">
-          Height <span className="text-red-500">*</span>
+          Height (cm) <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-3 items-center">
-          <input
-            type="number"
-            value={formData.height}
-            onChange={(e) => handleChange('height', e.target.value)}
-            placeholder="188"
-            className="nv-input flex-1 text-lg"
-          />
-          <select
-            value={formData.heightUnit}
-            onChange={(e) => handleChange('heightUnit', e.target.value)}
-            className="nv-input text-lg"
-          >
-            <option value="cm">cm</option>
-            <option value="ft">ft</option>
-          </select>
-        </div>
+        <input
+          type="number"
+          value={formData.height}
+          onChange={(e) => handleChange('height', e.target.value)}
+          placeholder="175"
+          className="nv-input w-full text-lg"
+        />
       </div>
 
       {/* Weight */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-textDark mb-2">
-          Weight <span className="text-red-500">*</span>
+          Weight (kg) <span className="text-red-500">*</span>
         </label>
-        <div className="flex gap-3 items-center">
-          <input
-            type="number"
-            value={formData.weight}
-            onChange={(e) => handleChange('weight', e.target.value)}
-            placeholder="90"
-            className="nv-input flex-1 text-lg"
-          />
-          <select
-            value={formData.weightUnit}
-            onChange={(e) => handleChange('weightUnit', e.target.value)}
-            className="nv-input text-lg"
-          >
-            <option value="kg">kg</option>
-            <option value="lbs">lbs</option>
-          </select>
-        </div>
+        <input
+          type="number"
+          value={formData.weight}
+          onChange={(e) => handleChange('weight', e.target.value)}
+          placeholder="70"
+          className="nv-input w-full text-lg"
+        />
       </div>
 
       {/* BMI Display */}
@@ -745,14 +693,17 @@ function Step2Metrics({
             <div>
               <p className="text-sm text-textLight mb-1">Your BMI</p>
               <p className="text-4xl font-bold text-textDark">{bmi}</p>
-              <p className={`text-lg font-semibold mt-1 ${bmiCategory.color}`}>
-                {bmiCategory.text}
+              <p
+                className="text-lg font-semibold mt-1"
+                style={{ color: bmiColor }}
+              >
+                {category}
               </p>
             </div>
             <div className="text-4xl">📊</div>
           </div>
           <p className="text-xs text-textLight mt-4">
-            BMI Range: &lt;18.5 Underweight | 18.5-24.9 Normal | 25-29.9
+            BMI Range: &lt;18.5 Underweight | 18.5-24.9 Healthy | 25-29.9
             Overweight | ≥30 Obese
           </p>
         </div>
@@ -784,13 +735,13 @@ function Step3Activity({ formData, handleChange }) {
     },
     {
       value: 'active',
-      label: 'Very Active',
+      label: 'Active',
       description: 'Hard exercise 6-7 days/week',
       icon: <Dumbbell className="w-7 h-7 mx-auto text-purple-500" />,
     },
     {
       value: 'very_active',
-      label: 'Extra Active',
+      label: 'Very Active',
       description: 'Very hard exercise, physical job',
       icon: <Flame className="w-7 h-7 mx-auto text-orange-500" />,
     },
@@ -844,11 +795,8 @@ function Step3Activity({ formData, handleChange }) {
   )
 }
 
-// Step 4: Diet & Health
-// Updated 4 December 2025: Fixed foodType values to match Backend enum (veg, nonveg, vegan)
+// Step 4: Diet Preference
 function Step4Diet({ formData, handleChange }) {
-  const [allergyInput, setAllergyInput] = useState('')
-
   const dietOptions = [
     {
       value: 'veg',
@@ -867,18 +815,6 @@ function Step4Diet({ formData, handleChange }) {
     },
   ]
 
-  const addAllergy = () => {
-    if (allergyInput.trim()) {
-      handleChange('allergies', [...formData.allergies, allergyInput.trim()])
-      setAllergyInput('')
-    }
-  }
-
-  const removeAllergy = (index) => {
-    const newAllergies = formData.allergies.filter((_, i) => i !== index)
-    handleChange('allergies', newAllergies)
-  }
-
   return (
     <div>
       <div className="flex items-center gap-3 mb-6">
@@ -886,13 +822,13 @@ function Step4Diet({ formData, handleChange }) {
           🍽️
         </div>
         <div>
-          <h2 className="text-2xl font-bold text-textDark">Diet & Health</h2>
-          <p className="text-textLight">Your dietary preferences</p>
+          <h2 className="text-2xl font-bold text-textDark">Diet Preference</h2>
+          <p className="text-textLight">Choose your dietary preference</p>
         </div>
       </div>
 
       {/* Dietary Preference */}
-      <div className="mb-6">
+      <div>
         <label className="block text-sm font-medium text-textDark mb-3">
           Dietary Preference <span className="text-red-500">*</span>
         </label>
@@ -919,82 +855,6 @@ function Step4Diet({ formData, handleChange }) {
             </button>
           ))}
         </div>
-      </div>
-
-      {/* Meals Per Day */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-textDark mb-3">
-          Meals Per Day <span className="text-red-500">*</span>
-        </label>
-        <div className="flex items-center gap-4">
-          <input
-            type="range"
-            min="2"
-            max="6"
-            value={formData.mealsPerDay}
-            onChange={(e) =>
-              handleChange('mealsPerDay', parseInt(e.target.value))
-            }
-            className="flex-1 h-3 bg-primaryLight40 rounded-lg appearance-none cursor-pointer accent-primary shadow-sm"
-            style={{
-              background: `linear-gradient(to right, #83D385 0%, #83D385 ${((formData.mealsPerDay - 2) / 4) * 100}%, #e5e7eb ${((formData.mealsPerDay - 2) / 4) * 100}%, #e5e7eb 100%)`,
-            }}
-          />
-          <span className="text-3xl font-bold text-primary w-12 text-center">
-            {formData.mealsPerDay}
-          </span>
-        </div>
-        <div className="flex justify-between text-sm text-textLight mt-2">
-          <span>2 meals</span>
-          <span>6 meals</span>
-        </div>
-      </div>
-
-      {/* Allergies */}
-      <div>
-        <label className="block text-sm font-medium text-textDark mb-2">
-          Allergies & Restrictions (Optional)
-        </label>
-        <div className="flex gap-2 mb-3">
-          <input
-            type="text"
-            value={allergyInput}
-            onChange={(e) => setAllergyInput(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addAllergy()}
-            placeholder="e.g., peanuts, dairy"
-            className="nv-input"
-          />
-          <button
-            type="button"
-            onClick={addAllergy}
-            className="px-6 py-2 bg-primary text-white rounded-lg 
-                       hover:bg-primaryDark transition-all"
-          >
-            Add
-          </button>
-        </div>
-
-        {/* Allergies Tags */}
-        {formData.allergies.length > 0 && (
-          <div className="flex flex-wrap gap-2">
-            {formData.allergies.map((allergy, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-2 px-3 py-1 
-                           bg-red-100 text-red-700 rounded-full text-sm"
-              >
-                {allergy}
-                <button
-                  type="button"
-                  onClick={() => removeAllergy(index)}
-                  className="hover:text-red-900 font-bold"
-                >
-                  ×
-                </button>
-              </span>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   )
@@ -1086,25 +946,15 @@ function Step5Goals({ formData, handleChange }) {
       {/* Target Weight */}
       <div className="mb-6">
         <label className="block text-sm font-medium text-textDark mb-3">
-          Target Weight (optional)
+          Target Weight (kg) - Optional
         </label>
-        <div className="flex gap-3 items-center">
-          <input
-            type="number"
-            value={formData.targetWeight}
-            onChange={(e) => handleChange('targetWeight', e.target.value)}
-            placeholder="e.g., 75"
-            className="nv-input flex-1 text-lg"
-          />
-          <select
-            value={formData.targetWeightUnit}
-            onChange={(e) => handleChange('targetWeightUnit', e.target.value)}
-            className="nv-input text-lg"
-          >
-            <option value="kg">kg</option>
-            <option value="lbs">lbs</option>
-          </select>
-        </div>
+        <input
+          type="number"
+          value={formData.targetWeight}
+          onChange={(e) => handleChange('targetWeight', e.target.value)}
+          placeholder="e.g., 75"
+          className="nv-input w-full text-lg"
+        />
         <p className="text-sm text-textLight mt-2">
           Optional: set a goal weight to track progress.
         </p>

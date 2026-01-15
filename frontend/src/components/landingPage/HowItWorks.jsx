@@ -62,7 +62,7 @@ export default function HowItWorks() {
             ease: 'easeInOut',
             delay: 1,
           }}
-          className="absolute bottom-1/3 right-0 w-64 h-64 bg-primary dark:bg-emerald-600/8 rounded-full blur-3xl"
+          className="absolute bottom-1/3 right-0 w-64 h-64 bg-primary dark:bg-emerald-600/10 rounded-full blur-3xl"
         ></motion.div>
       </div>
 
