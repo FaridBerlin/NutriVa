@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { motion } from 'framer-motion'
 import { ChevronDown, Mail, MessageCircle } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import ScrollAnimationWrapper from './ScrollAnimationWrapper'
@@ -45,7 +46,34 @@ export default function FAQ() {
   }
 
   return (
-    <section id="faq" className="py-24 bg-white dark:bg-gray-900">
+    <section id="faq" className="py-24 bg-white dark:bg-gray-900 relative">
+      <div className="absolute inset-0 pointer-events-none">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: 'easeInOut',
+          }}
+          className="absolute top-1/4 left-0 w-80 h-80 bg-primary dark:bg-teal-600/10 rounded-full blur-3xl"
+        ></motion.div>
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: 'easeInOut',
+            delay: 1,
+          }}
+          className="absolute bottom-1/6 right-0 w-64 h-64 bg-primary dark:bg-emerald-600/10 rounded-full blur-3xl"
+        ></motion.div>
+      </div>
       <div className="max-w-4xl mx-auto px-6">
         {/* Section Header */}
         <ScrollAnimationWrapper>
@@ -122,11 +150,7 @@ export default function FAQ() {
       {/* Final CTA Section */}
       <div className="max-w-4xl mx-auto px-6 mt-24">
         <ScrollAnimationWrapper delay={0.4}>
-          <div className="bg-gradient-to-br from-primary to-primaryDark dark:from-teal-700 dark:to-emerald-700 rounded-3xl p-12 text-center text-white relative overflow-hidden">
-            {/* Decorative Elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
-            <div className="absolute bottom-0 left-0 w-64 h-64 bg-white rounded-full blur-3xl opacity-10"></div>
-
+          <div className="bg-gradient-to-br from-primary to-primaryDark dark:from-teal-700 dark:to-emerald-700 rounded-3xl p-12 text-center text-white overflow-hidden">
             <div className="relative z-10">
               <h2 className="text-3xl lg:text-4xl font-bold mb-4">
                 Ready to Transform Your Nutrition?

@@ -42,9 +42,8 @@ export default function SettingsPage() {
     gender: '',
     height: '',
     weight: '',
-    // target weight fields
+    // target weight field
     targetWeight: '',
-    targetWeightUnit: 'kg',
     activityLevel: '',
     dietaryGoal: '',
     foodType: '',
@@ -183,13 +182,11 @@ export default function SettingsPage() {
         foodType: formData.foodType || undefined,
       }
 
-      // Normalize target weight to kg if provided
+      // Set target weight if provided
       if (formData.targetWeight) {
         const raw = parseFloat(formData.targetWeight)
         if (!isNaN(raw)) {
-          const normalized =
-            formData.targetWeightUnit === 'lbs' ? raw * 0.453592 : raw
-          profileData.targetWeight = Math.round(normalized * 10) / 10
+          profileData.targetWeight = Math.round(raw * 10) / 10
         }
       }
 
@@ -278,12 +275,14 @@ export default function SettingsPage() {
         {/* Message */}
         {message.text && (
           <div
-            className={`mb-6 p-4 rounded-lg ${
+            className={`mb-6 ${
               message.type === 'success'
-                ? 'bg-green-100 text-green-700 border border-green-300'
+                ? 'status-success'
                 : message.type === 'warning'
-                  ? 'bg-amber-50 text-amber-800 border border-amber-300'
-                  : 'bg-red-100 text-red-700 border border-red-300'
+                  ? 'status-warning'
+                  : message.type === 'info'
+                    ? 'status-info'
+                    : 'status-error'
             }`}
           >
             {message.text}
@@ -339,10 +338,10 @@ export default function SettingsPage() {
             {/* Password Message */}
             {passwordMessage.text && (
               <div
-                className={`mb-4 p-4 rounded-lg ${
+                className={`mb-4 ${
                   passwordMessage.type === 'success'
-                    ? 'bg-green-100 text-green-700 border border-green-300'
-                    : 'bg-red-100 text-red-700 border border-red-300'
+                    ? 'status-success'
+                    : 'status-error'
                 }`}
               >
                 {passwordMessage.text}
@@ -404,7 +403,7 @@ export default function SettingsPage() {
                 className={`px-6 py-2.5 rounded-xl font-semibold text-white transition-all ${
                   isChangingPassword
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-gradient-to-r from-orange-500 to-orange-600 hover:shadow-lg hover:scale-105'
+                    : 'nv-btn-primary'
                 }`}
               >
                 {isChangingPassword ? (
@@ -528,32 +527,18 @@ export default function SettingsPage() {
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Target Weight (optional)
                 </label>
-                <div className="flex gap-2">
-                  <input
-                    type="number"
-                    value={formData.targetWeight}
-                    onChange={(e) =>
-                      handleChange('targetWeight', e.target.value)
-                    }
-                    min="20"
-                    max="500"
-                    step="0.1"
-                    className="nv-input"
-                    placeholder="e.g., 75"
-                  />
-                  <select
-                    value={formData.targetWeightUnit}
-                    onChange={(e) =>
-                      handleChange('targetWeightUnit', e.target.value)
-                    }
-                    className="nv-input"
-                  >
-                    <option value="kg">kg</option>
-                    <option value="lbs">lbs</option>
-                  </select>
-                </div>
+                <input
+                  type="number"
+                  value={formData.targetWeight}
+                  onChange={(e) => handleChange('targetWeight', e.target.value)}
+                  min="20"
+                  max="200"
+                  step="0.1"
+                  className="nv-input"
+                  placeholder="e.g., 75"
+                />
                 <p className="text-xs text-textLight mt-1">
-                  Set a goal weight to track progress.
+                  Set a goal weight in kg to track progress.
                 </p>
               </div>
             </div>
@@ -625,9 +610,7 @@ export default function SettingsPage() {
               type="submit"
               disabled={isSaving}
               className={`px-8 py-3 rounded-xl font-semibold text-white transition-all ${
-                isSaving
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-gradient-to-r from-primary to-primaryDark hover:shadow-lg hover:scale-105'
+                isSaving ? 'bg-gray-400 cursor-not-allowed' : 'nv-btn-primary'
               }`}
             >
               {isSaving ? (

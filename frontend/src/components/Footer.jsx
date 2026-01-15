@@ -266,12 +266,7 @@ export default function Footer() {
                              text-white placeholder-gray-500 focus:outline-none focus:border-primary 
                              focus:ring-2 focus:ring-primary/20 transition-all"
                 />
-                <button
-                  type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-primary to-green-400 text-white 
-                                   font-semibold rounded-xl hover:shadow-lg hover:shadow-primary/30 
-                                   transition-all hover:scale-105 whitespace-nowrap"
-                >
+                <button type="submit" className="nv-btn-primary">
                   Subscribe
                 </button>
               </form>
