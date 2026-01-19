@@ -184,6 +184,9 @@ export const getTrackerDay = async (req, res, next) => {
 
 //mark MealAsEaten
 export const markMealAsEaten = async (req, res, next) => {
+  let dayCompleted = false
+let nextDayNumber = null
+let nextDayCreated = false
   try {
     const userId = req.user._id
     const { dayNumber, mealId } = req.params
@@ -242,16 +245,30 @@ export const markMealAsEaten = async (req, res, next) => {
       (dayTracker.mealsCompleted / dayTracker.totalMeals) * 100,
     )
 
-    //Day completed ... use createNextDayTracker helper function
-    if (dayTracker.completionPercentage === 100) {
-      const aiMealPlan = await AiMealPlan.findById(tracker.aiMealPlanId)
+    // Day completed ... create next day but DON'T auto-move currentDay
+if (dayTracker.completionPercentage === 100) {
+  dayCompleted = true
 
-      if (tracker.currentDay < tracker.totalDays) {
-        createNextDayTracker(tracker, aiMealPlan)
-      } else {
-        tracker.status = 'completed'
-      }
-    }
+  if (tracker.currentDay < tracker.totalDays) {
+    const aiMealPlan = await AiMealPlan.findById(tracker.aiMealPlanId)
+
+    nextDayNumber = tracker.currentDay + 1
+    nextDayCreated = createNextDayTracker(tracker, aiMealPlan)
+    tracker.currentDay = nextDayNumber
+  } else {
+    tracker.status = 'completed'
+  }
+}
+
+/*  To check */
+console.log({
+  currentDay: tracker.currentDay,
+  nextDayNumber,
+  dayCompleted,
+})
+
+await tracker.save()
+
 
     //Update tracker-level metrics
     tracker.updateStreak()
@@ -263,9 +280,13 @@ export const markMealAsEaten = async (req, res, next) => {
     await tracker.populate('aiMealPlanId')
 
     res.status(200).json({
-      message: 'Meal marked as eaten',
-      tracker,
-    })
+  message: 'Meal marked as eaten',
+  tracker,
+  dayCompleted,
+  nextDayNumber,
+  nextDayCreated,
+})
+
   } catch (error) {
     next(error)
   }
@@ -277,7 +298,11 @@ const createNextDayTracker = (tracker, aiMealPlan) => {
 
   const dayData = aiMealPlan.days.find((d) => d.dayNumber === nextDayNumber)
 
-  if (!dayData) return
+  if (!dayData) return false
+
+    // Prevent duplicates
+  const exists = tracker.dailyTrackers.some((d) => d.dayNumber === nextDayNumber)
+  if (exists) return true
 
   const nextDayTracker = {
     date: new Date(),
@@ -307,7 +332,7 @@ const createNextDayTracker = (tracker, aiMealPlan) => {
   }
 
   tracker.dailyTrackers.push(nextDayTracker)
-  tracker.currentDay = nextDayNumber
+  return true
 }
 
 // undo Meal

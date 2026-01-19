@@ -34,28 +34,28 @@ const MealTimingBadge = ({ timingStatus }) => {
           bg: 'bg-green-100',
           text: 'text-green-800',
           label: '✓ Completed',
-          dotColor: 'bg-green-500'
+          dotColor: 'bg-green-500',
         }
       case 'active':
         return {
           bg: 'bg-blue-100',
           text: 'text-blue-800',
           label: '🔔 Active Now',
-          dotColor: 'bg-blue-500'
+          dotColor: 'bg-blue-500',
         }
       case 'upcoming':
         return {
           bg: 'bg-yellow-100',
           text: 'text-yellow-800',
           label: '⏰ Upcoming',
-          dotColor: 'bg-yellow-500'
+          dotColor: 'bg-yellow-500',
         }
       case 'missed':
         return {
           bg: 'bg-red-100',
           text: 'text-red-800',
           label: '⚠️ Missed',
-          dotColor: 'bg-red-500'
+          dotColor: 'bg-red-500',
         }
       case 'anytime':
       default:
@@ -63,7 +63,7 @@ const MealTimingBadge = ({ timingStatus }) => {
           bg: 'bg-gray-100',
           text: 'text-gray-800',
           label: 'Anytime',
-          dotColor: 'bg-gray-500'
+          dotColor: 'bg-gray-500',
         }
     }
   }
@@ -72,12 +72,35 @@ const MealTimingBadge = ({ timingStatus }) => {
 
   return (
     <div className="flex items-center gap-2 mt-2">
-      <div className={`w-2 h-2 rounded-full ${style.dotColor} animate-pulse`}></div>
-      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-semibold ${style.bg} ${style.text}`}>
+      <div
+        className={`w-2 h-2 rounded-full ${style.dotColor} animate-pulse`}
+      ></div>
+      <span
+        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-semibold ${style.bg} ${style.text}`}
+      >
         {style.label}
       </span>
     </div>
   )
+}
+
+const MEAL_TIMES = {
+  breakfast: { start: 6, end: 10 },
+  lunch: { start: 12, end: 15 },
+  dinner: { start: 19, end: 22 },
+  snack: { start: 10, end: 20 },
+  snacks: { start: 10, end: 20 },
+}
+
+const getMealTimeStatusClient = (category, isEaten, nowMs) => {
+  if (isEaten) return 'completed'
+  const hour = new Date(nowMs).getHours()
+  const key = (category || '').toLowerCase()
+  const window = MEAL_TIMES[key]
+  if (!window) return 'anytime'
+  if (hour < window.start) return 'upcoming'
+  if (hour > window.end) return 'missed'
+  return 'active'
 }
 
 export default function DietTrackerPage() {
@@ -107,6 +130,11 @@ export default function DietTrackerPage() {
   const [weekOffset, setWeekOffset] = useState(0)
   const [actionLoading, setActionLoading] = useState(false)
   const [selectedMealPlanId, setSelectedMealPlanId] = useState(null)
+  const [now, setNow] = useState(Date.now())
+
+  const [dayCompleteModalOpen, setDayCompleteModalOpen] = useState(false)
+  const [nextDayToGo, setNextDayToGo] = useState(null)
+  const [showCongrats, setShowCongrats] = useState(false)
 
   useEffect(() => {
     fetchLatestPlan()
@@ -115,10 +143,24 @@ export default function DietTrackerPage() {
   }, [])
 
   useEffect(() => {
-    if (activeTracker) {
-      setSelectedDay(activeTracker.currentDay)
-    }
-  }, [activeTracker])
+  if (activeTracker?.status === 'completed') {
+    setShowCongrats(true)
+  }
+}, [activeTracker])
+
+
+  useEffect(() => {
+    const id = setInterval(() => setNow(Date.now()), 60 * 1000) // every 1 min
+    return () => clearInterval(id)
+  }, [])
+
+  const [didInitDay, setDidInitDay] = useState(false)
+
+  useEffect(() => {
+    if (!activeTracker || didInitDay) return
+    setSelectedDay(activeTracker.currentDay)
+    setDidInitDay(true)
+  }, [activeTracker, didInitDay])
 
   // Keep the week offset synced with the currently selected day
   useEffect(() => {
@@ -143,6 +185,8 @@ export default function DietTrackerPage() {
   }
 
   const handleToggleMeal = async (mealId, isEaten) => {
+    const dayBefore = selectedDay
+
     setActionLoading(true)
 
     const result = isEaten
@@ -153,6 +197,19 @@ export default function DietTrackerPage() {
 
     if (!result.success) {
       alert(result.error)
+      return
+    }
+
+    // success path only
+    await fetchActiveTracker(true) 
+
+    const dayCompleted = result.data?.dayCompleted
+    const nextDayNumber = result.data?.nextDayNumber
+
+    if (dayCompleted) {
+      setSelectedDay(dayBefore)
+      setNextDayToGo(nextDayNumber)
+      setDayCompleteModalOpen(true)
     }
   }
 
@@ -169,6 +226,40 @@ export default function DietTrackerPage() {
       </div>
     )
   }
+
+  if (showCongrats) {
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      <Sidebar />
+
+      <div className="flex-1 flex items-center justify-center">
+        <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
+          <div className="text-6xl mb-4">🎉</div>
+
+          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+            Congratulations!
+          </h2>
+
+          <p className="text-gray-600 mb-6">
+            This meal plan has been completed successfully.  
+            Well done on your dedication and consistency!
+          </p>
+
+          <button
+            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+            onClick={() => {
+              setShowCongrats(false)
+              window.location.href = '/dashboard'
+            }}
+          >
+            Go to Dashboard
+          </button>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 
   // No active tracker - show meal plan selector
   if (!activeTracker) {
@@ -645,9 +736,14 @@ export default function DietTrackerPage() {
                     (m) => m.mealId === meal._id.toString(),
                   )
                   const isEaten = mealInTracker?.isEaten || false
-                  
+
                   // Get timing status from tracker data (backend enriches this)
-                  const timingStatus = mealInTracker?.timingStatus || 'anytime'
+                  //const timingStatus = mealInTracker?.timingStatus || 'anytime'
+                  const timingStatus = getMealTimeStatusClient(
+                    meal.type,
+                    isEaten,
+                    now,
+                  )
 
                   return (
                     <div
@@ -669,7 +765,7 @@ export default function DietTrackerPage() {
                           <h4 className="font-bold text-lg text-gray-800 leading-tight">
                             {meal.dishName}
                           </h4>
-                          
+
                           {/* ADD TIMING STATUS BADGE */}
                           <MealTimingBadge timingStatus={timingStatus} />
                         </div>
@@ -702,16 +798,20 @@ export default function DietTrackerPage() {
                           F: {Math.round(meal.nutrition.fat)}
                         </span>
                       </div>
-                      
+
                       {/* Show eaten timestamp if available */}
                       {isEaten && mealInTracker?.eatenAt && (
                         <div className="mt-3 pt-3 border-t border-gray-200">
                           <p className="text-xs text-gray-500 flex items-center gap-1">
                             <span>✓</span>
-                            Eaten at {new Date(mealInTracker.eatenAt).toLocaleTimeString('en-US', {
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            })}
+                            Eaten at{' '}
+                            {new Date(mealInTracker.eatenAt).toLocaleTimeString(
+                              'en-US',
+                              {
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              },
+                            )}
                           </p>
                         </div>
                       )}
@@ -723,6 +823,54 @@ export default function DietTrackerPage() {
           </div>
         </div>
       </div>
+      {dayCompleteModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          {/* Backdrop (click to close) */}
+          <div
+            className="absolute inset-0 bg-black/40"
+            onClick={() => setDayCompleteModalOpen(false)}
+          />
+
+          {/* Modal box */}
+          <div
+            className="relative w-full max-w-md mx-4 rounded-xl bg-white shadow-lg p-6"
+            onClick={(e) => e.stopPropagation()} // prevents backdrop close when clicking inside
+          >
+            <h3 className="text-lg font-bold text-gray-900">Day completed!</h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Great job. Want to move to the next day now?
+            </p>
+
+            <div className="mt-6 flex gap-3 justify-end">
+              <button
+                className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50"
+                onClick={() => setDayCompleteModalOpen(false)}
+              >
+                Stay
+              </button>
+
+              {nextDayToGo ? (
+                <button
+                  className="px-4 py-2 rounded-lg bg-green-600 text-white hover:bg-green-700"
+                  onClick={() => {
+                    setSelectedDay(nextDayToGo)
+                    setDayCompleteModalOpen(false)
+                  }}
+                >
+                  Go to Day {nextDayToGo}
+                </button>
+              ) : (
+                <button
+                  className="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 cursor-not-allowed"
+                  disabled
+                >
+                  No next day
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
