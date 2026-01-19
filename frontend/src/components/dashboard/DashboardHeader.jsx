@@ -4,6 +4,7 @@ import { useMealPlan } from '../../context/aiMealPlanContext'
 import { useDietTracker } from '../../context/DietTrackerContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { TrendingDown, User, Target, TrendingUp } from 'lucide-react'
+import MotivationalTicker from './MotivationalTicker'
 
 export default function DashboardHeader({ userName }) {
   const { profile, loading } = useProfile()
@@ -140,6 +141,10 @@ export default function DashboardHeader({ userName }) {
           </div>
           <div className={`${subtitleClass} mt-2`}>{currentDate}</div>
         </div>
+      </div>
+      {/* confined motivational ticker inside header */}
+      <div className="mt-4">
+        <MotivationalTicker speed={12} />
       </div>
     </div>
   )
