@@ -26,16 +26,19 @@ export function DietTrackerProvider({ children }) {
   const CACHE_DURATION = 2 * 60 * 1000 // 2 minutes (more frequent for tracker)
 
   // Fetch active tracker
-  const fetchActiveTracker = async () => {
+  const fetchActiveTracker = async (force = false) => {
     if (!user && activeTracker) {
       setActiveTracker(null)
       return
     }
 
-    // Use cache if fresh
-    if (lastFetch && Date.now() - lastFetch < CACHE_DURATION) {
-      return
-    }
+    // Use cache if fresh (skip cache if force)
+     if (!force && lastFetch && Date.now() - lastFetch < CACHE_DURATION) {
+    return
+  }
+    // if (lastFetch && Date.now() - lastFetch < CACHE_DURATION) {
+    //   return
+    // }
 
     setLoading(true)
     setError(null)
