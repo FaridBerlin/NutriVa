@@ -1,57 +1,24 @@
 import React, { useState, useEffect } from 'react'
-import api from '../services/api'
+import { useAiMealPlan } from '../context/aiMealPlanContext'
 import AiDietPlannerForm from '../components/AiDietPlannerForm'
 import Card from '../components/ui/Card'
 import { Calendar, Utensils, Plus, Loader2 } from 'lucide-react'
 
 const AiDietPlannerPage = () => {
-  const [dietPlan, setDietPlan] = useState(null)
+  const { activePlan, loading, setActivePlan } = useAiMealPlan()
   const [selectedDay, setSelectedDay] = useState(1)
-  const [dayData, setDayData] = useState(null)
   const [showForm, setShowForm] = useState(false)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    fetchLatestPlan()
-  }, [])
-
-  useEffect(() => {
-    if (dietPlan) {
-      fetchDayData(selectedDay)
-    }
-  }, [dietPlan, selectedDay])
-
-  const fetchLatestPlan = async () => {
-    try {
-      const response = await api.get('/ai-meal-plans/latest')
-
-      if (response.data?.mealPlan) {
-        setDietPlan(response.data.mealPlan)
-      }
-    } catch (err) {
-      if (err.response?.status !== 404) {
-        console.error('Error fetching plan:', err)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const fetchDayData = async (dayNumber) => {
-    try {
-      const response = await api.get(`/ai-meal-plans/days/${dayNumber}`)
-
-      setDayData(response.data)
-    } catch (err) {
-      console.error('Error fetching day data:', err)
-    }
-  }
 
   const handlePlanGenerated = (newPlan) => {
-    setDietPlan(newPlan)
+    setActivePlan(newPlan)
     setSelectedDay(1)
     setShowForm(false)
   }
+
+  // Get current day data directly from activePlan
+  const currentDayData = activePlan?.days?.find(
+    (day) => day.dayNumber === selectedDay
+  )
 
   if (loading) {
     return (
@@ -85,7 +52,7 @@ const AiDietPlannerPage = () => {
     )
   }
 
-  if (!dietPlan) {
+  if (!activePlan) {
     return (
       <div className="p-6">
         <div className="max-w-4xl mx-auto text-center">
@@ -116,11 +83,11 @@ const AiDietPlannerPage = () => {
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-accentYellow">
-              {dietPlan.planName}
+            <h1 className="text-3xl font-bold text-gray-800 dark:text-accentYellow capitalize">
+              {activePlan.planName}
             </h1>
             <p className="text-muted dark:text-accentYellow/80">
-              {dietPlan.planDuration} days • {dietPlan.dailyCalories} cal/day
+              {activePlan.planDuration} days • {activePlan.dailyCalories} cal/day
             </p>
           </div>
           <button
@@ -136,7 +103,7 @@ const AiDietPlannerPage = () => {
         <Card className="mb-6" noHover>
           <div className="flex items-center gap-2 overflow-x-auto">
             <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
-            {Array.from({ length: dietPlan.planDuration }, (_, i) => i + 1).map(
+            {Array.from({ length: activePlan.planDuration }, (_, i) => i + 1).map(
               (day) => (
                 <button
                   key={day}
@@ -144,7 +111,7 @@ const AiDietPlannerPage = () => {
                   className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${
                     selectedDay === day
                       ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-800'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-accentYellow dark:hover:bg-gray-600'
                   }`}
                 >
                   Day {day}
@@ -155,12 +122,16 @@ const AiDietPlannerPage = () => {
         </Card>
 
         {/* Meals */}
-        {dayData && (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr">
-            {dayData.day.meals.map((meal, index) => (
+        {currentDayData && (
+          <div 
+            key={selectedDay}
+            className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr animate-fadeIn"
+          >
+            {currentDayData.meals.map((meal, index) => (
               <Card
                 key={index}
-                className="h-full flex flex-col justify-between p-6"
+                className="h-full flex flex-col justify-between p-6 animate-slideUp"
+                style={{ animationDelay: `${index * 300}ms` }}
               >
                 <div className="flex items-start justify-between mb-3">
                   <div>

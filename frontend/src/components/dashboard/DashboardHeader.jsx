@@ -23,8 +23,8 @@ export default function DashboardHeader({ userName }) {
     }
 
     // Fallback: calculate from profile creation date
-    if (profile?.createdAt) {
-      const created = new Date(profile.createdAt)
+    if (activePlan?.createdAt) {
+      const created = new Date(activePlan.createdAt)
       const now = new Date()
       const diffMs = now - created
       const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
@@ -81,7 +81,10 @@ export default function DashboardHeader({ userName }) {
               <>
                 <p className={subtitleClass}>
                   Day {currentDay} of your{' '}
-                  {activePlan?.planName || 'health plan'} — {planDuration} days
+                  <span className="inline-flex items-center px-0.5 py-0.5 text-s font-bold  text-primary dark:text-accentYellow uppercase">
+                    {activePlan?.planName || 'health plan'}
+                  </span>{' '}
+                  plan — {planDuration} days
                 </p>
                 <div
                   className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}

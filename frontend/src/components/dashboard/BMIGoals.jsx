@@ -70,21 +70,14 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-textDark mb-6 flex items-center gap-2">
-        <TrendingUp className="text-primary" size={28} />
-        Nutrition & Goals
-      </h2>
-
-      {/* Macros Split and Today's Summary removed */}
-
       {/* Weekly Nutrition Chart */}
       <Card noHover className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-gray-900">Weekly Nutrition Plan</h2>
-            <p className="text-xs text-muted mt-1">
-              7-day meal plan nutrition vs. daily targets
-            </p>
+            <h2 className="text-2xl font-bold text-textDark">
+              {' '}
+              Weekly Nutrition Trend
+            </h2>
           </div>
           <div className="flex gap-2">
             {buttonConfig.map((metric) => (
