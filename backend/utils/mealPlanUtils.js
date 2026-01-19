@@ -12,6 +12,19 @@ import { mealTemplatesTier3 } from '../data/mealTier3-900-1200.js'
 import { calculateBMR, calculateTDEE } from './nutritionCalculations.js'
 
 /**
+ * Calculate calories from macronutrients
+ * Formula: (protein × 4) + (carbs × 4) + (fat × 9)
+ *
+ * @param {number} protein - Protein in grams
+ * @param {number} carbs - Carbohydrates in grams
+ * @param {number} fat - Fat in grams
+ * @returns {number} Calculated calories
+ */
+export function calculateCaloriesFromMacros(protein, carbs, fat) {
+  return Math.round(protein * 4 + carbs * 4 + fat * 9)
+}
+
+/**
  * Determine which meal tier to use based on calories per meal
  *
  * @param {number} dailyCalories - Total daily calorie target
@@ -142,6 +155,8 @@ export function selectMealForCategory(params) {
 
 /**
  * Calculate total nutrition for a day of meals
+ * IMPORTANT: Calories are calculated from macros, not summed from stored values
+ * Formula: (protein × 4) + (carbs × 4) + (fat × 9)
  *
  * @param {array} meals - Array of meal objects
  * @returns {object} Total nutrition {calories, protein, carbs, fat}
@@ -151,15 +166,26 @@ export function calculateDayNutrition(meals) {
     return { calories: 0, protein: 0, carbs: 0, fat: 0 }
   }
 
-  return meals.reduce(
+  const totals = meals.reduce(
     (total, meal) => ({
-      calories: total.calories + meal.nutrition.calories,
-      protein: total.protein + meal.nutrition.protein,
-      carbs: total.carbs + meal.nutrition.carbs,
-      fat: total.fat + meal.nutrition.fat,
+      protein: total.protein + (meal.nutrition?.protein || 0),
+      carbs: total.carbs + (meal.nutrition?.carbs || 0),
+      fat: total.fat + (meal.nutrition?.fat || 0),
     }),
-    { calories: 0, protein: 0, carbs: 0, fat: 0 },
+    { protein: 0, carbs: 0, fat: 0 },
   )
+
+  // Calculate calories from macros: (protein × 4) + (carbs × 4) + (fat × 9)
+  return {
+    calories: calculateCaloriesFromMacros(
+      totals.protein,
+      totals.carbs,
+      totals.fat,
+    ),
+    protein: totals.protein,
+    carbs: totals.carbs,
+    fat: totals.fat,
+  }
 }
 
 /**
@@ -458,15 +484,25 @@ export function generateTemplateMealPlan(
           continue
         }
 
+        // Extract macros and calculate calories correctly
+        const mealProtein = randomMeal.nutrition?.protein || 0
+        const mealCarbs = randomMeal.nutrition?.carbs || 0
+        const mealFat = randomMeal.nutrition?.fat || 0
+        const calculatedCalories = calculateCaloriesFromMacros(
+          mealProtein,
+          mealCarbs,
+          mealFat,
+        )
+
         dayMeals.push({
           type: mealType,
           dishName: randomMeal.dishName || 'Unknown Dish',
           description: randomMeal.description || '',
-          nutrition: randomMeal.nutrition || {
-            calories: 0,
-            protein: 0,
-            carbs: 0,
-            fat: 0,
+          nutrition: {
+            calories: calculatedCalories,
+            protein: mealProtein,
+            carbs: mealCarbs,
+            fat: mealFat,
           },
           keyIngredients: randomMeal.keyIngredients || [],
           cookingMethod: randomMeal.cookingMethod || 'Prepared',
@@ -512,29 +548,53 @@ export function generateTemplateMealPlan(
 
 /**
  * Scale meal nutrition to target calorie range
+ * IMPORTANT: Calories are calculated from scaled macros, not scaled directly
+ * Formula: (protein × 4) + (carbs × 4) + (fat × 9)
+ *
  * @param {Object} meal - Meal object with nutrition
  * @param {number} targetCalories - Target calories for this meal
  * @returns {Object} - Meal with adjusted nutrition
  */
 export function scaleMealToTarget(meal, targetCalories) {
-  const currentCalories = meal.nutrition?.calories || 500
+  // Calculate current calories FROM macros (not from stored value)
+  const p = meal.nutrition?.protein || 0
+  const c = meal.nutrition?.carbs || 0
+  const f = meal.nutrition?.fat || 0
+  const currentCalories = calculateCaloriesFromMacros(p, c, f)
 
-  // If meal is already close (within 15%), don't scale
+  // If meal is already close (within 15%), just fix the calorie value
   const variance = Math.abs(currentCalories - targetCalories) / targetCalories
   if (variance <= 0.15) {
-    return meal
+    return {
+      ...meal,
+      nutrition: {
+        protein: p,
+        carbs: c,
+        fat: f,
+        calories: currentCalories, // Use calculated value
+      },
+    }
   }
 
   // Calculate scaling factor
   const scaleFactor = targetCalories / currentCalories
 
+  // Scale macros, then calculate calories from scaled macros
+  const scaledProtein = Math.round(p * scaleFactor)
+  const scaledCarbs = Math.round(c * scaleFactor)
+  const scaledFat = Math.round(f * scaleFactor)
+
   return {
     ...meal,
     nutrition: {
-      calories: Math.round(meal.nutrition.calories * scaleFactor),
-      protein: Math.round(meal.nutrition.protein * scaleFactor),
-      carbs: Math.round(meal.nutrition.carbs * scaleFactor),
-      fat: Math.round(meal.nutrition.fat * scaleFactor),
+      protein: scaledProtein,
+      carbs: scaledCarbs,
+      fat: scaledFat,
+      calories: calculateCaloriesFromMacros(
+        scaledProtein,
+        scaledCarbs,
+        scaledFat,
+      ),
     },
   }
 }
@@ -580,6 +640,8 @@ export function getCalorieToleranceForGoal(goal) {
 
 /**
  * Scale all meals in a day to match target daily calories
+ * IMPORTANT: Calories are always calculated from macros, not scaled directly
+ * Formula: (protein × 4) + (carbs × 4) + (fat × 9)
  *
  * @param {Array} meals - Array of meal objects
  * @param {number} targetDailyCalories - Target calories for the day
@@ -587,11 +649,13 @@ export function getCalorieToleranceForGoal(goal) {
  * @returns {Object} - { scaledMeals, totalNutrition, wasScaled }
  */
 export function scaleDayToTargetCalories(meals, targetDailyCalories, goal) {
-  // Calculate current total
-  const currentTotal = meals.reduce(
-    (sum, meal) => sum + (meal.nutrition?.calories || 0),
-    0,
-  )
+  // Calculate current total FROM MACROS (not from stored calorie values)
+  const currentTotal = meals.reduce((sum, meal) => {
+    const p = meal.nutrition?.protein || 0
+    const c = meal.nutrition?.carbs || 0
+    const f = meal.nutrition?.fat || 0
+    return sum + calculateCaloriesFromMacros(p, c, f)
+  }, 0)
 
   if (currentTotal === 0) {
     return {
@@ -611,9 +675,24 @@ export function scaleDayToTargetCalories(meals, targetDailyCalories, goal) {
     currentTotal >= minAllowed && currentTotal <= maxAllowed
 
   if (isWithinTolerance) {
+    // Still fix calorie values to match macro calculations
+    const correctedMeals = meals.map((meal) => {
+      const p = meal.nutrition?.protein || 0
+      const c = meal.nutrition?.carbs || 0
+      const f = meal.nutrition?.fat || 0
+      return {
+        ...meal,
+        nutrition: {
+          protein: p,
+          carbs: c,
+          fat: f,
+          calories: calculateCaloriesFromMacros(p, c, f),
+        },
+      }
+    })
     return {
-      scaledMeals: meals,
-      totalNutrition: calculateDayNutrition(meals),
+      scaledMeals: correctedMeals,
+      totalNutrition: calculateDayNutrition(correctedMeals),
       wasScaled: false,
     }
   }
@@ -625,16 +704,28 @@ export function scaleDayToTargetCalories(meals, targetDailyCalories, goal) {
     `   🔧 Scaling day from ${currentTotal} to ${targetDailyCalories} cal (factor: ${scaleFactor.toFixed(3)})`,
   )
 
-  // Scale all meals proportionally
-  const scaledMeals = meals.map((meal) => ({
-    ...meal,
-    nutrition: {
-      calories: Math.round((meal.nutrition?.calories || 0) * scaleFactor),
-      protein: Math.round((meal.nutrition?.protein || 0) * scaleFactor),
-      carbs: Math.round((meal.nutrition?.carbs || 0) * scaleFactor),
-      fat: Math.round((meal.nutrition?.fat || 0) * scaleFactor),
-    },
-  }))
+  // Scale macros proportionally, then calculate calories FROM scaled macros
+  const scaledMeals = meals.map((meal) => {
+    const scaledProtein = Math.round(
+      (meal.nutrition?.protein || 0) * scaleFactor,
+    )
+    const scaledCarbs = Math.round((meal.nutrition?.carbs || 0) * scaleFactor)
+    const scaledFat = Math.round((meal.nutrition?.fat || 0) * scaleFactor)
+
+    return {
+      ...meal,
+      nutrition: {
+        protein: scaledProtein,
+        carbs: scaledCarbs,
+        fat: scaledFat,
+        calories: calculateCaloriesFromMacros(
+          scaledProtein,
+          scaledCarbs,
+          scaledFat,
+        ),
+      },
+    }
+  })
 
   return {
     scaledMeals,
