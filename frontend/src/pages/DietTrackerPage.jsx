@@ -237,7 +237,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-          <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
           <div className="text-xl text-muted">Loading...</div>
         </div>
       </div>
@@ -338,14 +338,15 @@ export default function DietTrackerPage() {
                             </p>
                             {plan.dietaryRestrictions?.length > 0 && (
                               <p className="flex items-center gap-1">
-                                <FiShield className="inline" /> {plan.dietaryRestrictions.join(', ')}
+                                <FiShield className="inline" />{' '}
+                                {plan.dietaryRestrictions.join(', ')}
                               </p>
                             )}
                           </div>
                         </div>
                         {selectedMealPlanId === plan._id && (
                           <div className="ml-2">
-                              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
                               <FiCheck className="text-white text-sm" />
                             </div>
                           </div>
@@ -592,10 +593,10 @@ export default function DietTrackerPage() {
                           key={dayNumber}
                           onClick={() => setSelectedDay(dayNumber)}
                           className={`px-3 py-2 rounded-lg min-w-[84px] text-left transition-colors border ${
-                              selectedDay === dayNumber
-                                ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
-                                : 'bg-white nv-border hover:border-blue-300'
-                            }`}
+                            selectedDay === dayNumber
+                              ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
+                              : 'bg-white nv-border hover:border-blue-300'
+                          }`}
                         >
                           <div className="text-xs text-muted">
                             Day {dayNumber}

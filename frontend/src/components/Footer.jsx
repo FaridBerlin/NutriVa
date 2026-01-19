@@ -285,8 +285,18 @@ export default function Footer() {
             </div>
 
             <div className="flex items-center gap-6 text-sm">
-              <Link to="/privacy" className="text-white hover:text-primary transition-colors">Privacy</Link>
-              <Link to="/terms" className="text-white hover:text-primary transition-colors">Terms</Link>
+              <Link
+                to="/privacy"
+                className="text-white hover:text-primary transition-colors"
+              >
+                Privacy
+              </Link>
+              <Link
+                to="/terms"
+                className="text-white hover:text-primary transition-colors"
+              >
+                Terms
+              </Link>
 
               {/*   <Link
                 to="/imprint"
