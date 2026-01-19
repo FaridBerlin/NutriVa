@@ -230,6 +230,7 @@ export function AiMealPlanProvider({ children }) {
     getDayFromLatestPlan,
     deleteMealPlan,
     setActiveById,
+    setActivePlan,
     clearError,
 
     // Computed

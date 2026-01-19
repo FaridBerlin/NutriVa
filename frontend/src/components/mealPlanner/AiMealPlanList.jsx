@@ -2,16 +2,18 @@ import { useState, useEffect } from 'react'
 import { useMealPlan } from '../../context/aiMealPlanContext'
 import AiMealPlanListDetails from './AiMealPlanListDetails'
 import Card from '../ui/Card'
-import { Shield } from 'lucide-react'
+import { Shield, Check } from 'lucide-react'
 
 export default function AiMealPlanList() {
   const {
+    activePlan,
     allPlans,
     loading,
     error: contextError,
     fetchAllPlans,
     getMealPlanById,
     deleteMealPlan: deletePlanFromContext,
+    setActivePlan,
   } = useMealPlan()
 
   const [viewPlan, setViewPlan] = useState(null)
@@ -53,6 +55,10 @@ export default function AiMealPlanList() {
     }
   }
 
+  const handleSetActive = (plan) => {
+    setActivePlan(plan)
+  }
+
   if (loading) return <p>Loading...</p>
   if (error) return <p className="text-red-500">{error}</p>
 
@@ -79,7 +85,11 @@ export default function AiMealPlanList() {
         <Card
           key={plan._id}
           noHover
-          className="p-4 flex justify-between items-center"
+          className={`p-4 flex justify-between items-center transition-all ${
+            activePlan?._id === plan._id
+              ? 'border-2 border-primary bg-primary/5'
+              : ''
+          }`}
         >
           <div>
             <div className="flex items-center gap-2 mb-1">
@@ -87,6 +97,12 @@ export default function AiMealPlanList() {
               <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-semibold">
                 AI
               </span>
+              {activePlan?._id === plan._id && (
+                <span className="flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium dark:bg-accentYellow/10 dark:text-accentYellow">
+                  <Check size={12} />
+                  Active
+                </span>
+              )}
             </div>
             <h3 className="font-medium capitalize">{plan.foodType}</h3>
             <p className="text-sm text-muted">
@@ -105,6 +121,14 @@ export default function AiMealPlanList() {
           </div>
 
           <div className="flex gap-3">
+            {activePlan?._id !== plan._id && (
+              <button
+                onClick={() => handleSetActive(plan)}
+                className="btn-secondary nv-btn-lg"
+              >
+                Set Active
+              </button>
+            )}
             <button
               onClick={() => handleView(plan._id)}
               className="nv-btn-primary nv-btn-lg"

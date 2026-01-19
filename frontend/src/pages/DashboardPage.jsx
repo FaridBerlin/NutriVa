@@ -15,6 +15,7 @@ import {
   DashboardStats,
   BMIGoals,
   TodayMeals,
+  TodayTracking,
 } from '../components/dashboard'
 
 export default function DashboardPage() {
@@ -143,6 +144,7 @@ export default function DashboardPage() {
           ) : (
             <>
               <DashboardStats stats={statsData} />
+              <TodayTracking />
               <BMIGoals
                 bmi={profile?.bmi}
                 goals={goalsData}

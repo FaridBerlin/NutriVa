@@ -10,8 +10,8 @@ export default function TodayMeals() {
   console.log(`the active plan:`, activePlan?.planName, activePlan)
   // Calculate current day from profile creation date
   const getCurrentDay = () => {
-    if (profile?.createdAt) {
-      const created = new Date(profile.createdAt)
+    if (activePlan?.createdAt) {
+      const created = new Date(activePlan.createdAt)
       const now = new Date()
       const diffMs = now - created
       const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24))
@@ -93,7 +93,9 @@ export default function TodayMeals() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-semibold text-gray-900 dark:text-accentYellow mb-1 capitalize">
-              {activePlan.planName} Plan
+                 <span className="inline-flex items-center px-0.5 py-0.5 text-s font-bold  text-primary dark:text-accentYellow uppercase">
+                    {activePlan?.planName || 'health plan'}
+                  </span> Plan
             </h2>
             <p className="text-muted text-sm dark:text-accentYellow/80">
               Day {currentDay} - {todayMeals.length} meals scheduled
