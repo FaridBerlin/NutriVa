@@ -82,15 +82,15 @@ body {
   }
 
   html.dark .text-textLight.text-textLight {
-    color: #9ca3af;
+    color: var(--nv-muted-text) !important;
   }
 
   html.dark .border-gray-200.border-gray-200 {
-    border-color: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.28);
   }
 
   html.dark .ring-gray-200.ring-gray-200 {
-    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.06);
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.12);
   }
 
   /* Common gray/white backgrounds used across pages */
@@ -223,7 +223,7 @@ html {
    to improve readability on the app's light gradients/backgrounds. Dark-mode
    rules remain unchanged and will override this where applicable. */
 .text-gray-500.text-gray-500 {
-  color: #9ca3af; /* tailwind gray-400 — lighter than default 500 */
+  color: #6b7280; /* stronger muted color (tailwind gray-600) for improved contrast in light mode */
 }
 
 /* Card background variables */
@@ -231,6 +231,7 @@ html {
   --nv-card-bg: #ffffff;
   --nv-card-text: #111827;
   --nv-muted-text: #9ca3af; /* default muted text (light mode) */
+  --nv-input-border: rgba(15, 23, 42, 0.08);
   --font-sans:
     'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial;
@@ -242,9 +243,10 @@ html {
 html.dark {
   --nv-card-bg: #0b1220; /* dark slate background for cards */
   --nv-card-text: #fbbf24; /* accent yellow for readable text */
-  --nv-muted-text: #c8cea4; /* muted text in dark mode */
+  --nv-muted-text: #cbd5e1; /* muted text in dark mode - lighter for contrast */
   --nv-input-bg: #071421;
   --nv-input-text: #e4eace;
+  --nv-input-border: rgba(148, 163, 184, 0.22);
 }
 
 /* Dropdown animation */
@@ -309,7 +311,7 @@ html.dark {
     @apply w-full px-4 py-3 rounded-lg border transition-all;
     background-color: var(--nv-input-bg);
     color: var(--nv-input-text);
-    border-color: rgba(0, 0, 0, 0.06);
+    border-color: var(--nv-input-border);
   }
 
   .nv-input:focus {
@@ -344,6 +346,43 @@ html.dark {
   /* Themed button variants */
   .nv-btn-primary {
     @apply nv-btn bg-primary hover:bg-primaryDark text-white;
+  }
+
+  /* Form helpers */
+  .nv-form {
+    @apply space-y-4;
+  }
+
+  .nv-form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-200;
+  }
+
+  /* Alias for shared input styles (keeps existing nv-input semantics)
+     Use `nv-input` on input/textarea/select elements */
+  .nv-form-input {
+    @apply nv-input;
+  }
+
+  .nv-form-actions {
+    @apply flex items-center gap-4;
+  }
+
+  /* Gradient primary button used in forms */
+  .nv-btn-gradient {
+    @apply nv-btn bg-gradient-to-r from-primary to-green-400 text-white font-semibold rounded-lg transition-all;
+  }
+
+  .nv-form-success {
+    @apply text-green-500 font-medium;
+  }
+
+  .nv-form-error {
+    @apply text-red-500 font-medium;
+  }
+
+  /* Reusable border color that follows light/dark variables */
+  .nv-border {
+    border-color: var(--nv-input-border) !important;
   }
 
   .nv-btn-danger {

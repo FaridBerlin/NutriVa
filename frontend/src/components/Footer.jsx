@@ -197,6 +197,15 @@ export default function Footer() {
                   Help Center
                 </a>
               </li>
+              <li>
+                <Link
+                  to="/contact"
+                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
+                >
+                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
+                  Contact
+                </Link>
+              </li>
             </ul>
 
             {/* Contact Email */}
@@ -296,6 +305,7 @@ export default function Footer() {
               >
                 Terms
               </Link>
+
               {/*   <Link
                 to="/imprint"
                 className="text-gray-500 hover:text-primary transition-colors"
