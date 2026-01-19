@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import quotes from '../react-hot-toast/MotivationalQuotes'
-import { FiStar, FiHeart, FiSun, FiCoffee, FiSmile, FiActivity } from 'react-icons/fi'
+import {
+  FiStar,
+  FiHeart,
+  FiSun,
+  FiCoffee,
+  FiSmile,
+  FiActivity,
+} from 'react-icons/fi'
 
 // Rotating single-item ticker (one phrase at a time)
 const ICONS = [FiStar, FiHeart, FiSun, FiCoffee, FiSmile, FiActivity]
@@ -17,9 +24,12 @@ export default function MotivationalTicker({ speed = 10 }) {
   useEffect(() => {
     // advance to next quote after the current one has finished scrolling
     // add a slightly longer gap to avoid abrupt transitions
-    const timeout = setTimeout(() => {
-      setIdx((i) => (i + 1) % quotes.length)
-    }, durationSec * 1000 + 1500) // 1.5s gap after scroll
+    const timeout = setTimeout(
+      () => {
+        setIdx((i) => (i + 1) % quotes.length)
+      },
+      durationSec * 1000 + 1500,
+    ) // 1.5s gap after scroll
     return () => clearTimeout(timeout)
   }, [idx, durationSec])
 
