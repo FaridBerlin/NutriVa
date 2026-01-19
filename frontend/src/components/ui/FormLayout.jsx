@@ -1,12 +1,38 @@
 import React from 'react'
 
-export default function FormLayout({ title, children, footer }) {
+export default function FormLayout({
+  title,
+  children,
+  footer,
+  compact = false,
+  center = false,
+  className = '',
+  titleClass = '',
+  footerClass = '',
+}) {
+  const wrapperPadding = compact ? 'p-6' : 'p-8'
+  const centerClasses = center
+    ? 'flex items-center justify-center min-h-[50vh]'
+    : ''
+
   return (
-    <div className="max-w-3xl mx-auto px-6 py-8">
-      <div className="nv-card rounded-2xl shadow-md p-8">
-        {title && <h1 className="text-2xl font-bold mb-2">{title}</h1>}
+    <div
+      className={`max-w-3xl mx-auto px-6 py-8 ${centerClasses} ${className}`}
+    >
+      <div className={`nv-card rounded-2xl shadow-md ${wrapperPadding} w-full`}>
+        {title && (
+          <h1 className={`text-2xl font-bold mb-2 ${titleClass}`}>{title}</h1>
+        )}
+
         <div className="nv-form">{children}</div>
-        {footer && <div className="mt-6 text-sm text-gray-500">{footer}</div>}
+
+        {footer && (
+          <div
+            className={`mt-6 text-sm text-black dark:text-muted ${footerClass}`}
+          >
+            {footer}
+          </div>
+        )}
       </div>
     </div>
   )

@@ -38,7 +38,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
   }
 
   return (
-    <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm font-display">
+    <aside className="fixed top-0 left-0 z-40 h-screen w-64 bg-white border-r border-gray-200 shadow-sm font-display text-base lg:text-lg leading-6">
       <div className="h-full flex flex-col">
         {/* Logo */}
         <div className="flex items-center justify-center px-3 py-3 border-b border-gray-100">
@@ -67,7 +67,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     size={18}
                     className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
                   />
-                  <span className="font-medium flex-1">{item.label}</span>
+                  <span className="font-semibold flex-1">{item.label}</span>
 
                   {item.badge && (
                     <span
@@ -125,7 +125,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 size={18}
                 className="transition-transform duration-200 group-hover:scale-110"
               />
-              <span className="font-medium text-green-700 flex-1">
+              <span className="font-semibold text-green-700 flex-1">
                 AI Meal Plans
               </span>
             </button>
@@ -157,7 +157,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
         {/* Logout & Navigation */}
         <div className="px-4 py-4 border-t border-gray-100 space-y-2">
           {/* Back to Home */}
-          <Link
+            <Link
             to="/"
             className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 rounded-lg hover:bg-blue-50 hover:text-blue-600 hover:translate-x-1 transition-all duration-200 group"
           >
@@ -165,7 +165,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               size={18}
               className="transition-transform duration-200 group-hover:scale-110"
             />
-            <span className="font-medium"> Home Page</span>
+            <span className="font-semibold"> Home Page</span>
           </Link>
 
           {/* Settings */}
@@ -177,14 +177,14 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               size={18}
               className="transition-transform duration-200 group-hover:rotate-90"
             />
-            <span className="font-medium">Settings</span>
+            <span className="font-semibold">Settings</span>
           </Link>
 
           {/* Theme toggle (above logout) */}
           <div className="px-4 py-2">
-            <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-800 hover:translate-x-1 transition-all duration-200 group">
+              <div className="w-full flex items-center gap-3 px-4 py-3 text-gray-600 rounded-lg hover:bg-gray-100 hover:text-gray-800 hover:translate-x-1 transition-all duration-200 group">
               <ThemeToggle className="transition-transform duration-200 group-hover:scale-110" />
-              <span className="text-sm font-medium">Theme</span>
+              <span className="text-sm font-semibold">Theme</span>
             </div>
           </div>
 
@@ -197,7 +197,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               size={18}
               className="transition-transform duration-200 group-hover:translate-x-1"
             />
-            <span className="font-medium">Logout</span>
+            <span className="font-semibold">Logout</span>
           </button>
         </div>
       </div>

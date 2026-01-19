@@ -46,7 +46,7 @@ export default function ContactPage() {
         </div>
       }
     >
-      <p className="text-gray-500 mb-4">
+      <p className="text-gray-700 mb-4">
         Have a question or feedback? Send us a message and we'll get back to
         you.
       </p>
@@ -101,8 +101,8 @@ export default function ContactPage() {
         </div>
       </form>
 
-      <div className="mt-6 text-sm text-gray-500">
-        <Link to="/" className="text-sm text-gray-500 hover:text-primary">
+      <div className="mt-6 text-sm text-gray-700">
+        <Link to="/" className="text-sm text-gray-700 hover:text-primary">
           ← Back to home
         </Link>
       </div>

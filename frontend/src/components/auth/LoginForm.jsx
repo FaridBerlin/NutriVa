@@ -51,8 +51,6 @@ export default function LoginForm() {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-xl font-bold">Login</h2>
-
       {error && <div className="text-red-600">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">

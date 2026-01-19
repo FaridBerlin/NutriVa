@@ -45,8 +45,7 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Sign Up</h2>
+    <>
       {error && <div className="text-red-600 mb-2">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -94,6 +93,6 @@ export default function SignupForm() {
           Log in
         </a>
       </p>
-    </div>
+    </>
   )
 }

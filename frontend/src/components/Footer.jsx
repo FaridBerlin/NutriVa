@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 import NutrivaLogo from './NutrivaLogo'
+import ThemeToggle from './ui/ThemeToggle'
 
 export default function Footer() {
   const currentYear = new Date().getFullYear()
@@ -22,7 +23,6 @@ export default function Footer() {
       <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary via-green-400 to-primary"></div>
       <div className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"></div>
       <div className="absolute bottom-10 right-10 w-96 h-96 bg-green-500/5 rounded-full blur-3xl"></div>
-
       <div className="relative max-w-screen-xl mx-auto px-6 py-16">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
@@ -49,7 +49,7 @@ export default function Footer() {
                            hover:scale-110 hover:shadow-lg hover:shadow-blue-500/30 group"
               >
                 <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+                  className="w-5 h-5 text-white group-hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -65,7 +65,7 @@ export default function Footer() {
                            hover:scale-110 hover:shadow-lg hover:shadow-sky-500/30 group"
               >
                 <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+                  className="w-5 h-5 text-white group-hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -81,7 +81,7 @@ export default function Footer() {
                            hover:scale-110 hover:shadow-lg hover:shadow-pink-500/30 group"
               >
                 <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+                  className="w-5 h-5 text-white group-hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -97,7 +97,7 @@ export default function Footer() {
                            hover:scale-110 hover:shadow-lg hover:shadow-blue-700/30 group"
               >
                 <svg
-                  className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
+                  className="w-5 h-5 text-white group-hover:text-primary transition-colors"
                   fill="currentColor"
                   viewBox="0 0 24 24"
                 >
@@ -109,10 +109,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Quick Links
-            </h4>
+            <h4 className="text-lg font-semibold mb-6">Quick Links</h4>
             <ul className="space-y-4">
               <li>
                 <a
@@ -121,9 +118,8 @@ export default function Footer() {
                     e.preventDefault()
                     window.scrollTo({ top: 0, behavior: 'smooth' })
                   }}
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Home
                 </a>
               </li>
@@ -136,9 +132,8 @@ export default function Footer() {
                       .getElementById('how-it-works')
                       ?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   How It Works
                 </a>
               </li>
@@ -151,9 +146,8 @@ export default function Footer() {
                       .getElementById('tools')
                       ?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Features
                 </a>
               </li>
@@ -166,9 +160,8 @@ export default function Footer() {
                       .getElementById('faq')
                       ?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   FAQ
                 </a>
               </li>
@@ -177,10 +170,7 @@ export default function Footer() {
 
           {/* Support & Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-primary rounded-full"></span>
-              Support
-            </h4>
+            <h4 className="text-lg font-semibold mb-6">Support</h4>
             <ul className="space-y-4">
               <li>
                 <a
@@ -191,18 +181,16 @@ export default function Footer() {
                       .getElementById('faq')
                       ?.scrollIntoView({ behavior: 'smooth' })
                   }}
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group cursor-pointer"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Help Center
                 </a>
               </li>
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-400 hover:text-primary transition-colors flex items-center gap-2 group"
+                  className="text-white hover:text-primary transition-colors flex items-center gap-2 group"
                 >
-                  <span className="w-1.5 h-1.5 bg-gray-600 group-hover:bg-primary rounded-full transition-colors"></span>
                   Contact
                 </Link>
               </li>
@@ -210,7 +198,7 @@ export default function Footer() {
 
             {/* Contact Email */}
             <div className="mt-6 p-4 bg-gray-800/50 rounded-xl border border-gray-700">
-              <p className="text-sm text-gray-500 mb-2">Need help?</p>
+              <p className="text-sm text-gray-200 mb-2">Need help?</p>
               <a
                 href="mailto:support@nutriva.com"
                 className="text-primary hover:text-green-400 transition-colors font-medium flex items-center gap-2"
@@ -231,6 +219,10 @@ export default function Footer() {
                 support@nutriva.com
               </a>
             </div>
+            {/* Theme Toggle (footer) */}
+            <div className="mt-4 flex items-center gap-3">
+              <ThemeToggle />
+            </div>
           </div>
         </div>
 
@@ -239,7 +231,7 @@ export default function Footer() {
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
               <h4 className="text-xl font-bold mb-2">Stay Updated</h4>
-              <p className="text-gray-400">
+              <p className="text-gray-200">
                 Get nutrition tips and updates delivered to your inbox.
               </p>
             </div>
@@ -286,25 +278,15 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2 text-gray-500 text-sm">
+            <div className="flex items-center gap-2 text-gray-300 text-sm">
               <span>© {currentYear} Nutriva.</span>
               <span className="hidden md:inline">•</span>
               <span>All rights reserved.</span>
             </div>
 
             <div className="flex items-center gap-6 text-sm">
-              <Link
-                to="/privacy"
-                className="text-gray-500 hover:text-primary transition-colors"
-              >
-                Privacy
-              </Link>
-              <Link
-                to="/terms"
-                className="text-gray-500 hover:text-primary transition-colors"
-              >
-                Terms
-              </Link>
+              <Link to="/privacy" className="text-white hover:text-primary transition-colors">Privacy</Link>
+              <Link to="/terms" className="text-white hover:text-primary transition-colors">Terms</Link>
 
               {/*   <Link
                 to="/imprint"
@@ -314,7 +296,7 @@ export default function Footer() {
               </Link> */}
             </div>
 
-            <p className="text-gray-600 text-sm flex items-center gap-2">
+            <p className="text-gray-300 text-sm flex items-center gap-2">
               Made with
               <span className="text-red-500 animate-pulse">❤️</span>
               for a healthier you
