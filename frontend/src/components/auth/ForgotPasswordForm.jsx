@@ -27,14 +27,14 @@ export default function ForgotPasswordForm() {
   if (emailSent) {
     return (
       <div className="space-y-4 text-center">
-        <h2 className="text-2xl font-bold text-gray-800">
-          Instruction Sent
-        </h2>
+        <h2 className="text-2xl font-bold text-gray-800">Instruction Sent</h2>
 
         <p className="text-gray-600 text-lg leading-relaxed">
           We sent an email to you with instructions on how to set your password.
           <br />
-          Please click the link in the email and continue. If you need any help, please send us an email at support@nutriva.com and we would happy to help you.
+          Please click the link in the email and continue. If you need any help,
+          please send us an email at support@nutriva.com and we would happy to
+          help you.
           <br />
           Thank you.
         </p>
@@ -52,10 +52,6 @@ export default function ForgotPasswordForm() {
   // DEFAULT FORM VIEW
   return (
     <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-center">
-        Forgot Password
-      </h2>
-
       <p className="text-center text-sm text-gray-600">
         Enter your email to receive a reset link
       </p>
@@ -89,7 +85,3 @@ export default function ForgotPasswordForm() {
     </div>
   )
 }
-
-
-
-

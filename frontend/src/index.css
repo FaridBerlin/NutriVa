@@ -82,15 +82,15 @@ body {
   }
 
   html.dark .text-textLight.text-textLight {
-    color: #9ca3af;
+    color: var(--nv-muted-text) !important;
   }
 
   html.dark .border-gray-200.border-gray-200 {
-    border-color: rgba(148, 163, 184, 0.12);
+    border-color: rgba(148, 163, 184, 0.28);
   }
 
   html.dark .ring-gray-200.ring-gray-200 {
-    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.06);
+    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.12);
   }
 
   /* Common gray/white backgrounds used across pages */
@@ -223,7 +223,7 @@ html {
    to improve readability on the app's light gradients/backgrounds. Dark-mode
    rules remain unchanged and will override this where applicable. */
 .text-gray-500.text-gray-500 {
-  color: #9ca3af; /* tailwind gray-400 — lighter than default 500 */
+  color: #6b7280; /* stronger muted color (tailwind gray-600) for improved contrast in light mode */
 }
 
 /* Card background variables */
@@ -231,20 +231,32 @@ html {
   --nv-card-bg: #ffffff;
   --nv-card-text: #111827;
   --nv-muted-text: #9ca3af; /* default muted text (light mode) */
+  --nv-input-border: rgba(15, 23, 42, 0.08);
+  --nv-body-text: #111827; /* main body text (light mode) */
+  --nv-heading-text: #0b1220; /* headings (light mode) */
+  --nv-link: #065f46; /* default link color (light mode) */
   --font-sans:
     'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial;
   --font-display: 'Newsreader', var(--font-sans);
   --nv-input-bg: #ffffff;
   --nv-input-text: #111827;
+  /* Ticker accent (light mode uses darker amber for contrast) */
+  --nv-ticker-yellow: #d97706; /* amber-600 for light bg */
 }
 
 html.dark {
   --nv-card-bg: #0b1220; /* dark slate background for cards */
   --nv-card-text: #fbbf24; /* accent yellow for readable text */
-  --nv-muted-text: #c8cea4; /* muted text in dark mode */
+  --nv-muted-text: #cbd5e1; /* muted text in dark mode - lighter for contrast */
   --nv-input-bg: #071421;
   --nv-input-text: #e4eace;
+  --nv-input-border: rgba(148, 163, 184, 0.22);
+  --nv-body-text: #e5e7eb; /* readable body text in dark mode */
+  --nv-heading-text: #fbbf24; /* headings in dark mode use yellow for emphasis */
+  --nv-link: #fbbf24; /* link color in dark mode */
+  /* Brighter ticker yellow in dark mode for a vivid 'breaking news' look */
+  --nv-ticker-yellow: #ffd400; /* vivid yellow */
 }
 
 /* Dropdown animation */
@@ -304,12 +316,17 @@ html.dark {
     color: var(--nv-muted-text) !important;
   }
 
+  /* Accent label that follows heading color (black in light, yellow in dark) */
+  .nv-accent {
+    color: var(--nv-heading-text) !important;
+  }
+
   /* Shared input styles */
   .nv-input {
     @apply w-full px-4 py-3 rounded-lg border transition-all;
     background-color: var(--nv-input-bg);
     color: var(--nv-input-text);
-    border-color: rgba(0, 0, 0, 0.06);
+    border-color: var(--nv-input-border);
   }
 
   .nv-input:focus {
@@ -346,6 +363,43 @@ html.dark {
     @apply nv-btn bg-primary hover:bg-primaryDark text-white;
   }
 
+  /* Form helpers */
+  .nv-form {
+    @apply space-y-4;
+  }
+
+  .nv-form-label {
+    @apply block text-sm font-medium text-gray-700 dark:text-gray-200;
+  }
+
+  /* Alias for shared input styles (keeps existing nv-input semantics)
+     Use `nv-input` on input/textarea/select elements */
+  .nv-form-input {
+    @apply nv-input;
+  }
+
+  .nv-form-actions {
+    @apply flex items-center gap-4;
+  }
+
+  /* Gradient primary button used in forms */
+  .nv-btn-gradient {
+    @apply nv-btn bg-gradient-to-r from-primary to-green-400 text-white font-semibold rounded-lg transition-all;
+  }
+
+  .nv-form-success {
+    @apply text-green-500 font-medium;
+  }
+
+  .nv-form-error {
+    @apply text-red-500 font-medium;
+  }
+
+  /* Reusable border color that follows light/dark variables */
+  .nv-border {
+    border-color: var(--nv-input-border) !important;
+  }
+
   .nv-btn-danger {
     @apply nv-btn bg-red-500 hover:bg-red-600 text-white;
   }
@@ -353,6 +407,145 @@ html.dark {
   .nv-btn-ghost {
     @apply nv-btn bg-transparent text-primary hover:bg-primary/10;
   }
+
+  /* Confined Marquee / ticker for motivational messages (safe: absolute track) */
+  .nv-ticker-wrapper {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    height: 2.25rem; /* larger for prominent ticker text */
+  }
+
+  .nv-ticker {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .nv-ticker-track {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    display: flex;
+    white-space: nowrap;
+    will-change: transform;
+    animation: nv-marquee linear infinite;
+    animation-duration: var(--nv-marquee-duration, 60s);
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nv-ticker-item {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 1.25rem;
+    color: var(--nv-heading-text);
+    font-weight: 700;
+    font-size: 1.125rem; /* 18px - more prominent */
+    line-height: 1.05;
+    flex: none;
+  }
+
+  /* Ticker text and icon styling */
+  .nv-ticker-text {
+    color: var(--nv-ticker-yellow) !important;
+    font-size: 1.375rem; /* ~22px, larger and more prominent */
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .nv-ticker-icon {
+    color: var(--nv-ticker-yellow) !important;
+    opacity: 0.95;
+  }
+
+  /* Rotator styles: show one phrase at a time with subtle fade/slide */
+  .nv-rotator {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding-left: 0.5rem;
+    box-sizing: border-box;
+  }
+
+  .nv-rotator-item {
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity 380ms ease,
+      transform 380ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  .nv-ticker-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* News-style marquee: single item scrolls right->left across the wrapper */
+  .nv-marquee {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nv-marquee-track {
+    display: inline-flex;
+    align-items: center;
+    position: absolute;
+    white-space: nowrap;
+    will-change: transform;
+    left: 100%;
+    transform: translateX(0);
+    animation: nv-marquee-left linear infinite;
+    animation-duration: var(--nv-marquee-duration, 8s);
+    gap: 0.75rem;
+    padding-left: 0.25rem;
+  }
+
+  @keyframes nv-marquee-left {
+    0% {
+      transform: translateX(0%);
+    }
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+
+  /* Pause on hover for readability */
+  .nv-marquee:hover .nv-marquee-track {
+    animation-play-state: paused;
+  }
+
+  .nv-ticker-icon {
+    display: inline-flex;
+    margin-right: 0.35rem;
+    color: var(--nv-link);
+    flex-shrink: 0;
+  }
+
+  @keyframes nv-marquee {
+    0% {
+      transform: translateY(-50%) translateX(0%);
+    }
+    100% {
+      transform: translateY(-50%) translateX(-50%);
+    }
+  }
+
+  /* pause on hover for readability */
+  .nv-ticker-wrapper:hover .nv-ticker-track {
+    animation-play-state: paused;
+  }
+
+  /* ticker removed */
 }
 @font-face {
   font-family: 'CustomSans';
@@ -379,6 +572,43 @@ html.dark {
 
 html {
   font-family: var(--font-sans);
+}
+
+/* Global text colors and weights (use variables so dark/light can be tuned centrally) */
+body {
+  color: var(--nv-body-text);
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--nv-heading-text);
+  font-weight: 700;
+}
+
+a {
+  color: var(--nv-link);
+}
+
+/* Map common Tailwind gray text utilities to our variables so existing classes follow theme */
+.text-gray-800.text-gray-800 {
+  color: var(--nv-heading-text) !important;
+}
+.text-gray-700.text-gray-700 {
+  color: var(--nv-body-text) !important;
+}
+.text-gray-600.text-gray-600,
+.text-gray-500.text-gray-500 {
+  color: var(--nv-muted-text) !important;
+}
+
+/* Ensure small-muted utilities use central muted color */
+.text-muted {
+  color: var(--nv-muted-text) !important;
 }
 
 /* Button styles */

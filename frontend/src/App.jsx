@@ -19,6 +19,7 @@ import SettingsPage from './pages/SettingsPage'
 import DietTrackerPage from './pages/DietTrackerPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
+import ContactPage from './pages/ContactPage'
 
 // Components
 
@@ -69,6 +70,7 @@ function App() {
                   <Route path="/" element={<LandingPage />} />
                   <Route path="/privacy" element={<PrivacyPolicy />} />
                   <Route path="/terms" element={<Terms />} />
+                  <Route path="/contact" element={<ContactPage />} />
                   <Route path="/login" element={<LoginPage />} />
                   <Route path="/signup" element={<SignupPage />} />
                   <Route

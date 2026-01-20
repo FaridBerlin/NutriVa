@@ -8,7 +8,6 @@ import Sidebar from '../components/Sidebar/Sidebar'
 import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
 import { bmiCategory, bmiPercent } from '../utils/bmiUtils'
-import { showMotivationalToast } from '../components/react-hot-toast/MotivationalQuotes'
 
 import {
   DashboardHeader,

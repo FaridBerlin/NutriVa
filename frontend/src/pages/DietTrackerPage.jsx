@@ -1,4 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
+import {
+  FiCheckCircle,
+  FiBell,
+  FiClock,
+  FiAlertTriangle,
+  FiChevronLeft,
+  FiChevronRight,
+  FiPieChart,
+  FiShield,
+  FiCheck,
+  FiStar,
+} from 'react-icons/fi'
 import { useDietTracker } from '../context/DietTrackerContext'
 import { useAiMealPlan } from '../context/aiMealPlanContext'
 import { useProfile } from '../context/ProfileContext'
@@ -33,28 +45,32 @@ const MealTimingBadge = ({ timingStatus }) => {
         return {
           bg: 'bg-green-100',
           text: 'text-green-800',
-          label: '✓ Completed',
+          label: 'Completed',
+          icon: <FiCheckCircle className="inline mr-2" />,
           dotColor: 'bg-green-500',
         }
       case 'active':
         return {
           bg: 'bg-blue-100',
           text: 'text-blue-800',
-          label: '🔔 Active Now',
+          label: 'Active Now',
+          icon: <FiBell className="inline mr-2" />,
           dotColor: 'bg-blue-500',
         }
       case 'upcoming':
         return {
           bg: 'bg-yellow-100',
           text: 'text-yellow-800',
-          label: '⏰ Upcoming',
+          label: 'Upcoming',
+          icon: <FiClock className="inline mr-2" />,
           dotColor: 'bg-yellow-500',
         }
       case 'missed':
         return {
           bg: 'bg-red-100',
           text: 'text-red-800',
-          label: '⚠️ Missed',
+          label: 'Missed',
+          icon: <FiAlertTriangle className="inline mr-2" />,
           dotColor: 'bg-red-500',
         }
       case 'anytime':
@@ -63,6 +79,7 @@ const MealTimingBadge = ({ timingStatus }) => {
           bg: 'bg-gray-100',
           text: 'text-gray-800',
           label: 'Anytime',
+          icon: <FiCheck className="inline mr-2" />,
           dotColor: 'bg-gray-500',
         }
     }
@@ -78,7 +95,8 @@ const MealTimingBadge = ({ timingStatus }) => {
       <span
         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-md font-semibold ${style.bg} ${style.text}`}
       >
-        {style.label}
+        {style.icon}
+        <span>{style.label}</span>
       </span>
     </div>
   )
@@ -143,11 +161,10 @@ export default function DietTrackerPage() {
   }, [])
 
   useEffect(() => {
-  if (activeTracker?.status === 'completed') {
-    setShowCongrats(true)
-  }
-}, [activeTracker])
-
+    if (activeTracker?.status === 'completed') {
+      setShowCongrats(true)
+    }
+  }, [activeTracker])
 
   useEffect(() => {
     const id = setInterval(() => setNow(Date.now()), 60 * 1000) // every 1 min
@@ -201,7 +218,7 @@ export default function DietTrackerPage() {
     }
 
     // success path only
-    await fetchActiveTracker(true) 
+    await fetchActiveTracker(true)
 
     const dayCompleted = result.data?.dayCompleted
     const nextDayNumber = result.data?.nextDayNumber
@@ -220,66 +237,70 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center">
-          <div className="text-xl text-gray-600">Loading...</div>
+        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+          <div className="text-xl text-muted">Loading...</div>
         </div>
       </div>
     )
   }
 
   if (showCongrats) {
-  return (
-    <div className="flex min-h-screen bg-gray-50">
-      <Sidebar />
+    return (
+      <div className="flex min-h-screen bg-gray-50">
+        <Sidebar />
 
-      <div className="flex-1 flex items-center justify-center">
-        <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
-          <div className="text-6xl mb-4">🎉</div>
+        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+          <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
+            <div className="text-6xl mb-4">
+              <FiStar className="inline" />
+            </div>
 
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
-            Congratulations!
-          </h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Congratulations!
+            </h2>
 
-          <p className="text-gray-600 mb-6">
-            This meal plan has been completed successfully.  
-            Well done on your dedication and consistency!
-          </p>
+            <p className="text-muted mb-6">
+              This meal plan has been completed successfully. Well done on your
+              dedication and consistency!
+            </p>
 
-          <button
-            className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
-            onClick={() => {
-              setShowCongrats(false)
-              window.location.href = '/dashboard'
-            }}
-          >
-            Go to Dashboard
-          </button>
+            <button
+              className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
+              onClick={() => {
+                setShowCongrats(false)
+                window.location.href = '/dashboard'
+              }}
+            >
+              Go to Dashboard
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  )
-}
-
+    )
+  }
 
   // No active tracker - show meal plan selector
   if (!activeTracker) {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8">
+        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl w-full">
-            <div className="text-6xl mb-4 text-center">📊</div>
+            <div className="text-6xl mb-4 text-center">
+              <FiPieChart className="inline" />
+            </div>
             <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
               No Active Diet Tracker
             </h2>
-            <p className="text-gray-600 mb-6 text-center">
+            <p className="text-muted mb-6 text-center">
               Select a meal plan to start tracking your diet and monitor your
               progress!
             </p>
 
             {allPlans.length === 0 ? (
               <p className="text-sm text-red-600 mb-4 text-center">
-                ⚠️ Please create a meal plan first before starting tracking
+                <FiAlertTriangle className="inline mr-2" />
+                Please create a meal plan first before starting tracking
               </p>
             ) : (
               <div className="space-y-4">
@@ -292,8 +313,8 @@ export default function DietTrackerPage() {
                       key={plan._id}
                       className={`border-2 rounded-lg p-4 cursor-pointer transition-all ${
                         selectedMealPlanId === plan._id
-                          ? 'border-green-500 bg-green-50'
-                          : 'border-gray-200 hover:border-green-300 hover:bg-gray-50'
+                          ? 'border-green-500 bg-green-50 text-gray-800 dark:bg-green-900/30 dark:border-green-700 dark:text-textDark'
+                          : 'nv-border hover:border-green-300 hover:bg-gray-50'
                       }`}
                       onClick={() => setSelectedMealPlanId(plan._id)}
                     >
@@ -310,14 +331,15 @@ export default function DietTrackerPage() {
                               {plan.dietPreference}
                             </span>
                           </div>
-                          <div className="text-sm text-gray-600 space-y-1">
+                          <div className="text-sm text-muted space-y-1">
                             <p>
                               {plan.days?.length || 0} days •{' '}
                               {plan.mealsPerDay || 0} meals/day
                             </p>
                             {plan.dietaryRestrictions?.length > 0 && (
                               <p className="flex items-center gap-1">
-                                🛡️ {plan.dietaryRestrictions.join(', ')}
+                                <FiShield className="inline" />{' '}
+                                {plan.dietaryRestrictions.join(', ')}
                               </p>
                             )}
                           </div>
@@ -325,7 +347,7 @@ export default function DietTrackerPage() {
                         {selectedMealPlanId === plan._id && (
                           <div className="ml-2">
                             <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-                              <span className="text-white text-sm">✓</span>
+                              <FiCheck className="text-white text-sm" />
                             </div>
                           </div>
                         )}
@@ -358,13 +380,15 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8">
+        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
-            <div className="text-6xl mb-4">⚠️</div>
+            <div className="text-6xl mb-4">
+              <FiAlertTriangle className="inline" />
+            </div>
             <h2 className="text-2xl font-bold text-red-800 mb-4">
               Invalid Meal Plan Data
             </h2>
-            <p className="text-gray-600 mb-6">
+            <p className="text-muted mb-6">
               The meal plan data is corrupted or incomplete. Please create a new
               meal plan.
             </p>
@@ -516,20 +540,20 @@ export default function DietTrackerPage() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <div className="flex-1 p-4 md:p-8">
+      <div className="flex-1 p-4 md:p-8 ml-4 md:ml-8 lg:ml-12">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-800">
               {user?.name || 'User'} Progress
             </h1>
-            <p className="text-gray-600">{aiMealPlan.planName}</p>
+            <p className="text-muted">{aiMealPlan.planName}</p>
           </div>
 
           {/* Day Selector (compact week strip) */}
           <div className="mb-6">
             <div className="bg-white rounded-lg shadow p-4">
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium nv-accent mb-3">
                 Select Day (Week view)
               </label>
 
@@ -539,7 +563,7 @@ export default function DietTrackerPage() {
                   className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
                   aria-label="Previous week"
                 >
-                  ‹
+                  <FiChevronLeft />
                 </button>
 
                 <div className="flex gap-2 overflow-x-auto">
@@ -570,11 +594,11 @@ export default function DietTrackerPage() {
                           onClick={() => setSelectedDay(dayNumber)}
                           className={`px-3 py-2 rounded-lg min-w-[84px] text-left transition-colors border ${
                             selectedDay === dayNumber
-                              ? 'bg-green-50 border-green-300'
-                              : 'bg-white border-gray-200 hover:border-blue-300'
+                              ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
+                              : 'bg-white nv-border hover:border-blue-300'
                           }`}
                         >
-                          <div className="text-xs text-gray-500">
+                          <div className="text-xs text-muted">
                             Day {dayNumber}
                           </div>
                           <div className="text-sm font-semibold text-gray-800">
@@ -598,7 +622,7 @@ export default function DietTrackerPage() {
                   className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
                   aria-label="Next week"
                 >
-                  ›
+                  <FiChevronRight />
                 </button>
 
                 <div className="ml-4 text-sm text-muted">
@@ -612,43 +636,43 @@ export default function DietTrackerPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Daily Calories Card */}
             <Card noHover className="border-l-4 border-blue-500 p-4">
-              <div className="text-sm text-gray-600 mb-2">Daily Calories</div>
+              <div className="text-sm text-muted mb-2">Daily Calories</div>
               <div className="text-3xl font-bold text-blue-600">
                 {Math.round(consumedCalories)} / {Math.round(targetCalories)}
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-muted mt-1">
                 Remaining: {Math.round(targetCalories - consumedCalories)}
               </div>
             </Card>
 
             {/* Current BMI Card */}
             <Card noHover className="border-l-4 border-green-500 p-4">
-              <div className="text-sm text-gray-600 mb-2">Current BMI</div>
+              <div className="text-sm text-muted mb-2">Current BMI</div>
               <div className="text-3xl font-bold text-green-600">
                 {bmi.toFixed(1)}
               </div>
-              <div className="text-sm text-gray-500 mt-1">{bmiCategory}</div>
+              <div className="text-sm text-muted mt-1">{bmiCategory}</div>
             </Card>
 
             {/* Predicted Weight Card */}
             <Card noHover className="border-l-4 border-purple-500 p-4">
-              <div className="text-sm text-gray-600 mb-2">Predicted Weight</div>
+              <div className="text-sm text-muted mb-2">Predicted Weight</div>
               <div className="text-3xl font-bold text-purple-600">
                 {targetWeight} kg
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-muted mt-1">
                 Loss: {weightLoss.toFixed(1)} kg
               </div>
             </Card>
 
             {/* Meal Completion Card */}
             <Card noHover className="border-l-4 border-yellow-500 p-4">
-              <div className="text-sm text-gray-600 mb-2">Meal Completion</div>
+              <div className="text-sm text-muted mb-2">Meal Completion</div>
               <div className="text-3xl font-bold text-yellow-600">
                 {currentDayTracker?.mealsCompleted || 0} /{' '}
                 {currentDayTracker?.totalMeals || 3}
               </div>
-              <div className="text-sm text-gray-500 mt-1">
+              <div className="text-sm text-muted mt-1">
                 {currentDayTracker?.completionPercentage || 0}% completed
               </div>
             </Card>
@@ -724,7 +748,7 @@ export default function DietTrackerPage() {
             </h3>
 
             {!currentDay && (
-              <p className="text-gray-600">
+              <p className="text-muted">
                 Day {selectedDay} data not available yet
               </p>
             )}
@@ -753,13 +777,13 @@ export default function DietTrackerPage() {
                       }
                       className={`p-6 rounded-lg cursor-pointer transition-all border-2 ${
                         isEaten
-                          ? 'bg-green-50 border-green-300'
-                          : 'bg-white border-gray-200 hover:border-blue-300 hover:shadow-md'
+                          ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
+                          : 'bg-white nv-border hover:border-blue-300 hover:shadow-md'
                       } ${actionLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
                       <div className="flex justify-between items-start mb-3">
                         <div className="flex-1">
-                          <div className="text-xs text-gray-500 uppercase font-semibold mb-1">
+                          <div className="text-xs text-muted uppercase font-semibold mb-1">
                             {meal.type}
                           </div>
                           <h4 className="font-bold text-lg text-gray-800 leading-tight">
@@ -775,13 +799,11 @@ export default function DietTrackerPage() {
                           }`}
                         >
                           {isEaten && (
-                            <span className="text-white text-xl font-bold">
-                              ✓
-                            </span>
+                            <FiCheck className="text-white text-xl font-bold" />
                           )}
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-4 line-clamp-2">
+                      <p className="text-sm text-muted mb-4 line-clamp-2">
                         {meal.description}
                       </p>
                       <div className="flex gap-2 flex-wrap">
@@ -801,9 +823,9 @@ export default function DietTrackerPage() {
 
                       {/* Show eaten timestamp if available */}
                       {isEaten && mealInTracker?.eatenAt && (
-                        <div className="mt-3 pt-3 border-t border-gray-200">
-                          <p className="text-xs text-gray-500 flex items-center gap-1">
-                            <span>✓</span>
+                        <div className="mt-3 pt-3 border-t nv-border">
+                          <p className="text-xs text-muted flex items-center gap-1">
+                            <FiCheck className="inline" />
                             Eaten at{' '}
                             {new Date(mealInTracker.eatenAt).toLocaleTimeString(
                               'en-US',
@@ -837,13 +859,13 @@ export default function DietTrackerPage() {
             onClick={(e) => e.stopPropagation()} // prevents backdrop close when clicking inside
           >
             <h3 className="text-lg font-bold text-gray-900">Day completed!</h3>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-muted mt-1">
               Great job. Want to move to the next day now?
             </p>
 
             <div className="mt-6 flex gap-3 justify-end">
               <button
-                className="px-4 py-2 rounded-lg border border-gray-200 hover:bg-gray-50"
+                className="px-4 py-2 rounded-lg border nv-border hover:bg-gray-50"
                 onClick={() => setDayCompleteModalOpen(false)}
               >
                 Stay
@@ -861,7 +883,7 @@ export default function DietTrackerPage() {
                 </button>
               ) : (
                 <button
-                  className="px-4 py-2 rounded-lg bg-gray-300 text-gray-700 cursor-not-allowed"
+                  className="px-4 py-2 rounded-lg bg-gray-300 dark:bg-gray-700 text-gray-700 dark:text-gray-200 cursor-not-allowed"
                   disabled
                 >
                   No next day

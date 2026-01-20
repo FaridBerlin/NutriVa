@@ -50,7 +50,6 @@ export default function Navbar() {
         </Link>
 
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0">
-          <ThemeToggle className="mr-2" />
           {user ? (
             <>
               {/* User Avatar Button & profile image */}
@@ -69,14 +68,19 @@ export default function Navbar() {
                 {/* Dropdown Menu */}
                 {isDropdownOpen && (
                   <div className="absolute right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-2xl animate-fade-in dark:bg-slate-900 dark:border-slate-700">
-                    {/* User Info */}
-                    <div className="px-4 py-3 border-b border-gray-200">
-                      <span className="block text-sm font-semibold text-textDark dark:text-accentYellow">
-                        {user.name}
-                      </span>
-                      <span className="block text-sm text-textLight truncate dark:text-accentYellow/80">
-                        {user.email}
-                      </span>
+                    {/* User Info + Theme toggle inside dropdown */}
+                    <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <span className="block text-sm font-semibold text-textDark dark:text-accentYellow truncate">
+                          {user.name}
+                        </span>
+                        <span className="block text-sm text-textLight truncate dark:text-accentYellow/80">
+                          {user.email}
+                        </span>
+                      </div>
+                      <div className="flex-shrink-0">
+                        <ThemeToggle className="p-1" />
+                      </div>
                     </div>
 
                     {/* Menu Items */}
