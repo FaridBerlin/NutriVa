@@ -94,7 +94,8 @@ export default function DashboardPage() {
 
   const goalsData = {
     caloriesCurrent: todayNutrition.calories || 0,
-    caloriesTarget: nutritionTargets?.dailyCalories,
+    caloriesTarget:
+      activePlan?.dailyCalories || nutritionTargets?.dailyCalories,
     proteinCurrent: todayNutrition.protein || 0,
     proteinTarget: nutritionTargets?.macros.protein,
     carbsCurrent: todayNutrition.carbs || 0,
@@ -107,17 +108,6 @@ export default function DashboardPage() {
         ? Math.max(0, activePlan.planDuration - activeTracker.currentDay)
         : profile?.planDuration || 30,
     fatsTarget: nutritionTargets?.macros.fat,
-  }
-
-  const metricsData = {
-    bmi: nutritionTargets?.bmi,
-    bodyFat: '20-25%',
-    bmr: nutritionTargets?.bmr,
-    tdee: nutritionTargets?.tdee,
-    dailyCalories: nutritionTargets?.dailyCalories,
-    protein: nutritionTargets?.macros.protein,
-    carbs: nutritionTargets?.macros.carbs,
-    fats: nutritionTargets?.macros.fat,
   }
 
   // Render content based on active section

@@ -31,11 +31,15 @@ export default function TodayTracking() {
     })
   }
 
-  // Get targets from nutritionTargets
-  const dailyCalories = nutritionTargets?.dailyCalories || 2000
-  const proteinTarget = nutritionTargets?.macros?.protein || 150
-  const carbsTarget = nutritionTargets?.macros?.carbs || 200
-  const fatsTarget = nutritionTargets?.macros?.fat || 65
+  // Get targets from meal plan if available, otherwise from profile
+  const dailyCalories =
+    activePlan?.dailyCalories || nutritionTargets?.dailyCalories || 2000
+  const proteinTarget =
+    activePlan?.dailyMacros?.protein || nutritionTargets?.macros?.protein || 150
+  const carbsTarget =
+    activePlan?.dailyMacros?.carbs || nutritionTargets?.macros?.carbs || 200
+  const fatsTarget =
+    activePlan?.dailyMacros?.fat || nutritionTargets?.macros?.fat || 65
 
   // Calculate percentages
   const caloriesPercentage = Math.min(
