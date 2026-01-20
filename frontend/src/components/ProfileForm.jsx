@@ -246,6 +246,7 @@ export default function ProfileForm() {
         height: parseFloat(formData.height), // in cm
         weight: parseFloat(formData.weight), // in kg
         activityLevel: formData.activityLevel, // sedentary, light, moderate, active, very_active
+        foodType: formData.dietaryPreference,
         dietaryGoal: formData.fitnessGoal, // lose_weight, maintain_weight, gain_weight, build_muscle
         ...(formData.targetWeight
           ? { targetWeight: parseFloat(formData.targetWeight) }
