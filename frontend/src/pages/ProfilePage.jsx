@@ -178,7 +178,7 @@ export default function ProfilePage() {
 
             {/* User Info */}
             <div className="flex-1">
-              <h1 className="text-2xl font-bold text-textDark">
+              <h1 className="text-2xl font-bold text-textDark capitalize">
                 {user?.name || 'User'}
               </h1>
               <div className="flex items-center gap-2 text-textLight mt-1">
@@ -205,7 +205,7 @@ export default function ProfilePage() {
         {/* Quick Stats */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <Card className="text-center">
-            <Ruler className="w-6 h-6 text-primary mx-auto mb-2" />
+            <Ruler className="w-6 h-6 text-primary mx-auto my-1" />
             <p className="text-2xl font-bold text-textDark">
               {profile.height || '—'}
             </p>
@@ -213,7 +213,7 @@ export default function ProfilePage() {
           </Card>
 
           <Card className="text-center">
-            <Weight className="w-6 h-6 text-primary mx-auto mb-2" />
+            <Weight className="w-6 h-6 text-primary mx-auto my-1" />
             <p className="text-2xl font-bold text-textDark">
               {profile.weight || '—'}
             </p>
@@ -221,15 +221,15 @@ export default function ProfilePage() {
           </Card>
 
           <Card className={`text-center ${bmiCategory.bg}`}>
-            <Heart className="w-6 h-6 text-primary mx-auto mb-2" />
+            <Heart className="w-6 h-6 text-primary mx-auto my-1" />
             <p className="text-2xl font-bold text-textDark">{bmi || '—'}</p>
-            <p className={`text-xs font-medium ${bmiCategory.color}`}>
+            <p className={`text-xs font-medium mb-1 ${bmiCategory.color}`}>
               {bmiCategory.text}
             </p>
           </Card>
 
           <Card className="text-center">
-            <Flame className="w-6 h-6 text-orange-500 mx-auto mb-2" />
+            <Flame className="w-6 h-6 text-orange-500 mx-auto my-1" />
             <p className="text-2xl font-bold text-textDark">
               {nutritionTargets?.dailyCalories || '—'}
             </p>
@@ -245,7 +245,7 @@ export default function ProfilePage() {
           </h2>
 
           <div className="space-y-4">
-            <div className="flex items-center justify-between py-3 border-b border-gray-100">
+            {/* <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <User className="w-5 h-5 text-textLight" />
                 <span className="text-textLight">Full Name</span>
@@ -263,7 +263,7 @@ export default function ProfilePage() {
               <span className="font-medium text-textDark">
                 {user?.email || 'Not set'}
               </span>
-            </div>
+            </div> */}
 
             <div className="flex items-center justify-between py-3 border-b border-gray-100">
               <div className="flex items-center gap-3">
@@ -285,7 +285,7 @@ export default function ProfilePage() {
               </span>
             </div>
 
-            <div className="flex items-center justify-between py-3">
+            {/* <div className="flex items-center justify-between py-3">
               <div className="flex items-center gap-3">
                 <Clock className="w-5 h-5 text-textLight" />
                 <span className="text-textLight">Member Since</span>
@@ -293,7 +293,7 @@ export default function ProfilePage() {
               <span className="font-medium text-textDark">
                 {formatDate(user?.createdAt)}
               </span>
-            </div>
+            </div> */}
           </div>
         </Card>
 
@@ -354,19 +354,19 @@ export default function ProfilePage() {
               </div>
               <div className="text-center p-4 bg-red-50 rounded-xl">
                 <p className="text-2xl font-bold text-red-600">
-                  {nutritionTargets.protein || '—'}g
+                  {nutritionTargets.macros.protein || '—'}g
                 </p>
                 <p className="text-sm text-textLight">Protein</p>
               </div>
               <div className="text-center p-4 bg-yellow-50 rounded-xl">
                 <p className="text-2xl font-bold text-yellow-600">
-                  {nutritionTargets.carbs || '—'}g
+                  {nutritionTargets.macros.carbs || '—'}g
                 </p>
                 <p className="text-sm text-textLight">Carbs</p>
               </div>
               <div className="text-center p-4 bg-blue-50 rounded-xl">
                 <p className="text-2xl font-bold text-blue-600">
-                  {nutritionTargets.fats || '—'}g
+                  {nutritionTargets.macros.fat || '—'}g
                 </p>
                 <p className="text-sm text-textLight">Fats</p>
               </div>
