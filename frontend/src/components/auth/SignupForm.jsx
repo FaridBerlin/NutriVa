@@ -15,7 +15,6 @@ export default function SignupForm() {
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
-
   const handleChange = (e) => {
     setFormData({
       ...formData,

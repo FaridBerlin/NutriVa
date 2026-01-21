@@ -41,7 +41,6 @@ export default function LoginForm() {
     }
   }
 
-
   return (
     <div className="space-y-4">
       {error && <div className="text-red-600">{error}</div>}

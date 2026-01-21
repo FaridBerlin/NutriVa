@@ -11,6 +11,10 @@ import {
   Scale,
   Ruler,
   UserCircle2,
+  Clipboard,
+  Info,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react'
 import Button from './ui/Button'
 
@@ -237,7 +241,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-textDark mb-2">
-            AI Diet Planner 🤖
+            AI Diet Planner <UserCircle2 className="inline w-6 h-6 ml-2 text-primary" />
           </h1>
           <p className="text-textLight text-lg">
             Let AI design your personalized nutrition plan
@@ -278,7 +282,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
                   ${currentStep === step.number ? 'ring-4 ring-primaryLight70' : ''}
                 `}
                 >
-                  {currentStep > step.number ? '✓' : step.icon}
+                  {currentStep > step.number ? <CheckCircle className="w-5 h-5" /> : step.icon}
                 </div>
                 <span className="text-xs mt-1 text-textLight font-medium">
                   {step.label}
@@ -289,7 +293,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-6 md:p-8 mb-6">
           {renderStepContent()}
 
           {/* Error & Success Messages */}
@@ -320,7 +324,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
               }
             `}
           >
-            ← Back
+            <ChevronLeft className="inline w-4 h-4 mr-2" /> Back
           </button>
 
           <button
@@ -330,22 +334,17 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
                        text-white rounded-lg font-semibold hover:shadow-lg 
                        transition-all transform hover:scale-105 disabled:opacity-50"
           >
-            {loading
-              ? 'Generating...'
-              : currentStep === totalSteps - 1
-                ? 'Generate Meal Plan ✓'
-                : 'Next →'}
+            {loading ? (
+              'Generating...'
+            ) : currentStep === totalSteps - 1 ? (
+              <span className="inline-flex items-center gap-2">Generate Meal Plan <CheckCircle className="w-4 h-4" /></span>
+            ) : (
+              <span className="inline-flex items-center">Next <ChevronRight className="w-4 h-4 ml-2" /></span>
+            )}
           </button>
         </div>
 
-        {/* Cancel Button */}
-        {onCancel && (
-          <div className="text-center mt-4">
-            <Button onClick={onCancel} variant="link" size="md">
-              Cancel
-            </Button>
-          </div>
-        )}
+        {/* Cancel Button removed (duplicate with page header) */}
 
         {/* Help Text */}
         <p className="text-center text-sm text-textLight mt-6">
@@ -378,8 +377,9 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
 
       {userProfile && (
         <div className="mb-4 p-3 bg-primaryLight40 border border-primary rounded-lg">
-          <p className="text-sm text-textDark">
-            ℹ️ Details loaded from your profile
+          <p className="text-sm text-textDark flex items-center gap-2">
+            <Info className="w-4 h-4 text-primary" />
+            Details loaded from your profile
           </p>
         </div>
       )}
@@ -395,9 +395,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
             value={form.planName}
             onChange={(e) => handleChange('planName', e.target.value)}
             placeholder="e.g., My AI Diet Plan"
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg 
-                     focus:ring-2 focus:ring-primary focus:border-transparent
-                     transition-all"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                     focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-muted dark:placeholder:text-gray-400"
           />
         </div>
 
@@ -416,9 +415,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
               min="18"
               max="100"
               disabled={userProfile?.age}
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all ${userProfile?.age ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                       focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${userProfile?.age ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : ''}`}
             />
             <p className="text-xs text-textLight mt-1">
               {userProfile?.age ? 'From your profile' : 'Between 18-100'}
@@ -438,9 +436,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
               min="30"
               max="250"
               disabled={userProfile?.weight}
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all ${userProfile?.weight ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                       focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${userProfile?.weight ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : ''}`}
             />
             <p className="text-xs text-textLight mt-1">
               {userProfile?.weight ? 'From your profile' : 'Between 30-250 kg'}
@@ -460,9 +457,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
               min="100"
               max="250"
               disabled={userProfile?.height}
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all ${userProfile?.height ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                       focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${userProfile?.height ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : ''}`}
             />
             <p className="text-xs text-textLight mt-1">
               {userProfile?.height ? 'From your profile' : 'Between 100-250 cm'}
@@ -479,9 +475,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
               value={form.gender}
               onChange={(e) => handleChange('gender', e.target.value)}
               disabled={userProfile?.gender}
-              className={`w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all ${userProfile?.gender ? 'bg-gray-100 cursor-not-allowed' : ''}`}
+              className={`w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                       focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${userProfile?.gender ? 'bg-gray-100 dark:bg-gray-700 cursor-not-allowed' : ''}`}
             >
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -500,9 +495,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
             <select
               value={form.activityLevel}
               onChange={(e) => handleChange('activityLevel', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                         focus:ring-2 focus:ring-primary focus:border-transparent transition-all placeholder:text-muted dark:placeholder:text-gray-400"
             >
               <option value="sedentary">Sedentary (little/no exercise)</option>
               <option value="lightly-active">
@@ -526,9 +520,8 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
             <select
               value={form.goal}
               onChange={(e) => handleChange('goal', e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg 
-                       focus:ring-2 focus:ring-primary focus:border-transparent
-                       transition-all"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 text-textDark dark:text-white
+                         focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
             >
               <option value="weight-loss">Weight Loss</option>
               <option value="maintenance">Maintenance</option>
@@ -787,13 +780,13 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
       </div>
 
       {/* Quick Generate Checkbox - Placed after allergen options */}
-      <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-primaryLight40 border border-primary rounded-lg">
+          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <label className="flex items-start cursor-pointer">
-          <input
+            <input
             type="checkbox"
             checked={form.useTemplates}
             onChange={(e) => handleChange('useTemplates', e.target.checked)}
-            className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary mt-0.5"
+            className="w-5 h-5 text-primary border-gray-300 rounded focus:ring-primary mt-0.5 bg-white dark:bg-gray-700 dark:border-gray-600"
           />
           <div className="ml-3">
             <span className="text-sm font-semibold text-textDark">
@@ -808,9 +801,9 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
       </div>
 
       {/* Summary */}
-      <div className="mt-6 bg-primaryLight40 p-6 rounded-xl border-l-4 border-primary">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="text-xl">📋</span>
+      <div className="mt-6 p-6 bg-white rounded-xl border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+          <div className="flex items-center gap-2 mb-4">
+          <Clipboard className="w-5 h-5" />
           <h3 className="font-bold text-textDark">Plan Summary</h3>
         </div>
         <div className="grid grid-cols-2 gap-4 text-sm">
