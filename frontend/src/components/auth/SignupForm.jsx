@@ -2,6 +2,7 @@ import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import { AuthContext } from '../../context/AuthContext'
+import Button from '../ui/Button'
 
 export default function SignupForm() {
   const [formData, setFormData] = useState({
@@ -14,13 +15,6 @@ export default function SignupForm() {
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
-  // shared green button style
-  const greenButtonClass = `
-    text-white bg-gradient-to-br from-green-600 to-green-400 
-    hover:bg-gradient-to-bl focus:ring-4 focus:outline-none 
-    focus:ring-green-200 font-medium rounded-md 
-    text-base px-5 py-2.5 shadow-md transition-all text-center
-  `
 
   const handleChange = (e) => {
     setFormData({
@@ -82,10 +76,10 @@ export default function SignupForm() {
             minLength="6"
           />
         </div>
-        {/* Sign Up button with unified green gradient style */}
-        <button type="submit" disabled={isLoading} className={greenButtonClass}>
+        {/* Sign Up button with unified Button component */}
+        <Button type="submit" variant="primary" size="md" disabled={isLoading}>
           {isLoading ? 'Creating account...' : 'Sign Up'}
-        </button>
+        </Button>
       </form>
       <p className="mt-4 text-sm">
         Already have an account?{' '}

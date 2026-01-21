@@ -12,6 +12,7 @@ import {
   Ruler,
   UserCircle2,
 } from 'lucide-react'
+import Button from './ui/Button'
 
 const DIET_TYPES = ['veg', 'non-veg', 'vegan']
 const ALLERGENS = ['dairy', 'gluten', 'nuts', 'none']
@@ -340,12 +341,9 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         {/* Cancel Button */}
         {onCancel && (
           <div className="text-center mt-4">
-            <button
-              onClick={onCancel}
-              className="text-textLight hover:text-textDark text-sm"
-            >
+            <Button onClick={onCancel} variant="link" size="md">
               Cancel
-            </button>
+            </Button>
           </div>
         )}
 

@@ -2,6 +2,7 @@ import { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import api from '../../services/api'
 import { AuthContext } from '../../context/AuthContext'
+import Button from '../ui/Button'
 
 export default function LoginForm() {
   const [formData, setFormData] = useState({
@@ -40,14 +41,6 @@ export default function LoginForm() {
     }
   }
 
-  // shared green button style
-  const greenButtonClass = `
-    text-white bg-gradient-to-br from-green-600 to-green-400 
-    hover:bg-gradient-to-bl focus:ring-4 focus:outline-none 
-    focus:ring-green-200 font-medium rounded-md 
-    text-base px-5 py-2.5 shadow-md transition-all text-center
-    disabled:opacity-50
-  `
 
   return (
     <div className="space-y-4">
@@ -76,10 +69,10 @@ export default function LoginForm() {
             required
           />
         </div>
-        {/* Login button with unified green gradient style */}
-        <button type="submit" disabled={isLoading} className={greenButtonClass}>
+        {/* Login button with unified Button component */}
+        <Button type="submit" variant="primary" size="md" disabled={isLoading}>
           {isLoading ? 'Logging in...' : 'Login'}
-        </button>
+        </Button>
         {/* Forgot Password */}
         <p className="text-sm text-right">
           <a href="/forgot-password" className="text-green-600 hover:underline">

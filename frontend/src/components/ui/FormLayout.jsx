@@ -21,7 +21,9 @@ export default function FormLayout({
     <div
       className={`max-w-3xl mx-auto px-6 py-8 ${centerClasses} ${className}`}
     >
-      <div className={`nv-card rounded-2xl shadow-md ${wrapperPadding} w-full ${accentClass}`}>
+      <div
+        className={`nv-card rounded-2xl shadow-md ${wrapperPadding} w-full ${accentClass}`}
+      >
         {title && (
           <h1 className={`text-2xl font-bold mb-2 ${titleClass}`}>{title}</h1>
         )}
