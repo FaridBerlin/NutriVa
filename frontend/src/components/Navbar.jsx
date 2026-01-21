@@ -2,6 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../context/AuthContext'
 import ThemeToggle from './ui/ThemeToggle'
+import Button from './ui/Button'
 import NutrivaLogo from './NutrivaLogo'
 
 export default function Navbar() {
@@ -191,6 +192,18 @@ export default function Navbar() {
             </>
           ) : null}
 
+          {/* Sign In / Sign Up for desktop (placed on the right) */}
+          {!user && (
+            <div className="hidden md:flex items-center gap-3 ml-3">
+              <Button to="/login" variant="ghost" size="md">
+                Sign In
+              </Button>
+              <Button to="/signup" variant="primary" size="md">
+                Sign Up
+              </Button>
+            </div>
+          )}
+
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -214,10 +227,11 @@ export default function Navbar() {
         </div>
 
         {/* Navigation Links - Only show Sign In/Sign Up for non-logged in users */}
+        {/* Mobile menu links (only visible on small screens) */}
         <div
-          className={`items-center justify-between w-full md:flex md:w-auto md:order-1 ${isMobileMenuOpen ? 'block' : 'hidden'}`}
+          className={`items-center justify-between w-full md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}
         >
-          <ul className="font-medium flex flex-col p-2 md:p-0 mt-2 md:flex-row md:space-x-6 md:mt-0">
+          <ul className="font-medium flex flex-col p-2 mt-2">
             {!user && (
               <>
                 <li>
@@ -231,7 +245,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/signup"
-                    className="block py-2 px-3 bg-primary text-white rounded-lg hover:bg-primaryDark transition-all duration-300 md:inline-block"
+                    className="block py-2 px-3 bg-primary text-white rounded-lg hover:bg-primaryDark transition-all duration-300"
                   >
                     Sign Up
                   </Link>

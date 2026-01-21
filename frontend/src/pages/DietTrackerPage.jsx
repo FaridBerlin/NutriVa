@@ -237,7 +237,7 @@ export default function DietTrackerPage() {
     return (
        <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="text-xl text-muted">Loading...</div>
         </div>
       </div>
@@ -249,7 +249,7 @@ export default function DietTrackerPage() {
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
 
-        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4">
               <FiStar className="inline" />
@@ -284,7 +284,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl w-full">
             <div className="text-6xl mb-4 text-center">
               <FiPieChart className="inline" />
@@ -380,7 +380,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4">
               <FiAlertTriangle className="inline" />
@@ -540,7 +540,7 @@ export default function DietTrackerPage() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <div className="flex-1 p-4 md:p-8 ml-4 md:ml-8 lg:ml-12">
+      <div className="flex-1 p-4 md:p-8 lg:ml-64">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
