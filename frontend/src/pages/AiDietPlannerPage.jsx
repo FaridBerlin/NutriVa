@@ -17,7 +17,7 @@ const AiDietPlannerPage = () => {
 
   // Get current day data directly from activePlan
   const currentDayData = activePlan?.days?.find(
-    (day) => day.dayNumber === selectedDay
+    (day) => day.dayNumber === selectedDay,
   )
 
   if (loading) {
@@ -87,7 +87,8 @@ const AiDietPlannerPage = () => {
               {activePlan.planName}
             </h1>
             <p className="text-muted dark:text-accentYellow/80">
-              {activePlan.planDuration} days • {activePlan.dailyCalories} cal/day
+              {activePlan.planDuration} days • {activePlan.dailyCalories}{' '}
+              cal/day
             </p>
           </div>
           <button
@@ -103,27 +104,28 @@ const AiDietPlannerPage = () => {
         <Card className="mb-6" noHover>
           <div className="flex items-center gap-2 overflow-x-auto">
             <Calendar className="w-5 h-5 text-primary flex-shrink-0" />
-            {Array.from({ length: activePlan.planDuration }, (_, i) => i + 1).map(
-              (day) => (
-                <button
-                  key={day}
-                  onClick={() => setSelectedDay(day)}
-                  className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${
-                    selectedDay === day
-                      ? 'bg-primary text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-accentYellow dark:hover:bg-gray-600'
-                  }`}
-                >
-                  Day {day}
-                </button>
-              ),
-            )}
+            {Array.from(
+              { length: activePlan.planDuration },
+              (_, i) => i + 1,
+            ).map((day) => (
+              <button
+                key={day}
+                onClick={() => setSelectedDay(day)}
+                className={`px-4 py-2 rounded-md font-medium transition-colors whitespace-nowrap ${
+                  selectedDay === day
+                    ? 'bg-primary text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-accentYellow dark:hover:bg-gray-600'
+                }`}
+              >
+                Day {day}
+              </button>
+            ))}
           </div>
         </Card>
 
         {/* Meals */}
         {currentDayData && (
-          <div 
+          <div
             key={selectedDay}
             className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-fr animate-fadeIn"
           >
