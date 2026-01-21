@@ -311,6 +311,35 @@ html.dark {
     color: var(--nv-card-text) !important;
   }
 
+  /* Subtle green-accent gradient for form cards in light mode.
+     Use `accent` prop on FormLayout to enable `nv-form-accent`. In dark mode
+     the background falls back to the normal card variable for contrast. */
+  .nv-form-accent {
+    background: linear-gradient(135deg, rgba(131,211,133,0.12) 0%, rgba(255,255,255,0.95) 100%);
+    border: 1px solid rgba(16,185,129,0.08);
+    /* Light-mode: subtle gray shadow to lift the card */
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.06), 0 4px 12px rgba(15, 23, 42, 0.04);
+  }
+
+  /* Keep dark mode readable: map accent to the dark card bg */
+  html.dark .nv-form-accent {
+    background-image: none !important;
+    background: var(--nv-card-bg) !important;
+    border-color: rgba(148,163,184,0.12) !important;
+    /* Dark-mode: subtle warm yellow glow to match accent tokens */
+    box-shadow: 0 10px 30px rgba(251,191,36,0.10), 0 4px 12px rgba(251,191,36,0.06) !important;
+  }
+
+  /* Prevent hover/focus transform and shadow on accented form cards in dark mode */
+  html.dark .nv-form-accent.nv-card:hover,
+  html.dark .nv-form-accent.nv-card:focus,
+  html.dark .nv-form-accent.nv-card:focus-within {
+    /* Keep card visually stable (no translate/scale) but preserve the yellow shadow */
+    transform: none !important;
+    transition: none !important;
+    box-shadow: 0 10px 30px rgba(251,191,36,0.10), 0 4px 12px rgba(251,191,36,0.06) !important;
+  }
+
   /* Central muted text utility that respects light/dark variables */
   .text-muted {
     color: var(--nv-muted-text) !important;
