@@ -12,12 +12,8 @@ export default function Button({
   disabled = false,
   ...rest
 }) {
-<<<<<<< HEAD
   const base =
     'inline-flex items-center justify-center rounded-md font-medium transition-all focus:outline-none disabled:opacity-50'
-=======
-  const base = 'inline-flex items-center justify-center rounded-md font-medium transition-all focus:outline-none disabled:opacity-50'
->>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
 
   const sizes = {
     sm: 'px-3 py-1.5 text-sm',
@@ -30,15 +26,10 @@ export default function Button({
       'text-white bg-gradient-to-br from-green-600 to-green-400 hover:from-green-500 hover:to-green-300 focus:ring-4 focus:ring-green-200 shadow-md',
     ghost: 'bg-transparent text-primary hover:bg-primary/10',
     link: 'bg-transparent text-primary underline-offset-2 hover:underline',
-<<<<<<< HEAD
     secondary:
       'text-emerald-900 bg-emerald-200 hover:bg-emerald-300 focus:ring-4 focus:ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 rounded-md shadow-sm',
     danger:
       'text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 shadow-sm',
-=======
-    secondary: 'text-emerald-900 bg-emerald-200 hover:bg-emerald-300 focus:ring-4 focus:ring-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 rounded-md shadow-sm',
-    danger: 'text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:ring-red-300 shadow-sm',
->>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
   }
 
   const btnClass = `${base} ${sizes[size] || sizes.md} ${variants[variant] || variants.primary} ${className}`
@@ -52,7 +43,6 @@ export default function Button({
   }
 
   return (
-<<<<<<< HEAD
     <button
       type={type}
       className={btnClass}
@@ -60,9 +50,6 @@ export default function Button({
       disabled={disabled}
       {...rest}
     >
-=======
-    <button type={type} className={btnClass} onClick={onClick} disabled={disabled} {...rest}>
->>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
       {children}
     </button>
   )
