@@ -241,7 +241,8 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-textDark mb-2">
-            AI Diet Planner <UserCircle2 className="inline w-6 h-6 ml-2 text-primary" />
+            AI Diet Planner{' '}
+            <UserCircle2 className="inline w-6 h-6 ml-2 text-primary" />
           </h1>
           <p className="text-textLight text-lg">
             Let AI design your personalized nutrition plan
@@ -282,7 +283,11 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
                   ${currentStep === step.number ? 'ring-4 ring-primaryLight70' : ''}
                 `}
                 >
-                  {currentStep > step.number ? <CheckCircle className="w-5 h-5" /> : step.icon}
+                  {currentStep > step.number ? (
+                    <CheckCircle className="w-5 h-5" />
+                  ) : (
+                    step.icon
+                  )}
                 </div>
                 <span className="text-xs mt-1 text-textLight font-medium">
                   {step.label}
@@ -337,9 +342,13 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
             {loading ? (
               'Generating...'
             ) : currentStep === totalSteps - 1 ? (
-              <span className="inline-flex items-center gap-2">Generate Meal Plan <CheckCircle className="w-4 h-4" /></span>
+              <span className="inline-flex items-center gap-2">
+                Generate Meal Plan <CheckCircle className="w-4 h-4" />
+              </span>
             ) : (
-              <span className="inline-flex items-center">Next <ChevronRight className="w-4 h-4 ml-2" /></span>
+              <span className="inline-flex items-center">
+                Next <ChevronRight className="w-4 h-4 ml-2" />
+              </span>
             )}
           </button>
         </div>
@@ -780,9 +789,9 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
       </div>
 
       {/* Quick Generate Checkbox - Placed after allergen options */}
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+      <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
         <label className="flex items-start cursor-pointer">
-            <input
+          <input
             type="checkbox"
             checked={form.useTemplates}
             onChange={(e) => handleChange('useTemplates', e.target.checked)}
@@ -802,7 +811,7 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
 
       {/* Summary */}
       <div className="mt-6 p-6 bg-white rounded-xl border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
-          <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4">
           <Clipboard className="w-5 h-5" />
           <h3 className="font-bold text-textDark">Plan Summary</h3>
         </div>
