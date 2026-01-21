@@ -15,6 +15,10 @@ export default function SignupForm() {
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
   const handleChange = (e) => {
     setFormData({
       ...formData,

@@ -41,6 +41,10 @@ export default function LoginForm() {
     }
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
   return (
     <div className="space-y-4">
       {error && <div className="text-red-600">{error}</div>}

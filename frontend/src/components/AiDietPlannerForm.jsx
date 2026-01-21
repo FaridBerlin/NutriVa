@@ -353,7 +353,18 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
           </button>
         </div>
 
+<<<<<<< HEAD
         {/* Cancel Button removed (duplicate with page header) */}
+=======
+        {/* Cancel Button */}
+        {onCancel && (
+          <div className="text-center mt-4">
+            <Button onClick={onCancel} variant="link" size="md">
+              Cancel
+            </Button>
+          </div>
+        )}
+>>>>>>> 656ec87 (Implement Button component and replace button elements in forms and navbar for consistency)
 
         {/* Help Text */}
         <p className="text-center text-sm text-textLight mt-6">
