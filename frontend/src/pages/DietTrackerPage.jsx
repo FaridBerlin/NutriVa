@@ -235,7 +235,7 @@ export default function DietTrackerPage() {
     setShowOrphanedError(false)
     fetchActiveTracker() // This will set activeTracker to null if tracker is orphaned
     return (
-      <div className="flex min-h-screen bg-gray-50">
+       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
         <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
           <div className="text-xl text-muted">Loading...</div>
@@ -268,10 +268,10 @@ export default function DietTrackerPage() {
               className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
               onClick={() => {
                 setShowCongrats(false)
-                window.location.href = '/dashboard'
+                window.location.href = '/diet-tracker'
               }}
             >
-              Go to Dashboard
+              Go to Diet-Tracker Page
             </button>
           </div>
         </div>
@@ -321,20 +321,20 @@ export default function DietTrackerPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <h4 className="font-bold text-gray-800">
-                              {plan.name}
+                            <h4 className="font-bold text-gray-800 capitalize">
+                              {plan.planName}
                             </h4>
                             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                              {plan.planType}
+                              {plan.foodType}
                             </span>
                             <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                              {plan.dietPreference}
+                              {plan.goal}
                             </span>
                           </div>
                           <div className="text-sm text-muted space-y-1">
                             <p>
                               {plan.days?.length || 0} days •{' '}
-                              {plan.mealsPerDay || 0} meals/day
+                              {plan.days?.[0]?.meals?.length || 0} meals/day
                             </p>
                             {plan.dietaryRestrictions?.length > 0 && (
                               <p className="flex items-center gap-1">
@@ -544,10 +544,10 @@ export default function DietTrackerPage() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">
+            <h1 className="text-3xl font-bold text-gray-800 capitalize">
               {user?.name || 'User'} Progress
             </h1>
-            <p className="text-muted">{aiMealPlan.planName}</p>
+            <p className="text-muted capitalize">{aiMealPlan.planName}</p>
           </div>
 
           {/* Day Selector (compact week strip) */}
@@ -685,27 +685,27 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Macros Target
               </h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie
-                    data={macrosData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={({ name, value }) => `${name} ${value}%`}
-                    animationBegin={0}
-                    animationDuration={800}
-                  >
-                    {macrosData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+                <ResponsiveContainer width="100%" height={280}>
+                  <PieChart>
+                    <Pie
+                      data={macrosData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      dataKey="value"
+                      label={({ name, value }) => `${name} ${value}%`}
+                      animationBegin={0}
+                      animationDuration={800}
+                    >
+                      {macrosData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
             </Card>
 
             {/* Daily Nutrition Progress */}
@@ -713,31 +713,31 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Nutrition Progress
               </h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart
-                  data={nutritionProgressData}
-                  layout="vertical"
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis dataKey="name" type="category" width={80} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="Consumed"
-                    stackId="a"
-                    fill="#10b981"
-                    animationDuration={800}
-                  />
-                  <Bar
-                    dataKey="Remaining"
-                    stackId="a"
-                    fill="#fbbf24"
-                    animationDuration={800}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+                <ResponsiveContainer width="100%" height={280}>
+                  <BarChart
+                    data={nutritionProgressData}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis dataKey="name" type="category" width={80} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="Consumed"
+                      stackId="a"
+                      fill="#10b981"
+                      animationDuration={800}
+                    />
+                    <Bar
+                      dataKey="Remaining"
+                      stackId="a"
+                      fill="#fbbf24"
+                      animationDuration={800}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
             </Card>
           </div>
 
