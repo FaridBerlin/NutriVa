@@ -19,6 +19,8 @@ export default function AiMealPlanList() {
   const [viewPlan, setViewPlan] = useState(null)
   const [showDetails, setShowDetails] = useState(false)
   const [error, setError] = useState('')
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [planToDelete, setPlanToDelete] = useState(null)
 
   useEffect(() => {
     // Fetch all plans on mount
@@ -42,17 +44,20 @@ export default function AiMealPlanList() {
     }
   }
 
-  const handleDelete = async (planId) => {
-    const confirmed = window.confirm(
-      'Do you really want to delete this AI meal plan? This action cannot be undone.',
-    )
+  const handleDeleteClick = (planId) => {
+    setPlanToDelete(planId)
+    setShowDeleteModal(true)
+  }
 
-    if (!confirmed) return
+  const confirmDelete = async () => {
+    const result = await deletePlanFromContext(planToDelete)
 
-    const result = await deletePlanFromContext(planId)
     if (!result.success) {
       setError(result.error || 'Failed to delete plan')
     }
+
+    setShowDeleteModal(false)
+    setPlanToDelete(null)
   }
 
   const handleSetActive = (plan) => {
@@ -137,7 +142,7 @@ export default function AiMealPlanList() {
             </button>
 
             <button
-              onClick={() => handleDelete(plan._id)}
+              onClick={() => handleDeleteClick(plan._id)}
               className="nv-btn-danger nv-btn-lg"
             >
               Delete
@@ -145,6 +150,32 @@ export default function AiMealPlanList() {
           </div>
         </Card>
       ))}
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-background rounded-lg p-6 w-full max-w-md shadow-xl">
+            <h3 className="text-lg font-bold mb-2">Delete AI Meal Plan</h3>
+
+            <p className="text-sm text-muted mb-6">
+              Are you sure you want to delete this meal plan? This action cannot
+              be undone.
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+
+              <button onClick={confirmDelete} className="nv-btn-danger">
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
