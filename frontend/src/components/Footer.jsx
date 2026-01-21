@@ -109,7 +109,9 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 text-accentYellow">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-6 text-accentYellow">
+              Quick Links
+            </h4>
             <ul className="space-y-4">
               <li>
                 <a
@@ -170,7 +172,9 @@ export default function Footer() {
 
           {/* Support & Contact */}
           <div>
-            <h4 className="text-lg font-semibold mb-6 text-accentYellow">Support</h4>
+            <h4 className="text-lg font-semibold mb-6 text-accentYellow">
+              Support
+            </h4>
             <ul className="space-y-4">
               <li>
                 <a
@@ -230,7 +234,9 @@ export default function Footer() {
         <div className="bg-gradient-to-r from-gray-800/80 to-gray-800/40 rounded-2xl p-8 mb-12 border border-gray-700/50">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <h4 className="text-xl font-bold mb-2 text-accentYellow">Stay Updated</h4>
+              <h4 className="text-xl font-bold mb-2 text-accentYellow">
+                Stay Updated
+              </h4>
               <p className="text-gray-200">
                 Get nutrition tips and updates delivered to your inbox.
               </p>

@@ -30,8 +30,8 @@ const AiDietPlannerPage = () => {
 
   if (showForm) {
     return (
-      <div className="p-6">
-        <div className="max-w-6xl mx-auto">
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="max-w-screen-xl mx-auto">
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-3xl font-bold text-gray-800 dark:text-accentYellow">
               Create Your Meal Plan
@@ -54,9 +54,9 @@ const AiDietPlannerPage = () => {
 
   if (!activePlan) {
     return (
-      <div className="p-6">
-        <div className="max-w-4xl mx-auto text-center">
-          <Card className="p-12" noHover>
+      <div className="px-4 py-6 sm:px-6 lg:px-8">
+        <div className="max-w-screen-md mx-auto text-center">
+          <Card className="p-8 sm:p-12" noHover>
             <Utensils className="w-20 h-20 mx-auto text-gray-300 mb-4" />
             <h2 className="text-2xl font-bold text-gray-800 dark:text-accentYellow mb-2">
               No Meal Plan Yet
@@ -78,8 +78,8 @@ const AiDietPlannerPage = () => {
   }
 
   return (
-    <div className="p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="px-4 py-6 sm:px-6 lg:px-8">
+      <div className="max-w-screen-xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <div>
