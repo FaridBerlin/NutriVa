@@ -241,7 +241,9 @@ html {
   --nv-body-text: #111827; /* main body text (light mode) */
   --nv-heading-text: #0b1220; /* headings (light mode) */
   --nv-link: #065f46; /* default link color (light mode) */
-  --font-sans: 'Newsreader', 'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  --font-sans:
+    'Newsreader', 'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial;
   --font-display: 'Newsreader', var(--font-sans);
   --nv-input-bg: #ffffff;
   --nv-input-text: #111827;
