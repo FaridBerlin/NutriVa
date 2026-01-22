@@ -1,18 +1,19 @@
 import { Flame, Target, TrendingUp } from 'lucide-react'
-import WaterTracker from './dashboardStats/WaterTracker'
-import SleepTracker from './dashboardStats/SleepTracker'
-import StreakTracker from './dashboardStats/StreakTracker'
-import Card from '../ui/Card'
+import WaterTracker from './WaterTracker'
+import SleepTracker from './SleepTracker'
+import StreakTracker from './StreakTracker'
+import StatsCard from './StatsCard'
+import Card from '../../ui/Card'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import {
   bmiPercent as calcBmiPercent,
   bmiCategory as calcBmiCategory,
   getBMIColor,
-} from '../../utils/bmiUtils'
-import { useProfile } from '../../context/ProfileContext'
+} from '../../../utils/bmiUtils'
+import { useProfile } from '../../../context/ProfileContext'
 import { useContext } from 'react'
-import { ThemeContext } from '../../context/ThemeContext'
+import { ThemeContext } from '../../../context/ThemeContext'
 
 export default function DashboardStats({ stats }) {
   const calories = stats?.dailyCalories || 2000
@@ -75,40 +76,12 @@ export default function DashboardStats({ stats }) {
           className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden relative group animate-fadeInUp`}
           style={{ animationDelay: '200ms' }}
         >
-          {/* Decorative Background Element */}
-          <div
-            className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20 ${
-              isDark ? 'bg-amber-500' : 'bg-emerald-400'
-            } group-hover:opacity-30 transition-opacity duration-500`}
-          />
-
-          <div className="relative p-6">
-            {/* Header with Icon */}
-            <div className="flex items-center justify-between mb-4">
-              <div
-                className={`${
-                  isDark
-                    ? 'bg-amber-500/20'
-                    : 'bg-gradient-to-br from-emerald-400 to-teal-500'
-                } w-12 h-12 rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
-              >
-                <Target
-                  className={isDark ? 'text-amber-400' : 'text-white'}
-                  size={24}
-                />
-              </div>
-              <span
-                className={`text-4xl font-black ${textPrimary} tracking-tighter`}
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                {bmi.toFixed(1)}
-              </span>
-            </div>
-
-            <h3 className={`text-sm font-semibold ${textSecondary} mb-4`}>
-              Body Mass Index
-            </h3>
-
+          <StatsCard
+            icon={Target}
+            value={bmi.toFixed(1)}
+            title="Body Mass Index"
+            colorScheme="emerald"
+          >
             {/* Circular Progress with Enhanced Styling */}
             <div className="flex justify-center mb-4">
               <div
@@ -156,7 +129,7 @@ export default function DashboardStats({ stats }) {
                 {Math.round(bmiPercent)}% of range
               </span>
             </div>
-          </div>
+          </StatsCard>
         </div>
 
         {/* Streak Tracker - Enhanced */}
@@ -168,10 +141,7 @@ export default function DashboardStats({ stats }) {
         </div>
       </div>
 
-      {/* Add required CSS for animations */}
-      <style jsx>{`
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
-
+      <style>{`
         @keyframes fadeInUp {
           from {
             opacity: 0;

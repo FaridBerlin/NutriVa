@@ -8,6 +8,7 @@ import Sidebar from '../components/Sidebar/Sidebar'
 import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
 import { bmiCategory, bmiPercent } from '../utils/bmiUtils'
+import { showMotivationalToast } from '../components/react-hot-toast/MotivationalQuotes'
 
 import {
   DashboardHeader,
@@ -42,7 +43,7 @@ export default function DashboardPage() {
     // Show a new quote every 7 seconds (5s display + 2s pause)
     const interval = setInterval(() => {
       showMotivationalToast()
-    }, 8000)
+    }, 50000)
 
     return () => {
       clearTimeout(timeout)
@@ -66,13 +67,6 @@ export default function DashboardPage() {
     bmiPercent: bmiPercent(profile?.bmi),
     bmiCategory: bmiCategory(profile?.bmi),
     targetWeight: profile?.targetWeight,
-    // prefer planDuration from activePlan (header) when available
-    planDuration: activePlan?.planDuration || profile?.planDuration || 30,
-    // compute daysLeft using activeTracker.currentDay when available so stats match header
-    daysLeft:
-      activePlan?.planDuration != null && activeTracker?.currentDay != null
-        ? Math.max(0, activePlan.planDuration - activeTracker.currentDay)
-        : profile?.planDuration || 30,
   }
 
   const profileData = {
@@ -100,13 +94,6 @@ export default function DashboardPage() {
     proteinTarget: nutritionTargets?.macros.protein,
     carbsCurrent: todayNutrition.carbs || 0,
     targetWeight: profile?.targetWeight,
-    // prefer plan info coming from activePlan (header) if available
-    planDuration: activePlan?.planDuration || profile?.planDuration || 30,
-    // compute daysLeft using activeTracker.currentDay when available
-    daysLeft:
-      activePlan?.planDuration != null && activeTracker?.currentDay != null
-        ? Math.max(0, activePlan.planDuration - activeTracker.currentDay)
-        : profile?.planDuration || 30,
     fatsTarget: nutritionTargets?.macros.fat,
   }
 
