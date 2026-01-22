@@ -70,8 +70,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
         <Menu className="w-5 h-5 text-gray-800 dark:text-gray-200" />
       </button>
 
-      {/* Desktop sidebar */}
-      <aside className="nv-sidebar hidden lg:block fixed top-0 left-0 z-40 h-screen w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-sm font-display text-base lg:text-lg leading-6">
+      {/* Desktop sidebar (convex / raised appearance) */}
+      <aside className="nv-sidebar hidden lg:block fixed top-0 left-0 z-40 h-screen w-64 bg-white dark:bg-slate-900/95 border-r border-gray-100 dark:border-slate-800 shadow-2xl rounded-r-2xl ring-1 ring-gray-100 dark:ring-slate-700/10 backdrop-blur-sm font-display text-base lg:text-lg leading-6">
         <div className="h-full flex flex-col">
           {/* Logo */}
           <div className="flex items-center justify-center px-3 py-3 border-b border-gray-100">
@@ -94,9 +94,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   <button
                     onClick={() => handleMenuItemClick(item.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                      isActive
-                        ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
-                        : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                        isActive
+                          ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
+                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                     }`}
                   >
                     <Icon
@@ -129,7 +129,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 onClick={() => handleMenuItemClick('ai-diet-planner')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
                   resolvedActive === 'ai-diet-planner'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                    ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -149,7 +149,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 onClick={() => handleMenuItemClick('ai-meal-plans')}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
                   resolvedActive === 'ai-meal-plans'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                    ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -172,7 +172,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
                   /* active handled via pathname/activeSection externally */
                   resolvedActive === 'diet-tracker'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                    ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-primary/30 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-accentYellow/30'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -256,7 +256,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="nv-sidebar absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-xl p-4 overflow-y-auto font-display">
+          <div className="nv-sidebar absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900/95 border-r border-gray-100 dark:border-slate-800 shadow-2xl rounded-r-2xl ring-1 ring-gray-100 dark:ring-slate-700/10 p-4 overflow-y-auto font-display backdrop-blur-sm">
             <div className="flex items-center justify-between mb-4">
               <Link to="/">
                 <NutrivaLogo />
@@ -282,8 +282,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                         setMobileOpen(false)
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                        isActive
-                          ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                          isActive
+                            ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
                           : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                       }`}
                     >
@@ -308,9 +308,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     setMobileOpen(false)
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                    resolvedActive === 'ai-diet-planner'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
-                      : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                        resolvedActive === 'ai-diet-planner'
+                          ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
+                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                   }`}
                 >
                   <Wand2
@@ -331,7 +331,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
                     resolvedActive === 'ai-meal-plans'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                      ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-primary/30 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-accentYellow/30'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                   }`}
                 >
@@ -353,7 +353,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   onClick={() => setMobileOpen(false)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
                     resolvedActive === 'diet-tracker'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                      ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-primary/30 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-accentYellow/30'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                   }`}
                 >
