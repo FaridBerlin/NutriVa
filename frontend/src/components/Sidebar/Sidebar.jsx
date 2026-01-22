@@ -1,5 +1,5 @@
 import { useContext, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, Link, useLocation } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import NutrivaLogo from '../NutrivaLogo'
 import ThemeToggle from '../ui/ThemeToggle'
@@ -18,6 +18,7 @@ import {
 
 export default function Sidebar({ activeSection, onSectionChange }) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const location = useLocation()
   // Add My Meal Planner to the sidebar
   const menuItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
@@ -39,6 +40,22 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       navigate('/dashboard', { state: { section: itemId } })
     }
   }
+
+  // Derive active section from path when not provided
+  const deriveSectionFromPath = (path) => {
+    if (!path) return null
+    if (path === '/' || path === '/home') return 'dashboard'
+    if (path.startsWith('/dashboard')) return 'dashboard'
+    if (path.startsWith('/settings')) return 'settings'
+    if (path.startsWith('/diet-tracker')) return 'diet-tracker'
+    if (path.startsWith('/ai-meal-plans')) return 'ai-meal-plans'
+    if (path.startsWith('/ai-diet-planner') || path.startsWith('/ai-diet')) return 'ai-diet-planner'
+    if (path.startsWith('/profile')) return 'profile'
+    // fallback: return null
+    return null
+  }
+
+  const resolvedActive = activeSection || deriveSectionFromPath(location.pathname)
 
   return (
     <>
@@ -68,23 +85,23 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           <ul className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
             {menuItems.map((item) => {
               const Icon = item.icon
-              const isActive = activeSection === item.id
+              const isActive = resolvedActive === item.id
 
               return (
                 <li key={item.id}>
                   <button
                     onClick={() => handleMenuItemClick(item.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                      isActive
-                        ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
-                        : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
-                    }`}
+                        isActive
+                          ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
+                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                      }`}
                   >
                     <Icon
                       size={18}
                       className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
                     />
-                    <span className="font-semibold flex-1">{item.label}</span>
+                    <span className="font-semibold text-black dark:text-accentYellow flex-1">{item.label}</span>
 
                     {item.badge && (
                       <span
@@ -107,8 +124,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               <button
                 onClick={() => handleMenuItemClick('ai-diet-planner')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                  activeSection === 'ai-diet-planner'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                  resolvedActive === 'ai-diet-planner'
+                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -116,7 +133,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   size={18}
                   className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
                 />
-                <span className="font-semibold flex-1">AI Diet Planner</span>
+                <span className="font-semibold text-black dark:text-accentYellow flex-1">AI Diet Planner</span>
               </button>
             </li>
 
@@ -125,8 +142,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               <button
                 onClick={() => handleMenuItemClick('ai-meal-plans')}
                 className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
-                  activeSection === 'ai-meal-plans'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                  resolvedActive === 'ai-meal-plans'
+                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -134,9 +151,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   size={18}
                   className="transition-transform duration-200 group-hover:scale-110 dark:text-accentYellow"
                 />
-                <span className="font-semibold text-black dark:text-accentYellow flex-1">
-                  AI Meal Plans
-                </span>
+                <span className="font-semibold text-black dark:text-accentYellow flex-1">AI Meal Plans</span>
               </button>
             </li>
 
@@ -148,8 +163,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 to="/diet-tracker"
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
                   /* active handled via pathname/activeSection externally */
-                  activeSection === 'diet-tracker'
-                    ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                  resolvedActive === 'diet-tracker'
+                    ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                     : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                 }`}
               >
@@ -157,7 +172,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   size={18}
                   className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                 />
-                <span className="font-semibold flex-1">Diet Tracker</span>
+                <span className="font-semibold text-black dark:text-accentYellow flex-1">Diet Tracker</span>
               </Link>
             </li>
           </ul>
@@ -167,25 +182,29 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             {/* Back to Home */}
             <Link
               to="/"
-              className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:hover:text-accentYellow transition-all duration-200 group"
+              className={`w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg transition-all duration-200 group ${
+                resolvedActive === 'dashboard' ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow' : 'hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:hover:text-accentYellow'
+              }`}
             >
               <Home
                 size={18}
                 className="transition-transform duration-200 group-hover:scale-110"
               />
-              <span className="font-semibold"> Home Page</span>
+              <span className="font-semibold text-black dark:text-accentYellow"> Home Page</span>
             </Link>
 
             {/* Settings */}
             <Link
               to="/settings"
-              className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 group"
+              className={`w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg transition-all duration-200 group ${
+                resolvedActive === 'settings' ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow' : 'hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
+              }`}
             >
               <Settings
                 size={18}
                 className="transition-transform duration-200 group-hover:rotate-90"
               />
-              <span className="font-semibold">Settings</span>
+              <span className="font-semibold text-black dark:text-accentYellow">Settings</span>
             </Link>
 
             {/* Theme toggle (above logout) - full button */}
@@ -235,7 +254,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             <ul className="space-y-2">
               {menuItems.map((item) => {
                 const Icon = item.icon
-                const isActive = activeSection === item.id
+                const isActive = resolvedActive === item.id
                 return (
                   <li key={item.id}>
                     <button
@@ -244,8 +263,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                         setMobileOpen(false)
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                        isActive
-                          ? 'bg-primary/10 text-black shadow-sm'
+                          isActive
+                            ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                           : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                       }`}
                     >
@@ -253,7 +272,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                         size={18}
                         className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
                       />
-                      <span className="font-semibold flex-1">{item.label}</span>
+                      <span className="font-semibold text-black dark:text-accentYellow flex-1">{item.label}</span>
                     </button>
                   </li>
                 )
@@ -268,8 +287,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     setMobileOpen(false)
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                    activeSection === 'ai-diet-planner'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                    resolvedActive === 'ai-diet-planner'
+                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                   }`}
                 >
@@ -277,7 +296,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     size={18}
                     className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
                   />
-                  <span className="font-semibold flex-1">AI Diet Planner</span>
+                  <span className="font-semibold text-black dark:text-accentYellow flex-1">AI Diet Planner</span>
                 </button>
               </li>
 
@@ -288,8 +307,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     setMobileOpen(false)
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
-                    activeSection === 'ai-meal-plans'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                    resolvedActive === 'ai-meal-plans'
+                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                   }`}
                 >
@@ -297,7 +316,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     size={18}
                     className="transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold text-black flex-1">
+                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
                     AI Meal Plans
                   </span>
                 </button>
@@ -310,8 +329,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   to="/diet-tracker"
                   onClick={() => setMobileOpen(false)}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                    activeSection === 'diet-tracker'
-                      ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
+                    resolvedActive === 'diet-tracker'
+                      ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                   }`}
                 >
@@ -319,7 +338,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     size={18}
                     className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold text-black flex-1">
+                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
                     Diet Tracker
                   </span>
                 </Link>
@@ -331,13 +350,15 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 <Link
                   to="/"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:hover:text-accentYellow transition-all duration-200 group"
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg transition-all duration-200 group ${
+                    resolvedActive === 'dashboard' ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow' : 'hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:hover:text-accentYellow'
+                  }`}
                 >
                   <Home
                     size={18}
                     className="transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold"> Home Page</span>
+                  <span className="font-semibold text-black dark:text-accentYellow"> Home Page</span>
                 </Link>
               </li>
 
@@ -345,20 +366,22 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 <Link
                   to="/settings"
                   onClick={() => setMobileOpen(false)}
-                  className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 group"
+                  className={`w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg transition-all duration-200 group ${
+                    resolvedActive === 'settings' ? 'bg-primary/10 text-black shadow-sm dark:bg-slate-800/60 dark:backdrop-blur-md dark:text-accentYellow' : 'hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
+                  }`}
                 >
                   <Settings
                     size={18}
                     className="transition-transform duration-200 group-hover:rotate-90"
                   />
-                  <span className="font-semibold">Settings</span>
+                  <span className="font-semibold text-black dark:text-accentYellow">Settings</span>
                 </Link>
               </li>
 
               <li className="mt-4">
                 <div className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg">
                   <ThemeToggle className="p-0 transition-transform duration-200 group-hover:scale-110" />
-                  <span className="text-sm font-semibold">Theme</span>
+                  <span className="text-sm font-semibold text-black dark:text-accentYellow">Theme</span>
                 </div>
               </li>
 
