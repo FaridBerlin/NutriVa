@@ -17,6 +17,7 @@ import { useProfile } from '../context/ProfileContext'
 import { AuthContext } from '../context/AuthContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import Card from '../components/ui/Card'
+import { DashboardHeader } from '../components/dashboard'
 import {
   ResponsiveContainer,
   LineChart,
@@ -235,7 +236,7 @@ export default function DietTrackerPage() {
     setShowOrphanedError(false)
     fetchActiveTracker() // This will set activeTracker to null if tracker is orphaned
     return (
-       <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
         <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="text-xl text-muted">Loading...</div>
@@ -542,13 +543,7 @@ export default function DietTrackerPage() {
 
       <div className="flex-1 p-4 md:p-8 lg:ml-64">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 capitalize">
-              {user?.name || 'User'} Progress
-            </h1>
-            <p className="text-muted capitalize">{aiMealPlan.planName}</p>
-          </div>
+          <DashboardHeader userName={user?.name} />
 
           {/* Day Selector (compact week strip) */}
           <div className="mb-6">
@@ -635,7 +630,7 @@ export default function DietTrackerPage() {
           {/* Overview Cards Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Daily Calories Card */}
-            <Card noHover className="border-l-4 border-blue-500 p-4">
+            <Card noHover className="border-l-4 border-l-blue-500 p-4">
               <div className="text-sm text-muted mb-2">Daily Calories</div>
               <div className="text-3xl font-bold text-blue-600">
                 {Math.round(consumedCalories)} / {Math.round(targetCalories)}
@@ -646,7 +641,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Current BMI Card */}
-            <Card noHover className="border-l-4 border-green-500 p-4">
+            <Card noHover className="border-l-4 border-l-green-500 p-4">
               <div className="text-sm text-muted mb-2">Current BMI</div>
               <div className="text-3xl font-bold text-green-600">
                 {bmi.toFixed(1)}
@@ -655,7 +650,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Predicted Weight Card */}
-            <Card noHover className="border-l-4 border-purple-500 p-4">
+            <Card noHover className="border-l-4 border-l-purple-500 p-4">
               <div className="text-sm text-muted mb-2">Predicted Weight</div>
               <div className="text-3xl font-bold text-purple-600">
                 {targetWeight} kg
@@ -666,7 +661,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Meal Completion Card */}
-            <Card noHover className="border-l-4 border-yellow-500 p-4">
+            <Card noHover className="border-l-4 border-l-yellow-500 p-4">
               <div className="text-sm text-muted mb-2">Meal Completion</div>
               <div className="text-3xl font-bold text-yellow-600">
                 {currentDayTracker?.mealsCompleted || 0} /{' '}
@@ -685,7 +680,8 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Macros Target
               </h3>
-                <ResponsiveContainer width="100%" height={280}>
+              <div className="w-full h-56 md:h-72">
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={macrosData}
@@ -706,6 +702,7 @@ export default function DietTrackerPage() {
                     <Tooltip />
                   </PieChart>
                 </ResponsiveContainer>
+              </div>
             </Card>
 
             {/* Daily Nutrition Progress */}
@@ -713,7 +710,8 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Nutrition Progress
               </h3>
-                <ResponsiveContainer width="100%" height={280}>
+              <div className="w-full h-56 md:h-72">
+                <ResponsiveContainer width="100%" height="100%">
                   <BarChart
                     data={nutritionProgressData}
                     layout="vertical"
@@ -738,6 +736,7 @@ export default function DietTrackerPage() {
                     />
                   </BarChart>
                 </ResponsiveContainer>
+              </div>
             </Card>
           </div>
 

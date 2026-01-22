@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @font-face {
   font-family: 'Newsreader';
   src: url('/src/assets/fonts/Newsreader_60pt-SemiBold.ttf') format('truetype');
@@ -19,6 +18,7 @@ body {
     white 50%,
     rgba(131, 211, 133, 0.25) 100%
   );
+  color: #111827; /* make body text dark by default for better readability */
 }
 
 @layer utilities {
@@ -37,7 +37,10 @@ body {
     color: var(--nv-card-text) !important;
   }
 
-  /* Convert common semi-transparent white utilities to opaque card background in dark mode */
+  /* Convert common semi-transparent white utilities to opaque card background in dark mode
+     This mapping was preventing translucent/background-blur effects on components
+     that intentionally use semi-transparent white (e.g., nav with `bg-white/30`).
+     Commenting it out so components can control their own dark-mode translucency.
   html.dark .bg-white\/20,
   html.dark .bg-white\/30,
   html.dark .bg-white\/50,
@@ -46,17 +49,22 @@ body {
   html.dark .bg-white\/80 {
     background-color: var(--nv-card-bg) !important;
     color: var(--nv-card-text) !important;
-  }
+  } */
 
-  /* Navbar specifically: make header darker when dark mode active */
-  html.dark nav {
+  /* Navbar dark-mode override removed so component classes control glass effect.
+     Previously this forced a solid gradient which prevented backdrop-blur
+     and semi-transparent backgrounds from the component's utility classes
+     (e.g., `dark:bg-slate-900/40` and `dark:backdrop-blur-md`) from showing.
+     Keeping this commented allows the Navbar component to apply a glassy
+     translucent background via its own classes. */
+  /* html.dark nav {
     background: linear-gradient(
       to bottom,
       rgba(2, 6, 23, 0.85),
       rgba(8, 12, 20, 0.85)
     );
     border-bottom-color: rgba(148, 163, 184, 0.06);
-  }
+  } */
 
   /* Backdrop blur elements (e.g. header) should be darker */
   html.dark .backdrop-blur-lg.backdrop-blur-lg {
@@ -114,6 +122,18 @@ body {
 
   html.dark .text-gray-500.text-gray-500 {
     color: #9ca3af;
+  }
+
+  /* Light-mode overrides: force commonly-used gray classes to darker color for readability */
+  html:not(.dark) .text-gray-500.text-gray-500,
+  html:not(.dark) .text-gray-600.text-gray-600,
+  html:not(.dark) .text-gray-700.text-gray-700,
+  html:not(.dark) .text-gray-400.text-gray-400,
+  html:not(.dark) .text-muted.text-muted,
+  html:not(.dark) .text-textLight.text-textLight,
+  html:not(.dark) .text-text-tertiary.text-text-tertiary,
+  html:not(.dark) .text-secondary.text-secondary {
+    color: #111827 !important;
   }
 
   /*hover */
