@@ -94,9 +94,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   <button
                     onClick={() => handleMenuItemClick(item.id)}
                     className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                        isActive
-                          ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
-                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                      isActive
+                        ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
+                        : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                     }`}
                   >
                     <Icon
@@ -282,8 +282,8 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                         setMobileOpen(false)
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                          isActive
-                            ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
+                        isActive
+                          ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
                           : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                       }`}
                     >
@@ -308,9 +308,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     setMobileOpen(false)
                   }}
                   className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                        resolvedActive === 'ai-diet-planner'
-                          ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
-                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                    resolvedActive === 'ai-diet-planner'
+                      ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-gray-200 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-slate-700/30'
+                      : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
                   }`}
                 >
                   <Wand2
