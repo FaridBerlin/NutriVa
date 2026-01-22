@@ -241,9 +241,7 @@ html {
   --nv-body-text: #111827; /* main body text (light mode) */
   --nv-heading-text: #0b1220; /* headings (light mode) */
   --nv-link: #065f46; /* default link color (light mode) */
-  --font-sans:
-    'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial;
+  --font-sans: 'Newsreader', 'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   --font-display: 'Newsreader', var(--font-sans);
   --nv-input-bg: #ffffff;
   --nv-input-text: #111827;
@@ -617,6 +615,18 @@ html.dark {
 
 html {
   font-family: var(--font-sans);
+}
+
+/* Ensure Tailwind `font-display` utility always maps to the Newsreader face first
+   so components that use `font-display` reliably render the imported Newsreader font. */
+.font-display {
+  font-family: 'Newsreader', var(--font-sans) !important;
+}
+
+/* Ensure every element inside the sidebar uses the Newsreader face */
+.nv-sidebar,
+.nv-sidebar * {
+  font-family: 'Newsreader', var(--font-sans) !important;
 }
 
 /* Global text colors and weights (use variables so dark/light can be tuned centrally) */

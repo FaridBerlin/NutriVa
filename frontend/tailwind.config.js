@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['CustomSans', 'ui-sans-serif', 'system-ui'],
+        sans: ['Newsreader', 'CustomSans', 'ui-sans-serif', 'system-ui'],
         display: ['Newsreader', 'CustomSans'],
         serif: ['Times New Roman', 'serif'],
       },

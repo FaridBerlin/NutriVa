@@ -52,7 +52,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       </button>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block fixed top-0 left-0 z-40 h-screen w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-sm font-display text-base lg:text-lg leading-6">
+      <aside className="nv-sidebar hidden lg:block fixed top-0 left-0 z-40 h-screen w-64 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-sm font-display text-base lg:text-lg leading-6">
         <div className="h-full flex flex-col">
           {/* Logo */}
           <div className="flex items-center justify-center px-3 py-3 border-b border-gray-100">
@@ -101,7 +101,6 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 </li>
               )
             })}
-
 
             {/* AI Diet Planner with Ollama (light-mode unified background + hover) */}
             <li>
@@ -166,7 +165,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
           {/* Logout & Navigation */}
           <div className="px-4 py-4 space-y-2">
             {/* Back to Home */}
-              <Link
+            <Link
               to="/"
               className="w-full flex items-center gap-3 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:hover:text-accentYellow transition-all duration-200 group"
             >
@@ -193,7 +192,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             <div className="py-2">
               <ThemeToggle
                 full
-                className="w-full flex items-center gap-2 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 group"
+                className="w-full flex items-center gap-1 px-4 py-3 text-black dark:text-accentYellow rounded-lg hover:bg-gray-100 hover:text-gray-800 dark:hover:text-accentYellow hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] transition-all duration-200 group"
               />
             </div>
 
@@ -219,7 +218,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             className="absolute inset-0 bg-black/40"
             onClick={() => setMobileOpen(false)}
           />
-          <div className="absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-xl p-4 overflow-y-auto">
+          <div className="nv-sidebar absolute left-0 top-0 bottom-0 w-72 bg-white dark:bg-slate-900 border-r border-gray-200 dark:border-slate-700 shadow-xl p-4 overflow-y-auto font-display">
             <div className="flex items-center justify-between mb-4">
               <Link to="/">
                 <NutrivaLogo />
@@ -245,9 +244,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                         setMobileOpen(false)
                       }}
                       className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
-                          isActive
-                            ? 'bg-primary/10 text-black shadow-sm'
-                            : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
+                        isActive
+                          ? 'bg-primary/10 text-black shadow-sm'
+                          : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
                       }`}
                     >
                       <Icon
@@ -288,7 +287,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     handleMenuItemClick('ai-meal-plans')
                     setMobileOpen(false)
                   }}
-                    className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
+                  className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-left transition-all duration-200 group ${
                     activeSection === 'ai-meal-plans'
                       ? 'bg-primary/10 text-black shadow-sm dark:bg-transparent dark:text-accentYellow'
                       : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02]'
