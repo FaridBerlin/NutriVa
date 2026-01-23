@@ -20,14 +20,7 @@ const AiDietPlannerPage = () => {
     (day) => day.dayNumber === selectedDay,
   )
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="animate-spin h-12 w-12 text-primary" />
-      </div>
-    )
-  }
-
+  // Show form view (form handles its own loading state)
   if (showForm) {
     return (
       <div className="px-4 py-6 sm:px-6 lg:px-8">
@@ -48,6 +41,15 @@ const AiDietPlannerPage = () => {
             onCancel={() => setShowForm(false)}
           />
         </div>
+      </div>
+    )
+  }
+
+  // Show loading spinner only when not in form view and data is being fetched
+  if (loading && !activePlan) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="animate-spin h-12 w-12 text-primary" />
       </div>
     )
   }
