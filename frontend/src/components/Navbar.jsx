@@ -44,10 +44,14 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 backdrop-blur-lg border-b border-white/20">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-4 py-1">
-        <Link to="/" className="flex items-center space-x-3">
-          <NutrivaLogo />
+    <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 dark:bg-slate-900/40 backdrop-blur-sm dark:backdrop-blur-md border-b border-white/20 dark:border-slate-700 h-14">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-3 h-14">
+        <Link
+          to="/"
+          className="flex items-center space-x-3"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <NutrivaLogo size="md" />
         </Link>
 
         <div className="flex items-center md:order-2 space-x-3 md:space-x-0">
@@ -58,10 +62,10 @@ export default function Navbar() {
                 <button
                   type="button"
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                  className="flex items-center text-sm bg-white rounded-full focus:ring-4 focus:ring-gray-200 hover:ring-4 hover:ring-gray-200 transition-all duration-300"
+                  className="flex items-center text-sm bg-white rounded-full focus:ring-2 focus:ring-gray-200 hover:ring-2 hover:ring-gray-200 transition-all duration-200"
                 >
                   <span className="sr-only">Open user menu</span>
-                  <div className="w-9 h-9 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-sm ring-2 ring-gray-300 capitalize">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-gray-600 to-gray-800 flex items-center justify-center text-white font-bold text-sm ring-1 ring-gray-300 capitalize">
                     {getUserInitials()}
                   </div>
                 </button>
@@ -167,7 +171,7 @@ export default function Navbar() {
                       <li>
                         <button
                           onClick={handleLogout}
-                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-red-50 text-red-600 hover:text-red-700 rounded-lg transition-all duration-200 font-medium dark:text-accentYellow dark:hover:bg-slate-800 dark:hover:text-accentYellow/95"
+                          className="flex items-center gap-3 w-full px-4 py-2.5 hover:bg-red-50 text-red-600 hover:text-red-700 rounded-lg transition-all duration-200 font-medium dark:text-red-600 dark:hover:bg-slate-800 dark:hover:text-red-700"
                         >
                           <svg
                             className="w-5 h-5"
@@ -208,11 +212,11 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             type="button"
-            className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-textLight rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center p-1 w-9 h-9 justify-center text-sm text-textLight rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
           >
             <span className="sr-only">Open main menu</span>
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['CustomSans', 'ui-sans-serif', 'system-ui'],
+        sans: ['Newsreader', 'CustomSans', 'ui-sans-serif', 'system-ui'],
         display: ['Newsreader', 'CustomSans'],
         serif: ['Times New Roman', 'serif'],
       },
@@ -46,7 +46,7 @@ export default {
         'text-primary': '#111827',
         'text-secondary': '#4b5563',
         'text-tertiary': '#6b7280',
-        'text-muted': '#9ca3af',
+        'text-muted': '#111827',
         'surface-card': '#ffffff',
         'surface-border': '#e5e7eb',
         'surface-hover': '#f9fafb',
