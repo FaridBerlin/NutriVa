@@ -57,24 +57,21 @@ export default function DashboardStats({ stats }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Water Tracker - Enhanced */}
         <div
-          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group animate-fadeInUp`}
-          style={{ animationDelay: '0ms' }}
+          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group`}
         >
           <WaterTracker compact />
         </div>
 
         {/* Sleep Tracker - Enhanced */}
         <div
-          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group animate-fadeInUp`}
-          style={{ animationDelay: '100ms' }}
+          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group`}
         >
           <SleepTracker compact stats={stats} />
         </div>
 
         {/* BMI Card - Redesigned with Gradient Progress */}
         <div
-          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden relative group animate-fadeInUp`}
-          style={{ animationDelay: '200ms' }}
+          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden relative group`}
         >
           <StatsCard
             icon={Target}
@@ -115,7 +112,7 @@ export default function DashboardStats({ stats }) {
             </div>
 
             {/* Category Badge */}
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between pt-10">
               <span
                 className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${
                   isDark
@@ -134,37 +131,11 @@ export default function DashboardStats({ stats }) {
 
         {/* Streak Tracker - Enhanced */}
         <div
-          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group animate-fadeInUp`}
-          style={{ animationDelay: '300ms' }}
+          className={`${cardBg} rounded-2xl border shadow-lg ${hoverShadow} transition-all duration-300 overflow-hidden group`}
         >
           <StreakTracker compact />
         </div>
       </div>
-
-      <style>{`
-        @keyframes fadeInUp {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        .animate-fadeInUp {
-          animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        /* Smooth transitions for all interactive elements */
-        * {
-          transition-property:
-            background-color, border-color, color, fill, stroke, opacity,
-            box-shadow, transform;
-          transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-      `}</style>
     </div>
   )
 }
