@@ -92,7 +92,7 @@ export default function DashboardStats({ stats }) {
               <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-300">
                 {bmiCategory}
               </span>
-              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+              <span className="text-xs font-semibold text-gray-400 dark:text-gray-400">
                 {Math.round(bmiPercent)}% of range
               </span>
             </div>
