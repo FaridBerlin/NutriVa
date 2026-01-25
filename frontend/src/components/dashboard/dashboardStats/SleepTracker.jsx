@@ -3,7 +3,6 @@ import { useProfile } from '../../../context/ProfileContext'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { Moon, Plus, Minus } from 'lucide-react'
-import Card from '../../ui/Card'
 import { ThemeContext } from '../../../context/ThemeContext'
 import StatsCard from './StatsCard'
 
@@ -38,7 +37,6 @@ export default function SleepTracker({ compact = false, stats = {} }) {
 
   const addHalfHour = () =>
     setSleepHours((s) => Math.round((s + 0.5) * 10) / 10)
-  const reset = () => setSleepHours(0)
 
   if (compact) {
     const cupSize = 1 // represent 1 hour as unit
@@ -151,53 +149,4 @@ export default function SleepTracker({ compact = false, stats = {} }) {
       </StatsCard>
     )
   }
-
-  return (
-    <Card className="relative pb-16 flex flex-col">
-      <div className="absolute top-3 left-3 flex flex-col items-center">
-        <div className="p-3 rounded-full bg-indigo-50">
-          <Moon className="text-indigo-600" size={36} />
-        </div>
-        <div className="text-sm text-textLight mt-2">Sleep</div>
-      </div>
-
-      <div className="flex flex-col items-center justify-center min-h-[320px]">
-        <div style={{ width: 200, height: 200 }}>
-          <CircularProgressbar
-            value={percent}
-            text={`${sleepHours}h`}
-            styles={buildStyles({
-              pathColor: '#6366f1',
-              textColor: '#1e293b',
-              trailColor: '#e5e7eb',
-              textSize: '20px',
-            })}
-          />
-        </div>
-        <p className="text-base text-textLight mt-3">
-          Suggested: {suggested.min}-{suggested.max} hrs (age: {age ?? '—'})
-        </p>
-
-        <div className="absolute left-4 right-4 bottom-3 flex items-center justify-between">
-          <button
-            className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-            onClick={addHalfHour}
-          >
-            +0.5 hr
-          </button>
-
-          <div className="text-lg text-indigo-600 font-semibold text-center">
-            Now: {sleepHours}h
-          </div>
-
-          <button
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-auto"
-            onClick={reset}
-          >
-            Reset
-          </button>
-        </div>
-      </div>
-    </Card>
-  )
 }

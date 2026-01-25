@@ -2,7 +2,6 @@ import { useState, useEffect, useContext } from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
 import { Flame, Check, RotateCcw } from 'lucide-react'
-import Card from '../../ui/Card'
 import { ThemeContext } from '../../../context/ThemeContext'
 import StatsCard from './StatsCard'
 
@@ -155,58 +154,4 @@ export default function StreakTracker({ compact = false }) {
       </StatsCard>
     )
   }
-
-  return (
-    <Card className="relative pb-16 flex flex-col">
-      <div className="absolute top-3 left-3 flex flex-col items-center">
-        <div className="p-3 rounded-full bg-orange-50">
-          <Flame className="text-orange-600" size={36} />
-        </div>
-        <div className="text-sm text-textLight mt-2">Streak</div>
-      </div>
-
-      <div className="flex flex-col items-center justify-center min-h-[320px]">
-        <div style={{ width: 200, height: 200 }}>
-          <CircularProgressbar
-            value={percent}
-            text={currentStreak >= 7 ? '🔥' : `${currentStreak}`}
-            styles={buildStyles({
-              pathColor: '#f97316',
-              textColor: '#1e293b',
-              trailColor: '#e5e7eb',
-              textSize: currentStreak >= 7 ? '48px' : '32px',
-            })}
-          />
-        </div>
-        <p className="text-base text-textLight mt-3">
-          Current: {currentStreak} days | Best: {bestStreak} days
-        </p>
-
-        <div className="absolute left-4 right-4 bottom-3 flex items-center justify-between">
-          <button
-            className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-            onClick={handleReset}
-          >
-            Reset
-          </button>
-
-          <div className="text-lg text-orange-600 font-semibold text-center">
-            {todayCompleted ? '✓ Completed' : 'Mark Today'}
-          </div>
-
-          <button
-            className={`px-4 py-2 rounded transition-all ${
-              todayCompleted
-                ? 'bg-green-500 text-white cursor-not-allowed'
-                : 'bg-orange-600 text-white hover:bg-orange-700'
-            }`}
-            onClick={handleMarkComplete}
-            disabled={todayCompleted}
-          >
-            {todayCompleted ? 'Done ✓' : 'Complete'}
-          </button>
-        </div>
-      </div>
-    </Card>
-  )
 }

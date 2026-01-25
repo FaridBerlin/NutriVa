@@ -2,14 +2,13 @@ import { useState, useEffect, useContext } from 'react'
 import { Droplet, Plus, Minus } from 'lucide-react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import 'react-circular-progressbar/dist/styles.css'
-import Card from '../../ui/Card'
 import { ThemeContext } from '../../../context/ThemeContext'
 import StatsCard from './StatsCard'
 
 export default function WaterTracker({ weight = 70, compact = false }) {
   const { theme } = useContext(ThemeContext)
   const dailyGoal = Math.round(weight * 35)
-  
+
   // Load from localStorage on mount
   const [waterIntake, setWaterIntake] = useState(() => {
     const saved = localStorage.getItem('waterIntake')
@@ -40,10 +39,6 @@ export default function WaterTracker({ weight = 70, compact = false }) {
     setWaterIntake((v) => v + amount)
     setStreak((s) => s + 1)
   }
-
-  const resetIntake = () => setWaterIntake(0)
-
-  const isGoalReached = waterIntake >= dailyGoal
 
   if (compact) {
     const cupSize = 150
@@ -153,78 +148,4 @@ export default function WaterTracker({ weight = 70, compact = false }) {
       </StatsCard>
     )
   }
-
-  return (
-    <div className="bg-blue-100 p-4 pb-16 rounded-lg shadow-md relative flex flex-col">
-      {showBanner && (
-        <div className="absolute left-2 right-2 -top-6 bg-green-600 text-white p-2 rounded text-center font-bold z-10">
-          ✅ Goal reached!
-        </div>
-      )}
-
-      <div className="relative">
-        {/* fixed icon at top-left */}
-        <div className="absolute top-3 left-3 flex flex-col items-center">
-          <div className="p-3 rounded-full bg-blue-50">
-            <Droplet className="text-blue-500" size={36} />
-          </div>
-          <div className="text-sm text-textLight mt-2">Water</div>
-        </div>
-
-        {/* main content (circle centered) */}
-        <div className="flex flex-col items-center justify-center min-h-[320px]">
-          <div style={{ width: 200, height: 200 }}>
-            <CircularProgressbar
-              value={Math.round((waterIntake / dailyGoal) * 100) || 0}
-              text={`${Math.min(Math.floor(waterIntake / 150), Math.max(1, Math.ceil(dailyGoal / 150)))} / ${Math.max(1, Math.ceil(dailyGoal / 150))}`}
-              styles={buildStyles({
-                pathColor: '#3b82f6',
-                textColor: '#075985',
-                trailColor: '#e5e7eb',
-                textSize: '20px',
-              })}
-            />
-          </div>
-          <p className="text-lg text-blue-600 mt-3">
-            Today's Water Intake: {Math.min(waterIntake, dailyGoal)} ml /{' '}
-            {dailyGoal} ml
-          </p>
-          <p className="text-base text-gray-500">
-            You should drink about {(dailyGoal / 1000).toFixed(2)} L of water
-            per day
-          </p>
-
-          <div className="absolute left-4 right-4 bottom-3 flex items-center justify-between">
-            <button
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-              onClick={() => handleAddWater(150)}
-            >
-              +150ml
-            </button>
-
-            <div className="text-lg text-blue-600 font-semibold text-center">
-              <span>🔥</span>
-              <div>Streak: {streak}</div>
-            </div>
-
-            <button
-              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 ml-auto"
-              onClick={resetIntake}
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-4 text-gray-700">
-        <p className="font-semibold">Debug Info:</p>
-        <p>Weight: {weight} kg</p>
-        <p>Daily Goal: {dailyGoal} ml</p>
-        <p>Current Water Intake (raw): {waterIntake} ml</p>
-        <p>Goal Reached: {isGoalReached ? 'Yes' : 'No'}</p>
-        <p>Streak: {streak}</p>
-      </div>
-    </div>
-  )
 }

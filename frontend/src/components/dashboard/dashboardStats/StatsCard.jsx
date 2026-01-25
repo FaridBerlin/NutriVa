@@ -45,9 +45,9 @@ export default function StatsCard({
   }
 
   const colors = colorSchemes[colorScheme] || colorSchemes.blue
-  const textPrimary = isDark ? 'text-accentYellow' : 'text-gray-900'
-  const textSecondary = isDark ? 'text-accentYellow/70' : 'text-gray-600'
-  const textMuted = isDark ? 'text-accentYellow/50' : 'text-gray-500'
+  const textPrimary = isDark ? 'text-white' : 'text-gray-900'
+  const textSecondary = isDark ? 'text-gray-300' : 'text-gray-600'
+  const textMuted = isDark ? 'text-gray-400' : 'text-gray-500'
 
   return (
     <div className="relative p-6">
