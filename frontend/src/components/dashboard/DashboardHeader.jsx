@@ -4,7 +4,6 @@ import { useMealPlan } from '../../context/aiMealPlanContext'
 import { useDietTracker } from '../../context/DietTrackerContext'
 import { ThemeContext } from '../../context/ThemeContext'
 import { TrendingDown, User, Target, TrendingUp } from 'lucide-react'
-import MotivationalTicker from './MotivationalTicker'
 
 export default function DashboardHeader({ userName }) {
   const { profile, loading } = useProfile()
@@ -35,9 +34,10 @@ export default function DashboardHeader({ userName }) {
     return 1
   }
   const weightDifference = () => {
-    const weight = profile?.targetWeight - profile?.weight || 0
+    const current = Number(profile?.weight ?? 0)
+    const target = Number(profile?.targetWeight ?? 0)
 
-    return weight
+    return target - current
   }
 
   const currentDay = getCurrentDay()
@@ -47,20 +47,20 @@ export default function DashboardHeader({ userName }) {
 
   const isDark = theme === 'dark'
   const containerClass = isDark
-    ? 'p-6 rounded-2xl bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10 text-accentYellow nv-header mb-8 mt-5'
-    : 'p-6 rounded-2xl bg-white shadow-sm border border-gray-100 mb-8 mt-5'
+    ? 'p-4 mx-4 md:mx-6 rounded-2xl bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10 text-accentYellow nv-header mb-6 mt-4'
+    : 'p-4 mx-4 md:mx-6 rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 border border-gray-100 mb-6 mt-4'
   const titleClass = isDark
-    ? 'text-2xl font-bold text-accentYellow'
-    : 'text-2xl font-bold text-gray-900'
+    ? 'text-xl font-bold text-accentYellow'
+    : 'text-xl font-bold text-gray-900'
   const subtitleClass = isDark
     ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-muted'
+    : 'text-sm text-gray-900'
   const weightLabelClass = isDark
     ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-muted'
+    : 'text-sm text-gray-900'
   const weightValueClass = isDark
-    ? 'text-lg font-semibold text-accentYellow'
-    : 'text-lg font-semibold text-gray-900'
+    ? 'text-base font-semibold text-accentYellow'
+    : 'text-base font-semibold text-gray-900'
   const iconBg = isDark ? 'bg-amber-600/20' : 'bg-emerald-400/10'
   const iconColor = isDark ? 'text-amber-400' : 'text-emerald-600'
 
@@ -71,7 +71,7 @@ export default function DashboardHeader({ userName }) {
           <div
             className={`w-14 h-14 ${iconBg} rounded-full flex items-center justify-center`}
           >
-            <User className={iconColor} size={28} />
+            <User className={iconColor} size={24} />
           </div>
           <div>
             <h1 className={titleClass}>
@@ -121,7 +121,11 @@ export default function DashboardHeader({ userName }) {
           <div className="flex items-center justify-end gap-3">
             <div className={weightLabelClass}>Weight</div>
             <div className={weightValueClass}>
-              {loading ? '...' : profile?.weight ? `${profile.weight} kg` : '—'}
+              {loading
+                ? '...'
+                : profile?.weight
+                  ? `${Number(profile.weight).toFixed(1)} kg`
+                  : '—'}
             </div>
           </div>
           <div className="flex items-center justify-end gap-2 mt-2">
@@ -133,18 +137,18 @@ export default function DashboardHeader({ userName }) {
               ) : (
                 <TrendingUp size={20} />
               )}
-              <span>{Math.abs(weight)} kg</span>
+              <span>{Math.abs(Number(weight)).toFixed(1)} kg</span>
             </div>
             <div className={`text-xl md:text-2xl ${subtitleClass}`}>
-              → {profile?.targetWeight || 55} kg
+              →{' '}
+              {profile?.targetWeight
+                ? Number(profile.targetWeight).toFixed(1)
+                : 55}{' '}
+              kg
             </div>
           </div>
           <div className={`${subtitleClass} mt-2`}>{currentDate}</div>
         </div>
-      </div>
-      {/* confined motivational ticker inside header */}
-      <div className="mt-4">
-        <MotivationalTicker speed={12} />
       </div>
     </div>
   )

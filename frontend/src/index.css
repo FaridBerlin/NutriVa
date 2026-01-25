@@ -2,28 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Font-face declarations (test fonts). Replace files in /src/assets/fonts/ as needed. */
-/* @font-face {
-  font-family: 'CustomSans';
-  src: url('/src/assets/fonts/CustomSans-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'CustomSans';
-  src: url('/src/assets/fonts/CustomSans-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: bold;
-  font-display: swap;
-}
 @font-face {
   font-family: 'Newsreader';
   src: url('/src/assets/fonts/Newsreader_60pt-SemiBold.ttf') format('truetype');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
-} */
+}
 
 /* Global styles */
 body {
@@ -33,6 +18,7 @@ body {
     white 50%,
     rgba(131, 211, 133, 0.25) 100%
   );
+  color: #111827; /* make body text dark by default for better readability */
 }
 
 @layer utilities {
@@ -51,7 +37,10 @@ body {
     color: var(--nv-card-text) !important;
   }
 
-  /* Convert common semi-transparent white utilities to opaque card background in dark mode */
+  /* Convert common semi-transparent white utilities to opaque card background in dark mode
+     This mapping was preventing translucent/background-blur effects on components
+     that intentionally use semi-transparent white (e.g., nav with `bg-white/30`).
+     Commenting it out so components can control their own dark-mode translucency.
   html.dark .bg-white\/20,
   html.dark .bg-white\/30,
   html.dark .bg-white\/50,
@@ -60,17 +49,22 @@ body {
   html.dark .bg-white\/80 {
     background-color: var(--nv-card-bg) !important;
     color: var(--nv-card-text) !important;
-  }
+  } */
 
-  /* Navbar specifically: make header darker when dark mode active */
-  html.dark nav {
+  /* Navbar dark-mode override removed so component classes control glass effect.
+     Previously this forced a solid gradient which prevented backdrop-blur
+     and semi-transparent backgrounds from the component's utility classes
+     (e.g., `dark:bg-slate-900/40` and `dark:backdrop-blur-md`) from showing.
+     Keeping this commented allows the Navbar component to apply a glassy
+     translucent background via its own classes. */
+  /* html.dark nav {
     background: linear-gradient(
       to bottom,
       rgba(2, 6, 23, 0.85),
       rgba(8, 12, 20, 0.85)
     );
     border-bottom-color: rgba(148, 163, 184, 0.06);
-  }
+  } */
 
   /* Backdrop blur elements (e.g. header) should be darker */
   html.dark .backdrop-blur-lg.backdrop-blur-lg {
@@ -128,6 +122,18 @@ body {
 
   html.dark .text-gray-500.text-gray-500 {
     color: #9ca3af;
+  }
+
+  /* Light-mode overrides: force commonly-used gray classes to darker color for readability */
+  html:not(.dark) .text-gray-500.text-gray-500,
+  html:not(.dark) .text-gray-600.text-gray-600,
+  html:not(.dark) .text-gray-700.text-gray-700,
+  html:not(.dark) .text-gray-400.text-gray-400,
+  html:not(.dark) .text-muted.text-muted,
+  html:not(.dark) .text-textLight.text-textLight,
+  html:not(.dark) .text-text-tertiary.text-text-tertiary,
+  html:not(.dark) .text-secondary.text-secondary {
+    color: #111827 !important;
   }
 
   /*hover */
@@ -236,7 +242,7 @@ html {
   --nv-heading-text: #0b1220; /* headings (light mode) */
   --nv-link: #065f46; /* default link color (light mode) */
   --font-sans:
-    'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Newsreader', 'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial;
   --font-display: 'Newsreader', var(--font-sans);
   --nv-input-bg: #ffffff;
@@ -309,6 +315,45 @@ html.dark {
   .nv-card {
     background-color: var(--nv-card-bg) !important;
     color: var(--nv-card-text) !important;
+  }
+
+  /* Subtle green-accent gradient for form cards in light mode.
+     Use `accent` prop on FormLayout to enable `nv-form-accent`. In dark mode
+     the background falls back to the normal card variable for contrast. */
+  .nv-form-accent {
+    background: linear-gradient(
+      135deg,
+      rgba(131, 211, 133, 0.12) 0%,
+      rgba(255, 255, 255, 0.95) 100%
+    );
+    border: 1px solid rgba(16, 185, 129, 0.08);
+    /* Light-mode: subtle gray shadow to lift the card */
+    box-shadow:
+      0 10px 30px rgba(15, 23, 42, 0.06),
+      0 4px 12px rgba(15, 23, 42, 0.04);
+  }
+
+  /* Keep dark mode readable: map accent to the dark card bg */
+  html.dark .nv-form-accent {
+    background-image: none !important;
+    background: var(--nv-card-bg) !important;
+    border-color: rgba(148, 163, 184, 0.12) !important;
+    /* Dark-mode: subtle warm yellow glow to match accent tokens */
+    box-shadow:
+      0 10px 30px rgba(251, 191, 36, 0.1),
+      0 4px 12px rgba(251, 191, 36, 0.06) !important;
+  }
+
+  /* Prevent hover/focus transform and shadow on accented form cards in dark mode */
+  html.dark .nv-form-accent.nv-card:hover,
+  html.dark .nv-form-accent.nv-card:focus,
+  html.dark .nv-form-accent.nv-card:focus-within {
+    /* Keep card visually stable (no translate/scale) but preserve the yellow shadow */
+    transform: none !important;
+    transition: none !important;
+    box-shadow:
+      0 10px 30px rgba(251, 191, 36, 0.1),
+      0 4px 12px rgba(251, 191, 36, 0.06) !important;
   }
 
   /* Central muted text utility that respects light/dark variables */
@@ -572,6 +617,18 @@ html.dark {
 
 html {
   font-family: var(--font-sans);
+}
+
+/* Ensure Tailwind `font-display` utility always maps to the Newsreader face first
+   so components that use `font-display` reliably render the imported Newsreader font. */
+.font-display {
+  font-family: 'Newsreader', var(--font-sans) !important;
+}
+
+/* Ensure every element inside the sidebar uses the Newsreader face */
+.nv-sidebar,
+.nv-sidebar * {
+  font-family: 'Newsreader', var(--font-sans) !important;
 }
 
 /* Global text colors and weights (use variables so dark/light can be tuned centrally) */

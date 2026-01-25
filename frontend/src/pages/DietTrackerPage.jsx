@@ -17,6 +17,7 @@ import { useProfile } from '../context/ProfileContext'
 import { AuthContext } from '../context/AuthContext'
 import Sidebar from '../components/Sidebar/Sidebar'
 import Card from '../components/ui/Card'
+import { DashboardHeader } from '../components/dashboard'
 import {
   ResponsiveContainer,
   LineChart,
@@ -237,7 +238,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="text-xl text-muted">Loading...</div>
         </div>
       </div>
@@ -249,7 +250,7 @@ export default function DietTrackerPage() {
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
 
-        <div className="flex-1 flex items-center justify-center ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4">
               <FiStar className="inline" />
@@ -268,10 +269,10 @@ export default function DietTrackerPage() {
               className="w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-lg font-semibold"
               onClick={() => {
                 setShowCongrats(false)
-                window.location.href = '/dashboard'
+                window.location.href = '/diet-tracker'
               }}
             >
-              Go to Dashboard
+              Go to Diet-Tracker Page
             </button>
           </div>
         </div>
@@ -284,7 +285,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl w-full">
             <div className="text-6xl mb-4 text-center">
               <FiPieChart className="inline" />
@@ -321,20 +322,20 @@ export default function DietTrackerPage() {
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
-                            <h4 className="font-bold text-gray-800">
-                              {plan.name}
+                            <h4 className="font-bold text-gray-800 capitalize">
+                              {plan.planName}
                             </h4>
                             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                              {plan.planType}
+                              {plan.foodType}
                             </span>
                             <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
-                              {plan.dietPreference}
+                              {plan.goal}
                             </span>
                           </div>
                           <div className="text-sm text-muted space-y-1">
                             <p>
                               {plan.days?.length || 0} days •{' '}
-                              {plan.mealsPerDay || 0} meals/day
+                              {plan.days?.[0]?.meals?.length || 0} meals/day
                             </p>
                             {plan.dietaryRestrictions?.length > 0 && (
                               <p className="flex items-center gap-1">
@@ -380,7 +381,7 @@ export default function DietTrackerPage() {
     return (
       <div className="flex min-h-screen bg-gray-50">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 ml-4 md:ml-8 lg:ml-12">
+        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4">
               <FiAlertTriangle className="inline" />
@@ -540,15 +541,9 @@ export default function DietTrackerPage() {
     <div className="flex min-h-screen bg-gray-50">
       <Sidebar />
 
-      <div className="flex-1 p-4 md:p-8 ml-4 md:ml-8 lg:ml-12">
+      <div className="flex-1 p-4 md:p-8 lg:ml-64">
         <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">
-              {user?.name || 'User'} Progress
-            </h1>
-            <p className="text-muted">{aiMealPlan.planName}</p>
-          </div>
+          <DashboardHeader userName={user?.name} />
 
           {/* Day Selector (compact week strip) */}
           <div className="mb-6">
@@ -635,7 +630,7 @@ export default function DietTrackerPage() {
           {/* Overview Cards Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Daily Calories Card */}
-            <Card noHover className="border-l-4 border-blue-500 p-4">
+            <Card noHover className="border-l-4 border-l-blue-500 p-4">
               <div className="text-sm text-muted mb-2">Daily Calories</div>
               <div className="text-3xl font-bold text-blue-600">
                 {Math.round(consumedCalories)} / {Math.round(targetCalories)}
@@ -646,7 +641,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Current BMI Card */}
-            <Card noHover className="border-l-4 border-green-500 p-4">
+            <Card noHover className="border-l-4 border-l-green-500 p-4">
               <div className="text-sm text-muted mb-2">Current BMI</div>
               <div className="text-3xl font-bold text-green-600">
                 {bmi.toFixed(1)}
@@ -655,7 +650,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Predicted Weight Card */}
-            <Card noHover className="border-l-4 border-purple-500 p-4">
+            <Card noHover className="border-l-4 border-l-purple-500 p-4">
               <div className="text-sm text-muted mb-2">Predicted Weight</div>
               <div className="text-3xl font-bold text-purple-600">
                 {targetWeight} kg
@@ -666,7 +661,7 @@ export default function DietTrackerPage() {
             </Card>
 
             {/* Meal Completion Card */}
-            <Card noHover className="border-l-4 border-yellow-500 p-4">
+            <Card noHover className="border-l-4 border-l-yellow-500 p-4">
               <div className="text-sm text-muted mb-2">Meal Completion</div>
               <div className="text-3xl font-bold text-yellow-600">
                 {currentDayTracker?.mealsCompleted || 0} /{' '}
@@ -685,27 +680,29 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Macros Target
               </h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <PieChart>
-                  <Pie
-                    data={macrosData}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={100}
-                    paddingAngle={2}
-                    dataKey="value"
-                    label={({ name, value }) => `${name} ${value}%`}
-                    animationBegin={0}
-                    animationDuration={800}
-                  >
-                    {macrosData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={entry.color} />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="w-full h-56 md:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={macrosData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={100}
+                      paddingAngle={2}
+                      dataKey="value"
+                      label={({ name, value }) => `${name} ${value}%`}
+                      animationBegin={0}
+                      animationDuration={800}
+                    >
+                      {macrosData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </Card>
 
             {/* Daily Nutrition Progress */}
@@ -713,31 +710,33 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Nutrition Progress
               </h3>
-              <ResponsiveContainer width="100%" height={280}>
-                <BarChart
-                  data={nutritionProgressData}
-                  layout="vertical"
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis type="number" />
-                  <YAxis dataKey="name" type="category" width={80} />
-                  <Tooltip />
-                  <Legend />
-                  <Bar
-                    dataKey="Consumed"
-                    stackId="a"
-                    fill="#10b981"
-                    animationDuration={800}
-                  />
-                  <Bar
-                    dataKey="Remaining"
-                    stackId="a"
-                    fill="#fbbf24"
-                    animationDuration={800}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
+              <div className="w-full h-56 md:h-72">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart
+                    data={nutritionProgressData}
+                    layout="vertical"
+                    margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis type="number" />
+                    <YAxis dataKey="name" type="category" width={80} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar
+                      dataKey="Consumed"
+                      stackId="a"
+                      fill="#10b981"
+                      animationDuration={800}
+                    />
+                    <Bar
+                      dataKey="Remaining"
+                      stackId="a"
+                      fill="#fbbf24"
+                      animationDuration={800}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
             </Card>
           </div>
 

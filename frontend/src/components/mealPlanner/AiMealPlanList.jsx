@@ -19,6 +19,8 @@ export default function AiMealPlanList() {
   const [viewPlan, setViewPlan] = useState(null)
   const [showDetails, setShowDetails] = useState(false)
   const [error, setError] = useState('')
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [planToDelete, setPlanToDelete] = useState(null)
 
   useEffect(() => {
     // Fetch all plans on mount
@@ -42,17 +44,20 @@ export default function AiMealPlanList() {
     }
   }
 
-  const handleDelete = async (planId) => {
-    const confirmed = window.confirm(
-      'Do you really want to delete this AI meal plan? This action cannot be undone.',
-    )
+  const handleDeleteClick = (planId) => {
+    setPlanToDelete(planId)
+    setShowDeleteModal(true)
+  }
 
-    if (!confirmed) return
+  const confirmDelete = async () => {
+    const result = await deletePlanFromContext(planToDelete)
 
-    const result = await deletePlanFromContext(planId)
     if (!result.success) {
       setError(result.error || 'Failed to delete plan')
     }
+
+    setShowDeleteModal(false)
+    setPlanToDelete(null)
   }
 
   const handleSetActive = (plan) => {
@@ -81,70 +86,108 @@ export default function AiMealPlanList() {
         <p className="text-muted">No AI meal plans created yet.</p>
       )}
 
-      {allPlans.map((plan) => (
-        <Card
-          key={plan._id}
-          noHover
-          className={`p-4 flex justify-between items-center transition-all ${
-            activePlan?._id === plan._id
-              ? 'border-2 border-primary bg-primary/5'
-              : ''
-          }`}
-        >
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <h3 className="font-extrabold capitalize">{plan.planName}</h3>
-              <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-semibold">
-                AI
-              </span>
-              {activePlan?._id === plan._id && (
-                <span className="flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium dark:bg-accentYellow/10 dark:text-accentYellow">
-                  <Check size={12} />
-                  Active
-                </span>
-              )}
-            </div>
-            <h3 className="font-medium capitalize">{plan.foodType}</h3>
-            <p className="text-sm text-muted">
-              {plan.planDuration} days • {plan.mealPerDay} meals/day
-            </p>
-            {plan.allergens &&
-              plan.allergens.length > 0 &&
-              !plan.allergens.includes('none') && (
-                <p className="text-xs text-purple-600 mt-1 flex items-center gap-2">
-                  <Shield className="w-4 h-4 text-primary dark:text-accentYellow" />
-                  <span>
-                    {plan.allergens.filter((a) => a !== 'none').join(', ')}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 animate-fadeIn">
+        {allPlans.map((plan, index) => (
+          <Card
+            key={plan._id}
+            noHover
+            style={{ animationDelay: `${index * 150}ms` }}
+            className={`p-6 flex flex-col justify-between h-full transition-all animate-slideUp ${
+              activePlan?._id === plan._id
+                ? 'border-2 border-primary bg-primary/5'
+                : ''
+            }`}
+          >
+            <div>
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <div>
+                  <span className="text-xs font-semibold text-primary uppercase">
+                    Plan
                   </span>
-                </p>
+                  <h3 className="text-xl font-bold text-gray-800 dark:text-accentYellow mt-1">
+                    {plan.planName}
+                  </h3>
+                </div>
+                <span className="text-xs px-2 py-0.5 rounded-full bg-primary text-white font-semibold">
+                  AI
+                </span>
+                {activePlan?._id === plan._id && (
+                  <span className="flex items-center gap-1 px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full text-xs font-medium dark:bg-accentYellow/10 dark:text-accentYellow">
+                    <Check size={12} />
+                    Active
+                  </span>
+                )}
+              </div>
+              <h4 className="font-medium text-sm capitalize text-muted">
+                {plan.foodType}
+              </h4>
+              <p className="text-sm text-muted mt-2">
+                {plan.planDuration} days • {plan.mealPerDay} meals/day
+              </p>
+              {plan.allergens &&
+                plan.allergens.length > 0 &&
+                !plan.allergens.includes('none') && (
+                  <p className="text-xs text-purple-600 mt-1 flex items-center gap-2">
+                    <Shield className="w-4 h-4 text-primary dark:text-accentYellow" />
+                    <span>
+                      {plan.allergens.filter((a) => a !== 'none').join(', ')}
+                    </span>
+                  </p>
+                )}
+            </div>
+
+            <div className="flex gap-3 mt-4">
+              {activePlan?._id !== plan._id && (
+                <button
+                  onClick={() => handleSetActive(plan)}
+                  className="btn-secondary nv-btn-lg"
+                >
+                  Set Active
+                </button>
               )}
-          </div>
-
-          <div className="flex gap-3">
-            {activePlan?._id !== plan._id && (
               <button
-                onClick={() => handleSetActive(plan)}
-                className="btn-secondary nv-btn-lg"
+                onClick={() => handleView(plan._id)}
+                className="nv-btn-primary nv-btn-lg"
               >
-                Set Active
+                View
               </button>
-            )}
-            <button
-              onClick={() => handleView(plan._id)}
-              className="nv-btn-primary nv-btn-lg"
-            >
-              View
-            </button>
 
-            <button
-              onClick={() => handleDelete(plan._id)}
-              className="nv-btn-danger nv-btn-lg"
-            >
-              Delete
-            </button>
+              <button
+                onClick={() => handleDeleteClick(plan._id)}
+                className="nv-btn-danger nv-btn-lg"
+              >
+                Delete
+              </button>
+            </div>
+          </Card>
+        ))}
+      </div>
+
+      {showDeleteModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <div className="bg-white dark:bg-background rounded-lg p-6 w-full max-w-md shadow-xl">
+            <h3 className="text-lg font-bold mb-2">Delete AI Meal Plan</h3>
+
+            <p className="text-sm text-muted mb-6">
+              Are you sure you want to delete this meal plan? This action cannot
+              be undone.
+            </p>
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="btn-secondary"
+              >
+                Cancel
+              </button>
+
+              <button onClick={confirmDelete} className="nv-btn-danger">
+                Delete
+              </button>
+            </div>
           </div>
-        </Card>
-      ))}
+        </div>
+      )}
     </div>
   )
 }

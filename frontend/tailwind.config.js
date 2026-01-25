@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['CustomSans', 'ui-sans-serif', 'system-ui'],
+        sans: ['Newsreader', 'CustomSans', 'ui-sans-serif', 'system-ui'],
         display: ['Newsreader', 'CustomSans'],
         serif: ['Times New Roman', 'serif'],
       },
@@ -32,6 +32,31 @@ export default {
           700: '#374151', //  text-gray-700
           800: '#1F2937', // text-gray-800
         },
+        // Colors from tailwind.config-2 (merged)
+        'primary-light': '#34d399',
+        'primary-subtle': '#d1fae5',
+        secondary: '#0d9488',
+        'secondary-light': '#14b8a6',
+        'secondary-dark': '#0f766e',
+        'secondary-subtle': '#ccfbf1',
+        'bg-primary': '#ffffff',
+        'bg-secondary': '#f9fafb',
+        'bg-tertiary': '#f3f4f6',
+        'bg-emerald': '#ecfdf5',
+        'text-primary': '#111827',
+        'text-secondary': '#4b5563',
+        'text-tertiary': '#6b7280',
+        'text-muted': '#111827',
+        'surface-card': '#ffffff',
+        'surface-border': '#e5e7eb',
+        'surface-hover': '#f9fafb',
+        'btn-primary': '#10b981',
+        'btn-primary-hover': '#34d399',
+        'btn-primary-active': '#059669',
+        success: '#10b981',
+        warning: '#f59e0b',
+        error: '#ef4444',
+        info: '#3b82f6',
       },
     },
   },

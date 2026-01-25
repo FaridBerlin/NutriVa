@@ -8,7 +8,6 @@ import Sidebar from '../components/Sidebar/Sidebar'
 import AiMealPlanList from '../components/mealPlanner/AiMealPlanList'
 import AiDietPlannerPage from './AiDietPlannerPage'
 import { bmiCategory, bmiPercent } from '../utils/bmiUtils'
-import { showMotivationalToast } from '../components/react-hot-toast/MotivationalQuotes'
 
 import {
   DashboardHeader,
@@ -33,23 +32,7 @@ export default function DashboardPage() {
     }
   }, [location.state])
 
-  // Show motivational quote when dashboard loads
-  useEffect(() => {
-    // Show first quote after a small delay
-    const timeout = setTimeout(() => {
-      showMotivationalToast()
-    }, 500)
-
-    // Show a new quote every 7 seconds (5s display + 2s pause)
-    const interval = setInterval(() => {
-      showMotivationalToast()
-    }, 50000)
-
-    return () => {
-      clearTimeout(timeout)
-      clearInterval(interval)
-    }
-  }, [])
+  // Motivational toasts removed — no-op
 
   if (loading) {
     return (
@@ -107,7 +90,7 @@ export default function DashboardPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 ml-64">
+      <div className="flex-1 ml-0 lg:ml-64">
         {/* Header */}
         <DashboardHeader userName={user?.name} />
 
