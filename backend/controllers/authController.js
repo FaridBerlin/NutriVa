@@ -110,21 +110,21 @@ export const logout = async (req, res) => {
     })
 }
 
-//Forgot Password
+// Forgot Password
 export const forgotPassword = async (req, res) => {
   const { email } = req.body
 
   try {
     const user = await User.findOne({ email: email.toLowerCase() })
 
-    // same response even if user doesn't exist
-    if (!user) {
-      return res.status(200).json({
-        success: true,
-        message:
-          'If that email exists, a reset link has been sent, Check your Email',
-      })
-    }
+    // Always send the same response
+    res.status(200).json({
+      success: true,
+      message: 'If that email exists, a reset link has been sent. Check your email.',
+    })
+
+    // If user does not exist, stop here
+    if (!user) return
 
     const resetToken = user.getResetPasswordToken()
     await user.save({ validateBeforeSave: false })
@@ -138,20 +138,22 @@ Click the link below to reset your password:
 ${resetUrl}
 
 This link will expire in 15 minutes.
+
+If you did not request this, please ignore this email.
 `
 
-    await sendEmail({
+    // Send email asynchronously
+    sendEmail({
       to: user.email,
       subject: 'Password Reset - Nutriva MealPlanner',
       text: message,
+    }).catch(err => {
+      console.error('Password reset email failed:', err)
     })
 
-    res.status(200).json({
-      success: true,
-      message: 'Reset link sent to email, Goto your Email',
-    })
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    console.error('Forgot password error:', error)
+    
   }
 }
 
