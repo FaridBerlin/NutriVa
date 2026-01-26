@@ -14,7 +14,7 @@ export default function SignupForm() {
   const [isLoading, setIsLoading] = useState(false)
   const { setUser } = useContext(AuthContext)
   const navigate = useNavigate()
- 
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -42,7 +42,9 @@ export default function SignupForm() {
       {error && <div className="text-red-600 mb-2">{error}</div>}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">Name</label>
+          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">
+            Name
+          </label>
           <input
             type="text"
             name="name"
@@ -53,7 +55,9 @@ export default function SignupForm() {
           />
         </div>
         <div>
-          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">Email</label>
+          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">
+            Email
+          </label>
           <input
             type="email"
             name="email"
@@ -64,7 +68,9 @@ export default function SignupForm() {
           />
         </div>
         <div>
-          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">Password</label>
+          <label className="block text-sm font-bold mb-2 text-gray-700 dark:text-gray-200">
+            Password
+          </label>
           <input
             type="password"
             name="password"
