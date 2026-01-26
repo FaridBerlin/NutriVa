@@ -32,7 +32,7 @@ export default function HeroSection() {
       {/* Right Animation */}
       <ScrollAnimationWrapper
         direction="right"
-        className="hidden md:flex justify-center items-center scale-90 lg:scale-100"
+        className="flex justify-center items-center scale-75 sm:scale-90 lg:scale-100"
       >
         <HeroAnimation />
       </ScrollAnimationWrapper>

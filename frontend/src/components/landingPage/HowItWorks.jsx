@@ -68,31 +68,29 @@ export default function HowItWorks() {
 
       <div className="max-w-5xl mx-auto px-6 relative z-10">
         {/* Section Header */}
-        <ScrollAnimationWrapper>
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
-              <span className="text-sm font-medium">Simple Process</span>
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
-              How Nutriva Works
-            </h2>
-            <p className="text-xl text-textLight dark:text-gray-400 max-w-2xl mx-auto">
-              Four simple steps to transform your nutrition and achieve your
-              health goals
-            </p>
+
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
+            <span className="text-sm font-medium">Simple Process</span>
           </div>
-        </ScrollAnimationWrapper>
+          <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
+            How Nutriva Works
+          </h2>
+          <p className="text-xl text-textLight dark:text-gray-400 max-w-2xl mx-auto">
+            Three simple steps to transform your nutrition and achieve your
+            health goals
+          </p>
+        </div>
 
         {/* Steps Grid */}
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Animation Side */}
-          <ScrollAnimationWrapper direction="left">
-            <div className="flex justify-center items-center">
-              <div className="w-full max-w-[500px]">
-                <Lottie animationData={thinking} loop={true} />
-              </div>
+
+          <div className="flex justify-center items-center">
+            <div className="w-full max-w-[500px]">
+              <Lottie animationData={thinking} loop={true} />
             </div>
-          </ScrollAnimationWrapper>
+          </div>
 
           {/* Cards Side */}
           <div className="space-y-4">
