@@ -302,13 +302,9 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
           {renderStepContent()}
 
           {/* Error & Success Messages */}
-          {error && (
-            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
-              {error}
-            </div>
-          )}
+          {error && <div className="status-error ">{error}</div>}
           {success && (
-            <div className="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm flex items-center gap-2">
+            <div className="status-success">
               <CheckCircle className="w-4 h-4" />
               {success}
             </div>
@@ -321,12 +317,10 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
             onClick={handleBack}
             disabled={currentStep === 0}
             className={`
-              px-6 py-2.5 rounded-lg font-medium transition-all
-              ${
-                currentStep === 0
-                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-gray-200 text-textDark hover:bg-gray-300'
-              }
+              px-8 py-2.5 bg-gradient-to-l from-primary to-primaryDark 
+              text-white rounded-lg font-semibold hover:shadow-lg 
+              transition-all transform hover:scale-105 disabled:opacity-50
+              ${currentStep === 0 ? 'cursor-not-allowed' : ''}
             `}
           >
             <ChevronLeft className="inline w-4 h-4 mr-2" /> Back
@@ -355,10 +349,15 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
 
         {/* Cancel Button */}
         {onCancel && (
-          <div className="text-center mt-4">
-            <Button onClick={onCancel} variant="link" size="md">
+          <div className="text-center mt-6">
+            <button
+              onClick={onCancel}
+              className="px-8 py-2.5 bg-gradient-to-r from-red-300 to-red-400 
+                         text-white rounded-lg font-semibold hover:shadow-lg 
+                         transition-all transform hover:scale-105"
+            >
               Cancel
-            </Button>
+            </button>
           </div>
         )}
 
@@ -392,7 +391,7 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
       </div>
 
       {userProfile && (
-        <div className="mb-4 p-3 bg-primaryLight40 border border-primary rounded-lg">
+        <div className="status-info">
           <p className="text-sm text-textDark flex items-center gap-2">
             <Info className="w-4 h-4 text-primary" />
             Details loaded from your profile

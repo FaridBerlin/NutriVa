@@ -9,6 +9,7 @@ import userRouter from './routes/userRoutes.js'
 import profileRouter from './routes/profileRoutes.js'
 import dietTrackerRouter from './routes/dietTrackerRoutes.js'
 import aiMealPlanRouter from './routes/aiMealPlanRoutes.js'
+import aiDoctorRouter from './routes/aiDoctorRoutes.js'
 
 connectDB()
 
@@ -35,6 +36,7 @@ app.use('/api/profile', profileRouter)
 app.use('/api/diet-trackers', dietTrackerRouter)
 
 app.use('/api/ai-meal-plans', aiMealPlanRouter)
+app.use('/api/ai-doctor', aiDoctorRouter)
 
 app.use((err, req, res, next) => {
   res.status(500).json({ msg: err.message || 'Server Error' })

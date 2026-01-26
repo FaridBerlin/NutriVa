@@ -84,7 +84,7 @@ export default function TodayMeals() {
 
   return (
     <div>
-      <h2 className="text-2xl font-bold text-textDark dark:text-accentYellow mb-6">
+      <h2 className="text-3xl font-bold text-textDark dark:text-white mb-6">
         Today's Meals
       </h2>
 
@@ -92,17 +92,18 @@ export default function TodayMeals() {
       <Card noHover className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-accentYellow mb-1 capitalize">
-                 <span className="inline-flex items-center px-0.5 py-0.5 text-s font-bold  text-primary dark:text-accentYellow uppercase">
-                    {activePlan?.planName || 'health plan'}
-                  </span> Plan
+            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1 capitalize">
+              <span className="inline-flex items-center px-0.5 py-0.5 text-base font-bold  text-primary dark:text-white uppercase">
+                {activePlan?.planName || 'health plan'}
+              </span>{' '}
+              Plan
             </h2>
-            <p className="text-muted text-sm dark:text-accentYellow/80">
+            <p className="text-muted text-base dark:text-gray-300">
               Day {currentDay} - {todayMeals.length} meals scheduled
             </p>
           </div>
           <div className="flex items-center gap-2">
-            <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm flex items-center gap-1 dark:bg-accentYellow/10 dark:text-accentYellow">
+            <div className="px-3 py-1 bg-emerald-100 text-emerald-700 rounded-full text-sm flex items-center gap-1 dark:bg-emerald-500/20 dark:text-emerald-300">
               <Brain size={14} />
               AI Generated
             </div>
@@ -136,24 +137,24 @@ export default function TodayMeals() {
                     </div>
                     <div>
                       <div className="flex items-center gap-2 mb-1">
-                        <span className="text-xs uppercase tracking-wide font-medium text-muted dark:text-accentYellow/80">
+                        <span className="text-sm uppercase tracking-wide font-medium text-muted dark:text-gray-300">
                           {meal.type}
                         </span>
                         <span className="text-muted">•</span>
-                        <span className="text-xs text-muted dark:text-accentYellow/80">
+                        <span className="text-sm text-muted dark:text-gray-300">
                           {meal.time}
                         </span>
                       </div>
-                      <h4 className="text-gray-900 font-medium dark:text-accentYellow">
+                      <h4 className="text-gray-900 font-medium text-lg dark:text-white">
                         {meal.name}
                       </h4>
                     </div>
                   </div>
                   <div className="text-right text-sm">
-                    <div className="text-gray-900 font-semibold dark:text-accentYellow">
+                    <div className="text-gray-900 font-semibold text-base dark:text-white">
                       {meal.calories} cal
                     </div>
-                    <div className="text-muted text-xs dark:text-accentYellow/80">
+                    <div className="text-muted text-sm dark:text-gray-300">
                       P: {meal.protein}g • C: {meal.carbs}g • F: {meal.fats}g
                     </div>
                   </div>
