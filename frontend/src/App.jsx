@@ -17,6 +17,7 @@ import DashboardPage from './pages/DashboardPage'
 import ProfilePage from './pages/ProfilePage'
 import SettingsPage from './pages/SettingsPage'
 import DietTrackerPage from './pages/DietTrackerPage'
+import AiDoctorPage from './pages/AiDoctorPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
 import ContactPage from './pages/ContactPage'
@@ -39,7 +40,12 @@ function AppLayout({ children }) {
   const location = useLocation()
 
   // Pages that should NOT show Navbar and Footer (dashboard-style pages)
-  const dashboardRoutes = ['/dashboard', '/settings', '/diet-tracker']
+  const dashboardRoutes = [
+    '/dashboard',
+    '/settings',
+    '/diet-tracker',
+    '/ai-doctor',
+  ]
   const isDashboardPage = dashboardRoutes.some((route) =>
     location.pathname.startsWith(route),
   )
@@ -118,6 +124,16 @@ function App() {
                     element={
                       <ProtectedRoute>
                         <DietTrackerPage />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  {/* AI Doctor - Nutrition chatbot */}
+                  <Route
+                    path="/ai-doctor"
+                    element={
+                      <ProtectedRoute>
+                        <AiDoctorPage />
                       </ProtectedRoute>
                     }
                   />

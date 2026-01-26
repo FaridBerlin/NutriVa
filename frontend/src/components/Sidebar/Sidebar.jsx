@@ -14,6 +14,7 @@ import {
   Target,
   Menu,
   X,
+  Stethoscope,
 } from 'lucide-react'
 
 export default function Sidebar({ activeSection, onSectionChange }) {
@@ -48,6 +49,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
     if (path.startsWith('/dashboard')) return 'dashboard'
     if (path.startsWith('/settings')) return 'settings'
     if (path.startsWith('/diet-tracker')) return 'diet-tracker'
+    if (path.startsWith('/ai-doctor')) return 'ai-doctor'
     if (path.startsWith('/ai-meal-plans')) return 'ai-meal-plans'
     if (path.startsWith('/ai-diet-planner') || path.startsWith('/ai-diet'))
       return 'ai-diet-planner'
@@ -182,6 +184,26 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 />
                 <span className="font-semibold text-black dark:text-accentYellow flex-1">
                   Diet Tracker
+                </span>
+              </Link>
+            </li>
+
+            {/* AI Doctor - Nutrition Chatbot */}
+            <li>
+              <Link
+                to="/ai-doctor"
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
+                  resolvedActive === 'ai-doctor'
+                    ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-primary/30 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-accentYellow/30'
+                    : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                }`}
+              >
+                <Stethoscope
+                  size={18}
+                  className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                />
+                <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                  AI Doctor
                 </span>
               </Link>
             </li>
@@ -363,6 +385,27 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   />
                   <span className="font-semibold text-black dark:text-accentYellow flex-1">
                     Diet Tracker
+                  </span>
+                </Link>
+              </li>
+
+              {/* AI Doctor - Nutrition Chatbot */}
+              <li>
+                <Link
+                  to="/ai-doctor"
+                  onClick={() => setMobileOpen(false)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 group ${
+                    resolvedActive === 'ai-doctor'
+                      ? 'bg-primary/20 text-black shadow-lg scale-[1.02] ring-1 ring-primary/30 dark:bg-slate-900/70 dark:backdrop-blur-md dark:text-accentYellow dark:ring-accentYellow/30'
+                      : 'text-black hover:bg-primary/5 hover:text-black hover:translate-x-1 hover:shadow-lg hover:scale-[1.02] dark:text-accentYellow dark:hover:bg-slate-800/30'
+                  }`}
+                >
+                  <Stethoscope
+                    size={18}
+                    className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                  />
+                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                    AI Doctor
                   </span>
                 </Link>
               </li>
