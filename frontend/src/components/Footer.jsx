@@ -105,6 +105,15 @@ export default function Footer() {
                 </svg>
               </a>
             </div>
+
+            {/* Theme Toggle: placed under social icons */}
+            <div className="mt-4 flex items-center gap-3">
+              <ThemeToggle
+                full={true}
+                className="inline-flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-xl text-white hover:bg-gray-700 transition"
+                iconClassName="text-white"
+              />
+            </div>
           </div>
 
           {/* Quick Links */}
@@ -223,10 +232,7 @@ export default function Footer() {
                 support@nutriva.com
               </a>
             </div>
-            {/* Theme Toggle (footer) */}
-            <div className="mt-4 flex items-center gap-3">
-              <ThemeToggle />
-            </div>
+            {/* Theme Toggle removed from Support (moved under social icons) */}
           </div>
         </div>
 
