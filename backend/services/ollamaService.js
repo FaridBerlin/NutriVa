@@ -17,6 +17,7 @@ const ollama = new Ollama({
 })
 
 console.log('Ollama client initialized successfully')
+console.log('🔑 API Key loaded:', config.OLLAMA_API_KEY ? 'Yes' : '❌ NO')
 
 /**
  * Generate a meal plan using Ollama with gpt-oss:120b model
@@ -75,15 +76,15 @@ export const generateMealPlan = async (params) => {
       .replace(/{{caloriesPerMeal}}/g, caloriesPerMeal) // 🎯 NEW
       .replace(/{{calorieRange}}/g, calorieRange) // 🎯 NEW
 
-    console.log('Generating meal plan with gpt-oss:120b...')
+    console.log('Generating meal plan with deepseek-v3.1:671b...')
     console.log(
       `🎯 Target: ${dailyCalories} cal/day, ${caloriesPerMeal} cal/meal (${calorieRange} range)`,
     )
     const startTime = Date.now()
 
-    // Calculate tokens based on plan duration (more aggressive reduction)
-    // For 3 days: ~900 tokens, for 7 days: ~1400 tokens
-    const numPredict = Math.min(2048, 300 + planDuration * mealPerDay * 50)
+    // Calculate tokens based on plan duration
+    // Increased limits: For 7 days with 3 meals: 500 + 7 * 3 * 100 = 2600 tokens
+    const numPredict = Math.min(8192, 500 + planDuration * mealPerDay * 100)
 
     // Generous timeout based on plan duration (45 seconds per day, min 150s)
 
@@ -101,7 +102,7 @@ export const generateMealPlan = async (params) => {
     })
 
     const generationPromise = ollama.generate({
-      model: 'gpt-oss:120b',
+      model: 'deepseek-v3.1:671b',
       prompt: prompt,
       stream: false,
       format: 'json',
