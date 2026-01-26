@@ -84,7 +84,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
               <button
                 key={metric.id}
                 onClick={() => setSelectedMetric(metric.id)}
-                className={`px-3 py-1 rounded-lg text-xs transition-all ${
+                className={`px-3 py-1 rounded-lg text-s transition-all ${
                   selectedMetric === metric.id
                     ? `${metricStyles[metric.id]} text-white`
                     : 'bg-gray-100 dark:bg-gray-800 text-muted dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'

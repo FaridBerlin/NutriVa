@@ -9,789 +9,1327 @@ const mealTemplatesTier1 = {
   veg: {
     Breakfast: [
       {
-        dishName: "Greek Yogurt Parfait with Berries",
-        description: "Greek yogurt layered with granola, berries, and honey",
-        nutrition: { calories: 580, protein: 18, carbs: 65, fat: 18 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten", "nuts"]
+        dishName: 'Classic Oatmeal Bowl',
+        description:
+          '1 cup cooked oats (150g), 1 tbsp almond butter (16g), 1 medium banana (118g), 1 tsp honey (7g)',
+        nutrition: {
+          calories: 520,
+          protein: 14,
+          carbs: 78,
+          fat: 16,
+        },
+        dietType: 'veg',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Whole Wheat Avocado Toast",
-        description: "2 slices whole wheat toast with avocado, egg, and tomato",
-        nutrition: { calories: 550, protein: 16, carbs: 60, fat: 20 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Greek Yogurt Parfait',
+        description:
+          '1.5 cups Greek yogurt (340g), 1/2 cup granola (60g), 1/2 cup mixed berries (75g), 1 tbsp honey (21g)',
+        nutrition: {
+          calories: 510,
+          protein: 32,
+          carbs: 68,
+          fat: 12,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Vegetable Frittata with Toast",
-        description: "Spinach, mushroom, cheddar frittata with 2 slices whole grain toast",
-        nutrition: { calories: 570, protein: 20, carbs: 55, fat: 24 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Veggie Cheese Omelette',
+        description:
+          '3 large eggs (150g), 1/4 cup cheddar cheese (28g), 1/2 cup mixed vegetables (75g), 2 slices whole wheat toast (60g), 1 tsp butter (5g)',
+        nutrition: {
+          calories: 505,
+          protein: 30,
+          carbs: 32,
+          fat: 26,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "French Toast with Syrup",
-        description: "3 slices brioche French toast with berries and maple syrup",
-        nutrition: { calories: 590, protein: 14, carbs: 78, fat: 18 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Peanut Butter Banana Smoothie Bowl',
+        description:
+          '2 tbsp peanut butter (32g), 2 medium bananas (236g), 1 cup milk (240ml), 2 tbsp granola (15g), 1 tbsp chia seeds (12g)',
+        nutrition: {
+          calories: 545,
+          protein: 18,
+          carbs: 76,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: ['nuts', 'dairy'],
       },
       {
-        dishName: "Oatmeal with Toppings",
-        description: "1 cup cooked oats with almond butter, banana, and honey",
-        nutrition: { calories: 560, protein: 16, carbs: 72, fat: 18 },
-        dietType: "veg",
-        allergens: ["nuts"]
+        dishName: 'Cottage Cheese Pancakes',
+        description:
+          '1 cup cottage cheese (226g), 3 pancakes made with 1/2 cup flour (60g), 2 eggs (100g), 2 tbsp maple syrup (40g), 1 tsp butter (5g)',
+        nutrition: {
+          calories: 535,
+          protein: 34,
+          carbs: 64,
+          fat: 14,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Shakshuka with Bread",
-        description: "Eggs poached in spiced tomato sauce with 2 slices toast",
-        nutrition: { calories: 540, protein: 16, carbs: 58, fat: 20 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Avocado Toast with Eggs',
+        description:
+          '2 slices whole grain bread (70g), 1/2 medium avocado (75g), 2 poached eggs (100g), 1 tsp olive oil (5g)',
+        nutrition: {
+          calories: 570,
+          protein: 20,
+          carbs: 42,
+          fat: 34,
+        },
+        dietType: 'veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Veggie Panini",
-        description: "Grilled sandwich with mozzarella, roasted vegetables, pesto",
-        nutrition: { calories: 580, protein: 18, carbs: 64, fat: 22 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten", "nuts"]
+        dishName: 'Indian Poha',
+        description:
+          '1.5 cups flattened rice (90g), 1/4 cup peanuts (35g), 1 tbsp oil (14g), 1/2 cup mixed vegetables (75g), 1 tbsp ghee (14g)',
+        nutrition: {
+          calories: 580,
+          protein: 14,
+          carbs: 72,
+          fat: 26,
+        },
+        dietType: 'veg',
+        allergens: ['nuts', 'dairy'],
       },
       {
-        dishName: "Quinoa Power Bowl",
-        description: "Fluffy quinoa with roasted beets, arugula, pumpkin seeds",
-        nutrition: { calories: 560, protein: 16, carbs: 68, fat: 18 },
-        dietType: "veg",
-        allergens: ["none"]
+        dishName: 'Breakfast Burrito',
+        description:
+          '1 large flour tortilla (70g), 2 scrambled eggs (100g), 1/4 cup black beans (43g), 1/4 cup cheese (28g), 2 tbsp salsa (30g), 1/4 avocado (38g)',
+        nutrition: {
+          calories: 560,
+          protein: 26,
+          carbs: 48,
+          fat: 28,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Rice Paper Veggie Rolls",
-        description: "Fresh rice paper rolls with vegetables, rice noodles, sesame oil",
-        nutrition: { calories: 540, protein: 12, carbs: 64, fat: 16 },
-        dietType: "veg",
-        allergens: ["none"]
+        dishName: 'Muesli with Yogurt',
+        description:
+          '3/4 cup muesli (85g), 1 cup plain yogurt (245g), 1/2 cup mixed berries (75g), 1 tbsp honey (21g), 2 tbsp almonds (18g)',
+        nutrition: {
+          calories: 515,
+          protein: 20,
+          carbs: 76,
+          fat: 16,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'nuts', 'gluten'],
       },
       {
-        dishName: "Millet Porridge with Berries",
-        description: "Creamy millet with coconut milk, fresh berries, maple syrup",
-        nutrition: { calories: 550, protein: 10, carbs: 72, fat: 18 },
-        dietType: "veg",
-        allergens: ["none"]
+        dishName: 'Sweet Potato Hash with Eggs',
+        description:
+          '1 medium sweet potato diced (150g), 2 eggs (100g), 1/2 cup bell peppers (75g), 1 tbsp olive oil (14g), 1/4 cup feta cheese (38g)',
+        nutrition: {
+          calories: 505,
+          protein: 20,
+          carbs: 46,
+          fat: 26,
+        },
+        dietType: 'veg',
+        allergens: ['dairy'],
       },
       {
-        dishName: "Sweet Potato Hash",
-        description: "Roasted sweet potato, bell peppers, onions, turmeric",
-        nutrition: { calories: 570, protein: 8, carbs: 78, fat: 14 },
-        dietType: "veg",
-        allergens: ["none"]
+        dishName: 'Masala Dosa',
+        description:
+          '1 large dosa (150g), 1 cup potato masala filling (200g), 2 tbsp coconut chutney (30g), 1 tsp oil for cooking (5g)',
+        nutrition: {
+          calories: 595,
+          protein: 12,
+          carbs: 94,
+          fat: 18,
+        },
+        dietType: 'veg',
+        allergens: [],
       },
-      {
-        dishName: "Rice & Bean Power Bowl",
-        description: "Brown rice, black beans, steamed broccoli, olive oil",
-        nutrition: { calories: 580, protein: 14, carbs: 72, fat: 16 },
-        dietType: "veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Teff Grain Bowl",
-        description: "Teff grains with roasted vegetables, herbs, olive oil",
-        nutrition: { calories: 560, protein: 14, carbs: 66, fat: 18 },
-        dietType: "veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Roasted Vegetable Medley",
-        description: "Mixed roasted vegetables, garlic, rosemary, olive oil",
-        nutrition: { calories: 540, protein: 10, carbs: 68, fat: 16 },
-        dietType: "veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Corn & Vegetable Hash",
-        description: "Polenta with roasted corn, zucchini, tomatoes",
-        nutrition: { calories: 570, protein: 12, carbs: 76, fat: 14 },
-        dietType: "veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Sorghum Salad",
-        description: "Whole sorghum grain, cucumber, bell peppers, lemon dressing",
-        nutrition: { calories: 550, protein: 13, carbs: 70, fat: 16 },
-        dietType: "veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Baked Root Vegetables",
-        description: "Mixed root vegetables, carrots, parsnips, potatoes, herbs",
-        nutrition: { calories: 560, protein: 8, carbs: 74, fat: 14 },
-        dietType: "veg",
-        allergens: ["none"]
-      }
     ],
     Lunch: [
       {
-        dishName: "Mediterranean Salad with Chickpeas",
-        description: "Mixed greens with chickpeas, feta, olives, and olive oil dressing",
-        nutrition: { calories: 580, protein: 18, carbs: 54, fat: 24 },
-        dietType: "veg",
-        allergens: ["dairy"]
+        dishName: 'Caprese Sandwich',
+        description:
+          '2 slices whole wheat bread (70g), 150g fresh mozzarella, 2 medium tomatoes (246g), 10 basil leaves, 1 tbsp balsamic glaze (15g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 540,
+          protein: 26,
+          carbs: 44,
+          fat: 28,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Vegetable Pasta Bowl",
-        description: "Whole wheat pasta with roasted vegetables and olive oil",
-        nutrition: { calories: 560, protein: 16, carbs: 72, fat: 14 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Vegetable Quinoa Bowl',
+        description:
+          '1 cup cooked quinoa (185g), 1 cup roasted vegetables (150g), 1/4 cup chickpeas (41g), 2 tbsp tahini dressing (30g), 1/4 avocado (38g)',
+        nutrition: {
+          calories: 525,
+          protein: 18,
+          carbs: 64,
+          fat: 22,
+        },
+        dietType: 'veg',
+        allergens: [],
       },
       {
-        dishName: "Caprese Sandwich with Chips",
-        description: "Mozzarella, tomato, basil on ciabatta + 1oz chips",
-        nutrition: { calories: 570, protein: 16, carbs: 62, fat: 22 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Paneer Tikka Wrap',
+        description:
+          '1 large whole wheat tortilla (70g), 120g grilled paneer, 1 cup mixed vegetables (150g), 2 tbsp yogurt sauce (30g), 1 tsp oil (5g)',
+        nutrition: {
+          calories: 515,
+          protein: 24,
+          carbs: 50,
+          fat: 22,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Buddha Bowl with Tahini",
-        description: "Quinoa, roasted veggies, chickpeas, tahini dressing",
-        nutrition: { calories: 590, protein: 20, carbs: 66, fat: 18 },
-        dietType: "veg",
-        allergens: ["nuts"]
+        dishName: 'Mediterranean Falafel Plate',
+        description:
+          '4 falafel balls (120g), 1/2 cup hummus (120g), 1 whole wheat pita (60g), 1 cup cucumber tomato salad (150g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 580,
+          protein: 20,
+          carbs: 68,
+          fat: 26,
+        },
+        dietType: 'veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Minestrone Soup with Bread",
-        description: "Hearty vegetable soup with pasta + garlic bread",
-        nutrition: { calories: 540, protein: 16, carbs: 68, fat: 14 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Lentil Soup with Bread',
+        description:
+          '2 cups lentil soup (480g), 2 slices whole grain bread (70g), 1 tbsp butter (14g), 1/4 cup shredded cheese (28g)',
+        nutrition: {
+          calories: 550,
+          protein: 28,
+          carbs: 72,
+          fat: 16,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Paneer Tikka Masala (1/2 portion)",
-        description: "Paneer curry with rice and side salad",
-        nutrition: { calories: 560, protein: 22, carbs: 58, fat: 16 },
-        dietType: "veg",
-        allergens: ["dairy"]
+        dishName: 'Veggie Pasta Primavera',
+        description:
+          '1.5 cups cooked penne pasta (210g), 1 cup mixed vegetables (150g), 1/4 cup parmesan cheese (25g), 2 tbsp olive oil (28g), 1/4 cup marinara (60g)',
+        nutrition: {
+          calories: 565,
+          protein: 18,
+          carbs: 76,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Vegetable Pad Thai",
-        description: "Rice noodles with vegetables and peanut sauce",
-        nutrition: { calories: 580, protein: 16, carbs: 68, fat: 20 },
-        dietType: "veg",
-        allergens: ["nuts"]
-      }
+        dishName: 'Black Bean Buddha Bowl',
+        description:
+          '3/4 cup cooked brown rice (140g), 3/4 cup black beans (130g), 1/2 avocado (75g), 1/2 cup corn (82g), 2 tbsp sour cream (30g), salsa (30g)',
+        nutrition: {
+          calories: 590,
+          protein: 20,
+          carbs: 82,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: ['dairy'],
+      },
+      {
+        dishName: 'Greek Salad with Pita',
+        description:
+          '3 cups mixed greens (150g), 1/2 cup feta cheese (75g), 1/2 cup olives (67g), 1 cup vegetables (150g), 2 tbsp olive oil (28g), 1 whole wheat pita (60g)',
+        nutrition: {
+          calories: 520,
+          protein: 16,
+          carbs: 42,
+          fat: 32,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Vegetable Stir-Fry',
+        description:
+          '2 cups mixed vegetables (300g), 1 cup cooked jasmine rice (158g), 100g tofu, 2 tbsp soy sauce (36g), 1 tbsp sesame oil (14g), 2 tbsp cashews (18g)',
+        nutrition: {
+          calories: 575,
+          protein: 20,
+          carbs: 70,
+          fat: 24,
+        },
+        dietType: 'veg',
+        allergens: ['nuts'],
+      },
+      {
+        dishName: 'Spinach Mushroom Quesadilla',
+        description:
+          '2 flour tortillas (140g), 1 cup cheese (113g), 1 cup spinach (30g), 1/2 cup mushrooms (35g), 2 tbsp sour cream (30g), 1 tsp oil (5g)',
+        nutrition: {
+          calories: 600,
+          protein: 30,
+          carbs: 52,
+          fat: 30,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Chole with Rice',
+        description:
+          '1 cup chickpea curry (200g), 1 cup basmati rice (158g), 2 tbsp yogurt (30g), 1 small naan piece (40g)',
+        nutrition: {
+          calories: 530,
+          protein: 18,
+          carbs: 88,
+          fat: 12,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
+      },
     ],
     Dinner: [
       {
-        dishName: "Spinach Ricotta Pasta",
-        description: "Whole wheat pasta with spinach, ricotta, tomato sauce",
-        nutrition: { calories: 560, protein: 18, carbs: 64, fat: 16 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Margherita Pizza',
+        description:
+          '2 slices thin crust pizza (200g), fresh mozzarella (80g), tomato sauce (60g), fresh basil, 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 560,
+          protein: 24,
+          carbs: 64,
+          fat: 22,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Vegetable Stir-Fry with Rice",
-        description: "Mixed vegetables with tofu, ginger-garlic sauce, brown rice",
-        nutrition: { calories: 570, protein: 18, carbs: 70, fat: 12 },
-        dietType: "veg",
-        allergens: ["none"]
+        dishName: 'Vegetable Lasagna',
+        description:
+          '1 serving lasagna (280g) with 1 cup mixed vegetables (150g), ricotta (90g), mozzarella (50g), marinara sauce (120g)',
+        nutrition: {
+          calories: 545,
+          protein: 26,
+          carbs: 58,
+          fat: 22,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Stuffed Bell Peppers",
-        description: "Bell peppers filled with quinoa, beans, cheese",
-        nutrition: { calories: 580, protein: 20, carbs: 62, fat: 16 },
-        dietType: "veg",
-        allergens: ["dairy"]
+        dishName: 'Palak Paneer with Roti',
+        description:
+          '1 cup palak paneer (250g with 100g paneer), 2 whole wheat rotis (100g), 1 tsp ghee (5g)',
+        nutrition: {
+          calories: 520,
+          protein: 22,
+          carbs: 52,
+          fat: 24,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Dal with Roti and Salad",
-        description: "Lentil curry with 2 whole wheat rotis and cucumber salad",
-        nutrition: { calories: 540, protein: 18, carbs: 72, fat: 10 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Stuffed Bell Peppers',
+        description:
+          '2 bell peppers (328g) stuffed with 1 cup quinoa mix (185g), 1/2 cup black beans (86g), 1/4 cup cheese (28g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 505,
+          protein: 20,
+          carbs: 70,
+          fat: 16,
+        },
+        dietType: 'veg',
+        allergens: ['dairy'],
       },
       {
-        dishName: "Vegetable Curry with Naan",
-        description: "Mixed vegetable curry with coconut milk and 1 naan",
-        nutrition: { calories: 590, protein: 16, carbs: 68, fat: 20 },
-        dietType: "veg",
-        allergens: ["gluten"]
+        dishName: 'Eggplant Parmesan',
+        description:
+          '200g breaded eggplant, 1/2 cup marinara sauce (120g), 1/2 cup mozzarella (56g), 1/4 cup parmesan (25g), 1 cup pasta (140g)',
+        nutrition: {
+          calories: 590,
+          protein: 26,
+          carbs: 68,
+          fat: 24,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Bean Burrito Bowl",
-        description: "Rice, black beans, corn, salsa, cheese, avocado",
-        nutrition: { calories: 570, protein: 16, carbs: 66, fat: 18 },
-        dietType: "veg",
-        allergens: ["dairy"]
+        dishName: 'Vegetable Curry with Rice',
+        description:
+          '1.5 cups mixed vegetable curry (300g), 3/4 cup basmati rice (119g), 2 tbsp coconut milk (30g), 1 tbsp oil (14g)',
+        nutrition: {
+          calories: 535,
+          protein: 12,
+          carbs: 82,
+          fat: 18,
+        },
+        dietType: 'veg',
+        allergens: [],
       },
       {
-        dishName: "Vegetable Biryani",
-        description: "Fragrant saffron rice with mixed vegetables",
-        nutrition: { calories: 580, protein: 14, carbs: 78, fat: 14 },
-        dietType: "veg",
-        allergens: ["none"]
-      }
+        dishName: 'Cheese Ravioli',
+        description:
+          '1.5 cups cheese ravioli (250g), 1/2 cup marinara sauce (120g), 2 tbsp parmesan (10g), 1 tbsp olive oil (14g), side salad (50g)',
+        nutrition: {
+          calories: 575,
+          protein: 24,
+          carbs: 72,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Bean Enchiladas',
+        description:
+          '2 corn tortillas (52g), 3/4 cup pinto beans (130g), 1/2 cup cheese (56g), 1/4 cup enchilada sauce (60g), 2 tbsp sour cream (30g), 1/4 avocado (38g)',
+        nutrition: {
+          calories: 550,
+          protein: 24,
+          carbs: 58,
+          fat: 24,
+        },
+        dietType: 'veg',
+        allergens: ['dairy'],
+      },
+      {
+        dishName: 'Mushroom Risotto',
+        description:
+          '1 cup arborio rice cooked (175g), 1 cup mushrooms (70g), 1/4 cup parmesan (25g), 2 tbsp butter (28g), 1/2 cup white wine (120ml)',
+        nutrition: {
+          calories: 585,
+          protein: 16,
+          carbs: 76,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Tofu Stir-Fry Bowl',
+        description:
+          '150g firm tofu, 1.5 cups mixed vegetables (225g), 3/4 cup brown rice (140g), 2 tbsp teriyaki sauce (36g), 1 tbsp sesame oil (14g)',
+        nutrition: {
+          calories: 510,
+          protein: 22,
+          carbs: 64,
+          fat: 18,
+        },
+        dietType: 'veg',
+        allergens: [],
+      },
+      {
+        dishName: 'Vegetable Paella',
+        description:
+          '1 cup paella rice (185g), 1.5 cups mixed vegetables (225g), 1/4 cup green peas (37g), 2 tbsp olive oil (28g), saffron, vegetable broth',
+        nutrition: {
+          calories: 595,
+          protein: 14,
+          carbs: 90,
+          fat: 20,
+        },
+        dietType: 'veg',
+        allergens: [],
+      },
     ],
-    Snack: [
-      {
-        dishName: "Greek Yogurt Bowl with Granola",
-        description: "Greek yogurt (200g) with granola and berries",
-        nutrition: { calories: 520, protein: 16, carbs: 58, fat: 14 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten", "nuts"]
-      },
-      {
-        dishName: "Hummus Platter with Veggies",
-        description: "Large bowl hummus with carrots, celery, pita chips",
-        nutrition: { calories: 540, protein: 14, carbs: 56, fat: 22 },
-        dietType: "veg",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Trail Mix with Dried Fruit",
-        description: "Nuts, seeds, dried fruit mix (150g)",
-        nutrition: { calories: 580, protein: 14, carbs: 48, fat: 32 },
-        dietType: "veg",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Cheese and Crackers Platter",
-        description: "150g cheese with whole grain crackers and fruit",
-        nutrition: { calories: 560, protein: 16, carbs: 50, fat: 24 },
-        dietType: "veg",
-        allergens: ["dairy", "gluten"]
-      },
-      {
-        dishName: "Smoothie Bowl",
-        description: "Thick smoothie with granola and nuts topping",
-        nutrition: { calories: 550, protein: 14, carbs: 72, fat: 12 },
-        dietType: "veg",
-        allergens: ["dairy", "nuts"]
-      }
-    ]
   },
-  "non-veg": {
+  'non-veg': {
     Breakfast: [
       {
-        dishName: "Bacon and Egg Breakfast",
-        description: "3 strips bacon, 2 fried eggs, 2 slices toast with butter",
-        nutrition: { calories: 580, protein: 24, carbs: 48, fat: 32 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Classic Bacon and Eggs',
+        description:
+          '3 strips bacon (34g), 2 scrambled eggs (100g), 2 slices whole wheat toast (70g), 1 tbsp butter (14g), 1/2 cup orange juice (120ml)',
+        nutrition: {
+          calories: 545,
+          protein: 26,
+          carbs: 42,
+          fat: 28,
+        },
+        dietType: 'non-veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Smoked Salmon Bagel",
-        description: "Toasted bagel with cream cheese, smoked salmon, capers",
-        nutrition: { calories: 560, protein: 22, carbs: 52, fat: 20 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Smoked Salmon Bagel',
+        description:
+          '1 whole wheat bagel (95g), 85g smoked salmon, 2 tbsp cream cheese (30g), 1/4 red onion (28g), capers (10g)',
+        nutrition: {
+          calories: 520,
+          protein: 32,
+          carbs: 58,
+          fat: 16,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Steak and Eggs",
-        description: "150g grilled steak, 2 eggs, 1 cup hash browns",
-        nutrition: { calories: 590, protein: 36, carbs: 38, fat: 26 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Chicken Sausage Breakfast Bowl',
+        description:
+          '2 chicken sausages (100g), 2 scrambled eggs (100g), 1 cup roasted potatoes (150g), 1/2 cup vegetables (75g), 1 tsp oil (5g)',
+        nutrition: {
+          calories: 565,
+          protein: 32,
+          carbs: 48,
+          fat: 24,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Chorizo Breakfast Burrito",
-        description: "Chorizo, scrambled eggs, cheese in large tortilla",
-        nutrition: { calories: 570, protein: 26, carbs: 48, fat: 24 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Turkey Breakfast Sandwich',
+        description:
+          '1 English muffin (57g), 2 slices turkey breast (56g), 1 fried egg (50g), 1 slice cheese (28g), 1 tsp mayo (5g)',
+        nutrition: {
+          calories: 510,
+          protein: 34,
+          carbs: 44,
+          fat: 20,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Sausage and Pancakes",
-        description: "2 turkey sausage patties with whole wheat pancakes and syrup",
-        nutrition: { calories: 560, protein: 22, carbs: 62, fat: 16 },
-        dietType: "non-veg",
-        allergens: ["gluten"]
+        dishName: 'Spanish Omelette with Ham',
+        description:
+          '3 eggs (150g), 50g diced ham, 1 medium potato (150g), 1/4 cup onions (40g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 535,
+          protein: 30,
+          carbs: 36,
+          fat: 28,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Ham and Cheese Omelette",
-        description: "3 egg omelette with ham, cheddar, peppers, 2 slices toast",
-        nutrition: { calories: 580, protein: 28, carbs: 48, fat: 24 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Tuna Avocado Toast',
+        description:
+          '2 slices whole grain bread (70g), 1 can tuna in water (85g), 1/2 avocado (75g), 1 tbsp mayo (14g), 1 boiled egg (50g)',
+        nutrition: {
+          calories: 580,
+          protein: 38,
+          carbs: 40,
+          fat: 28,
+        },
+        dietType: 'non-veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Chicken Paratha",
-        description: "Whole wheat paratha with spiced chicken keema",
-        nutrition: { calories: 550, protein: 28, carbs: 50, fat: 20 },
-        dietType: "non-veg",
-        allergens: ["gluten"]
+        dishName: 'Chicken Breakfast Burrito',
+        description:
+          '1 flour tortilla (70g), 85g grilled chicken, 2 scrambled eggs (100g), 2 tbsp salsa (30g), 2 tbsp cheese (14g), 1/4 avocado (38g)',
+        nutrition: {
+          calories: 595,
+          protein: 42,
+          carbs: 44,
+          fat: 26,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Grilled Fish with Rice",
-        description: "150g white fish, jasmine rice, steamed vegetables",
-        nutrition: { calories: 560, protein: 38, carbs: 54, fat: 10 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Egg Keema Paratha',
+        description:
+          '1 large paratha (100g), 100g minced chicken keema, 1 egg (50g), 2 tbsp yogurt (30g), 1 tbsp ghee (14g)',
+        nutrition: {
+          calories: 575,
+          protein: 32,
+          carbs: 52,
+          fat: 26,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Turkey Breast with Veggies",
-        description: "Sliced turkey breast, roasted vegetables, rice pilaf",
-        nutrition: { calories: 570, protein: 42, carbs: 48, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Protein Pancakes with Turkey Bacon',
+        description:
+          '3 protein pancakes (150g with 30g protein powder), 3 strips turkey bacon (51g), 2 tbsp maple syrup (40g), 1 tsp butter (5g)',
+        nutrition: {
+          calories: 520,
+          protein: 36,
+          carbs: 56,
+          fat: 14,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Grilled Shrimp Bowl",
-        description: "150g grilled shrimp, rice noodles, vegetable medley",
-        nutrition: { calories: 540, protein: 34, carbs: 56, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Shrimp and Grits',
+        description:
+          '1 cup cooked grits (242g), 100g saut\u00e9ed shrimp, 1 tbsp butter (14g), 2 tbsp cheese (14g), 1/4 cup vegetables (38g)',
+        nutrition: {
+          calories: 505,
+          protein: 28,
+          carbs: 58,
+          fat: 18,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy'],
       },
       {
-        dishName: "Chicken & Rice Skillet",
-        description: "200g chicken breast, brown rice, bell peppers, onions",
-        nutrition: { calories: 580, protein: 40, carbs: 58, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Japanese Tamagoyaki Bowl',
+        description:
+          '4 eggs rolled omelette (200g), 1 cup cooked rice (158g), 1 tbsp soy sauce (18g), 1 tsp sesame oil (5g), 1/4 cup edamame (38g)',
+        nutrition: {
+          calories: 550,
+          protein: 30,
+          carbs: 56,
+          fat: 20,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
-      {
-        dishName: "Beef Stir-Fry with Rice",
-        description: "150g lean beef, rice, broccoli, carrots, garlic sauce",
-        nutrition: { calories: 570, protein: 36, carbs: 60, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Duck Breast with Veggies",
-        description: "120g duck breast, roasted root vegetables, wild rice",
-        nutrition: { calories: 550, protein: 32, carbs: 52, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Grilled Tilapia & Greens",
-        description: "180g tilapia, sautéed greens, sweet potato",
-        nutrition: { calories: 560, protein: 40, carbs: 50, fat: 10 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Chicken Sausage Plate",
-        description: "2 chicken sausages, roasted peppers, onions, rice",
-        nutrition: { calories: 590, protein: 38, carbs: 56, fat: 16 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Pork Tenderloin with Rice",
-        description: "150g pork tenderloin, brown rice, steamed vegetables",
-        nutrition: { calories: 570, protein: 36, carbs: 58, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Grilled Mahi-Mahi",
-        description: "180g mahi-mahi, jasmine rice, tropical fruit salsa",
-        nutrition: { calories: 550, protein: 38, carbs: 54, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      }
     ],
     Lunch: [
       {
-        dishName: "Grilled Chicken with Veggies",
-        description: "200g grilled chicken breast, roasted vegetables, rice",
-        nutrition: { calories: 560, protein: 36, carbs: 54, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Grilled Chicken Caesar Salad',
+        description:
+          '120g grilled chicken breast, 3 cups romaine lettuce (141g), 2 tbsp Caesar dressing (30g), 1/4 cup croutons (30g), 2 tbsp parmesan (10g)',
+        nutrition: {
+          calories: 515,
+          protein: 42,
+          carbs: 28,
+          fat: 24,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Salmon Salad",
-        description: "150g salmon, mixed greens, avocado, olive oil dressing",
-        nutrition: { calories: 580, protein: 34, carbs: 28, fat: 28 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Turkey Club Sandwich',
+        description:
+          '3 slices whole wheat bread (105g), 100g sliced turkey, 2 strips bacon (17g), 1 slice cheese (28g), lettuce, tomato, 1 tbsp mayo (14g)',
+        nutrition: {
+          calories: 580,
+          protein: 38,
+          carbs: 48,
+          fat: 24,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Turkey Meatball Pasta",
-        description: "Whole wheat pasta with turkey meatballs and marinara",
-        nutrition: { calories: 570, protein: 32, carbs: 62, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["gluten"]
+        dishName: 'Chicken Shawarma Wrap',
+        description:
+          '1 large whole wheat tortilla (70g), 120g chicken shawarma, 1/4 cup hummus (60g), vegetables (75g), 1 tbsp tahini (15g)',
+        nutrition: {
+          calories: 540,
+          protein: 38,
+          carbs: 50,
+          fat: 20,
+        },
+        dietType: 'non-veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Chicken Caesar Wrap",
-        description: "Grilled chicken, Caesar dressing, whole wheat wrap with side",
-        nutrition: { calories: 590, protein: 34, carbs: 56, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
+        dishName: 'Tuna Poke Bowl',
+        description:
+          '100g raw tuna cubes, 3/4 cup sushi rice (140g), 1/4 avocado (38g), 1/4 cup edamame (38g), 1 tbsp soy sauce (18g), 1 tsp sesame oil (5g)',
+        nutrition: {
+          calories: 525,
+          protein: 34,
+          carbs: 62,
+          fat: 14,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Fish Curry with Rice",
-        description: "200g fish in curry sauce with 1 cup rice",
-        nutrition: { calories: 560, protein: 32, carbs: 58, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Chicken Burrito Bowl',
+        description:
+          '100g grilled chicken, 3/4 cup brown rice (140g), 1/2 cup black beans (86g), 2 tbsp cheese (14g), 2 tbsp sour cream (30g), salsa (30g)',
+        nutrition: {
+          calories: 595,
+          protein: 40,
+          carbs: 68,
+          fat: 18,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy'],
       },
       {
-        dishName: "Beef Taco Bowl",
-        description: "Lean ground beef, rice, beans, salsa, cheese, avocado",
-        nutrition: { calories: 580, protein: 32, carbs: 54, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["dairy"]
+        dishName: 'Chicken Tikka with Naan',
+        description:
+          '150g chicken tikka, 1 small naan bread (80g), 1/4 cup mint chutney (60g), side salad (50g), 1 tbsp yogurt (15g)',
+        nutrition: {
+          calories: 560,
+          protein: 42,
+          carbs: 54,
+          fat: 18,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Chicken Biryani",
-        description: "Fragrant saffron rice with chicken (smaller portion)",
-        nutrition: { calories: 570, protein: 28, carbs: 68, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
-      }
+        dishName: 'Fish Tacos',
+        description:
+          '2 corn tortillas (52g), 120g grilled white fish, 1/4 cup cabbage slaw (28g), 2 tbsp chipotle mayo (30g), 1/4 avocado (38g), lime',
+        nutrition: {
+          calories: 505,
+          protein: 32,
+          carbs: 42,
+          fat: 22,
+        },
+        dietType: 'non-veg',
+        allergens: [],
+      },
+      {
+        dishName: 'Teriyaki Chicken Bowl',
+        description:
+          '120g chicken breast with teriyaki glaze (30g), 1 cup jasmine rice (158g), 1 cup steamed broccoli (156g), 1 tsp sesame seeds (3g)',
+        nutrition: {
+          calories: 575,
+          protein: 42,
+          carbs: 76,
+          fat: 10,
+        },
+        dietType: 'non-veg',
+        allergens: [],
+      },
+      {
+        dishName: 'Beef Pho',
+        description:
+          '85g thinly sliced beef, 150g rice noodles, 2 cups beef broth (480ml), bean sprouts (50g), herbs, 1 tbsp fish sauce (18g)',
+        nutrition: {
+          calories: 520,
+          protein: 32,
+          carbs: 68,
+          fat: 12,
+        },
+        dietType: 'non-veg',
+        allergens: [],
+      },
+      {
+        dishName: 'Chicken Quesadilla',
+        description:
+          '2 flour tortillas (140g), 100g shredded chicken, 3/4 cup cheese (85g), 1/4 cup bell peppers (38g), 2 tbsp sour cream (30g)',
+        nutrition: {
+          calories: 600,
+          protein: 42,
+          carbs: 44,
+          fat: 28,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Salmon Salad Plate',
+        description:
+          '120g grilled salmon, 2 cups mixed greens (100g), 1/2 cup quinoa (93g), 1/4 cup feta (38g), 2 tbsp balsamic vinaigrette (30g)',
+        nutrition: {
+          calories: 535,
+          protein: 36,
+          carbs: 36,
+          fat: 26,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy'],
+      },
     ],
     Dinner: [
       {
-        dishName: "Pan-Seared Steak with Potatoes",
-        description: "180g lean steak, roasted potatoes, green beans",
-        nutrition: { calories: 590, protein: 40, carbs: 42, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Grilled Chicken with Vegetables',
+        description:
+          '150g grilled chicken breast, 1 cup roasted vegetables (150g), 1/2 cup quinoa (93g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 520,
+          protein: 46,
+          carbs: 42,
+          fat: 16,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Herb Roasted Chicken Thighs",
-        description: "Chicken thighs with roasted root vegetables",
-        nutrition: { calories: 570, protein: 36, carbs: 48, fat: 16 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Baked Salmon with Rice',
+        description:
+          '130g baked salmon, 3/4 cup brown rice (140g), 1 cup steamed asparagus (134g), 1 tbsp butter (14g), lemon',
+        nutrition: {
+          calories: 565,
+          protein: 38,
+          carbs: 56,
+          fat: 20,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Baked Cod with Lemon",
-        description: "200g baked cod, asparagus, rice pilaf",
-        nutrition: { calories: 560, protein: 38, carbs: 54, fat: 10 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Chicken Stir-Fry',
+        description:
+          '120g chicken breast, 2 cups mixed vegetables (300g), 3/4 cup jasmine rice (119g), 2 tbsp soy sauce (36g), 1 tbsp oil (14g)',
+        nutrition: {
+          calories: 545,
+          protein: 40,
+          carbs: 64,
+          fat: 14,
+        },
+        dietType: 'non-veg',
+        allergens: [],
       },
       {
-        dishName: "Tandoori Chicken with Rice",
-        description: "Marinated tandoori chicken with rice and mint chutney",
-        nutrition: { calories: 580, protein: 38, carbs: 56, fat: 12 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Turkey Meatballs with Pasta',
+        description:
+          '4 turkey meatballs (120g), 1 cup cooked pasta (140g), 1/2 cup marinara (120g), 2 tbsp parmesan (10g), 1 tsp olive oil (5g)',
+        nutrition: {
+          calories: 580,
+          protein: 38,
+          carbs: 68,
+          fat: 18,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Chicken Tikka Masala",
-        description: "Tandoori chicken in creamy sauce with rice",
-        nutrition: { calories: 590, protein: 32, carbs: 62, fat: 14 },
-        dietType: "non-veg",
-        allergens: ["dairy"]
+        dishName: 'Butter Chicken with Naan',
+        description:
+          '150g chicken in butter sauce (with 1 tbsp butter), 1 small naan (80g), 1/2 cup basmati rice (79g), 2 tbsp yogurt (30g)',
+        nutrition: {
+          calories: 595,
+          protein: 36,
+          carbs: 64,
+          fat: 22,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
       },
       {
-        dishName: "Grilled Salmon with Dill",
-        description: "180g salmon, roasted vegetables, new potatoes",
-        nutrition: { calories: 570, protein: 36, carbs: 48, fat: 16 },
-        dietType: "non-veg",
-        allergens: ["none"]
+        dishName: 'Grilled Tilapia with Couscous',
+        description:
+          '150g grilled tilapia, 1 cup cooked couscous (157g), 1 cup grilled zucchini (124g), 1 tbsp olive oil (14g), herbs',
+        nutrition: {
+          calories: 510,
+          protein: 42,
+          carbs: 58,
+          fat: 12,
+        },
+        dietType: 'non-veg',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Lamb Kofta with Tzatziki",
-        description: "Grilled lamb kofta with pita and yogurt sauce",
-        nutrition: { calories: 560, protein: 32, carbs: 50, fat: 16 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
-      }
+        dishName: 'Chicken Fajitas',
+        description:
+          '120g chicken strips, 2 flour tortillas (140g), 1 cup peppers and onions (150g), 2 tbsp sour cream (30g), 1/4 cup cheese (28g)',
+        nutrition: {
+          calories: 575,
+          protein: 42,
+          carbs: 54,
+          fat: 22,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Shrimp Scampi with Pasta',
+        description:
+          '120g shrimp, 1 cup linguine (140g), 2 tbsp butter (28g), 2 cloves garlic, 1/4 cup white wine (60ml), parsley',
+        nutrition: {
+          calories: 550,
+          protein: 34,
+          carbs: 60,
+          fat: 18,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Tandoori Chicken with Dal',
+        description:
+          '150g tandoori chicken, 1 cup dal (200g), 1 small roti (50g), side salad (50g)',
+        nutrition: {
+          calories: 535,
+          protein: 44,
+          carbs: 52,
+          fat: 14,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy', 'gluten'],
+      },
+      {
+        dishName: 'Beef Taco Bowl',
+        description:
+          '100g lean ground beef, 3/4 cup rice (119g), 1/2 cup black beans (86g), 2 tbsp cheese (14g), salsa (30g), 2 tbsp guacamole (30g)',
+        nutrition: {
+          calories: 590,
+          protein: 36,
+          carbs: 64,
+          fat: 22,
+        },
+        dietType: 'non-veg',
+        allergens: ['dairy'],
+      },
+      {
+        dishName: 'Lemon Herb Chicken Thighs',
+        description:
+          '150g chicken thighs, 1 cup roasted potatoes (150g), 1 cup green beans (125g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 560,
+          protein: 38,
+          carbs: 48,
+          fat: 24,
+        },
+        dietType: 'non-veg',
+        allergens: [],
+      },
     ],
-    Snack: [
-      {
-        dishName: "Grilled Chicken with Dip",
-        description: "200g grilled chicken strips with garlic dip and veggies",
-        nutrition: { calories: 580, protein: 48, carbs: 18, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["dairy"]
-      },
-      {
-        dishName: "Beef Jerky and Nuts",
-        description: "100g beef jerky with mixed nuts and fruit",
-        nutrition: { calories: 560, protein: 40, carbs: 32, fat: 20 },
-        dietType: "non-veg",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Turkey and Cheese Sandwich",
-        description: "Turkey breast, cheddar, avocado on whole grain bread",
-        nutrition: { calories: 570, protein: 32, carbs: 50, fat: 18 },
-        dietType: "non-veg",
-        allergens: ["dairy", "gluten"]
-      },
-      {
-        dishName: "Hard Boiled Eggs with Nuts",
-        description: "4 hard boiled eggs with almonds and fruit",
-        nutrition: { calories: 590, protein: 32, carbs: 28, fat: 32 },
-        dietType: "non-veg",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Protein Shake with Banana",
-        description: "Whey protein shake with banana, milk, peanut butter",
-        nutrition: { calories: 540, protein: 36, carbs: 54, fat: 10 },
-        dietType: "non-veg",
-        allergens: ["dairy", "nuts"]
-      }
-    ]
   },
   vegan: {
     Breakfast: [
       {
-        dishName: "Avocado Toast with Toppings",
-        description: "2 slices sourdough, mashed avocado, cherry tomatoes, microgreens",
-        nutrition: { calories: 560, protein: 14, carbs: 62, fat: 24 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Vegan Protein Smoothie Bowl',
+        description:
+          '1 scoop vegan protein powder (30g), 2 frozen bananas (236g), 1 cup almond milk (240ml), 3 tbsp granola (23g), 1 tbsp almond butter (16g), berries (75g)',
+        nutrition: {
+          calories: 545,
+          protein: 28,
+          carbs: 82,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Chia Seed Pudding",
-        description: "Chia seeds in almond milk with berries and coconut",
-        nutrition: { calories: 540, protein: 12, carbs: 52, fat: 24 },
-        dietType: "vegan",
-        allergens: ["nuts"]
+        dishName: 'Tofu Scramble',
+        description:
+          '200g firm tofu, 1 cup vegetables (150g), 2 slices whole wheat toast (70g), 1/2 avocado (75g), 1 tbsp nutritional yeast (5g), 1 tsp oil (5g)',
+        nutrition: {
+          calories: 520,
+          protein: 26,
+          carbs: 50,
+          fat: 24,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Tofu Scramble with Toast",
-        description: "Crumbled tofu with turmeric, vegetables, 2 slices toast",
-        nutrition: { calories: 570, protein: 18, carbs: 62, fat: 20 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Overnight Oats',
+        description:
+          '1 cup rolled oats (81g), 1 cup oat milk (240ml), 2 tbsp chia seeds (24g), 2 tbsp maple syrup (40g), 1/2 cup berries (75g), 2 tbsp walnuts (18g)',
+        nutrition: {
+          calories: 570,
+          protein: 16,
+          carbs: 86,
+          fat: 20,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Vegan Pancakes",
-        description: "Plant-based pancakes with maple syrup, berries",
-        nutrition: { calories: 580, protein: 12, carbs: 84, fat: 12 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Vegan Pancakes',
+        description:
+          '3 pancakes made with 1 cup flour (120g), 1 cup plant milk (240ml), 3 tbsp maple syrup (60g), 1 tbsp vegan butter (14g), 1/2 cup blueberries (75g)',
+        nutrition: {
+          calories: 595,
+          protein: 12,
+          carbs: 106,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Oat Milk Latte with Muffin",
-        description: "Large oat milk latte with vegan blueberry muffin",
-        nutrition: { calories: 550, protein: 12, carbs: 72, fat: 16 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Peanut Butter Toast with Banana',
+        description:
+          '2 slices whole grain bread (70g), 3 tbsp peanut butter (48g), 1 large banana (136g), 1 tbsp agave (21g), sprinkle of chia seeds (5g)',
+        nutrition: {
+          calories: 580,
+          protein: 18,
+          carbs: 78,
+          fat: 24,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts', 'gluten'],
       },
       {
-        dishName: "Granola Parfait",
-        description: "Coconut yogurt with granola, berries, nuts",
-        nutrition: { calories: 590, protein: 14, carbs: 68, fat: 22 },
-        dietType: "vegan",
-        allergens: ["nuts"]
+        dishName: 'Chickpea Flour Omelette',
+        description:
+          '1/2 cup chickpea flour (60g), 1 cup vegetables (150g), 1/4 cup nutritional yeast (20g), 2 slices toast (70g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 510,
+          protein: 24,
+          carbs: 64,
+          fat: 18,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Tofu Paratha",
-        description: "Whole wheat paratha with spiced tofu",
-        nutrition: { calories: 560, protein: 16, carbs: 58, fat: 18 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Acai Bowl',
+        description:
+          '2 packs acai (200g), 1 frozen banana (118g), 1/2 cup granola (60g), 2 tbsp almond butter (32g), 1/2 cup mixed berries (75g), coconut flakes (10g)',
+        nutrition: {
+          calories: 565,
+          protein: 14,
+          carbs: 82,
+          fat: 24,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Chickpea & Vegetable Curry",
-        description: "Chickpeas, coconut milk, spinach, rice (smaller portion)",
-        nutrition: { calories: 570, protein: 14, carbs: 74, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Vegan Breakfast Burrito',
+        description:
+          '1 large tortilla (70g), 150g tofu scramble, 1/2 cup black beans (86g), 1/4 avocado (38g), salsa (30g), 1 tbsp vegan cheese (7g)',
+        nutrition: {
+          calories: 535,
+          protein: 26,
+          carbs: 68,
+          fat: 18,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Lentil & Rice Medley",
-        description: "Red lentils, brown rice, tomatoes, spinach",
-        nutrition: { calories: 560, protein: 16, carbs: 72, fat: 12 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Quinoa Breakfast Bowl',
+        description:
+          '1 cup cooked quinoa (185g), 1 cup almond milk (240ml), 2 tbsp maple syrup (40g), 1/4 cup almonds (36g), 1/2 cup berries (75g), 1 tsp cinnamon',
+        nutrition: {
+          calories: 590,
+          protein: 18,
+          carbs: 88,
+          fat: 20,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Buckwheat Noodle Bowl",
-        description: "Buckwheat noodles, mixed vegetables, sesame oil",
-        nutrition: { calories: 540, protein: 12, carbs: 68, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Vegan French Toast',
+        description:
+          '3 slices bread (105g), 1/2 cup plant milk (120ml), 1 tbsp ground flaxseed (7g), 3 tbsp maple syrup (60g), 1 tbsp vegan butter (14g), berries (50g)',
+        nutrition: {
+          calories: 520,
+          protein: 12,
+          carbs: 92,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Mung Bean Salad",
-        description: "Sprouted mung beans, cucumber, tomato, lime dressing",
-        nutrition: { calories: 550, protein: 14, carbs: 64, fat: 16 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Tempeh Bacon Sandwich',
+        description:
+          '4 slices tempeh bacon (80g), 2 slices whole wheat bread (70g), 1/2 avocado (75g), lettuce, tomato (50g), 1 tbsp vegan mayo (14g)',
+        nutrition: {
+          calories: 550,
+          protein: 24,
+          carbs: 52,
+          fat: 28,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
-      {
-        dishName: "Fava Bean Stew",
-        description: "Fava beans, carrots, celery, tomatoes, olive oil",
-        nutrition: { calories: 570, protein: 15, carbs: 70, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Teff & Vegetable Mix",
-        description: "Teff grain, roasted vegetables, herbs, olive oil",
-        nutrition: { calories: 560, protein: 13, carbs: 68, fat: 16 },
-        dietType: "vegan",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Black Bean & Rice Bowl",
-        description: "Black beans, white rice, corn, bell peppers",
-        nutrition: { calories: 580, protein: 13, carbs: 76, fat: 12 },
-        dietType: "vegan",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Aduki Bean Noodles",
-        description: "Rice noodles, aduki beans, bok choy, ginger broth",
-        nutrition: { calories: 550, protein: 14, carbs: 70, fat: 12 },
-        dietType: "vegan",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Quinoa & Lentil Salad",
-        description: "Cooked quinoa, cooked lentils, vegetables, olive oil",
-        nutrition: { calories: 570, protein: 16, carbs: 66, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
-      },
-      {
-        dishName: "Amaranth Porridge",
-        description: "Amaranth grain, coconut milk, fresh fruit, maple syrup",
-        nutrition: { calories: 560, protein: 12, carbs: 72, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
-      }
     ],
     Lunch: [
       {
-        dishName: "Buddha Bowl",
-        description: "Quinoa, roasted tofu, sweet potato, tahini dressing",
-        nutrition: { calories: 580, protein: 18, carbs: 68, fat: 18 },
-        dietType: "vegan",
-        allergens: ["nuts"]
+        dishName: 'Buddha Bowl',
+        description:
+          '3/4 cup quinoa (140g), 1 cup roasted chickpeas (164g), 1 cup roasted vegetables (150g), 1/4 avocado (38g), 2 tbsp tahini (30g)',
+        nutrition: {
+          calories: 575,
+          protein: 22,
+          carbs: 76,
+          fat: 22,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Chickpea Curry with Rice",
-        description: "Spiced chickpea curry with 1 cup rice",
-        nutrition: { calories: 570, protein: 16, carbs: 78, fat: 10 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Vegan Burrito Bowl',
+        description:
+          '3/4 cup brown rice (140g), 3/4 cup black beans (130g), 1/2 cup corn (82g), 1/2 avocado (75g), salsa (30g), 2 tbsp guacamole (30g)',
+        nutrition: {
+          calories: 590,
+          protein: 20,
+          carbs: 92,
+          fat: 18,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Veggie Burger with Fries",
-        description: "Plant-based patty, vegan mayo, sweet potato fries",
-        nutrition: { calories: 590, protein: 16, carbs: 72, fat: 18 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Falafel Wrap',
+        description:
+          '1 large whole wheat tortilla (70g), 4 falafel balls (120g), 1/4 cup hummus (60g), 1 cup vegetables (150g), 1 tbsp tahini (15g)',
+        nutrition: {
+          calories: 560,
+          protein: 20,
+          carbs: 76,
+          fat: 22,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Dal Tadka with Roti",
-        description: "Lentil curry with 2 whole wheat rotis",
-        nutrition: { calories: 560, protein: 18, carbs: 76, fat: 8 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Lentil Curry with Rice',
+        description:
+          '1.5 cups lentil curry (300g), 3/4 cup basmati rice (119g), 2 tbsp coconut milk (30g), naan piece (40g)',
+        nutrition: {
+          calories: 545,
+          protein: 24,
+          carbs: 92,
+          fat: 10,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Vegetable Lo Mein",
-        description: "Noodles with mixed vegetables, sesame oil, peanut sauce",
-        nutrition: { calories: 580, protein: 14, carbs: 68, fat: 18 },
-        dietType: "vegan",
-        allergens: ["nuts"]
+        dishName: 'Tofu Banh Mi',
+        description:
+          '1 baguette (100g), 120g marinated tofu, pickled vegetables (75g), cilantro, jalape\u00f1os, 1 tbsp vegan mayo (14g)',
+        nutrition: {
+          calories: 520,
+          protein: 22,
+          carbs: 76,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Falafel Wrap",
-        description: "Falafel, hummus, tahini, vegetables in pita",
-        nutrition: { calories: 570, protein: 16, carbs: 64, fat: 20 },
-        dietType: "vegan",
-        allergens: ["nuts", "gluten"]
+        dishName: 'Vegan Pasta Primavera',
+        description:
+          '1.5 cups pasta (210g), 1.5 cups vegetables (225g), 1/4 cup cashew cream (60g), 2 tbsp nutritional yeast (10g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 595,
+          protein: 20,
+          carbs: 88,
+          fat: 20,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts', 'gluten'],
       },
       {
-        dishName: "Vegetable Biryani",
-        description: "Saffron rice with mixed vegetables and spices",
-        nutrition: { calories: 560, protein: 12, carbs: 80, fat: 12 },
-        dietType: "vegan",
-        allergens: ["none"]
-      }
+        dishName: 'Chickpea Salad Sandwich',
+        description:
+          '1 cup mashed chickpeas (164g), 2 slices whole wheat bread (70g), 1 tbsp vegan mayo (14g), vegetables (75g), 1/4 avocado (38g)',
+        nutrition: {
+          calories: 510,
+          protein: 20,
+          carbs: 72,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
+      },
+      {
+        dishName: 'Asian Noodle Bowl',
+        description:
+          '150g rice noodles, 150g tofu, 1.5 cups vegetables (225g), 2 tbsp peanut sauce (32g), 2 tbsp peanuts (18g), 1 tbsp sesame oil (14g)',
+        nutrition: {
+          calories: 580,
+          protein: 24,
+          carbs: 72,
+          fat: 24,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
+      },
+      {
+        dishName: 'Mexican Rice Bowl',
+        description:
+          '1 cup brown rice (195g), 3/4 cup pinto beans (130g), 1/2 cup corn (82g), 1/4 avocado (38g), salsa (30g), lime',
+        nutrition: {
+          calories: 565,
+          protein: 18,
+          carbs: 104,
+          fat: 10,
+        },
+        dietType: 'vegan',
+        allergens: [],
+      },
+      {
+        dishName: 'Vegan Sushi Bowl',
+        description:
+          '1 cup sushi rice (158g), 100g marinated tofu, 1/2 avocado (75g), 1/4 cup edamame (38g), vegetables (75g), 1 tbsp soy sauce (18g)',
+        nutrition: {
+          calories: 535,
+          protein: 20,
+          carbs: 82,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: [],
+      },
+      {
+        dishName: 'Mediterranean Grain Bowl',
+        description:
+          '3/4 cup farro (140g), 1/2 cup hummus (120g), 1 cup roasted vegetables (150g), 1/4 cup olives (34g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 595,
+          protein: 18,
+          carbs: 82,
+          fat: 24,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
+      },
     ],
     Dinner: [
       {
-        dishName: "Tofu Stir-Fry with Rice",
-        description: "Marinated tofu, vegetables, ginger-garlic sauce, brown rice",
-        nutrition: { calories: 570, protein: 16, carbs: 72, fat: 14 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Vegan Chili with Rice',
+        description:
+          '1.5 cups three-bean chili (360g), 3/4 cup brown rice (140g), 2 tbsp vegan sour cream (30g), tortilla chips (28g)',
+        nutrition: {
+          calories: 580,
+          protein: 24,
+          carbs: 96,
+          fat: 12,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Lentil Bolognese Pasta",
-        description: "Whole wheat pasta with lentil-vegetable sauce",
-        nutrition: { calories: 580, protein: 18, carbs: 74, fat: 10 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Stir-Fried Tofu with Vegetables',
+        description:
+          '200g firm tofu, 2 cups vegetables (300g), 3/4 cup jasmine rice (119g), 2 tbsp soy sauce (36g), 1 tbsp sesame oil (14g)',
+        nutrition: {
+          calories: 560,
+          protein: 26,
+          carbs: 68,
+          fat: 20,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Bean Burrito Bowl",
-        description: "Rice, beans, corn, salsa, vegan cheese, guacamole",
-        nutrition: { calories: 590, protein: 16, carbs: 74, fat: 16 },
-        dietType: "vegan",
-        allergens: ["dairy"]
+        dishName: 'Vegan Pad Thai',
+        description:
+          '150g rice noodles, 100g tofu, 1 cup vegetables (150g), 3 tbsp pad thai sauce (45g), 2 tbsp peanuts (18g), lime',
+        nutrition: {
+          calories: 545,
+          protein: 20,
+          carbs: 82,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts'],
       },
       {
-        dishName: "Vegetable Curry",
-        description: "Seasonal vegetables in coconut milk sauce with rice",
-        nutrition: { calories: 560, protein: 12, carbs: 70, fat: 16 },
-        dietType: "vegan",
-        allergens: ["none"]
+        dishName: 'Lentil Bolognese',
+        description:
+          '1.5 cups pasta (210g), 1 cup lentil bolognese sauce (240g), 2 tbsp nutritional yeast (10g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 595,
+          protein: 26,
+          carbs: 96,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
       },
       {
-        dishName: "Chickpea and Vegetable Stew",
-        description: "Hearty stew with bread",
-        nutrition: { calories: 570, protein: 16, carbs: 72, fat: 12 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Vegan Enchiladas',
+        description:
+          '2 corn tortillas (52g), 3/4 cup black beans (130g), 1/2 cup vegetables (75g), 1/4 cup enchilada sauce (60g), 1/4 avocado (38g), vegan cheese (28g)',
+        nutrition: {
+          calories: 520,
+          protein: 20,
+          carbs: 78,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Black Bean Tacos",
-        description: "Roasted black beans, salsa, avocado, cilantro in tortillas",
-        nutrition: { calories: 580, protein: 14, carbs: 72, fat: 14 },
-        dietType: "vegan",
-        allergens: ["gluten"]
+        dishName: 'Teriyaki Tempeh Bowl',
+        description:
+          '150g tempeh, 1 cup brown rice (195g), 1 cup broccoli (156g), 2 tbsp teriyaki sauce (36g), 1 tsp sesame seeds (3g)',
+        nutrition: {
+          calories: 575,
+          protein: 30,
+          carbs: 82,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: [],
       },
       {
-        dishName: "Tofu Biryani",
-        description: "Fragrant rice with tofu and mixed vegetables",
-        nutrition: { calories: 560, protein: 14, carbs: 76, fat: 12 },
-        dietType: "vegan",
-        allergens: ["none"]
-      }
+        dishName: 'Vegan Curry with Naan',
+        description:
+          '1.5 cups vegetable curry (300g), 1 small vegan naan (80g), 1/2 cup brown rice (98g), 2 tbsp coconut milk (30g)',
+        nutrition: {
+          calories: 560,
+          protein: 16,
+          carbs: 94,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
+      },
+      {
+        dishName: 'Stuffed Sweet Potato',
+        description:
+          '1 large sweet potato (180g), 3/4 cup black beans (130g), 1/4 cup corn (41g), 1/4 avocado (38g), 2 tbsp salsa (30g), tahini drizzle (15g)',
+        nutrition: {
+          calories: 535,
+          protein: 20,
+          carbs: 90,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: [],
+      },
+      {
+        dishName: 'Vegan Pizza',
+        description:
+          '2 slices thin crust (200g), 1/2 cup marinara (120g), vegan mozzarella (60g), 1 cup vegetables (150g), 1 tbsp olive oil (14g)',
+        nutrition: {
+          calories: 590,
+          protein: 18,
+          carbs: 82,
+          fat: 22,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
+      },
+      {
+        dishName: 'Mushroom Stroganoff',
+        description:
+          '2 cups mushrooms (140g), 1.5 cups pasta (210g), 1/2 cup cashew cream (120g), 1/4 cup nutritional yeast (20g), 1 tbsp oil (14g)',
+        nutrition: {
+          calories: 580,
+          protein: 22,
+          carbs: 84,
+          fat: 20,
+        },
+        dietType: 'vegan',
+        allergens: ['nuts', 'gluten'],
+      },
+      {
+        dishName: 'Vegan Fried Rice',
+        description:
+          '1.5 cups cooked rice (237g), 1 cup mixed vegetables (150g), 100g tofu, 2 tbsp soy sauce (36g), 1 tbsp sesame oil (14g), 1/4 cup peas (37g)',
+        nutrition: {
+          calories: 570,
+          protein: 20,
+          carbs: 92,
+          fat: 14,
+        },
+        dietType: 'vegan',
+        allergens: [],
+      },
+      {
+        dishName: 'Black Bean Burger with Fries',
+        description:
+          '1 black bean patty (120g), 1 whole wheat bun (80g), 1 cup baked fries (150g), vegetables (50g), 1 tbsp vegan mayo (14g)',
+        nutrition: {
+          calories: 550,
+          protein: 20,
+          carbs: 88,
+          fat: 16,
+        },
+        dietType: 'vegan',
+        allergens: ['gluten'],
+      },
     ],
-    Snack: [
-      {
-        dishName: "Trail Mix Bowl",
-        description: "Nuts, seeds, dried fruit (generous portion)",
-        nutrition: { calories: 580, protein: 14, carbs: 56, fat: 28 },
-        dietType: "vegan",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Hummus with Veggies and Pita",
-        description: "Large bowl hummus, vegetable sticks, pita chips",
-        nutrition: { calories: 570, protein: 14, carbs: 62, fat: 22 },
-        dietType: "vegan",
-        allergens: ["nuts", "gluten"]
-      },
-      {
-        dishName: "Protein Smoothie",
-        description: "Plant protein powder, almond milk, banana, almond butter",
-        nutrition: { calories: 540, protein: 18, carbs: 58, fat: 16 },
-        dietType: "vegan",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Roasted Chickpea Mix",
-        description: "Spiced roasted chickpeas with nuts",
-        nutrition: { calories: 560, protein: 16, carbs: 52, fat: 20 },
-        dietType: "vegan",
-        allergens: ["nuts"]
-      },
-      {
-        dishName: "Vegan Protein Bar with Fruit",
-        description: "Plant-based bar with fresh fruit",
-        nutrition: { calories: 550, protein: 14, carbs: 68, fat: 14 },
-        dietType: "vegan",
-        allergens: ["nuts"]
-      }
-    ]
-  }
-};
+  },
+}
 
-export { mealTemplatesTier1 };
+export { mealTemplatesTier1 }

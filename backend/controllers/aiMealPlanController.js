@@ -7,10 +7,21 @@ import {
   calculateCalories,
   calculateMacros,
 } from '../utils/nutritionCalculations.js'
+// 🔥 USING V3: ULTIMATE meal selection with realistic calorie distribution
 import {
-  generateTemplateMealPlan,
-  validateAndFixMealPlan,
-} from '../utils/mealPlanUtils.js'
+  generateUltimateMealPlan,
+  validateAndFixMealPlanV3,
+} from '../utils/mealPlanUtils3.js'
+// ❌ OLD V2: Smart selection but equal distribution (commented out)
+// import {
+//   generateSmartMealPlan,
+//   validateAndFixMealPlanV2,
+// } from '../utils/mealPlanUtils2.js'
+// ❌ OLD V1: Random selection + scaling (commented out)
+// import {
+//   generateTemplateMealPlan,
+//   validateAndFixMealPlan,
+// } from '../utils/mealPlanUtils.js'
 
 /**
  * Generate a new diet plan using Ollama or Templates
@@ -100,18 +111,39 @@ export const createMealPlan = async (req, res, next) => {
 
     let mealPlanData
 
+    // 🔥 V3: Build user profile for ultimate generation
+    const userProfile = {
+      weight,
+      height,
+      age,
+      gender,
+      activityLevel,
+      goal,
+    }
+
     // Decision: Use templates for faster generation or AI for variety
     if (useTemplates || planDuration > 14) {
-      // Use templates directly for speed (instant generation)
-      console.log(`Using template-based generation (${planDuration} days)`)
-      mealPlanData = generateTemplateMealPlan(
+      // 🔥 V3: Use ULTIMATE meal plan with realistic calorie distribution
+      console.log(
+        `🔥 Using ULTIMATE meal plan generation V3 (${planDuration} days)`,
+      )
+      mealPlanData = generateUltimateMealPlan(
+        userProfile,
         planDuration,
         mealPerDay,
         normalizedFoodType,
-        dailyCalories,
         normalizedAllergens,
-        goal, // 🎯 Pass goal for calorie tolerance scaling
       )
+
+      // ❌ OLD V1: Random selection + scaling
+      // mealPlanData = generateTemplateMealPlan(
+      //   planDuration,
+      //   mealPerDay,
+      //   normalizedFoodType,
+      //   dailyCalories,
+      //   normalizedAllergens,
+      //   goal,
+      // )
     } else {
       // Try AI generation with fallback to templates
       try {
@@ -148,31 +180,50 @@ export const createMealPlan = async (req, res, next) => {
           dailyCalories, // 🎯 NEW: Pass dailyCalories to Ollama for per-meal targets
         })
 
-        // Validate and fix AI result
-        mealPlanData = validateAndFixMealPlan(
+        // 🔥 V3: Validate and fix AI result with ultimate selection
+        mealPlanData = validateAndFixMealPlanV3(
           aiResult,
+          userProfile,
           planDuration,
           mealPerDay,
           normalizedFoodType,
-          dailyCalories, // 🎯 Pass dailyCalories for tier-based scaling
-          normalizedAllergens, // 🚫 Pass allergens for fallback filtering
-          goal, // 🎯 Pass goal for tolerance-based calorie scaling
+          normalizedAllergens,
         )
+
+        // ❌ OLD V1: Validate with random selection + scaling
+        // mealPlanData = validateAndFixMealPlan(
+        //   aiResult,
+        //   planDuration,
+        //   mealPerDay,
+        //   normalizedFoodType,
+        //   dailyCalories,
+        //   normalizedAllergens,
+        //   goal,
+        // )
         console.log('AI generation completed successfully')
       } catch (aiError) {
         console.warn(
-          'AI generation failed, falling back to templates:',
+          'AI generation failed, falling back to ULTIMATE templates V3:',
           aiError.message,
         )
-        // Fallback to templates if AI fails
-        mealPlanData = generateTemplateMealPlan(
+        // 🔥 V3: Fallback to ultimate templates
+        mealPlanData = generateUltimateMealPlan(
+          userProfile,
           planDuration,
           mealPerDay,
           normalizedFoodType,
-          dailyCalories,
           normalizedAllergens,
-          goal, // 🎯 Pass goal for calorie tolerance scaling
         )
+
+        // ❌ OLD V1: Fallback to random templates
+        // mealPlanData = generateTemplateMealPlan(
+        //   planDuration,
+        //   mealPerDay,
+        //   normalizedFoodType,
+        //   dailyCalories,
+        //   normalizedAllergens,
+        //   goal,
+        // )
       }
     }
 
