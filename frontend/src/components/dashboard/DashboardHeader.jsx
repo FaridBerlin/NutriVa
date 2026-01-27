@@ -56,8 +56,8 @@ export default function DashboardHeader({ userName }) {
     ? 'text-sm text-accentYellow/80'
     : 'text-sm text-gray-900'
   const weightLabelClass = isDark
-    ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-gray-900'
+    ? 'text-m text-accentYellow/80'
+    : 'text-m text-gray-900'
   const weightValueClass = isDark
     ? 'text-base font-semibold text-accentYellow'
     : 'text-base font-semibold text-gray-900'
@@ -66,15 +66,15 @@ export default function DashboardHeader({ userName }) {
 
   return (
     <div className={containerClass}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-4  md:w-auto">
           <div
             className={`w-14 h-14 ${iconBg} rounded-full flex items-center justify-center`}
           >
             <User className={iconColor} size={24} />
           </div>
           <div>
-            <h1 className={titleClass}>
+            <h1 className={`py-3 ${titleClass}`}>
               Welcome back,{' '}
               {capitalizedName(userName || profile?.name || 'User')}!
             </h1>
@@ -117,9 +117,9 @@ export default function DashboardHeader({ userName }) {
           </div>
         </div>
 
-        <div className="text-right">
-          <div className="flex items-center justify-end gap-3">
-            <div className={weightLabelClass}>Weight</div>
+        <div className="flex gap-3 md:block md:w-auto items-center text-center md:text-right">
+          <div className="flex items-center justify-center md:justify-end gap-3">
+            <div className={weightLabelClass}>Weight </div>
             <div className={weightValueClass}>
               {loading
                 ? '...'
@@ -128,7 +128,7 @@ export default function DashboardHeader({ userName }) {
                   : '—'}
             </div>
           </div>
-          <div className="flex items-center justify-end gap-2 mt-2">
+          <div className="flex items-center justify-center md:justify-end gap-2 mt-2">
             <div
               className={`${isDark ? 'bg-amber-900/20 text-amber-300' : 'bg-emerald-100 text-emerald-700'} px-4 py-1 rounded-full text-xl md:text-2xl flex items-center gap-3 font-semibold`}
             >

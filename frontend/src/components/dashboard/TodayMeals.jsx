@@ -92,7 +92,7 @@ export default function TodayMeals() {
       <Card noHover className="p-6">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-1 capitalize">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-1 capitalize">
               <span className="inline-flex items-center px-0.5 py-0.5 text-base font-bold  text-primary dark:text-white uppercase">
                 {activePlan?.planName || 'health plan'}
               </span>{' '}
@@ -151,7 +151,7 @@ export default function TodayMeals() {
                     </div>
                   </div>
                   <div className="text-right text-sm">
-                    <div className="text-gray-900 font-semibold text-base dark:text-white">
+                    <div className="text-primary font-semibold text-base dark:text-white">
                       {meal.calories} cal
                     </div>
                     <div className="text-muted text-sm dark:text-gray-300">
