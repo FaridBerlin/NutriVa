@@ -14,8 +14,8 @@ export default {
       colors: {
         primary2: '#83D385', // main green color
         primary: '#34d399',
-        accentYellow: '#FBBF24', // warm yellow for dark-mode accents
-        accentYellowDark: '#D97706', // warm yellow for dark-mode accents
+        accentYellow: '#FCD34D', // warm yellow for dark-mode accents (softer)
+        accentYellowDark: '#F59E0B', // warm yellow for dark-mode accents (softer)
         primaryDark2: '#7FBC81', // Hover
         primaryDark: '#0d9488',
         primarySoft: 'rgba(127,188,129,0.85)', // button bg
