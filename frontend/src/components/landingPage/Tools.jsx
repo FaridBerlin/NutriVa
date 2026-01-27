@@ -74,7 +74,7 @@ export default function Tools() {
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <ScrollAnimationWrapper className="text-center mb-16">
+        <div className="text-center mb-16">
           <motion.div
             initial={{ scale: 0 }}
             whileInView={{ scale: 1 }}
@@ -95,7 +95,7 @@ export default function Tools() {
           <p className="text-gray-600 dark:text-gray-400 text-lg md:text-xl max-w-3xl mx-auto">
             We turn your biggest diet challenges into effortless wins
           </p>
-        </ScrollAnimationWrapper>
+        </div>
 
         {/* Two Column Layout with Connecting Line */}
         <div className="relative">
@@ -107,10 +107,73 @@ export default function Tools() {
             />
           </div>
 
-          <div className="grid md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-12">
+          {/* Mobile Layout: Pairs */}
+          <div className="md:hidden space-y-8">
+            {problemSolutions.map((item, index) => {
+              const IconComponent = item.icon
+              const isHovered = hoveredIndex === index
+
+              return (
+                <div key={`pair-${index}`} className="space-y-4">
+                  {/* Problem Card */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.1 }}
+                    onTouchStart={() => setHoveredIndex(index)}
+                    onTouchEnd={() => setHoveredIndex(null)}
+                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700 min-h-[140px] flex items-center"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div
+                        className={`flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-r ${item.color} flex items-center justify-center shadow-lg`}
+                      >
+                        <IconComponent className="w-5 h-5 text-white" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-2 uppercase tracking-wider">
+                          Challenge
+                        </h4>
+                        <p className="text-gray-900 dark:text-gray-200 text-base font-medium leading-relaxed">
+                          {item.problem}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Solution Card */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3, delay: index * 0.1 + 0.15 }}
+                    className="bg-gradient-to-br from-teal-50 to-green-50 dark:from-teal-900/30 dark:to-green-900/30 rounded-xl p-6 shadow-lg border border-teal-200 dark:border-teal-700/50 min-h-[140px] flex items-center"
+                  >
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full bg-teal-100 dark:bg-teal-700/50 flex items-center justify-center shadow-lg">
+                        <CheckCircle className="w-5 h-5 text-teal-600 dark:text-teal-400" />
+                      </div>
+                      <div className="flex-1">
+                        <h4 className="text-xs font-semibold text-teal-600 dark:text-teal-400 mb-2 uppercase tracking-wider">
+                          Solution
+                        </h4>
+                        <p className="text-gray-900 dark:text-gray-200 text-base font-semibold leading-relaxed">
+                          {item.solution}
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Desktop Layout: Two Columns */}
+          <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] gap-8 md:gap-12">
             {/* Problems Column */}
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center md:text-left">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-left">
                 The Challenges
               </h3>
               <div className="space-y-6">
@@ -152,11 +215,11 @@ export default function Tools() {
             </div>
 
             {/* Middle Spacer for Line */}
-            <div className="hidden md:block w-16"></div>
+            <div className="w-16"></div>
 
             {/* Solutions Column */}
             <div className="space-y-6">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-center md:text-right">
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 text-right">
                 Our Solutions
               </h3>
               <div className="space-y-6">
@@ -198,7 +261,7 @@ export default function Tools() {
         </div>
 
         {/* Bottom CTA */}
-        <ScrollAnimationWrapper delay={0.6} className="mt-20 text-center">
+        <div className="mt-20 text-center">
           <p className="text-gray-900 dark:text-gray-300 mb-8 text-xl font-medium">
             Stop overthinking. Start achieving.
           </p>
@@ -216,7 +279,7 @@ export default function Tools() {
             </span>
             <div className="absolute inset-0 bg-gradient-to-r from-green-500 via-teal-500 to-teal-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           </motion.button>
-        </ScrollAnimationWrapper>
+        </div>
       </div>
     </section>
   )

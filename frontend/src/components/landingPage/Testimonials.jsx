@@ -60,20 +60,18 @@ export default function Testimonials() {
     >
       <div className="max-w-7xl mx-auto px-6">
         {/* Section Header */}
-        <ScrollAnimationWrapper>
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
-              <span className="text-sm font-medium">Success Stories</span>
-            </div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
-              Loved by Thousands of Users
-            </h2>
-            <p className="text-xl text-textLight dark:text-gray-400 max-w-2xl mx-auto">
-              Join our community of health-conscious individuals achieving their
-              goals with Nutriva
-            </p>
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 text-primary dark:bg-teal-900/30 dark:text-teal-400 rounded-full mb-6">
+            <span className="text-sm font-medium">Success Stories</span>
           </div>
-        </ScrollAnimationWrapper>
+          <h2 className="text-4xl lg:text-5xl font-bold text-textDark dark:text-white mb-4">
+            Loved by Thousands of Users
+          </h2>
+          <p className="text-xl text-textLight dark:text-gray-400 max-w-2xl mx-auto">
+            Join our community of health-conscious individuals achieving their
+            goals with Nutriva
+          </p>
+        </div>
 
         {/* Testimonials Grid */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -130,42 +128,38 @@ export default function Testimonials() {
         </div>
 
         {/* Bottom Stats */}
-        <ScrollAnimationWrapper delay={0.4}>
-          <div className="mt-16 grid md:grid-cols-4 gap-8 p-8 bg-gradient-to-br from-primary/5 to-teal-50/50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl border border-primary/20 dark:border-teal-700/30">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-                50,000+
-              </div>
-              <div className="text-textLight dark:text-gray-400">
-                Happy Users
-              </div>
+        <div className="mt-16 grid md:grid-cols-4 gap-8 p-8 bg-gradient-to-br from-primary/5 to-teal-50/50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl border border-primary/20 dark:border-teal-700/30">
+          <div className="text-center">
+            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+              50,000+
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-                4.9/5
-              </div>
-              <div className="text-textLight dark:text-gray-400">
-                Average Rating
-              </div>
+            <div className="text-textLight dark:text-gray-400">Happy Users</div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+              4.9/5
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-                2M+
-              </div>
-              <div className="text-textLight dark:text-gray-400">
-                Meals Tracked
-              </div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-                95%
-              </div>
-              <div className="text-textLight dark:text-gray-400">
-                Would Recommend
-              </div>
+            <div className="text-textLight dark:text-gray-400">
+              Average Rating
             </div>
           </div>
-        </ScrollAnimationWrapper>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+              2M+
+            </div>
+            <div className="text-textLight dark:text-gray-400">
+              Meals Tracked
+            </div>
+          </div>
+          <div className="text-center">
+            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
+              95%
+            </div>
+            <div className="text-textLight dark:text-gray-400">
+              Would Recommend
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   )

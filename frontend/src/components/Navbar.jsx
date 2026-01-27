@@ -1,12 +1,15 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { useContext, useState, useEffect, useRef } from 'react'
 import { AuthContext } from '../context/AuthContext'
+import { ThemeContext } from '../context/ThemeContext'
 import ThemeToggle from './ui/ThemeToggle'
 import Button from './ui/Button'
 import NutrivaLogo from './NutrivaLogo'
+import { Sun, Moon, MoonStar } from 'lucide-react'
 
 export default function Navbar() {
   const { user, logout } = useContext(AuthContext)
+  const { theme, setTheme } = useContext(ThemeContext)
   const navigate = useNavigate()
   const location = useLocation()
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -43,9 +46,13 @@ export default function Navbar() {
     return names[0][0]
   }
 
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark')
+  }
+
   return (
-    <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 dark:bg-slate-900/40 backdrop-blur-sm dark:backdrop-blur-md border-b border-white/20 dark:border-slate-700 h-14">
-      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-3 h-14">
+    <nav className="fixed w-full z-50 top-0 left-0 bg-white/30 dark:bg-slate-900/40 backdrop-blur-sm dark:backdrop-blur-md border-b border-white/20 dark:border-slate-700">
+      <div className="max-w-screen-xl flex items-center justify-between mx-auto px-3 h-14 md:h-16">
         <Link
           to="/"
           className="flex items-center space-x-3"
@@ -199,6 +206,20 @@ export default function Navbar() {
           {/* Sign In / Sign Up for desktop (placed on the right) */}
           {!user && (
             <div className="hidden md:flex items-center gap-3 ml-3">
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                aria-label="Toggle theme"
+              >
+                {theme === 'dark' ? (
+                  <Sun size={20} className="text-yellow-500" />
+                ) : (
+                  <MoonStar
+                    size={20}
+                    className="text-slate-700 dark:text-slate-300"
+                  />
+                )}
+              </button>
               <Button to="/login" variant="ghost" size="md">
                 Sign In
               </Button>
@@ -212,53 +233,91 @@ export default function Navbar() {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             type="button"
-            className="inline-flex items-center p-1 w-9 h-9 justify-center text-sm text-textLight rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200"
+            className="inline-flex items-center p-1 w-9 h-9 justify-center text-sm text-gray-700 dark:text-gray-300 rounded-lg md:hidden hover:bg-gray-100 dark:hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-slate-700 transition-colors"
           >
-            <span className="sr-only">Open main menu</span>
-            <svg
-              className="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeWidth={2}
-                d="M5 7h14M5 12h14M5 17h14"
-              />
-            </svg>
+            <span className="sr-only">
+              {isMobileMenuOpen ? 'Close menu' : 'Open menu'}
+            </span>
+            {isMobileMenuOpen ? (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            ) : (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeWidth={2}
+                  d="M5 7h14M5 12h14M5 17h14"
+                />
+              </svg>
+            )}
           </button>
         </div>
+      </div>
 
-        {/* Navigation Links - Only show Sign In/Sign Up for non-logged in users */}
-        {/* Mobile menu links (only visible on small screens) */}
-        <div
-          className={`items-center justify-between w-full md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}
-        >
-          <ul className="font-medium flex flex-col p-2 mt-2">
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t border-gray-200 dark:border-slate-700 bg-white dark:bg-slate-900">
+          <div className="px-6 py-1 space-y-1">
             {!user && (
               <>
-                <li>
-                  <Link
-                    to="/login"
-                    className="block py-2 px-3 text-textDark rounded hover:text-primary transition-all duration-300"
+                {/* Theme Toggle */}
+                <div className="flex items-center justify-between px-3 py-1 bg-gray-50 dark:bg-slate-800 rounded-xl">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {theme === 'dark' ? 'Dark Mode' : 'Light Mode'}
+                  </span>
+                  <button
+                    onClick={toggleTheme}
+                    className="p-2 rounded-lg bg-white dark:bg-slate-700 hover:bg-gray-100 dark:hover:bg-slate-600 transition-colors"
                   >
-                    Sign In
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/signup"
-                    className="block py-2 px-3 bg-primary text-white rounded-lg hover:bg-primaryDark transition-all duration-300"
-                  >
-                    Sign Up
-                  </Link>
-                </li>
+                    {theme === 'dark' ? (
+                      <Sun size={18} className="text-yellow-500" />
+                    ) : (
+                      <MoonStar size={18} className="text-gray-700" />
+                    )}
+                  </button>
+                </div>
+
+                {/* Divider */}
+                <hr className="border-gray-200 dark:border-slate-700" />
+
+                {/* Sign In Button */}
+                <Link
+                  to="/login"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-center py-1 px-4 text-gray-700 dark:text-gray-300 font-medium bg-transparent hover:bg-gray-100 dark:hover:bg-slate-800 rounded-lg transition-all duration-200"
+                >
+                  Sign In
+                </Link>
+
+                {/* Sign Up Button */}
+                <Link
+                  to="/signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block w-full text-center py-1 px-4 bg-primary text-white font-medium rounded-lg hover:bg-primaryDark transition-all duration-200"
+                >
+                  Sign Up
+                </Link>
               </>
             )}
-          </ul>
+          </div>
         </div>
-      </div>
+      )}
     </nav>
   )
 }

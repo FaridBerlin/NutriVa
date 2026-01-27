@@ -242,7 +242,7 @@ html {
   --nv-heading-text: #0b1220; /* headings (light mode) */
   --nv-link: #065f46; /* default link color (light mode) */
   --font-sans:
-    'Newsreader', 'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Newsreader', system-ui, -apple-system, 'Segoe UI', Roboto,
     'Helvetica Neue', Arial;
   --font-display: 'Newsreader', var(--font-sans);
   --nv-input-bg: #ffffff;
@@ -592,26 +592,11 @@ html.dark {
 
   /* ticker removed */
 }
-@font-face {
-  font-family: 'CustomSans';
-  src: url('/src/assets/fonts/CustomSans-Regular.woff2') format('woff2');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'CustomDisplay';
-  src: url('/src/assets/fonts/CustomDisplay-Bold.woff2') format('woff2');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
 
 /* Base */
 :root {
   --font-sans:
-    'CustomSans', system-ui, -apple-system, 'Segoe UI', Roboto,
-    'Helvetica Neue', Arial;
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
   --font-display: 'CustomDisplay', var(--font-sans);
 }
 

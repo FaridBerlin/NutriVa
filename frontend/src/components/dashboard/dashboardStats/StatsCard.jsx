@@ -53,7 +53,7 @@ export default function StatsCard({
     <div className="relative p-6">
       {/* Decorative Background Element */}
       <div
-        className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20 ${colors.glow} group-hover:opacity-30 transition-opacity duration-500`}
+        className={`absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-10 ${colors.glow} group-hover:opacity-20 transition-opacity duration-500`}
       />
 
       <div className="relative">

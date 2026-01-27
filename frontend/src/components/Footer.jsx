@@ -267,7 +267,7 @@ export default function Footer() {
             ) : (
               <form
                 onSubmit={handleSubscribe}
-                className="flex w-full md:w-auto gap-3"
+                className="flex flex-col md:flex-row gap-3"
               >
                 <input
                   type="email"
