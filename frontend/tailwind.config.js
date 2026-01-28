@@ -14,8 +14,8 @@ export default {
       colors: {
         primary2: '#83D385', // main green color
         primary: '#34d399',
-        accentYellow: '#FBBF24', // warm yellow for dark-mode accents
-        accentYellowDark: '#D97706', // warm yellow for dark-mode accents
+        accentYellow: '#FCD34D', // warm yellow for dark-mode accents (softer - lighter)
+        accentYellowDark: '#FDBA74', // warm orange for dark-mode accents (softer)
         primaryDark2: '#7FBC81', // Hover
         primaryDark: '#0d9488',
         primarySoft: 'rgba(127,188,129,0.85)', // button bg
@@ -32,27 +32,7 @@ export default {
           700: '#374151', //  text-gray-700
           800: '#1F2937', // text-gray-800
         },
-        // Colors from tailwind.config-2 (merged)
-        'primary-light': '#34d399',
-        'primary-subtle': '#d1fae5',
-        secondary: '#0d9488',
-        'secondary-light': '#14b8a6',
-        'secondary-dark': '#0f766e',
-        'secondary-subtle': '#ccfbf1',
-        'bg-primary': '#ffffff',
-        'bg-secondary': '#f9fafb',
-        'bg-tertiary': '#f3f4f6',
-        'bg-emerald': '#ecfdf5',
-        'text-primary': '#111827',
-        'text-secondary': '#4b5563',
-        'text-tertiary': '#6b7280',
-        'text-muted': '#111827',
-        'surface-card': '#ffffff',
-        'surface-border': '#e5e7eb',
-        'surface-hover': '#f9fafb',
-        'btn-primary': '#10b981',
-        'btn-primary-hover': '#34d399',
-        'btn-primary-active': '#059669',
+        // Utility colors
         success: '#10b981',
         warning: '#f59e0b',
         error: '#ef4444',
