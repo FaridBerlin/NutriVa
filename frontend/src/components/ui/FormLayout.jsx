@@ -14,6 +14,7 @@ export default function FormLayout({
     ? 'flex items-center justify-center min-h-[50vh]'
     : ''
   const accentClass = accent ? 'nv-form-accent' : ''
+  const titleAlignment = center ? 'text-center' : ''
 
   return (
     <div
@@ -23,7 +24,11 @@ export default function FormLayout({
         className={`nv-card rounded-2xl shadow-md ${wrapperPadding} w-full ${accentClass}`}
       >
         {title && (
-          <h1 className={`text-2xl font-bold mb-2 ${titleClass}`}>{title}</h1>
+          <h1
+            className={`text-2xl font-bold mb-2 ${titleAlignment} ${titleClass}`}
+          >
+            {title}
+          </h1>
         )}
 
         <div className="nv-form">{children}</div>

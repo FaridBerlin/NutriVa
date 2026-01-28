@@ -58,7 +58,7 @@ export default function FAQ() {
             repeat: Infinity,
             ease: 'easeInOut',
           }}
-          className="absolute top-1/4 left-0 w-80 h-80 bg-primary dark:bg-teal-600/10 rounded-full blur-3xl"
+          className="absolute top-1/4 left-0 w-40 h-40 sm:w-60 sm:h-60 md:w-80 md:h-80 bg-primary dark:bg-teal-600/10 rounded-full blur-3xl"
         ></motion.div>
         <motion.div
           animate={{
@@ -71,7 +71,7 @@ export default function FAQ() {
             ease: 'easeInOut',
             delay: 1,
           }}
-          className="absolute bottom-1/6 right-0 w-64 h-64 bg-primary dark:bg-emerald-600/10 rounded-full blur-3xl"
+          className="absolute bottom-1/6 right-0 w-32 h-32 sm:w-48 sm:h-48 md:w-64 md:h-64 bg-primary dark:bg-emerald-600/10 rounded-full blur-3xl"
         ></motion.div>
       </div>
       <div className="max-w-4xl mx-auto px-6">

@@ -1,5 +1,4 @@
 import AiMealPlan from '../models/AiMealPlan.js'
-import Profile from '../models/Profile.js'
 import { generateMealPlan } from '../services/ollamaService.js'
 import {
   calculateBMR,

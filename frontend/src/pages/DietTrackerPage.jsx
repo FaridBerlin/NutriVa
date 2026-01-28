@@ -548,6 +548,12 @@ export default function DietTrackerPage() {
           {/* Day Selector (compact week strip) */}
           <div className="mb-6">
             <div className="bg-white rounded-lg shadow p-4">
+              <div className="mb-8">
+            <h1 className="text-3xl font-bold text-gray-800 capitalize">
+              {user?.name || 'User'}
+            </h1>
+            <p className="text-muted capitalize">Plan Name: {aiMealPlan.planName}</p>
+          </div>
               <label className="block text-sm font-medium nv-accent mb-3">
                 Select Day (Week view)
               </label>
