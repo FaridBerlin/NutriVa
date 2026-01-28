@@ -15,6 +15,7 @@ import {
   Info,
   ChevronLeft,
   ChevronRight,
+  Loader2,
 } from 'lucide-react'
 import Button from './ui/Button'
 
@@ -346,6 +347,18 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
             )}
           </button>
         </div>
+
+        {/* Loading Spinner */}
+        {loading && (
+          <div className="flex justify-center items-center mt-8">
+            <div className="flex flex-col items-center gap-3">
+              <Loader2 className="animate-spin h-12 w-12 text-primary" />
+              <p className="text-sm text-textLight font-medium">
+                Generating your meal plan...
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Cancel Button */}
         {onCancel && (
