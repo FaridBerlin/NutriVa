@@ -140,7 +140,10 @@ export default function AiMealPlanList() {
               {activePlan?._id !== plan._id && (
                 <button
                   onClick={() => handleSetActive(plan)}
-                  className="btn-secondary nv-btn-lg"
+                  className="px-4 py-2.5 rounded-lg font-semibold transition-all transform hover:scale-105
+                             bg-emerald-500 hover:bg-emerald-600 text-white
+                             dark:bg-emerald-600 dark:hover:bg-emerald-700
+                             nv-btn-lg"
                 >
                   Set Active
                 </button>
