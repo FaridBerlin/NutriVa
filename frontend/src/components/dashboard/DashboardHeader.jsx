@@ -80,13 +80,7 @@ export default function DashboardHeader({ userName }) {
             </h1>
             {activePlan ? (
               <>
-                <p className={subtitleClass}>
-                  Day {currentDay} of your{' '}
-                  <span className="inline-flex items-center px-0.5 py-0.5 text-s font-bold  text-primary dark:text-accentYellow uppercase">
-                    {activePlan?.planName || 'health plan'}
-                  </span>{' '}
-                  plan — {planDuration} days
-                </p>
+                <p className={subtitleClass}>Day {currentDay}</p>
                 <div
                   className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}
                 >
