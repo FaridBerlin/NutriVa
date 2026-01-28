@@ -76,7 +76,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       <aside className="nv-sidebar hidden lg:block fixed top-0 left-0 z-40 h-screen w-64 bg-white dark:bg-slate-900/95 border-r border-gray-100 dark:border-slate-800 shadow-2xl rounded-r-2xl ring-1 ring-gray-100 dark:ring-slate-700/10 backdrop-blur-sm font-display text-base lg:text-lg leading-6">
         <div className="h-full flex flex-col">
           {/* Logo */}
-          <div className="flex items-center justify-center px-3 py-3 border-b border-gray-100">
+          <div className="flex items-center justify-center px-3 py-3">
             <Link
               to="/"
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
