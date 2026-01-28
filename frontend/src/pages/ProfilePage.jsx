@@ -186,7 +186,7 @@ export default function ProfilePage() {
               </div>
               <div className="flex items-center gap-2 text-textLight mt-1">
                 <Calendar className="w-4 h-4" />
-                <span>Joined {formatDate(user?.createdAt)}</span>
+                <span>Joined {formatDate(profile?.createdAt)}</span>
               </div>
             </div>
 
@@ -349,25 +349,33 @@ export default function ProfilePage() {
                 <p className="text-2xl font-bold text-orange-600">
                   {nutritionTargets.dailyCalories || '—'}
                 </p>
-                <p className="text-sm text-textLight">Calories</p>
+                <p className="text-sm text-textLight dark:text-indigo-700">
+                  Calories
+                </p>
               </div>
               <div className="text-center p-4 bg-red-50 rounded-xl">
                 <p className="text-2xl font-bold text-red-600">
                   {nutritionTargets.macros.protein || '—'}g
                 </p>
-                <p className="text-sm text-textLight">Protein</p>
+                <p className="text-sm text-textLight dark:text-indigo-700">
+                  Protein
+                </p>
               </div>
               <div className="text-center p-4 bg-yellow-50 rounded-xl">
                 <p className="text-2xl font-bold text-yellow-600">
                   {nutritionTargets.macros.carbs || '—'}g
                 </p>
-                <p className="text-sm text-textLight">Carbs</p>
+                <p className="text-sm text-textLight dark:text-indigo-700">
+                  Carbs
+                </p>
               </div>
               <div className="text-center p-4 bg-blue-50 rounded-xl">
                 <p className="text-2xl font-bold text-blue-600">
                   {nutritionTargets.macros.fat || '—'}g
                 </p>
-                <p className="text-sm text-textLight">Fats</p>
+                <p className="text-sm text-textLight dark:text-indigo-700">
+                  Fats
+                </p>
               </div>
             </div>
           </Card>
