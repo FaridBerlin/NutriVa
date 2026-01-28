@@ -76,7 +76,7 @@ export const generateMealPlan = async (params) => {
       .replace(/{{caloriesPerMeal}}/g, caloriesPerMeal) // 🎯 NEW
       .replace(/{{calorieRange}}/g, calorieRange) // 🎯 NEW
 
-    console.log('Generating meal plan with deepseek-v3.1:671b...')
+    console.log('Generating meal plan with cogito-2.1:671b...')
     console.log(
       `🎯 Target: ${dailyCalories} cal/day, ${caloriesPerMeal} cal/meal (${calorieRange} range)`,
     )
@@ -102,7 +102,7 @@ export const generateMealPlan = async (params) => {
     })
 
     const generationPromise = ollama.generate({
-      model: 'deepseek-v3.1:671b',
+      model: 'cogito-2.1:671b',
       prompt: prompt,
       stream: false,
       format: 'json',
