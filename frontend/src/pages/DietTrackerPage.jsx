@@ -9,8 +9,8 @@ import {
   FiPieChart,
   FiShield,
   FiCheck,
-  FiStar,
 } from 'react-icons/fi'
+import { CheckCircle } from 'lucide-react'
 import { useDietTracker } from '../context/DietTrackerContext'
 import { useAiMealPlan } from '../context/aiMealPlanContext'
 import { useProfile } from '../context/ProfileContext'
@@ -252,8 +252,8 @@ export default function DietTrackerPage() {
 
         <div className="flex-1 flex items-center justify-center lg:ml-64">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
-            <div className="text-6xl mb-4">
-              <FiStar className="inline" />
+            <div className="text-6xl mb-4 text-green-500">
+              <CheckCircle className="inline" />
             </div>
 
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
@@ -549,11 +549,13 @@ export default function DietTrackerPage() {
           <div className="mb-6">
             <div className="bg-white rounded-lg shadow p-4">
               <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-800 capitalize">
-              {user?.name || 'User'}
-            </h1>
-            <p className="text-muted capitalize">Plan Name: {aiMealPlan.planName}</p>
-          </div>
+                <h1 className="text-3xl font-bold text-gray-800 capitalize">
+                  {user?.name || 'User'}
+                </h1>
+                <p className="text-muted capitalize">
+                  Plan Name: {aiMealPlan.planName}
+                </p>
+              </div>
               <label className="block text-sm font-medium nv-accent mb-3">
                 Select Day (Week view)
               </label>
