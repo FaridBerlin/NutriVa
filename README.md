@@ -18,6 +18,7 @@ NutriVa helps you manage your health and nutrition more effectively. Whether you
 ## Tech Stack
 
 **Backend**
+
 - Node.js & Express
 - MongoDB with Mongoose
 - Ollama for AI
@@ -25,6 +26,7 @@ NutriVa helps you manage your health and nutrition more effectively. Whether you
 - Nodemailer for emails
 
 **Frontend**
+
 - React 19
 - Vite
 - Tailwind CSS
@@ -61,6 +63,7 @@ cp .env.example .env
 ```
 
 Update your `.env` file with:
+
 ```env
 MONGODB_URI=mongodb://localhost:27017/nutriva
 JWT_SECRET=your_secret_here
@@ -72,6 +75,7 @@ NODE_ENV=development
 ```
 
 Then start the backend:
+
 ```bash
 npm run dev
 ```
@@ -91,6 +95,7 @@ cp .env.example .env
 ```
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -125,6 +130,7 @@ NutriVa/
 ## API Endpoints
 
 **Authentication**
+
 ```
 POST   /api/auth/signup         - Create new account
 POST   /api/auth/login          - Login user
@@ -133,12 +139,14 @@ POST   /api/auth/refresh        - Refresh token
 ```
 
 **User Profile**
+
 ```
 GET    /api/profile             - Get profile
 PUT    /api/profile             - Update profile
 ```
 
 **Diet Tracking**
+
 ```
 GET    /api/diet-tracker        - Get logged meals
 POST   /api/diet-tracker        - Add meal
@@ -146,12 +154,14 @@ DELETE /api/diet-tracker/:id    - Delete meal
 ```
 
 **Meal Plans**
+
 ```
 POST   /api/ai-meal-plan        - Create meal plan
 GET    /api/ai-meal-plan        - Get meal plan
 ```
 
 **AI Doctor**
+
 ```
 POST   /api/ai-doctor           - Ask health question
 GET    /api/ai-doctor/history   - Get chat history
@@ -191,6 +201,7 @@ Build output will be in the `dist/` folder.
 Found a bug or have a suggestion? [Open an issue](https://github.com/Anas-Shanan/NutriVa/issues)
 
 Please include:
+
 - Steps to reproduce (if it's a bug)
 - Expected behavior
 - Actual behavior
@@ -203,6 +214,7 @@ This project is licensed under the ISC License - see [LICENSE](LICENSE) for deta
 ## Author
 
 **Anas Shanan**
+
 - GitHub: [@Anas-Shanan](https://github.com/Anas-Shanan)
 
 ## Roadmap
