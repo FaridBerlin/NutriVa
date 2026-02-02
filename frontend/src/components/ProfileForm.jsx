@@ -528,7 +528,7 @@ export default function ProfileForm() {
 
           <button
             onClick={handleNext}
-            className="px-10 py-3 bg-gradient-to-r from-primary to-primaryDark 
+            className="px-3 py-3 bg-gradient-to-r from-primary to-primaryDark 
                        text-white rounded-lg font-semibold shadow-xl 
                        transition-all transform hover:scale-105 text-lg"
           >
@@ -707,10 +707,6 @@ function Step2Metrics({ formData, handleChange, calculateBMI }) {
             </div>
             <div className="text-4xl">📊</div>
           </div>
-          <p className="text-xs text-textLight mt-4">
-            BMI Range: &lt;18.5 Underweight | 18.5-24.9 Healthy | 25-29.9
-            Overweight | ≥30 Obese
-          </p>
         </div>
       )}
     </div>
@@ -984,37 +980,37 @@ function Step5Goals({ formData, handleChange }) {
         <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
           <div className="overflow-hidden">
             <span className="text-textLight">Name:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate inline">
               {profileSummary.name}
             </span>
           </div>
           <div className="overflow-hidden">
             <span className="text-textLight">Age:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate inline">
               {profileSummary.age}
             </span>
           </div>
           <div className="overflow-hidden">
             <span className="text-textLight">BMI:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate inline">
               {profileSummary.bmi}
             </span>
           </div>
           <div className="overflow-hidden">
             <span className="text-textLight">Diet:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate inline">
               {profileSummary.diet}
             </span>
           </div>
           <div className="overflow-hidden">
             <span className="text-textLight">Activity:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate inline">
               {profileSummary.activity}
             </span>
           </div>
           <div className="overflow-hidden">
             <span className="text-textLight">Goal:</span>
-            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate inline">
               {profileSummary.goal}
             </span>
           </div>
