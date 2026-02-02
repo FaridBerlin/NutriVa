@@ -600,7 +600,7 @@ function Step1BasicInfo({ formData, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Gender <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 md:gap-4">
           {[
             {
               value: 'male',
@@ -623,16 +623,20 @@ function Step1BasicInfo({ formData, handleChange }) {
               type="button"
               onClick={() => handleChange('gender', option.value)}
               className={
-                `p-4 border-2 rounded-lg text-center transition-all ` +
+                `p-2 md:p-4 border-2 rounded-lg text-center transition-all flex flex-col items-center justify-center min-h-[100px] md:min-h-[120px] ` +
                 (formData.gender === option.value
                   ? 'border-primary bg-primaryLight40 shadow-md'
                   : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
               }
             >
-              <div className={`mb-2 flex justify-center`}>
-                <User className={`w-7 h-7 mx-auto ${option.color}`} />
+              <div className={`mb-1 md:mb-2 flex justify-center`}>
+                <User
+                  className={`w-6 h-6 md:w-7 md:h-7 mx-auto ${option.color}`}
+                />
               </div>
-              <div className="font-medium text-textDark">{option.label}</div>
+              <div className="font-medium text-xs md:text-sm text-textDark">
+                {option.label}
+              </div>
             </button>
           ))}
         </div>
@@ -833,26 +837,30 @@ function Step4Diet({ formData, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Dietary Preference <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-2 md:gap-4">
           {dietOptions.map((option) => (
             <button
               key={option.value}
               type="button"
               onClick={() => handleChange('dietaryPreference', option.value)}
               className={
-                `relative p-4 border-2 rounded-lg text-center transition-all ` +
+                `relative p-2 md:p-4 border-2 rounded-lg text-center transition-all flex flex-col items-center justify-center min-h-[120px] md:min-h-[140px] ` +
                 (formData.dietaryPreference === option.value
                   ? 'border-primary bg-primaryLight40 shadow-md'
                   : 'border-gray-200 hover:border-primary hover:bg-primaryLight40')
               }
             >
               {formData.dietaryPreference === option.value && (
-                <span className="absolute top-3 right-3 bg-green-600 text-white rounded-full w-7 h-7 flex items-center justify-center text-sm shadow">
-                  <Check className="w-4 h-4" />
+                <span className="absolute top-2 right-2 md:top-3 md:right-3 bg-green-600 text-white rounded-full w-6 h-6 md:w-7 md:h-7 flex items-center justify-center text-xs md:text-sm shadow">
+                  <Check className="w-3 h-3 md:w-4 md:h-4" />
                 </span>
               )}
-              <div className="mb-2 flex justify-center">{option.icon}</div>
-              <div className="font-medium text-textDark">{option.label}</div>
+              <div className="mb-1 md:mb-2 flex justify-center">
+                {option.icon}
+              </div>
+              <div className="font-medium text-xs md:text-sm text-textDark break-words">
+                {option.label}
+              </div>
             </button>
           ))}
         </div>
@@ -916,15 +924,15 @@ function Step5Goals({ formData, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Fitness Goal <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 gap-2 md:gap-4">
           {goals.map((goal) => (
             <button
               key={goal.value}
               type="button"
               onClick={() => handleChange('fitnessGoal', goal.value)}
               className={`
-                relative p-6 border-2 rounded-xl text-center transition-all
-                hover:shadow-md
+                relative p-3 md:p-6 border-2 rounded-xl text-center transition-all
+                hover:shadow-md flex flex-col items-center justify-center min-h-[110px] md:min-h-[140px]
                 ${
                   formData.fitnessGoal === goal.value
                     ? 'border-primary bg-primaryLight40 shadow-lg'
@@ -933,12 +941,16 @@ function Step5Goals({ formData, handleChange }) {
               `}
             >
               {formData.fitnessGoal === goal.value && (
-                <span className="absolute top-3 right-3 bg-green-600 text-white rounded-full w-8 h-8 flex items-center justify-center text-sm shadow">
-                  <Check className="w-4 h-4" />
+                <span className="absolute top-2 right-2 md:top-3 md:right-3 bg-green-600 text-white rounded-full w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-xs md:text-sm shadow">
+                  <Check className="w-3 h-3 md:w-4 md:h-4" />
                 </span>
               )}
-              <div className="mb-2 flex justify-center">{goal.icon}</div>
-              <div className="font-semibold text-textDark">{goal.label}</div>
+              <div className="mb-1 md:mb-2 flex justify-center">
+                {goal.icon}
+              </div>
+              <div className="font-semibold text-xs md:text-sm text-textDark">
+                {goal.label}
+              </div>
             </button>
           ))}
         </div>
@@ -962,45 +974,47 @@ function Step5Goals({ formData, handleChange }) {
       </div>
 
       {/* Profile Summary */}
-      <div className="bg-primaryLight40 p-6 rounded-xl border-l-4 border-primary">
+      <div className="bg-primaryLight40 p-4 md:p-6 rounded-xl border-l-4 border-primary">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xl">📋</span>
-          <h3 className="font-bold text-textDark">Your Profile Summary</h3>
+          <h3 className="font-bold text-xs md:text-base text-textDark break-words">
+            Your Profile Summary
+          </h3>
         </div>
-        <div className="grid grid-cols-2 gap-4 text-sm">
-          <div>
+        <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
+          <div className="overflow-hidden">
             <span className="text-textLight">Name:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
               {profileSummary.name}
             </span>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <span className="text-textLight">Age:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
               {profileSummary.age}
             </span>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <span className="text-textLight">BMI:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 block truncate">
               {profileSummary.bmi}
             </span>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <span className="text-textLight">Diet:</span>
-            <span className="font-semibold text-textDark ml-2 capitalize">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
               {profileSummary.diet}
             </span>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <span className="text-textLight">Activity:</span>
-            <span className="font-semibold text-textDark ml-2 capitalize">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
               {profileSummary.activity}
             </span>
           </div>
-          <div>
+          <div className="overflow-hidden">
             <span className="text-textLight">Goal:</span>
-            <span className="font-semibold text-textDark ml-2 capitalize">
+            <span className="font-semibold text-textDark ml-1 md:ml-2 capitalize block truncate">
               {profileSummary.goal}
             </span>
           </div>
