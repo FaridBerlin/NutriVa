@@ -25,7 +25,7 @@ export default function ScrollAnimationWrapper({
       initial={{ opacity: 0, y: offset.y, x: offset.x }}
       whileInView={{ opacity: 1, y: 0, x: 0 }}
       viewport={{ once, margin: '-100px' }}
-      transition={{ duration: 0.6, delay, ease: 'easeOut' }}
+      transition={{ duration: 0.5, delay, ease: 'easeIn' }}
       className={className}
     >
       {children}

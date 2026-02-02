@@ -153,29 +153,67 @@ const AiDietPlannerPage = () => {
                     <div className="text-xs text-muted">calories</div>
                   </div>
                 </div>
-                <p className="text-muted dark:text-accentYellow/80 text-sm mb-4 flex-1 overflow-hidden">
+                <div className="relative w-full h-48 lg:h-64 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                  {meal.image ? (
+                    <img
+                      src={meal.image}
+                      alt={meal.dishName}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        if (!e.target.dataset.errorHandled) {
+                          e.target.dataset.errorHandled = 'true'
+                          e.target.style.display = 'none'
+                          e.target.nextElementSibling.style.display = 'flex'
+                        }
+                      }}
+                    />
+                  ) : null}
+                  <div
+                    className="w-full h-full flex items-center justify-center bg-gradient-to-br from-primary/20 to-primary/10 dark:from-accentYellow/20 dark:to-accentYellow/10"
+                    style={{ display: meal.image ? 'none' : 'flex' }}
+                  >
+                    <div className="text-center">
+                      <Utensils className="w-16 h-16 mx-auto mb-2 text-primary/50 dark:text-accentYellow/50" />
+                      <p className="text-sm text-gray-500 dark:text-gray-400">
+                        Healthy Meal
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <p className="text-muted dark:text-gray-700 text-sm mb-4 flex-1 overflow-hidden">
                   {meal.description}
                 </p>
 
                 {meal.nutrition && (
                   <div className="grid grid-cols-3 gap-2 pt-4 border-t">
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-700 dark:text-accentYellow/80">
+                    {/* Protein - Blue #3b82f6 */}
+                    <div className="bg-[#3b82f6]/10 dark:bg-[#3b82f6]/20 rounded-lg p-2 text-center border border-[#3b82f6]/20 dark:border-[#3b82f6]/30">
+                      <div className="text-xs text-[#3b82f6] dark:text-[#60a5fa] font-medium mb-0.5">
+                        Protein
+                      </div>
+                      <div className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
                         {meal.nutrition.protein}g
                       </div>
-                      <div className="text-xs text-muted">Protein</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-700 dark:text-accentYellow/80">
+
+                    {/* Carbs - Purple #a855f7 */}
+                    <div className="bg-[#a855f7]/10 dark:bg-[#a855f7]/20 rounded-lg p-2 text-center border border-[#a855f7]/20 dark:border-[#a855f7]/30">
+                      <div className="text-xs text-[#a855f7] dark:text-[#c084fc] font-medium mb-0.5">
+                        Carbs
+                      </div>
+                      <div className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
                         {meal.nutrition.carbs}g
                       </div>
-                      <div className="text-xs text-muted">Carbs</div>
                     </div>
-                    <div className="text-center">
-                      <div className="text-sm font-semibold text-gray-700 dark:text-accentYellow/80">
+
+                    {/* Fats - Amber #f59e0b */}
+                    <div className="bg-[#f59e0b]/10 dark:bg-[#f59e0b]/20 rounded-lg p-2 text-center border border-[#f59e0b]/20 dark:border-[#f59e0b]/30">
+                      <div className="text-xs text-[#f59e0b] dark:text-[#fbbf24] font-medium mb-0.5">
+                        Fats
+                      </div>
+                      <div className="text-sm sm:text-base font-bold text-gray-900 dark:text-white">
                         {meal.nutrition.fat}g
                       </div>
-                      <div className="text-xs text-muted">Fat</div>
                     </div>
                   </div>
                 )}

@@ -138,10 +138,13 @@ export default function FAQ() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 py-3 bg-primary hover:bg-primaryDark dark:bg-teal-600 dark:hover:bg-teal-500 text-white rounded-xl transition-all flex items-center justify-center gap-2">
+              <a
+                href="mailto:support@nutriva.com"
+                className="px-6 py-3 bg-primary hover:bg-primaryDark dark:bg-teal-600 dark:hover:bg-teal-500 text-white rounded-xl transition-all flex items-center justify-center gap-2"
+              >
                 <Mail className="w-5 h-5" />
                 Email Support
-              </button>
+              </a>
             </div>
           </div>
         </ScrollAnimationWrapper>

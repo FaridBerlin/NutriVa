@@ -66,10 +66,10 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       {/* Mobile toggle button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-4 left-4 z-50 w-10 h-10 bg-white dark:bg-gray-800 rounded-full shadow-md flex items-center justify-center"
+        className="lg:hidden fixed top-6 right-8 z-50 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-xl hover:ring-2 hover:ring-primary/50 dark:hover:ring-accentYellow/50 active:scale-95"
         aria-label="Open menu"
       >
-        <Menu className="w-5 h-5 text-gray-800 dark:text-gray-200" />
+        <Menu className="w-6 h-6 text-gray-800 dark:text-accentYellow transition-transform duration-200" />
       </button>
 
       {/* Desktop sidebar (convex / raised appearance) */}
@@ -103,23 +103,11 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   >
                     <Icon
                       size={18}
-                      className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
+                      className={`text-primary dark:text-accentYellow transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
                     />
-                    <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                    <span className="font-semibold text-black dark:text-white flex-1">
                       {item.label}
                     </span>
-
-                    {item.badge && (
-                      <span
-                        className={`text-xs px-2 py-0.5 rounded-full font-semibold ${
-                          item.badgeColor === 'green'
-                            ? 'bg-green-100 text-black dark:bg-slate-700 dark:text-white'
-                            : 'bg-orange-100 text-orange-700 dark:bg-slate-700 dark:text-white'
-                        }`}
-                      >
-                        {item.badge}
-                      </span>
-                    )}
                   </button>
                 </li>
               )
@@ -137,9 +125,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               >
                 <Wand2
                   size={18}
-                  className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
+                  className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
                 />
-                <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                <span className="font-semibold text-black dark:text-gray-700 flex-1">
                   AI Diet Planner
                 </span>
               </button>
@@ -157,9 +145,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               >
                 <List
                   size={18}
-                  className="transition-transform duration-200 group-hover:scale-110 dark:text-accentYellow"
+                  className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                 />
-                <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                <span className="font-semibold text-black dark:text-gray-700 flex-1">
                   AI Meal Plans
                 </span>
               </button>
@@ -180,9 +168,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               >
                 <Target
                   size={18}
-                  className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                  className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                 />
-                <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                <span className="font-semibold text-black dark:text-gray-700 flex-1">
                   Diet Tracker
                 </span>
               </Link>
@@ -200,9 +188,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               >
                 <Stethoscope
                   size={18}
-                  className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                  className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                 />
-                <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                <span className="font-semibold text-black dark:text-gray-700 flex-1">
                   AI Doctor
                 </span>
               </Link>
@@ -222,7 +210,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             >
               <Home
                 size={18}
-                className="transition-transform duration-200 group-hover:scale-110"
+                className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
               />
               <span className="font-semibold text-black dark:text-accentYellow">
                 {' '}
@@ -241,7 +229,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
             >
               <Settings
                 size={18}
-                className="transition-transform duration-200 group-hover:rotate-90"
+                className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:rotate-90"
               />
               <span className="font-semibold text-black dark:text-accentYellow">
                 Settings
@@ -311,9 +299,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     >
                       <Icon
                         size={18}
-                        className={`transition-transform duration-200 ${!isActive ? 'group-hover:scale-110' : ''}`}
+                        className={`text-primary dark:text-accentYellow transition-transform duration-200 ${!isActive ? 'group-hover:scale-110 ' : ''}`}
                       />
-                      <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                      <span className="font-semibold text-black dark:text-gray-700 flex-1">
                         {item.label}
                       </span>
                     </button>
@@ -337,9 +325,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <Wand2
                     size={18}
-                    className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:rotate-12"
                   />
-                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                  <span className="font-semibold text-black dark:text-gray-700 flex-1">
                     AI Diet Planner
                   </span>
                 </button>
@@ -359,9 +347,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <List
                     size={18}
-                    className="transition-transform duration-200 group-hover:scale-110"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                  <span className="font-semibold text-black dark:text-gray-700 flex-1">
                     AI Meal Plans
                   </span>
                 </button>
@@ -381,9 +369,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <Target
                     size={18}
-                    className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                  <span className="font-semibold text-black dark:text-gray-700 flex-1">
                     Diet Tracker
                   </span>
                 </Link>
@@ -402,9 +390,9 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <Stethoscope
                     size={18}
-                    className="text-black dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
-                  <span className="font-semibold text-black dark:text-accentYellow flex-1">
+                  <span className="font-semibold text-black dark:text-gray-700 flex-1">
                     AI Doctor
                   </span>
                 </Link>
@@ -424,7 +412,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <Home
                     size={18}
-                    className="transition-transform duration-200 group-hover:scale-110"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
                   <span className="font-semibold text-black dark:text-accentYellow">
                     {' '}
@@ -445,7 +433,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 >
                   <Settings
                     size={18}
-                    className="transition-transform duration-200 group-hover:rotate-90"
+                    className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:rotate-90"
                   />
                   <span className="font-semibold text-black dark:text-accentYellow">
                     Settings

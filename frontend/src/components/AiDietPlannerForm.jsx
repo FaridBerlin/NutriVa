@@ -626,8 +626,8 @@ function Step2MealsConfig({ form, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Number of Meals <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-4 gap-4">
-          {[2, 3, 4, 5].map((n) => (
+        <div className="grid grid-cols-3 gap-4">
+          {[2, 3, 4].map((n) => (
             <button
               key={n}
               type="button"

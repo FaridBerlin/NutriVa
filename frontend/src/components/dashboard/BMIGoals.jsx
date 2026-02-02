@@ -108,10 +108,15 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
             <YAxis stroke="#6b7280" />
             <Tooltip
               contentStyle={{
-                backgroundColor: '#fff',
+                backgroundColor: '#ffffff',
                 border: '1px solid #e5e7eb',
                 borderRadius: '8px',
                 padding: '12px',
+                color: '#1f2937',
+              }}
+              labelStyle={{
+                color: '#1f2937',
+                fontWeight: '600',
               }}
             />
             <Area
@@ -124,7 +129,7 @@ export default function BMIGoals({ bmi, goals, activePlan }) {
             <Line
               type="monotone"
               dataKey="target"
-              stroke="#94a3b8"
+              stroke="#80adf5"
               strokeWidth={2}
               strokeDasharray="5 5"
               dot={false}
