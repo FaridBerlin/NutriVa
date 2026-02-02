@@ -630,9 +630,13 @@ function Step1BasicInfo({ formData, handleChange }) {
               }
             >
               <div className={`mb-1 md:mb-2 flex justify-center`}>
-                <User className={`w-6 h-6 md:w-7 md:h-7 mx-auto ${option.color}`} />
+                <User
+                  className={`w-6 h-6 md:w-7 md:h-7 mx-auto ${option.color}`}
+                />
               </div>
-              <div className="font-medium text-xs md:text-sm text-textDark">{option.label}</div>
+              <div className="font-medium text-xs md:text-sm text-textDark">
+                {option.label}
+              </div>
             </button>
           ))}
         </div>
@@ -851,8 +855,12 @@ function Step4Diet({ formData, handleChange }) {
                   <Check className="w-3 h-3 md:w-4 md:h-4" />
                 </span>
               )}
-              <div className="mb-1 md:mb-2 flex justify-center">{option.icon}</div>
-              <div className="font-medium text-xs md:text-sm text-textDark break-words">{option.label}</div>
+              <div className="mb-1 md:mb-2 flex justify-center">
+                {option.icon}
+              </div>
+              <div className="font-medium text-xs md:text-sm text-textDark break-words">
+                {option.label}
+              </div>
             </button>
           ))}
         </div>
@@ -937,8 +945,12 @@ function Step5Goals({ formData, handleChange }) {
                   <Check className="w-3 h-3 md:w-4 md:h-4" />
                 </span>
               )}
-              <div className="mb-1 md:mb-2 flex justify-center">{goal.icon}</div>
-              <div className="font-semibold text-xs md:text-sm text-textDark">{goal.label}</div>
+              <div className="mb-1 md:mb-2 flex justify-center">
+                {goal.icon}
+              </div>
+              <div className="font-semibold text-xs md:text-sm text-textDark">
+                {goal.label}
+              </div>
             </button>
           ))}
         </div>
@@ -965,7 +977,9 @@ function Step5Goals({ formData, handleChange }) {
       <div className="bg-primaryLight40 p-4 md:p-6 rounded-xl border-l-4 border-primary">
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xl">📋</span>
-          <h3 className="font-bold text-xs md:text-base text-textDark break-words">Your Profile Summary</h3>
+          <h3 className="font-bold text-xs md:text-base text-textDark break-words">
+            Your Profile Summary
+          </h3>
         </div>
         <div className="grid grid-cols-2 gap-2 md:gap-4 text-xs md:text-sm">
           <div className="overflow-hidden">
