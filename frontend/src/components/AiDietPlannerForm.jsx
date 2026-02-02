@@ -318,7 +318,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
             onClick={handleBack}
             disabled={currentStep === 0}
             className={`
-              px-8 py-2.5 bg-gradient-to-l from-primary to-primaryDark 
+              px-3 py-2.5 bg-gradient-to-l from-primary to-primaryDark 
               text-white rounded-lg font-semibold hover:shadow-lg 
               transition-all transform hover:scale-105 disabled:opacity-50
               ${currentStep === 0 ? 'cursor-not-allowed' : ''}
@@ -330,7 +330,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
           <button
             onClick={handleNext}
             disabled={loading}
-            className="px-8 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
+            className="px-3 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
                        text-white rounded-lg font-semibold hover:shadow-lg 
                        transition-all transform hover:scale-105 disabled:opacity-50"
           >
@@ -338,7 +338,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
               'Generating...'
             ) : currentStep === totalSteps - 1 ? (
               <span className="inline-flex items-center gap-2">
-                Generate Meal Plan <CheckCircle className="w-4 h-4" />
+                Generate M.P <CheckCircle className="w-4 h-4" />
               </span>
             ) : (
               <span className="inline-flex items-center">
@@ -626,8 +626,8 @@ function Step2MealsConfig({ form, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Number of Meals <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-4 gap-4">
-          {[2, 3, 4, 5].map((n) => (
+        <div className="grid grid-cols-3 gap-4">
+          {[2, 3, 4].map((n) => (
             <button
               key={n}
               type="button"
@@ -829,7 +829,7 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
       </div>
 
       {/* Summary */}
-      <div className="mt-6 p-6 bg-white rounded-xl border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
+      <div className="mt-6 p-1 lg:p-6 bg-white rounded-xl border border-gray-200 shadow-sm dark:bg-gray-800 dark:border-gray-700">
         <div className="flex items-center gap-2 mb-4">
           <Clipboard className="w-5 h-5" />
           <h3 className="font-bold text-textDark">Plan Summary</h3>
@@ -837,37 +837,37 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div>
             <span className="text-textLight">Plan Name:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-2 inline">
               {form.planName || 'Not set'}
             </span>
           </div>
           <div>
             <span className="text-textLight">Duration:</span>
-            <span className="font-semibold text-textDark ml-2">
-              {form.duration} days
+            <span className="font-semibold text-textDark ml-2 inline">
+              {form.duration}
             </span>
           </div>
           <div>
             <span className="text-textLight">Meals/Day:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-2 inline">
               {form.mealsPerDay}
             </span>
           </div>
           <div>
             <span className="text-textLight">Diet:</span>
-            <span className="font-semibold text-textDark ml-2 capitalize">
+            <span className="font-semibold text-textDark ml-2 capitalize inline">
               {form.dietType}
             </span>
           </div>
           <div>
             <span className="text-textLight">Restrictions:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className="font-semibold text-textDark ml-2 inline">
               {form.allergens.length || 'None'}
             </span>
           </div>
           <div>
             <span className="text-textLight">Quick Generate:</span>
-            <span className="font-semibold text-textDark ml-2">
+            <span className=" text-sm font-semibold text-textDark ml-2 inline">
               {form.useTemplates ? 'Yes ⚡' : 'No'}
             </span>
           </div>

@@ -78,7 +78,6 @@ export default function Testimonials() {
           {testimonials.map((testimonial, index) => (
             <ScrollAnimationWrapper
               key={index}
-              delay={index * 0.1}
               direction="up"
               className="bg-white dark:bg-gray-800 rounded-2xl p-8 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-teal-500 hover:shadow-xl dark:hover:shadow-teal-500/20 transition-all duration-300 relative"
             >
@@ -125,40 +124,6 @@ export default function Testimonials() {
               </div>
             </ScrollAnimationWrapper>
           ))}
-        </div>
-
-        {/* Bottom Stats */}
-        <div className="mt-16 grid md:grid-cols-4 gap-8 p-8 bg-gradient-to-br from-primary/5 to-teal-50/50 dark:from-teal-900/20 dark:to-emerald-900/20 rounded-2xl border border-primary/20 dark:border-teal-700/30">
-          <div className="text-center">
-            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-              50,000+
-            </div>
-            <div className="text-textLight dark:text-gray-400">Happy Users</div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-              4.9/5
-            </div>
-            <div className="text-textLight dark:text-gray-400">
-              Average Rating
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-              2M+
-            </div>
-            <div className="text-textLight dark:text-gray-400">
-              Meals Tracked
-            </div>
-          </div>
-          <div className="text-center">
-            <div className="text-3xl font-bold text-textDark dark:text-white mb-1">
-              95%
-            </div>
-            <div className="text-textLight dark:text-gray-400">
-              Would Recommend
-            </div>
-          </div>
         </div>
       </div>
     </section>

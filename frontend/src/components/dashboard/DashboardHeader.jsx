@@ -46,43 +46,54 @@ export default function DashboardHeader({ userName }) {
   const currentDate = new Date().toLocaleDateString()
 
   const isDark = theme === 'dark'
-  const containerClass = isDark
-    ? 'p-4 mx-4 md:mx-6 rounded-2xl bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10 text-accentYellow nv-header mb-6 mt-4'
-    : 'p-4 mx-4 md:mx-6 rounded-2xl bg-white shadow-lg ring-1 ring-gray-200 border border-gray-100 mb-6 mt-4'
-  const titleClass = isDark
-    ? 'text-xl font-bold text-accentYellow'
-    : 'text-xl font-bold text-gray-900'
-  const subtitleClass = isDark
-    ? 'text-sm text-accentYellow/80'
-    : 'text-sm text-gray-900'
-  const weightLabelClass = isDark
-    ? 'text-m text-accentYellow/80'
-    : 'text-m text-gray-900'
-  const weightValueClass = isDark
-    ? 'text-base font-semibold text-accentYellow'
-    : 'text-base font-semibold text-gray-900'
-  const iconBg = isDark ? 'bg-amber-600/20' : 'bg-emerald-400/10'
-  const iconColor = isDark ? 'text-amber-400' : 'text-emerald-600'
 
   return (
-    <div className={containerClass}>
-      <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="flex items-center gap-4  md:w-auto">
+    <div
+      className={`p-6 mx-4 md:mx-6 rounded-2xl mb-6 mt-4 ${
+        isDark
+          ? 'bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10'
+          : 'bg-white shadow-lg ring-1 ring-gray-200 border border-gray-100'
+      }`}
+    >
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        {/* Left Section - User Info */}
+        <div className="flex items-start gap-4 w-full lg:w-auto">
           <div
-            className={`w-14 h-14 ${iconBg} rounded-full flex items-center justify-center`}
+            className={`w-14 h-14 flex-shrink-0 rounded-full flex items-center justify-center ${
+              isDark ? 'bg-amber-600/20' : 'bg-emerald-400/10'
+            }`}
           >
-            <User className={iconColor} size={24} />
+            <User
+              className={isDark ? 'text-amber-400' : 'text-emerald-600'}
+              size={24}
+            />
           </div>
-          <div>
-            <h1 className={`py-3 ${titleClass}`}>
+          <div className="flex-1">
+            <h1
+              className={`text-xl md:text-2xl font-bold mb-3 ${
+                isDark ? 'text-accentYellow' : 'text-gray-900'
+              }`}
+            >
               Welcome back,{' '}
               {capitalizedName(userName || profile?.name || 'User')}!
             </h1>
             {activePlan ? (
               <>
-                <p className={subtitleClass}>Day {currentDay}</p>
+                <div className="flex items-center gap-3 mb-2">
+                  <span
+                    className={`px-4 py-1.5 rounded-full text-lg md:text-xl font-semibold ${
+                      isDark
+                        ? 'bg-amber-900/20 text-amber-300'
+                        : 'bg-emerald-100 text-emerald-700'
+                    }`}
+                  >
+                    Day {currentDay}
+                  </span>
+                </div>
                 <div
-                  className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}
+                  className={`flex flex-wrap items-center gap-2 text-sm ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  }`}
                 >
                   <span>{profile?.age || 0} years</span>
                   <span>•</span>
@@ -96,11 +107,17 @@ export default function DashboardHeader({ userName }) {
               </>
             ) : (
               <>
-                <p className={subtitleClass}>
+                <p
+                  className={`mb-2 ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  }`}
+                >
                   Ready to start? Create your first plan!
                 </p>
                 <div
-                  className={`flex items-center gap-3 text-sm ${subtitleClass} mt-2`}
+                  className={`flex flex-wrap items-center gap-2 text-sm ${
+                    isDark ? 'text-gray-300' : 'text-gray-600'
+                  }`}
                 >
                   <span>{profile?.age || 0} years</span>
                   <span>•</span>
@@ -111,37 +128,86 @@ export default function DashboardHeader({ userName }) {
           </div>
         </div>
 
-        <div className="flex gap-3 md:block md:w-auto items-center text-center md:text-right">
-          <div className="flex items-center justify-center md:justify-end gap-3">
-            <div className={weightLabelClass}>Weight </div>
-            <div className={weightValueClass}>
-              {loading
-                ? '...'
-                : profile?.weight
-                  ? `${Number(profile.weight).toFixed(1)} kg`
-                  : '—'}
-            </div>
+        {/* Divider - Mobile Only */}
+        <div
+          className={`lg:hidden w-full h-px ${
+            isDark ? 'bg-accentYellow/20' : 'bg-gray-200'
+          }`}
+        />
+
+        {/* Right Section - Weight Progress */}
+        <div className="flex items-start gap-4 w-full lg:w-auto">
+          <div
+            className={`w-14 h-14 flex-shrink-0 rounded-full flex items-center justify-center ${
+              isDark ? 'bg-amber-600/20' : 'bg-emerald-400/10'
+            }`}
+          >
+            {weight < 0 ? (
+              <TrendingDown
+                className={isDark ? 'text-amber-400' : 'text-emerald-600'}
+                size={24}
+              />
+            ) : (
+              <TrendingUp
+                className={isDark ? 'text-amber-400' : 'text-emerald-600'}
+                size={24}
+              />
+            )}
           </div>
-          <div className="flex items-center justify-center md:justify-end gap-2 mt-2">
-            <div
-              className={`${isDark ? 'bg-amber-900/20 text-amber-300' : 'bg-emerald-100 text-emerald-700'} px-4 py-1 rounded-full text-xl md:text-2xl flex items-center gap-3 font-semibold`}
+          <div className="flex-1">
+            <h2
+              className={`text-xl md:text-2xl font-bold mb-3 ${
+                isDark ? 'text-accentYellow' : 'text-gray-900'
+              }`}
             >
-              {weight < 0 ? (
-                <TrendingDown size={20} />
-              ) : (
-                <TrendingUp size={20} />
-              )}
-              <span>{Math.abs(Number(weight)).toFixed(1)} kg</span>
+              Weight Progress
+            </h2>
+            <div className="flex items-center gap-3 mb-2">
+              <span
+                className={`text-lg md:text-xl font-semibold ${
+                  isDark ? 'text-gray-300' : 'text-gray-900'
+                }`}
+              >
+                {loading
+                  ? '...'
+                  : profile?.weight
+                    ? `${Number(profile.weight).toFixed(1)} kg`
+                    : '—'}
+              </span>
+              <span
+                className={`px-4 py-1.5 rounded-full text-lg md:text-xl font-semibold flex items-center gap-2 ${
+                  isDark
+                    ? 'bg-amber-900/20 text-amber-300'
+                    : 'bg-emerald-100 text-emerald-700'
+                }`}
+              >
+                {weight < 0 ? (
+                  <TrendingDown size={18} />
+                ) : (
+                  <TrendingUp size={18} />
+                )}
+                {Math.abs(Number(weight)).toFixed(1)} kg
+              </span>
+              <span
+                className={`text-lg md:text-xl ${
+                  isDark ? 'text-gray-300' : 'text-gray-600'
+                }`}
+              >
+                →{' '}
+                {profile?.targetWeight
+                  ? Number(profile.targetWeight).toFixed(1)
+                  : 55}{' '}
+                kg
+              </span>
             </div>
-            <div className={`text-xl md:text-2xl ${subtitleClass}`}>
-              →{' '}
-              {profile?.targetWeight
-                ? Number(profile.targetWeight).toFixed(1)
-                : 55}{' '}
-              kg
+            <div
+              className={`text-sm ${
+                isDark ? 'text-gray-300' : 'text-gray-600'
+              }`}
+            >
+              {currentDate}
             </div>
           </div>
-          <div className={`${subtitleClass} mt-2`}>{currentDate}</div>
         </div>
       </div>
     </div>
