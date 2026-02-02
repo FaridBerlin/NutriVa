@@ -52,7 +52,7 @@ function AppLayout({ children }) {
 
   return (
     <div
-      className={`min-h-screen ${isDashboardPage ? 'bg-gray-50' : 'bg-gradient-to-br from-green-100 via-white to-green-50'}`}
+      className={`min-h-screen ${isDashboardPage ? 'bg-transparent landing-page' : 'bg-gradient-to-br from-green-100 via-white to-green-50'}`}
     >
       {!isDashboardPage && <Navbar />}
       <main className={!isDashboardPage ? 'pt-20' : ''}>{children}</main>

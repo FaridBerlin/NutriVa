@@ -538,7 +538,7 @@ export default function DietTrackerPage() {
   const weightLoss = currentWeight - targetWeight
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-transparent landing-page">
       <Sidebar />
 
       <div className="flex-1 p-4 md:p-8 lg:ml-64">

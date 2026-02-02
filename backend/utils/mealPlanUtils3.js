@@ -203,6 +203,19 @@ export function calculateRealisticMealDistribution(dailyCalories, mealPerDay) {
     distribution.Lunch = dailyCalories * 0.35
     distribution.Dinner = dailyCalories * 0.3
     distribution.Snack = dailyCalories * 0.1
+  } else if (mealPerDay === 5) {
+    // 5 meals: Breakfast (20%), Morning Snack (10%), Lunch (30%), Afternoon Snack (10%), Dinner (30%)
+    distribution.Breakfast = dailyCalories * 0.2
+    distribution['Morning Snack'] = dailyCalories * 0.1
+    distribution.Lunch = dailyCalories * 0.3
+    distribution['Afternoon Snack'] = dailyCalories * 0.1
+    distribution.Dinner = dailyCalories * 0.3
+  } else {
+    // Default fallback: distribute equally
+    const equalDistribution = dailyCalories / mealPerDay
+    for (let i = 1; i <= mealPerDay; i++) {
+      distribution[`Meal ${i}`] = equalDistribution
+    }
   }
   return distribution
 }
@@ -420,6 +433,19 @@ export function generateUltimateMealPlan(
       mealTypes.push('Breakfast', 'Lunch', 'Dinner')
     } else if (mealPerDay === 4) {
       mealTypes.push('Breakfast', 'Lunch', 'Dinner', 'Snack')
+    } else if (mealPerDay === 5) {
+      mealTypes.push(
+        'Breakfast',
+        'Morning Snack',
+        'Lunch',
+        'Afternoon Snack',
+        'Dinner',
+      )
+    } else {
+      // Default: create generic meal names
+      for (let i = 1; i <= mealPerDay; i++) {
+        mealTypes.push(`Meal ${i}`)
+      }
     }
     const days = []
     const recentMeals = new Set()
@@ -445,11 +471,15 @@ export function generateUltimateMealPlan(
         let targetCalories
 
         // 🍎 SNACKS: Use separate snack database (100-300 cal)
-        if (mealType === 'Snack') {
+        if (
+          mealType === 'Snack' ||
+          mealType === 'Morning Snack' ||
+          mealType === 'Afternoon Snack'
+        ) {
           availableMeals = snacks[dietType] || snacks.veg || []
           targetCalories = calorieDistribution[mealType] || dailyCalories * 0.1
           console.log(
-            `   🍎 Snack from snack database (target: ${Math.round(targetCalories)} cal)`,
+            `   🍎 ${mealType} from snack database (target: ${Math.round(targetCalories)} cal)`,
           )
         } else {
           // 🍽️ MAIN MEALS: Use tier-based meal database
@@ -481,6 +511,7 @@ export function generateUltimateMealPlan(
           type: mealType,
           dishName: selectedMeal.dishName || 'Unknown Dish',
           description: selectedMeal.description || '',
+          image: selectedMeal.imageUrl || null,
           nutrition: selectedMeal.nutrition || {
             calories: 0,
             protein: 0,
