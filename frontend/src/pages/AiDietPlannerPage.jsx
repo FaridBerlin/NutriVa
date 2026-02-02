@@ -153,7 +153,7 @@ const AiDietPlannerPage = () => {
                     <div className="text-xs text-muted">calories</div>
                   </div>
                 </div>
-                <div className="relative w-full h-48 lg:h-64 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+                <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] md:aspect-[4/3] lg:aspect-[16/9] mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
                   {meal.image ? (
                     <img
                       src={meal.image}

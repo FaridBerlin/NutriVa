@@ -66,7 +66,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
       {/* Mobile toggle button */}
       <button
         onClick={() => setMobileOpen(true)}
-        className="lg:hidden fixed top-6 right-8 z-50 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-xl hover:ring-2 hover:ring-primary/50 dark:hover:ring-accentYellow/50 active:scale-95"
+        className="lg:hidden fixed top-4 right-4 z-50 w-12 h-12 bg-white dark:bg-gray-800 rounded-full shadow-lg flex items-center justify-center transition-all duration-200 hover:scale-110 hover:shadow-xl hover:ring-2 hover:ring-primary/50 dark:hover:ring-accentYellow/50 active:scale-95"
         aria-label="Open menu"
       >
         <Menu className="w-6 h-6 text-gray-800 dark:text-accentYellow transition-transform duration-200" />

@@ -149,12 +149,12 @@ export default function TodayMeals() {
                 {/* Responsive Container: Stack on mobile, side-by-side on desktop */}
                 <div className="flex flex-col md:flex-row">
                   {/* Image Section */}
-                  <div className="relative h-32 sm:h-40 md:h-auto md:w-48 lg:w-56 flex-shrink-0 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
+                  <div className="relative aspect-[4/3] sm:aspect-[16/9] md:h-auto md:aspect-auto md:w-48 lg:w-56 flex-shrink-0 overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900">
                     {meal.image ? (
                       <img
                         src={meal.image}
                         alt={meal.dishName}
-                        className="w-full h-full object-cover lg:object-contain transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-cover md:object-contain transition-transform duration-300 group-hover:scale-105"
                         onError={(e) => {
                           if (!e.target.dataset.errorHandled) {
                             e.target.dataset.errorHandled = 'true'

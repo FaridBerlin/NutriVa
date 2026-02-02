@@ -49,7 +49,7 @@ export default function DashboardHeader({ userName }) {
 
   return (
     <div
-      className={`p-6 mx-4 md:mx-6 rounded-2xl mb-6 mt-4 ${
+      className={`p-4 sm:p-6 mx-4 md:mx-6 rounded-2xl mb-4 sm:mb-6 mt-4 max-w-full ${
         isDark
           ? 'bg-gradient-to-br from-[#03121a] to-[#071423] shadow-sm border border-accentYellow/10'
           : 'bg-white shadow-lg ring-1 ring-gray-200 border border-gray-100'
