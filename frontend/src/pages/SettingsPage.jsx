@@ -265,11 +265,13 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
       <div className="max-w-3xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-textDark mb-2 flex items-center justify-center gap-2">
-            <Settings className="w-8 h-8 text-primary" /> Settings
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl font-bold text-textDark mb-2 flex items-center justify-center gap-2">
+            <Settings className="w-6 h-6 sm:w-8 sm:h-8 text-primary" /> Settings
           </h1>
-          <p className="text-textLight">Manage your profile and preferences</p>
+          <p className="text-sm sm:text-base text-textLight">
+            Manage your profile and preferences
+          </p>
         </div>
 
         {/* Message */}
@@ -291,12 +293,12 @@ export default function SettingsPage() {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Account Information */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <User className="w-5 h-5 text-primary" /> Account Information
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Name
@@ -330,8 +332,8 @@ export default function SettingsPage() {
           </Card>
 
           {/* Change Password Section */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Lock className="w-5 h-5 text-primary" /> Change Password
             </h2>
 
@@ -348,7 +350,7 @@ export default function SettingsPage() {
               </div>
             )}
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Current Password
@@ -395,24 +397,24 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            <div className="mt-4 flex justify-end">
+            <div className="mt-4 flex justify-center sm:justify-end">
               <button
                 type="button"
                 onClick={handlePasswordSubmit}
                 disabled={isChangingPassword}
-                className={`px-6 py-2.5 rounded-xl font-semibold text-white transition-all ${
+                className={`w-full sm:w-auto px-6 py-2.5 rounded-xl font-semibold text-white transition-all ${
                   isChangingPassword
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'nv-btn-primary'
                 }`}
               >
                 {isChangingPassword ? (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-2">
                     <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
                     Changing...
                   </span>
                 ) : (
-                  <span className="flex items-center gap-2">
+                  <span className="flex items-center justify-center gap-2">
                     <Lock className="w-4 h-4" /> Change Password
                   </span>
                 )}
@@ -421,13 +423,13 @@ export default function SettingsPage() {
           </Card>
 
           {/* Personal Information */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <ClipboardList className="w-5 h-5 text-primary" /> Personal
               Information
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Age
@@ -458,24 +460,24 @@ export default function SettingsPage() {
                 </select>
               </div>
 
-              <div className="md:col-span-3">
+              <div className="sm:col-span-2 md:col-span-3">
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Food Preference
                 </label>
-                <div className="flex gap-3 items-stretch">
+                <div className="flex flex-col sm:flex-row gap-3 items-stretch">
                   {foodTypes.map((type) => (
                     <button
                       key={type.value}
                       type="button"
                       onClick={() => handleChange('foodType', type.value)}
-                      className={`flex-1 h-14 p-4 rounded-lg border-2 flex items-center justify-center gap-3 transition-all ${
+                      className={`flex-1 h-14 p-3 sm:p-4 rounded-lg border-2 flex items-center justify-center gap-2 sm:gap-3 transition-all ${
                         formData.foodType === type.value
                           ? 'border-primary bg-primaryLight40'
                           : 'border-gray-200 hover:border-primary'
                       }`}
                     >
                       <type.Icon
-                        className={`w-6 h-6 ${formData.foodType === type.value ? 'text-primary' : 'text-textLight'}`}
+                        className={`w-5 h-5 sm:w-6 sm:h-6 ${formData.foodType === type.value ? 'text-primary' : 'text-textLight'}`}
                       />
                       <span className="text-sm font-medium">{type.label}</span>
                     </button>
@@ -486,12 +488,12 @@ export default function SettingsPage() {
           </Card>
 
           {/* Body Metrics */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Ruler className="w-5 h-5 text-primary" /> Body Metrics
             </h2>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-textDark mb-2">
                   Height (cm)
@@ -545,12 +547,12 @@ export default function SettingsPage() {
           </Card>
 
           {/* Activity Level */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Activity className="w-5 h-5 text-primary" /> Activity Level
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
               {activityLevels.map((level) => (
                 <button
                   key={level.value}
@@ -574,12 +576,12 @@ export default function SettingsPage() {
           </Card>
 
           {/* Dietary Goal */}
-          <Card className="p-6">
-            <h2 className="text-xl font-bold text-textDark mb-4 flex items-center gap-2">
+          <Card className="p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-bold text-textDark mb-4 flex items-center gap-2">
               <Target className="w-5 h-5 text-primary" /> Dietary Goal
             </h2>
 
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {dietaryGoals.map((goal) => (
                 <button
                   key={goal.value}
@@ -605,21 +607,21 @@ export default function SettingsPage() {
           </Card>
 
           {/* Save Button */}
-          <div className="flex justify-end">
+          <div className="flex justify-center sm:justify-end">
             <button
               type="submit"
               disabled={isSaving}
-              className={`px-8 py-3 rounded-xl font-semibold text-white transition-all ${
+              className={`w-full sm:w-auto px-6 sm:px-8 py-3 rounded-xl font-semibold text-white transition-all ${
                 isSaving ? 'bg-gray-400 cursor-not-allowed' : 'nv-btn-primary'
               }`}
             >
               {isSaving ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   <Loader2 className="w-5 h-5 animate-spin" />
                   Saving...
                 </span>
               ) : (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center justify-center gap-2">
                   <Save className="w-5 h-5" /> Save Changes
                 </span>
               )}

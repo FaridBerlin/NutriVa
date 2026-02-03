@@ -190,7 +190,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                   onClick={() => setSelectedMeal(meal)}
                 >
                   {/* Meal Header */}
-                  <div className="flex justify-between items-start mb-3">
+                  <div className="flex justify-between items-start mb-3 min-h-[64px]">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
                         {mealIcons[meal.type?.toLowerCase()] || (
@@ -200,12 +200,12 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
                           {meal.type}
                         </span>
                       </div>
-                      <h4 className="font-bold text-base sm:text-lg text-gray-800 dark:text-white leading-tight">
+                      <h4 className="font-bold text-base sm:text-lg text-gray-800 dark:text-white leading-tight line-clamp-1">
                         {meal.dishName}
                       </h4>
                     </div>
                     {meal.nutrition && (
-                      <span className="text-sm sm:text-base font-bold text-primary dark:text-accentYellow bg-primary/10 dark:bg-accentYellow/10 px-2 py-1 rounded-lg">
+                      <span className="text-sm sm:text-base font-bold text-primary dark:text-accentYellow bg-primary/10 dark:bg-accentYellow/10 px-2 py-1 rounded-lg h-fit">
                         {meal.nutrition.calories}
                       </span>
                     )}
@@ -309,23 +309,25 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
             </button>
 
             {/* Meal Header */}
-            <div className="flex items-center gap-3 mb-6">
-              {mealIcons[selectedMeal.type?.toLowerCase()] || (
-                <Utensils size={32} className="text-gray-400" />
-              )}
-              <span className="text-lg font-semibold uppercase text-gray-500 block dark:text-accentYellow">
-                {selectedMeal.type}
-              </span>
-              <h2 className="text-3xl font-bold text-gray-800">
+            <div className="mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                {mealIcons[selectedMeal.type?.toLowerCase()] || (
+                  <Utensils size={24} className="text-gray-400" />
+                )}
+                <span className="text-sm sm:text-base font-semibold uppercase text-gray-500 dark:text-accentYellow">
+                  {selectedMeal.type}
+                </span>
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-white">
                 {selectedMeal.dishName}
               </h2>
             </div>
-            <div className="relative w-full h-64 mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[16/9] mb-4 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-800">
               {selectedMeal.image ? (
                 <img
                   src={selectedMeal.image}
                   alt={selectedMeal.dishName}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover sm:object-contain"
                   onError={(e) => {
                     if (!e.target.dataset.errorHandled) {
                       e.target.dataset.errorHandled = 'true'
@@ -350,37 +352,45 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
 
             {/* Description */}
             <div className="mb-6">
-              <p className="text-gray-700 text-lg leading-relaxed">
+              <p className="text-gray-700 dark:text-gray-300 text-base sm:text-lg leading-relaxed">
                 {selectedMeal.description}
               </p>
             </div>
 
             {/* Nutrition Stats */}
             {selectedMeal.nutrition && (
-              <div className="grid grid-cols-4 gap-4 text-center mb-6 bg-gradient-to-r from-green-50 to-teal-50 p-4 rounded-lg">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 text-center mb-6 bg-gradient-to-r from-green-50 to-teal-50 dark:from-green-900/20 dark:to-teal-900/20 p-4 rounded-lg border border-green-100 dark:border-green-800/30">
                 <div>
-                  <p className="text-3xl font-bold text-teal-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-teal-600 dark:text-teal-400">
                     {selectedMeal.nutrition.calories}
                   </p>
-                  <p className="text-gray-600 text-sm font-medium">Calories</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
+                    Calories
+                  </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-blue-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">
                     {selectedMeal.nutrition.protein}g
                   </p>
-                  <p className="text-gray-600 text-sm font-medium">Protein</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
+                    Protein
+                  </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-orange-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400">
                     {selectedMeal.nutrition.carbs}g
                   </p>
-                  <p className="text-gray-600 text-sm font-medium">Carbs</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
+                    Carbs
+                  </p>
                 </div>
                 <div>
-                  <p className="text-3xl font-bold text-green-600">
+                  <p className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">
                     {selectedMeal.nutrition.fat}g
                   </p>
-                  <p className="text-gray-600 text-sm font-medium">Fat</p>
+                  <p className="text-gray-600 dark:text-gray-300 text-xs sm:text-sm font-medium">
+                    Fat
+                  </p>
                 </div>
               </div>
             )}
@@ -389,17 +399,19 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
             {selectedMeal.keyIngredients &&
               selectedMeal.keyIngredients.length > 0 && (
                 <div className="mb-6">
-                  <h3 className="font-bold text-lg mb-3 text-gray-800 flex items-center gap-2">
+                  <h3 className="font-bold text-base sm:text-lg mb-3 text-gray-800 dark:text-white flex items-center gap-2">
                     <Utensils className="w-5 h-5 text-primary dark:text-accentYellow" />
                     <span>Key Ingredients</span>
                   </h3>
-                  <ul className="grid grid-cols-2 gap-2">
+                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {selectedMeal.keyIngredients.map((ingredient, idx) => (
                       <li
                         key={idx}
-                        className="flex items-center gap-2 text-gray-700 bg-gray-50 px-3 py-2 rounded-lg"
+                        className="flex items-center gap-2 text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800 px-3 py-2 rounded-lg"
                       >
-                        <span className="text-green-600">•</span>
+                        <span className="text-green-600 dark:text-green-400">
+                          •
+                        </span>
                         <span className="capitalize">{ingredient}</span>
                       </li>
                     ))}
@@ -410,7 +422,7 @@ export default function AiMealPlanListDetails({ plan, onBack }) {
             {/* Cooking Method */}
             {selectedMeal.cookingMethod && (
               <div className="mb-6">
-                <h3 className="font-bold text-lg mb-3 text-gray-800 flex items-center gap-2">
+                <h3 className="font-bold text-base sm:text-lg mb-3 text-gray-800 dark:text-white flex items-center gap-2">
                   <Utensils className="w-5 h-5 text-primary dark:text-accentYellow" />
                   <span>Cooking Method</span>
                 </h3>

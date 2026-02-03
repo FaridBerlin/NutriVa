@@ -146,7 +146,6 @@ export default function DietTrackerPage() {
   const { profile, nutritionTargets, updateProfile } = useProfile()
 
   const [selectedDay, setSelectedDay] = useState(1)
-  const [weekOffset, setWeekOffset] = useState(0)
   const [actionLoading, setActionLoading] = useState(false)
   const [selectedMealPlanId, setSelectedMealPlanId] = useState(null)
   const [now, setNow] = useState(Date.now())
@@ -168,7 +167,7 @@ export default function DietTrackerPage() {
   }, [activeTracker])
 
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 60 * 1000) // every 1 min
+    const id = setInterval(() => setNow(Date.now()), 60 * 1000)
     return () => clearInterval(id)
   }, [])
 
@@ -179,11 +178,6 @@ export default function DietTrackerPage() {
     setSelectedDay(activeTracker.currentDay)
     setDidInitDay(true)
   }, [activeTracker, didInitDay])
-
-  // Keep the week offset synced with the currently selected day
-  useEffect(() => {
-    setWeekOffset(Math.floor((selectedDay - 1) / 7))
-  }, [selectedDay])
 
   const handleCreateTracker = async (mealPlanId) => {
     if (!mealPlanId) {
@@ -231,26 +225,12 @@ export default function DietTrackerPage() {
     }
   }
 
-  const handleClearOrphanedTracker = () => {
-    // Clear the orphaned tracker from state to show the meal plan selector
-    setShowOrphanedError(false)
-    fetchActiveTracker() // This will set activeTracker to null if tracker is orphaned
-    return (
-      <div className="flex min-h-screen bg-gray-50">
-        <Sidebar />
-        <div className="flex-1 flex items-center justify-center lg:ml-64">
-          <div className="text-xl text-muted">Loading...</div>
-        </div>
-      </div>
-    )
-  }
-
   if (showCongrats) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-gray-50 overflow-x-hidden">
         <Sidebar />
 
-        <div className="flex-1 flex items-center justify-center lg:ml-64">
+        <div className="flex-1 flex items-center justify-center lg:ml-64 w-full max-w-full">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4 text-green-500">
               <CheckCircle className="inline" />
@@ -283,9 +263,9 @@ export default function DietTrackerPage() {
   // No active tracker - show meal plan selector
   if (!activeTracker) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-gray-50 overflow-x-hidden">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-8 lg:ml-64 w-full max-w-full">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-2xl w-full">
             <div className="text-6xl mb-4 text-center">
               <FiPieChart className="inline" />
@@ -379,9 +359,9 @@ export default function DietTrackerPage() {
   // Safety check - if meal plan is missing (shouldn't happen now with backend fix)
   if (!aiMealPlan || !aiMealPlan.days || !Array.isArray(aiMealPlan.days)) {
     return (
-      <div className="flex min-h-screen bg-gray-50">
+      <div className="flex min-h-screen bg-gray-50 overflow-x-hidden">
         <Sidebar />
-        <div className="flex-1 flex items-center justify-center p-8 lg:ml-64">
+        <div className="flex-1 flex items-center justify-center p-4 sm:p-8 lg:ml-64 w-full max-w-full">
           <div className="bg-white rounded-xl shadow-md p-8 max-w-md text-center">
             <div className="text-6xl mb-4">
               <FiAlertTriangle className="inline" />
@@ -538,99 +518,89 @@ export default function DietTrackerPage() {
   const weightLoss = currentWeight - targetWeight
 
   return (
-    <div className="flex min-h-screen bg-transparent landing-page">
+    <div className="flex min-h-screen bg-transparent landing-page overflow-x-hidden">
       <Sidebar />
 
-      <div className="flex-1 p-4 md:p-8 lg:ml-64">
-        <div className="max-w-7xl mx-auto">
+      <div className="flex-1 p-4 md:p-8 lg:ml-64 w-full max-w-full overflow-x-hidden">
+        <div className="max-w-7xl mx-auto max-w-full">
           <DashboardHeader userName={user?.name} />
 
           {/* Day Selector (compact week strip) */}
-          <div className="mb-6">
-            <div className="bg-white rounded-lg shadow p-4">
-              <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-800 capitalize">
-                  {user?.name || 'User'}
-                </h1>
-                <p className="text-muted capitalize">
-                  Plan Name: {aiMealPlan.planName}
-                </p>
+          <div className="mb-6 max-w-full">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-6 max-w-full border nv-border">
+              {/* Header Section */}
+              <div className="mb-6 pb-6 border-b nv-border">
+                <div className="flex items-center justify-between flex-wrap gap-4">
+                  <div>
+                    <h1 className="text-3xl font-bold text-gray-800 dark:text-white capitalize mb-1">
+                      Welcome, {user?.name || 'User'}!
+                    </h1>
+                    <div className="flex items-center gap-2 text-muted">
+                      <FiPieChart className="text-green-500" />
+                      <p className="font-lg">
+                        <span className="text-gray-600 dark:text-gray-400">
+                          Plan:
+                        </span>{' '}
+                        <span className="capitalize text-gray-800 dark:text-white">
+                          {aiMealPlan.planName}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Progress Indicator */}
+                  <div className="bg-gradient-to-br from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 px-6 py-3 rounded-lg border-2 border-green-200 dark:border-green-700">
+                    <div className="text-xs text-muted uppercase font-semibold mb-1">
+                      Progress
+                    </div>
+                    <div className="text-2xl font-bold text-green-600 dark:text-green-400">
+                      Day {selectedDay}{' '}
+                      <span className="text-lg text-muted">
+                        / {aiMealPlan.days.length}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <label className="block text-sm font-medium nv-accent mb-3">
-                Select Day (Week view)
-              </label>
 
-              <div className="flex items-center gap-3">
-                <button
-                  onClick={() => setWeekOffset((w) => Math.max(0, w - 1))}
-                  className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
-                  aria-label="Previous week"
-                >
-                  <FiChevronLeft />
-                </button>
-
-                <div className="flex gap-2 overflow-x-auto">
-                  {(() => {
-                    const daysPerWeek = 7
-                    const totalDays = aiMealPlan.days.length
-                    const maxWeekIndex = Math.max(
-                      0,
-                      Math.ceil(totalDays / daysPerWeek) - 1,
-                    )
-                    const startDay = weekOffset * daysPerWeek + 1
-                    const pills = []
-                    for (let i = 0; i < daysPerWeek; i++) {
-                      const dayNumber = startDay + i
-                      if (dayNumber > totalDays) break
-                      const dateForDay = new Date(planStart)
-                      dateForDay.setDate(planStart.getDate() + (dayNumber - 1))
-                      const displayDate = dateForDay.toLocaleDateString(
-                        undefined,
-                        {
-                          month: 'short',
-                          day: 'numeric',
-                        },
-                      )
-                      pills.push(
-                        <button
-                          key={dayNumber}
-                          onClick={() => setSelectedDay(dayNumber)}
-                          className={`px-3 py-2 rounded-lg min-w-[84px] text-left transition-colors border ${
-                            selectedDay === dayNumber
-                              ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
-                              : 'bg-white nv-border hover:border-blue-300'
-                          }`}
-                        >
-                          <div className="text-xs text-muted">
-                            Day {dayNumber}
-                          </div>
-                          <div className="text-sm font-semibold text-gray-800">
-                            {displayDate}
-                          </div>
-                        </button>,
-                      )
-                    }
-                    return pills
-                  })()}
+              {/* Day Selector */}
+              <div>
+                <div className="flex items-center gap-2 mb-4">
+                  <FiClock className="text-blue-500" />
+                  <label className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                    Select Your Day
+                  </label>
                 </div>
+              </div>
 
-                <button
-                  onClick={() => {
-                    const maxWeek = Math.max(
-                      0,
-                      Math.ceil(aiMealPlan.days.length / 7) - 1,
-                    )
-                    setWeekOffset((w) => Math.min(maxWeek, w + 1))
-                  }}
-                  className="px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200"
-                  aria-label="Next week"
-                >
-                  <FiChevronRight />
-                </button>
+              <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+                {aiMealPlan.days.map((day) => {
+                  const dateForDay = new Date(planStart)
+                  dateForDay.setDate(planStart.getDate() + (day.dayNumber - 1))
+                  const displayDate = dateForDay.toLocaleDateString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                  })
 
-                <div className="ml-4 text-sm text-muted">
-                  Day {selectedDay} of {aiMealPlan.days.length}
-                </div>
+                  return (
+                    <button
+                      key={day.dayNumber}
+                      onClick={() => setSelectedDay(day.dayNumber)}
+                      className={`px-3 py-2 rounded-lg min-w-[84px] text-left transition-colors border flex-shrink-0 ${
+                        selectedDay === day.dayNumber
+                          ? 'bg-green-50 border-green-300 text-gray-800 dark:bg-green-900/25 dark:border-green-700 dark:text-textDark'
+                          : 'bg-white border-gray-200 hover:border-blue-300 dark:bg-gray-800 dark:border-gray-700'
+                      }`}
+                    >
+                      <div className="text-xs text-muted">
+                        Day {day.dayNumber}
+                      </div>
+                      <div className="text-sm font-semibold text-gray-800 dark:text-white">
+                        {displayDate}
+                      </div>
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -688,8 +658,8 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Macros Target
               </h3>
-              <div className="w-full h-56 md:h-72">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full aspect-square max-h-80">
+                <ResponsiveContainer width="100%" height="100%" minHeight={224}>
                   <PieChart>
                     <Pie
                       data={macrosData}
@@ -718,8 +688,8 @@ export default function DietTrackerPage() {
               <h3 className="text-xl font-bold text-gray-800 mb-4">
                 Daily Nutrition Progress
               </h3>
-              <div className="w-full h-56 md:h-72">
-                <ResponsiveContainer width="100%" height="100%">
+              <div className="w-full aspect-square max-h-80">
+                <ResponsiveContainer width="100%" height="100%" minHeight={224}>
                   <BarChart
                     data={nutritionProgressData}
                     layout="vertical"
