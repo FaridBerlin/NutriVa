@@ -82,7 +82,7 @@ export default function DashboardPage() {
 
   // Render content based on active section
   return (
-    <div className="flex min-h-screen bg-transparent landing-page">
+    <div className="flex min-h-screen bg-transparent landing-page overflow-x-hidden">
       {/* Sidebar */}
       <Sidebar
         activeSection={activeSection}
@@ -90,12 +90,12 @@ export default function DashboardPage() {
       />
 
       {/* Main Content */}
-      <div className="flex-1 ml-0 lg:ml-64">
+      <div className="flex-1 ml-0 lg:ml-64 w-full max-w-full overflow-x-hidden">
         {/* Header */}
         <DashboardHeader userName={user?.name} />
 
         {/* Content Area: Switch between dashboard and meal planner */}
-        <div className="p-8 space-y-8">
+        <div className="p-4 sm:p-6 md:p-8 space-y-4 sm:space-y-6 md:space-y-8 max-w-full">
           {activeSection === 'ai-diet-planner' ? (
             <AiDietPlannerPage />
           ) : activeSection === 'ai-meal-plans' ? (

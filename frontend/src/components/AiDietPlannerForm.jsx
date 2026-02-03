@@ -237,15 +237,15 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-8 px-4">
+    <div className="min-h-screen bg-gradient-to-b from-primaryLight40 via-white to-primaryLight40 py-4 sm:py-8 px-3 sm:px-4">
       <div className="max-w-2xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-bold text-textDark mb-2">
+        <div className="text-center mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-textDark mb-2">
             AI Diet Planner{' '}
-            <UserCircle2 className="inline w-6 h-6 ml-2 text-primary" />
+            <UserCircle2 className="inline w-5 h-5 sm:w-6 sm:h-6 ml-2 text-primary" />
           </h1>
-          <p className="text-textLight text-lg">
+          <p className="text-textLight text-base sm:text-lg">
             Let AI design your personalized nutrition plan
           </p>
         </div>
@@ -274,23 +274,23 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
               <div key={step.number} className="flex flex-col items-center">
                 <div
                   className={`
-                  w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold
+                  w-9 h-9 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center text-xl font-bold
                   transition-all duration-300
                   ${
                     currentStep >= step.number
                       ? 'bg-primary text-white shadow-lg'
                       : 'bg-gray-200 text-gray-400'
                   }
-                  ${currentStep === step.number ? 'ring-4 ring-primaryLight70' : ''}
+                  ${currentStep === step.number ? 'ring-2 sm:ring-4 ring-primaryLight70' : ''}
                 `}
                 >
                   {currentStep > step.number ? (
-                    <CheckCircle className="w-5 h-5" />
+                    <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5" />
                   ) : (
-                    step.icon
+                    <span className="text-base sm:text-lg">{step.icon}</span>
                   )}
                 </div>
-                <span className="text-xs mt-1 text-textLight font-medium">
+                <span className="text-[10px] sm:text-xs mt-1 text-textLight font-medium hidden sm:block">
                   {step.label}
                 </span>
               </div>
@@ -299,7 +299,7 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-xl p-6 md:p-8 mb-6">
+        <div className="bg-white dark:bg-gray-900 rounded-xl sm:rounded-2xl shadow-xl p-4 sm:p-6 md:p-8 mb-4 sm:mb-6">
           {renderStepContent()}
 
           {/* Error & Success Messages */}
@@ -313,36 +313,40 @@ export default function AiDietPlannerForm({ onPlanGenerated, onCancel }) {
         </div>
 
         {/* Navigation Buttons */}
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-2 sm:gap-4">
           <button
             onClick={handleBack}
             disabled={currentStep === 0}
             className={`
-              px-3 py-2.5 bg-gradient-to-l from-primary to-primaryDark 
+              px-3 sm:px-4 py-2.5 bg-gradient-to-l from-primary to-primaryDark 
               text-white rounded-lg font-semibold hover:shadow-lg 
-              transition-all transform hover:scale-105 disabled:opacity-50
+              transition-all transform hover:scale-105 disabled:opacity-50 text-sm sm:text-base
               ${currentStep === 0 ? 'cursor-not-allowed' : ''}
             `}
           >
-            <ChevronLeft className="inline w-4 h-4 mr-2" /> Back
+            <ChevronLeft className="inline w-4 h-4 mr-1 sm:mr-2" />{' '}
+            <span className="hidden sm:inline">Back</span>
+            <span className="sm:hidden">Back</span>
           </button>
 
           <button
             onClick={handleNext}
             disabled={loading}
-            className="px-3 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
+            className="px-3 sm:px-4 py-2.5 bg-gradient-to-r from-primary to-primaryDark 
                        text-white rounded-lg font-semibold hover:shadow-lg 
-                       transition-all transform hover:scale-105 disabled:opacity-50"
+                       transition-all transform hover:scale-105 disabled:opacity-50 text-sm sm:text-base"
           >
             {loading ? (
-              'Generating...'
+              <span className="text-xs sm:text-base">Generating...</span>
             ) : currentStep === totalSteps - 1 ? (
-              <span className="inline-flex items-center gap-2">
-                Generate M.P <CheckCircle className="w-4 h-4" />
+              <span className="inline-flex items-center gap-1 sm:gap-2">
+                <span className="hidden sm:inline">Generate M.P</span>
+                <span className="sm:hidden">Generate</span>
+                <CheckCircle className="w-4 h-4" />
               </span>
             ) : (
               <span className="inline-flex items-center">
-                Next <ChevronRight className="w-4 h-4 ml-2" />
+                Next <ChevronRight className="w-4 h-4 ml-1 sm:ml-2" />
               </span>
             )}
           </button>
@@ -429,7 +433,7 @@ function Step0ProfileInfo({ form, handleChange, userProfile }) {
         </div>
 
         {/* Age, Weight, Height, Gender in Grid */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           {/* Age */}
           <div>
             <label className="flex items-center text-sm font-medium text-textDark mb-2">
@@ -580,14 +584,14 @@ function Step1PlanDetails({ form, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Duration <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-5 gap-3">
+        <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3">
           {DURATION_OPTIONS.map((days) => (
             <button
               key={days}
               type="button"
               onClick={() => handleChange('duration', days)}
               className={`
-                p-4 border-2 rounded-xl text-center transition-all
+                p-3 sm:p-4 border-2 rounded-lg sm:rounded-xl text-center transition-all
                 hover:shadow-md
                 ${
                   form.duration === days
@@ -596,8 +600,10 @@ function Step1PlanDetails({ form, handleChange }) {
                 }
               `}
             >
-              <div className="text-2xl font-bold text-primary mb-1">{days}</div>
-              <div className="text-xs text-textLight">
+              <div className="text-xl sm:text-2xl font-bold text-primary mb-1">
+                {days}
+              </div>
+              <div className="text-[10px] sm:text-xs text-textLight">
                 {days === 1 ? 'day' : 'days'}
               </div>
             </button>
@@ -626,14 +632,14 @@ function Step2MealsConfig({ form, handleChange }) {
         <label className="block text-sm font-medium text-textDark mb-3">
           Number of Meals <span className="text-red-500">*</span>
         </label>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-3 sm:gap-4">
           {[2, 3, 4].map((n) => (
             <button
               key={n}
               type="button"
               onClick={() => handleChange('mealsPerDay', n)}
               className={`
-                p-6 border-2 rounded-xl text-center transition-all
+                p-4 sm:p-6 border-2 rounded-lg sm:rounded-xl text-center transition-all
                 hover:shadow-md
                 ${
                   form.mealsPerDay === n
@@ -642,8 +648,10 @@ function Step2MealsConfig({ form, handleChange }) {
                 }
               `}
             >
-              <div className="text-4xl font-bold text-primary mb-2">{n}</div>
-              <div className="text-sm text-textLight">
+              <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">
+                {n}
+              </div>
+              <div className="text-xs sm:text-sm text-textLight">
                 {n === 1 ? 'meal' : 'meals'}
               </div>
             </button>
@@ -834,17 +842,17 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
           <Clipboard className="w-5 h-5" />
           <h3 className="font-bold text-textDark">Plan Summary</h3>
         </div>
-        <div className="grid grid-cols-2 gap-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 text-xs sm:text-sm">
           <div>
             <span className="text-textLight">Plan Name:</span>
-            <span className="font-semibold text-textDark ml-2 inline">
+            <span className="font-semibold text-textDark ml-2 inline break-words">
               {form.planName || 'Not set'}
             </span>
           </div>
           <div>
             <span className="text-textLight">Duration:</span>
             <span className="font-semibold text-textDark ml-2 inline">
-              {form.duration}
+              {form.duration} days
             </span>
           </div>
           <div>
@@ -867,7 +875,7 @@ function Step4Allergens({ form, handleAllergenToggle, handleChange }) {
           </div>
           <div>
             <span className="text-textLight">Quick Generate:</span>
-            <span className=" text-sm font-semibold text-textDark ml-2 inline">
+            <span className="font-semibold text-textDark ml-2 inline">
               {form.useTemplates ? 'Yes ⚡' : 'No'}
             </span>
           </div>
