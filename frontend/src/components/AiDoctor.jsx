@@ -91,7 +91,7 @@ export default function AiDoctor() {
           </div>
           <div>
             <h1 className="text-lg sm:text-xl font-bold text-white">
-              AI Doctor
+              AI Coach
             </h1>
             <p className="text-teal-100 text-xs sm:text-sm">
               Ask me anything about nutrition & diet

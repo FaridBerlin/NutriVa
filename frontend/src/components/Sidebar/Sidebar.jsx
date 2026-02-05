@@ -176,7 +176,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
               </Link>
             </li>
 
-            {/* AI Doctor - Nutrition Chatbot */}
+            {/* AI Coach - Nutrition Chatbot */}
             <li>
               <Link
                 to="/ai-doctor"
@@ -191,7 +191,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                   className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                 />
                 <span className="font-semibold text-black dark:text-gray-700 flex-1">
-                  AI Doctor
+                  AI Coach
                 </span>
               </Link>
             </li>
@@ -377,7 +377,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                 </Link>
               </li>
 
-              {/* AI Doctor - Nutrition Chatbot */}
+              {/* AI Coach - Nutrition Chatbot */}
               <li>
                 <Link
                   to="/ai-doctor"
@@ -393,7 +393,7 @@ export default function Sidebar({ activeSection, onSectionChange }) {
                     className="text-primary dark:text-accentYellow transition-transform duration-200 group-hover:scale-110"
                   />
                   <span className="font-semibold text-black dark:text-gray-700 flex-1">
-                    AI Doctor
+                    AI Coach
                   </span>
                 </Link>
               </li>
