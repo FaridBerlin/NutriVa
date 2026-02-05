@@ -8,8 +8,8 @@ const ollama = new Ollama({
   },
 })
 
-// System prompt to guide AI Doctor behavior
-const SYSTEM_PROMPT = `You are NutriVa AI Doctor, a helpful nutrition and diet assistant.
+// System prompt to guide AI Coach behavior
+const SYSTEM_PROMPT = `You are NutriVa AI Coach, a helpful nutrition and diet assistant.
 
 ## Your Expertise:
 - Nutritional information about foods (calories, macros, vitamins, minerals)

@@ -117,7 +117,7 @@ export default function AiDoctor() {
               <Bot className="w-8 h-8 sm:w-12 sm:h-12 text-teal-600 dark:text-teal-400" />
             </div>
             <h3 className="text-base sm:text-lg font-semibold text-gray-700 dark:text-gray-200 mb-2">
-              Welcome to AI Doctor!
+              Welcome to AI Coach!
             </h3>
             <p className="max-w-md text-xs sm:text-sm">
               I'm your nutrition assistant. Ask me about calories, macros,
@@ -225,7 +225,7 @@ export default function AiDoctor() {
           </button>
         </div>
         <p className="mt-1.5 sm:mt-2 text-[10px] sm:text-xs text-gray-400 dark:text-gray-500 text-center px-2">
-          AI Doctor provides general nutrition info. Always consult a healthcare
+          AI Coach provides general nutrition info. Always consult a healthcare
           professional for medical advice.
         </p>
       </form>
