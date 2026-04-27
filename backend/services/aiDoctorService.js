@@ -67,7 +67,7 @@ export const chatWithAIDoctor = async (message, conversationHistory = []) => {
     ]
 
     const response = await ollama.chat({
-      model: 'cogito-2.1:671b',
+      model: 'deepseek-v3.1:671b',
       messages,
       stream: false, // Non-streaming for simpler API response
     })
@@ -97,7 +97,7 @@ export const streamChatWithAIDoctor = async function* (
     ]
 
     const response = await ollama.chat({
-      model: 'cogito-2.1:671b',
+      model: 'deepseek-v3.1:671b',
       messages,
       stream: true,
     })

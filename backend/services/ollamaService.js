@@ -102,7 +102,7 @@ export const generateMealPlan = async (params) => {
     })
 
     const generationPromise = ollama.generate({
-      model: 'cogito-2.1:671b',
+      model: 'deepseek-v3.1:671b',
       prompt: prompt,
       stream: false,
       format: 'json',
