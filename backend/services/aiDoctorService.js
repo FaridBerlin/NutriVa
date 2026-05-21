@@ -2,10 +2,7 @@ import { Ollama } from 'ollama'
 import config from '../config/config.js'
 
 const ollama = new Ollama({
-  host: 'https://ollama.com',
-  headers: {
-    Authorization: 'Bearer ' + config.OLLAMA_API_KEY,
-  },
+  host: config.OLLAMA_HOST,
 })
 
 // System prompt to guide AI Coach behavior
@@ -67,7 +64,7 @@ export const chatWithAIDoctor = async (message, conversationHistory = []) => {
     ]
 
     const response = await ollama.chat({
-      model: 'deepseek-v3.1:671b',
+      model: 'gemma2:2b',
       messages,
       stream: false, // Non-streaming for simpler API response
     })
@@ -97,7 +94,7 @@ export const streamChatWithAIDoctor = async function* (
     ]
 
     const response = await ollama.chat({
-      model: 'deepseek-v3.1:671b',
+      model: 'gemma2:2b',
       messages,
       stream: true,
     })
