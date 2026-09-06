@@ -62,11 +62,24 @@ export const verifyOllamaModels = async () => {
     }
 
     if (available && !available.includes(model)) {
+      // A missing model means different things depending on where we are
+      // pointed: a local daemon simply has not pulled it, whereas the hosted
+      // service has either retired it or never carried it.
+      const isLocal = /(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])/.test(
+        config.OLLAMA_HOST,
+      )
+      const advice = isLocal
+        ? `         This is a LOCAL Ollama, which has not pulled "${model}".\n` +
+          `         Either:  ollama pull ${model}      (needs enough RAM/disk)\n` +
+          `         or:      set OLLAMA_HOST=https://ollama.com to use the hosted\n` +
+          `                  service with your OLLAMA_API_KEY.\n`
+        : `         It has probably been retired. Pick one of the available models.\n`
+
       console.error(
-        `\n[ollama] "${model}" (${labels}) is NOT in the catalogue at ${config.OLLAMA_HOST}.\n` +
-          `         It has probably been retired. AI generation will fail and\n` +
-          `         fall back to templates on every request.\n` +
-          `         Available: ${available.join(', ')}\n`,
+        `\n[ollama] "${model}" (${labels}) is NOT available at ${config.OLLAMA_HOST}.\n` +
+          advice +
+          `         AI generation will fail and fall back to templates on every request.\n` +
+          `         Available here: ${available.join(', ')}\n`,
       )
       continue
     }
