@@ -82,7 +82,7 @@ EMAIL_PASS=your_app_password
 # Defaults to the hosted service; point at http://127.0.0.1:11434 for a local Ollama
 OLLAMA_HOST=https://ollama.com
 OLLAMA_API_KEY=your_api_key_here
-OLLAMA_MODEL=deepseek-v3.1:671b
+OLLAMA_MODEL=gpt-oss:120b
 OLLAMA_CHAT_MODEL=gpt-oss:120b
 ```
 

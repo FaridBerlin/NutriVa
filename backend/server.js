@@ -13,6 +13,7 @@ import aiMealPlanRouter from './routes/aiMealPlanRoutes.js'
 import aiDoctorRouter from './routes/aiDoctorRoutes.js'
 import { generalLimiter } from './middleware/rateLimiters.js'
 import { notFound, errorHandler } from './middleware/errorHandler.js'
+import { verifyOllamaModels } from './services/ollamaHealthCheck.js'
 
 await connectDB()
 
@@ -59,3 +60,7 @@ const server = app.listen(PORT, () => {
 server.timeout = 180000
 server.keepAliveTimeout = 185000
 server.headersTimeout = 190000
+
+// Confirm the configured AI models are actually reachable. Runs after listen so
+// it never delays startup, and only reports - a bad model must not stop the app.
+verifyOllamaModels()
