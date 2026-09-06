@@ -8,7 +8,7 @@ NutriVa helps you manage your health and nutrition more effectively. Whether you
 
 ## Features
 
-- **AI Health Advisor** - Get health tips and nutrition advice powered by AI
+- **AI Coach** - Get nutrition guidance and diet tips powered by AI
 - **Meal Planning** - Create personalized meal plans based on your goals
 - **Diet Tracking** - Log your meals, track calories, and monitor nutrition
 - **User Profiles** - Manage your health goals and track your progress
@@ -195,12 +195,16 @@ POST   /api/diet-trackers/day/:day/meals/:id/eat   - Mark a meal eaten
 POST   /api/diet-trackers/day/:day/meals/:id/undo  - Undo a meal
 ```
 
-**AI Doctor** — `/api/ai-doctor`
+**AI Coach** — `/api/ai-doctor`
 
 ```
 POST   /api/ai-doctor/chat               - Ask a nutrition question
 POST   /api/ai-doctor/chat/stream        - Same, streamed over SSE
 ```
+
+> The feature is named **AI Coach**. The route paths still read `ai-doctor`
+> from an earlier working title and are listed here as they actually are.
+> See `doc/` for the planned rename.
 
 ### Rate limits
 
@@ -208,7 +212,7 @@ POST   /api/ai-doctor/chat/stream        - Same, streamed over SSE
 | --- | --- |
 | Login / signup / change-password | 10 per 15 min (failed attempts only) |
 | Forgot / reset password | 5 per hour |
-| AI Doctor chat | 30 per hour, per user |
+| AI Coach chat | 30 per hour, per user |
 | Meal plan generation | 10 per hour, per user |
 | Everything else | 300 per 15 min |
 

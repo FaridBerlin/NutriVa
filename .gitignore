@@ -143,3 +143,6 @@ vite.config.ts.timestamp-*
 # Project documentation and guides
 guide/
 
+
+# Local documentation and notes (not tracked)
+doc/
