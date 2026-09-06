@@ -12,9 +12,13 @@ Recommended Range: {{calorieRange}} calories per meal
 (Aim to get close to daily target across all meals)
 
 DIETARY RULES FOR "{{foodType}}":
-- veg: Only plant-based + dairy (no meat, fish, eggs, poultry)
-- non-veg: Include meat, fish, poultry, eggs + plant-based
+- veg / vegetarian: Only plant-based + dairy (no meat, fish, eggs, poultry)
+- nonveg / non-veg: Include meat, fish, poultry, eggs + plant-based
+- vegan: Strictly plant-based (no meat, fish, eggs, dairy, or honey)
 - both: Mix of vegetarian and non-vegetarian meals
+
+ALLERGIES ARE A HARD CONSTRAINT: never include an ingredient the user
+listed under Allergies, including as a garnish, oil, milk or sauce.
 
 MEAL REQUIREMENTS:
 • {{mealPerDay}} meals/day (Breakfast, Lunch, Dinner, Snack)
@@ -49,4 +53,6 @@ CRITICAL:
 ✓ Daily total should aim for ~{{dailyCalories}} calories
 ✓ Respect "{{foodType}}" dietary preference
 ✓ Calculate realistic nutrition values (protein, carbs, fat)
+✓ ALL nutrition values MUST be plain integers, e.g. 34 — never "34g",
+  never "thirty-four", never a range like "30-40". Numbers only, no units.
 ✓ Pure JSON only - no comments or markdown

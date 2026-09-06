@@ -1,6 +1,40 @@
 import Profile from '../models/Profile.js'
 import User from '../models/User.js'
 
+// Fields a client is allowed to set on its own profile. `user` is deliberately
+// absent: it is taken from the authenticated session, never from the body.
+const PROFILE_UPDATABLE_FIELDS = [
+  'age',
+  'gender',
+  'height',
+  'weight',
+  'activityLevel',
+  'foodType',
+  'dietaryGoal',
+  'targetWeight',
+  'startWeight',
+]
+
+const buildWarnings = (profile) => {
+  const warnings = []
+  const current = Number(profile.weight)
+  const target = Number(profile.targetWeight)
+
+  if (Number.isFinite(current) && Number.isFinite(target) && current > 0) {
+    const percentChange = Math.abs(target - current) / current
+    if (percentChange > 0.4) {
+      warnings.push(
+        'Target weight differs from current weight by more than 40% — this may be unrealistic',
+      )
+    }
+    if (target < 30) {
+      warnings.push('Target weight is below the recommended safety threshold')
+    }
+  }
+
+  return warnings
+}
+
 export const completeProfile = async (req, res, next) => {
   try {
     const userId = req.user._id
@@ -61,27 +95,7 @@ export const completeProfile = async (req, res, next) => {
     //we need to import User here - this is very important to be updated
     await User.findByIdAndUpdate(userId, { profileCompleted: true })
 
-    // Calculate warnings
-    const warnings = []
-    try {
-      const current = Number(profile.weight)
-      const target = Number(profile.targetWeight)
-      if (target && current) {
-        const percentChange = Math.abs(target - current) / current
-        if (percentChange > 0.4) {
-          warnings.push(
-            'Target weight differs from current weight by more than 40% — this may be unrealistic',
-          )
-        }
-        if (target < 30) {
-          warnings.push(
-            'Target weight is below the recommended safety threshold',
-          )
-        }
-      }
-    } catch (err) {
-      // ignore
-    }
+    const warnings = buildWarnings(profile)
 
     res.status(201).json({
       success: true,
@@ -165,37 +179,21 @@ export const updateProfile = async (req, res, next) => {
       existingProfile.startWeight = Number(startWeight)
     }
 
-    // Apply other updates from body (excluding weightHistory which we've handled)
-    const updatable = { ...req.body }
-    delete updatable.weightHistory
-    // assign remaining fields onto the document
-    Object.keys(updatable).forEach((k) => {
-      existingProfile[k] = updatable[k]
-    })
+    // Apply remaining updates from the whitelist only. Assigning arbitrary
+    // body keys would let a client rewrite `user` and reassign profile
+    // ownership. weightHistory and startWeight are handled above.
+    for (const field of PROFILE_UPDATABLE_FIELDS) {
+      if (
+        field !== 'startWeight' &&
+        Object.prototype.hasOwnProperty.call(req.body, field)
+      ) {
+        existingProfile[field] = req.body[field]
+      }
+    }
 
     const profile = await existingProfile.save()
 
-    // Calculate warnings
-    const warnings = []
-    try {
-      const current = Number(profile.weight)
-      const target = Number(profile.targetWeight)
-      if (target && current) {
-        const percentChange = Math.abs(target - current) / current
-        if (percentChange > 0.4) {
-          warnings.push(
-            'Target weight differs from current weight by more than 40% — this may be unrealistic',
-          )
-        }
-        if (target < 30) {
-          warnings.push(
-            'Target weight is below the recommended safety threshold',
-          )
-        }
-      }
-    } catch (err) {
-      // ignore
-    }
+    const warnings = buildWarnings(profile)
 
     res.status(200).json({
       success: true,

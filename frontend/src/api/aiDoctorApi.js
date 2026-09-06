@@ -42,26 +42,51 @@ const aiDoctorApi = {
     const reader = response.body.getReader()
     const decoder = new TextDecoder()
 
+    // SSE events are newline-delimited but network chunks split anywhere, so
+    // hold back the trailing partial line and prepend it to the next chunk.
+    // Without this buffer, any `data:` line straddling a chunk boundary was
+    // parsed as malformed JSON and silently dropped from the answer.
+    let buffer = ''
+
+    const handleLine = (line) => {
+      if (!line.startsWith('data: ')) return false
+      const data = line.slice(6)
+      if (data === '[DONE]') return true
+      try {
+        const parsed = JSON.parse(data)
+        if (parsed.error) {
+          throw new Error(parsed.error)
+        }
+        if (parsed.content) {
+          onChunk(parsed.content)
+        }
+      } catch (err) {
+        if (err instanceof SyntaxError) return false
+        throw err
+      }
+      return false
+    }
+
     while (true) {
       const { done, value } = await reader.read()
-      if (done) break
 
-      const chunk = decoder.decode(value)
-      const lines = chunk.split('\n')
+      if (done) {
+        // Flush whatever complete line is left in the buffer.
+        buffer += decoder.decode()
+        for (const line of buffer.split('\n')) {
+          if (handleLine(line.trim())) return
+        }
+        return
+      }
+
+      buffer += decoder.decode(value, { stream: true })
+
+      const lines = buffer.split('\n')
+      // The last element is either empty or an incomplete line: keep it.
+      buffer = lines.pop() ?? ''
 
       for (const line of lines) {
-        if (line.startsWith('data: ')) {
-          const data = line.slice(6)
-          if (data === '[DONE]') return
-          try {
-            const parsed = JSON.parse(data)
-            if (parsed.content) {
-              onChunk(parsed.content)
-            }
-          } catch {
-            // Ignore parsing errors for incomplete chunks
-          }
-        }
+        if (handleLine(line.trim())) return
       }
     }
   },

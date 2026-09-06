@@ -3,9 +3,11 @@ import { Coffee, Sun, Moon, Utensils } from 'lucide-react'
 import { useState } from 'react'
 
 export default function AiMealPlanListDetails({ plan, onBack }) {
-  if (!plan) return null
-
+  // Hooks must run before any early return, otherwise React renders a
+  // different number of hooks when `plan` flips between null and set.
   const [selectedMeal, setSelectedMeal] = useState(null)
+
+  if (!plan) return null
 
   const mealIcons = {
     breakfast: <Coffee size={24} className="text-primary" />,

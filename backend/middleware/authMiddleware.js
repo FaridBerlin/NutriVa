@@ -5,11 +5,7 @@ import config from '../config/config.js'
 export const protect = async (req, res, next) => {
   let token
 
-  // Debug logging
-  console.log('🍪 Cookies received:', req.cookies)
-  console.log('📨 Authorization header:', req.headers.authorization)
-
-  if (req.cookies.token) {
+  if (req.cookies?.token) {
     token = req.cookies.token
   } else if (req.headers.authorization?.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]

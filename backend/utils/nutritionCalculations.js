@@ -127,9 +127,18 @@ export const calculateMacros = (calories, weight, goal) => {
       fatPercent = 0.28
   }
 
-  const protein = Math.round(weight * proteinPerKg)
+  let protein = Math.round(weight * proteinPerKg)
   const fat = Math.round((calories * fatPercent) / 9)
-  const carbs = Math.round((calories - (protein * 4 + fat * 9)) / 4)
+  let carbs = Math.round((calories - (protein * 4 + fat * 9)) / 4)
+
+  // A heavy user on an aggressive deficit can need more protein+fat calories
+  // than the daily target allows, which would otherwise yield negative carbs.
+  // Cap protein at what is left after fat, and keep carbs at a floor of zero.
+  if (carbs < 0) {
+    const remainingCalories = Math.max(0, calories - fat * 9)
+    protein = Math.round(remainingCalories / 4)
+    carbs = 0
+  }
 
   return { protein, carbs, fat }
 }

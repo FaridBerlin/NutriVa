@@ -133,12 +133,14 @@ export const getActiveTracker = async (req, res, next) => {
 
     // Convert to plain object first
     const enrichedTracker = tracker.toObject()
-    
+
     // Enrich all daily trackers with timing status
-    enrichedTracker.dailyTrackers = enrichedTracker.dailyTrackers.map(dayTracker => ({
-      ...dayTracker,
-      meals: enrichMealsWithTimingStatus(dayTracker.meals)
-    }))
+    enrichedTracker.dailyTrackers = enrichedTracker.dailyTrackers.map(
+      (dayTracker) => ({
+        ...dayTracker,
+        meals: enrichMealsWithTimingStatus(dayTracker.meals),
+      }),
+    )
 
     res.status(200).json(enrichedTracker)
   } catch (error) {
@@ -146,7 +148,6 @@ export const getActiveTracker = async (req, res, next) => {
     next(error)
   }
 }
-
 
 //get TrackerDay
 export const getTrackerDay = async (req, res, next) => {
@@ -176,17 +177,63 @@ export const getTrackerDay = async (req, res, next) => {
     }
 
     res.status(200).json(dayTracker)
-
   } catch (error) {
     next(error)
   }
 }
 
+//AUTO-CREATE NEXT DAY  Helper function (clean & reusable)
+const createNextDayTracker = (tracker, aiMealPlan, nextDayNumber) => {
+  // The plan can have been deleted while the tracker was still running.
+  if (!aiMealPlan) return false
+
+  const dayData = aiMealPlan.days.find((d) => d.dayNumber === nextDayNumber)
+
+  if (!dayData) return false
+
+  // Prevent duplicates
+  const exists = tracker.dailyTrackers.some(
+    (d) => d.dayNumber === nextDayNumber,
+  )
+  if (exists) return true
+
+  const nextDayTracker = {
+    date: new Date(),
+    dayNumber: nextDayNumber,
+    meals: dayData.meals.map((meal) => ({
+      mealId: meal._id.toString(),
+      name: meal.dishName,
+      category: meal.type,
+      isEaten: meal.eaten || false,
+      nutrition: meal.nutrition,
+    })),
+    consumed: {
+      calories: 0,
+      protein: 0,
+      carbs: 0,
+      fat: 0,
+    },
+    target: {
+      calories: aiMealPlan.dailyCalories,
+      protein: aiMealPlan.dailyMacros?.protein || 0,
+      carbs: aiMealPlan.dailyMacros?.carbs || 0,
+      fat: aiMealPlan.dailyMacros?.fat || 0,
+    },
+    mealsCompleted: 0,
+    totalMeals: dayData.meals.length,
+    completionPercentage: 0,
+  }
+
+  tracker.dailyTrackers.push(nextDayTracker)
+  return true
+}
+
 //mark MealAsEaten
 export const markMealAsEaten = async (req, res, next) => {
   let dayCompleted = false
-let nextDayNumber = null
-let nextDayCreated = false
+  let nextDayNumber = null
+  let nextDayCreated = false
+
   try {
     const userId = req.user._id
     const { dayNumber, mealId } = req.params
@@ -234,10 +281,10 @@ let nextDayCreated = false
     meal.eatenAt = new Date()
 
     //Update consumed macros
-    dayTracker.consumed.calories += meal.nutrition.calories
-    dayTracker.consumed.protein += meal.nutrition.protein
-    dayTracker.consumed.carbs += meal.nutrition.carbs
-    dayTracker.consumed.fat += meal.nutrition.fat
+    dayTracker.consumed.calories += meal.nutrition?.calories || 0
+    dayTracker.consumed.protein += meal.nutrition?.protein || 0
+    dayTracker.consumed.carbs += meal.nutrition?.carbs || 0
+    dayTracker.consumed.fat += meal.nutrition?.fat || 0
 
     //Update completion
     dayTracker.mealsCompleted += 1
@@ -245,30 +292,34 @@ let nextDayCreated = false
       (dayTracker.mealsCompleted / dayTracker.totalMeals) * 100,
     )
 
-    // Day completed ... create next day but DON'T auto-move currentDay
-if (dayTracker.completionPercentage === 100) {
-  dayCompleted = true
+    // Day completed: roll forward to the next day, or finish the plan.
+    if (dayTracker.completionPercentage === 100) {
+      dayCompleted = true
 
-  if (tracker.currentDay < tracker.totalDays) {
-    const aiMealPlan = await AiMealPlan.findById(tracker.aiMealPlanId)
+      if (tracker.currentDay < tracker.totalDays) {
+        const aiMealPlan = await AiMealPlan.findById(tracker.aiMealPlanId)
 
-    nextDayNumber = tracker.currentDay + 1
-    nextDayCreated = createNextDayTracker(tracker, aiMealPlan)
-    tracker.currentDay = nextDayNumber
-  } else {
-    tracker.status = 'completed'
-  }
-}
+        if (!aiMealPlan) {
+          // The plan was deleted underneath the tracker: retire it rather
+          // than dereferencing a missing document.
+          tracker.status = 'abandoned'
+          await tracker.save()
+          return res.status(404).json({
+            message: 'The meal plan for this tracker no longer exists',
+          })
+        }
 
-/*  To check */
-console.log({
-  currentDay: tracker.currentDay,
-  nextDayNumber,
-  dayCompleted,
-})
-
-await tracker.save()
-
+        nextDayNumber = tracker.currentDay + 1
+        nextDayCreated = createNextDayTracker(
+          tracker,
+          aiMealPlan,
+          nextDayNumber,
+        )
+        tracker.currentDay = nextDayNumber
+      } else {
+        tracker.status = 'completed'
+      }
+    }
 
     //Update tracker-level metrics
     tracker.updateStreak()
@@ -280,59 +331,15 @@ await tracker.save()
     await tracker.populate('aiMealPlanId')
 
     res.status(200).json({
-  message: 'Meal marked as eaten',
-  tracker,
-  dayCompleted,
-  nextDayNumber,
-  nextDayCreated,
-})
-
+      message: 'Meal marked as eaten',
+      tracker,
+      dayCompleted,
+      nextDayNumber,
+      nextDayCreated,
+    })
   } catch (error) {
     next(error)
   }
-}
-
-//AUTO-CREATE NEXT DAY  Helper function (clean & reusable)
-const createNextDayTracker = (tracker, aiMealPlan) => {
-  const nextDayNumber = tracker.currentDay + 1
-
-  const dayData = aiMealPlan.days.find((d) => d.dayNumber === nextDayNumber)
-
-  if (!dayData) return false
-
-    // Prevent duplicates
-  const exists = tracker.dailyTrackers.some((d) => d.dayNumber === nextDayNumber)
-  if (exists) return true
-
-  const nextDayTracker = {
-    date: new Date(),
-    dayNumber: nextDayNumber,
-    meals: dayData.meals.map((meal) => ({
-      mealId: meal._id.toString(),
-      name: meal.dishName,
-      category: meal.type,
-      isEaten: meal.eaten || false,
-      nutrition: meal.nutrition,
-    })),
-    consumed: {
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
-    },
-    target: {
-      calories: aiMealPlan.dailyCalories,
-      protein: aiMealPlan.dailyMacros.protein,
-      carbs: aiMealPlan.dailyMacros.carbs,
-      fat: aiMealPlan.dailyMacros.fat,
-    },
-    mealsCompleted: 0,
-    totalMeals: dayData.meals.length,
-    completionPercentage: 0,
-  }
-
-  tracker.dailyTrackers.push(nextDayTracker)
-  return true
 }
 
 // undo Meal
@@ -341,9 +348,11 @@ export const undoMeal = async (req, res, next) => {
     const { dayNumber, mealId } = req.params
     const userId = req.user._id
 
+    // A tracker that was just completed is no longer 'active', but its last
+    // meal must still be undoable.
     const tracker = await DietTracker.findOne({
       userId,
-      status: 'active',
+      status: { $in: ['active', 'completed'] },
     })
 
     if (!tracker) {
@@ -367,19 +376,43 @@ export const undoMeal = async (req, res, next) => {
       return res.status(400).json({ message: 'Meal not eaten yet' })
     }
 
+    const wasComplete = dayTracker.completionPercentage === 100
+
     //Reverse
     meal.isEaten = false
     meal.eatenAt = null
 
-    dayTracker.consumed.calories -= meal.nutrition.calories
-    dayTracker.consumed.protein -= meal.nutrition.protein
-    dayTracker.consumed.carbs -= meal.nutrition.carbs
-    dayTracker.consumed.fat -= meal.nutrition.fat
+    dayTracker.consumed.calories -= meal.nutrition?.calories || 0
+    dayTracker.consumed.protein -= meal.nutrition?.protein || 0
+    dayTracker.consumed.carbs -= meal.nutrition?.carbs || 0
+    dayTracker.consumed.fat -= meal.nutrition?.fat || 0
 
     dayTracker.mealsCompleted -= 1
     dayTracker.completionPercentage = Math.round(
       (dayTracker.mealsCompleted / dayTracker.totalMeals) * 100,
     )
+
+    // Undoing the meal that completed a day must also reverse what that
+    // completion triggered, otherwise the tracker is stuck a day ahead or
+    // permanently marked completed.
+    if (wasComplete) {
+      if (tracker.status === 'completed') {
+        tracker.status = 'active'
+      }
+
+      const undoneDay = Number(dayNumber)
+      const followingDay = tracker.dailyTrackers.find(
+        (d) => d.dayNumber === undoneDay + 1,
+      )
+
+      // Only roll back the auto-created day if nothing has been logged on it.
+      if (followingDay && followingDay.mealsCompleted === 0) {
+        tracker.dailyTrackers.pull(followingDay._id)
+        if (tracker.currentDay === undoneDay + 1) {
+          tracker.currentDay = undoneDay
+        }
+      }
+    }
 
     tracker.adherenceScore = tracker.calculateAdherenceScore()
 
@@ -402,24 +435,36 @@ export const getAllTrackers = async (req, res, next) => {
   try {
     const userId = req.user._id
 
-    const page = Number(req.query.page) || 1
-    const limit = Number(req.query.limit) || 10
+    const page = Math.max(1, Number(req.query.page) || 1)
+    const limit = Math.min(50, Math.max(1, Number(req.query.limit) || 10))
     const skip = (page - 1) * limit
 
     const filter = { userId }
 
-    if (req.query.status) {
+    // Only accept known enum values so the filter cannot be steered by a
+    // crafted query string.
+    const ALLOWED_STATUSES = ['active', 'completed', 'abandoned']
+    if (req.query.status && ALLOWED_STATUSES.includes(req.query.status)) {
       filter.status = req.query.status
     }
 
-    const sortField = req.query.sortBy || 'createdAt'
+    const ALLOWED_SORT_FIELDS = [
+      'createdAt',
+      'updatedAt',
+      'startDate',
+      'adherenceScore',
+      'currentDay',
+    ]
+    const sortField = ALLOWED_SORT_FIELDS.includes(req.query.sortBy)
+      ? req.query.sortBy
+      : 'createdAt'
     const sortOrder = req.query.order === 'asc' ? 1 : -1
 
     const trackers = await DietTracker.find(filter)
       .sort({ [sortField]: sortOrder })
       .skip(skip)
       .limit(limit)
-      .populate('mealPlanId')
+      .populate('aiMealPlanId')
 
     const total = await DietTracker.countDocuments(filter)
 

@@ -3,14 +3,11 @@ import config from '../config/config.js'
 
 // Initialize Ollama client for cloud models
 const ollama = new Ollama({
-  host: 'https://ollama.com',
-  headers: {
-    Authorization: 'Bearer ' + config.OLLAMA_API_KEY,
-  },
+  host: config.OLLAMA_HOST,
+  headers: config.OLLAMA_API_KEY
+    ? { Authorization: 'Bearer ' + config.OLLAMA_API_KEY }
+    : {},
 })
-
-console.log('🌐 AI Doctor using CLOUD models')
-console.log('🔑 API Key loaded:', config.OLLAMA_API_KEY ? 'Yes ✓' : 'NO ❌')
 
 // System prompt to guide AI Coach behavior
 const SYSTEM_PROMPT = `You are NutriVa AI Coach, a helpful nutrition and diet assistant.
@@ -71,7 +68,7 @@ export const chatWithAIDoctor = async (message, conversationHistory = []) => {
     ]
 
     const response = await ollama.chat({
-      model: 'gpt-oss:120b',
+      model: config.OLLAMA_CHAT_MODEL,
       messages,
       stream: false, // Non-streaming for simpler API response
     })
@@ -101,7 +98,7 @@ export const streamChatWithAIDoctor = async function* (
     ]
 
     const response = await ollama.chat({
-      model: 'gpt-oss:120b',
+      model: config.OLLAMA_CHAT_MODEL,
       messages,
       stream: true,
     })

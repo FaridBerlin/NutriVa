@@ -32,22 +32,11 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    // Skip token verification on public pages
-    const publicPages = ['/', '/login', '/signup', '/forgot-password']
-    const currentPath = window.location.pathname
-    const isPublicPage = publicPages.includes(currentPath) || currentPath.startsWith('/reset-password')
-
-
-    if (!isPublicPage) {
+    // Always resolve the session on mount. Skipping this on public pages left
+    // an already-logged-in visitor with user === null, so navigating from the
+    // landing page to a protected route bounced them to /login. The request is
+    // a single cookie check and returns 401 harmlessly when signed out.
     verifyToken()
-  } else {
-    setIsLoading(false)
-  }
-    // if (!publicPages.includes(currentPath)) {
-    //   verifyToken()
-    // } else {
-    //   setIsLoading(false)
-    // }
   }, [])
 
   return (

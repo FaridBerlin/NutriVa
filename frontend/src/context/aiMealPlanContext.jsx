@@ -97,7 +97,12 @@ export function AiMealPlanProvider({ children }) {
       setAllPlans((prev) => [newPlan, ...prev])
       setLastFetch(Date.now())
 
-      return { success: true, data: newPlan }
+      return {
+        success: true,
+        data: newPlan,
+        generationMethod: response.generationMethod,
+        generationDetail: response.generationDetail,
+      }
     } catch (err) {
       const errorMsg =
         err.response?.data?.message || 'Failed to generate meal plan'

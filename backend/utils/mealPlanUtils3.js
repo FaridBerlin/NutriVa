@@ -135,17 +135,111 @@ export function calculateMacroTargets(dailyCalories, goal) {
 /**
  * Calculate total nutrition for a day of meals
  */
+// --- AI output sanitising -------------------------------------------------
+// Language models do not reliably honour "return a number": they emit values
+// like "34", "34g", "1,200" or even "thirty-four". Left alone these break the
+// nutrition arithmetic (string concatenation) and then fail Mongoose's Number
+// cast, which rejects the whole plan. Coerce what we safely can, and report
+// anything we cannot so the day falls back to templates.
+
+const NUMBER_WORDS = {
+  zero: 0,
+  one: 1,
+  two: 2,
+  three: 3,
+  four: 4,
+  five: 5,
+  six: 6,
+  seven: 7,
+  eight: 8,
+  nine: 9,
+  ten: 10,
+  eleven: 11,
+  twelve: 12,
+  thirteen: 13,
+  fourteen: 14,
+  fifteen: 15,
+  sixteen: 16,
+  seventeen: 17,
+  eighteen: 18,
+  nineteen: 19,
+  twenty: 20,
+  thirty: 30,
+  forty: 40,
+  fifty: 50,
+  sixty: 60,
+  seventy: 70,
+  eighty: 80,
+  ninety: 90,
+  hundred: 100,
+  thousand: 1000,
+}
+
+export function coerceNutritionNumber(value) {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return Math.round(value)
+  }
+  if (typeof value !== 'string') return null
+
+  // Normalise unicode hyphens/dashes the model likes to use.
+  const text = value
+    .trim()
+    .toLowerCase()
+    .replace(/[\u2010-\u2015]/g, '-')
+  if (!text) return null
+
+  // "34", "34g", "1,200 kcal", "1 200"
+  const numeric = text.replace(/[,\s]/g, '').match(/^(\d+(?:\.\d+)?)/)
+  if (numeric) return Math.round(parseFloat(numeric[1]))
+
+  // "thirty-four", "one hundred twenty"
+  const parts = text.split(/[-\s]+/).filter(Boolean)
+  if (!parts.length || !parts.every((w) => w in NUMBER_WORDS)) return null
+
+  let total = 0
+  let current = 0
+  for (const word of parts) {
+    const n = NUMBER_WORDS[word]
+    if (n === 100) current = (current || 1) * 100
+    else if (n === 1000) {
+      total += (current || 1) * 1000
+      current = 0
+    } else current += n
+  }
+  return total + current
+}
+
+// Returns a meal with numeric nutrition, or null when a value is unusable.
+export function normalizeMealNutrition(meal) {
+  if (!meal || typeof meal !== 'object') return null
+  const n = meal.nutrition
+  if (!n || typeof n !== 'object') return null
+
+  const nutrition = {}
+  for (const key of ['calories', 'protein', 'carbs', 'fat']) {
+    const coerced = coerceNutritionNumber(n[key])
+    if (coerced === null || coerced < 0) return null
+    nutrition[key] = coerced
+  }
+  return { ...meal, nutrition }
+}
+
 export function calculateDayNutrition(meals) {
   if (!meals || meals.length === 0) {
     return { calories: 0, protein: 0, carbs: 0, fat: 0 }
   }
 
+  // coerce defensively: a single string value here would turn the running
+  // total into concatenated text rather than a sum.
   return meals.reduce(
     (total, meal) => ({
-      calories: total.calories + meal.nutrition.calories,
-      protein: total.protein + meal.nutrition.protein,
-      carbs: total.carbs + meal.nutrition.carbs,
-      fat: total.fat + meal.nutrition.fat,
+      calories:
+        total.calories +
+        (coerceNutritionNumber(meal?.nutrition?.calories) || 0),
+      protein:
+        total.protein + (coerceNutritionNumber(meal?.nutrition?.protein) || 0),
+      carbs: total.carbs + (coerceNutritionNumber(meal?.nutrition?.carbs) || 0),
+      fat: total.fat + (coerceNutritionNumber(meal?.nutrition?.fat) || 0),
     }),
     { calories: 0, protein: 0, carbs: 0, fat: 0 },
   )
@@ -587,6 +681,11 @@ export function generateUltimateMealPlan(
 /**
  * 🎯 V3: Validate and fix AI-generated meal plan
  */
+// How far a day's calories may drift from target before its AI meals are
+// replaced with template meals. Kept tight because this is a nutrition app,
+// but every substitution is now reported rather than happening silently.
+export const AI_DAY_VARIANCE_TOLERANCE = 10
+
 export function validateAndFixMealPlanV3(
   aiResult,
   userProfile,
@@ -599,13 +698,21 @@ export function validateAndFixMealPlanV3(
 
   if (!aiResult?.days || !Array.isArray(aiResult.days)) {
     console.warn('🔥 V3: Invalid AI result structure, using ultimate fallback')
-    return generateUltimateMealPlan(
-      userProfile,
-      planDuration,
-      mealPerDay,
-      foodType,
-      allergens,
-    )
+    return {
+      ...generateUltimateMealPlan(
+        userProfile,
+        planDuration,
+        mealPerDay,
+        foodType,
+        allergens,
+      ),
+      source: 'templates',
+      aiDays: 0,
+      templateDays: planDuration,
+      substitutions: [
+        { dayNumber: null, reason: 'AI returned an unusable structure' },
+      ],
+    }
   }
 
   const { weight, height, age, gender, activityLevel, goal } = userProfile
@@ -617,104 +724,85 @@ export function validateAndFixMealPlanV3(
   const dailyCalories = adjustCaloriesForGoal(tdee, goal || 'maintain_weight')
 
   const validatedDays = []
+  const substitutions = []
+
+  const templateDay = (dayNumber, reason) => {
+    substitutions.push({ dayNumber, reason })
+    const ultimatePlan = generateUltimateMealPlan(
+      userProfile,
+      1,
+      mealPerDay,
+      foodType,
+      allergens,
+    )
+    return { ...ultimatePlan.days[0], dayNumber }
+  }
 
   for (let i = 0; i < planDuration; i++) {
-    const day = aiResult.days[i]
+    let day = aiResult.days[i]
+    const dayNumber = i + 1
 
     if (!day || !day.meals || day.meals.length !== mealPerDay) {
-      console.warn(`Day ${i + 1} invalid, generating ultimate template day`)
-      const ultimatePlan = generateUltimateMealPlan(
-        userProfile,
-        1,
-        mealPerDay,
-        foodType,
-        allergens,
+      console.warn(`Day ${dayNumber} invalid, generating ultimate template day`)
+      validatedDays.push(
+        templateDay(
+          dayNumber,
+          `AI returned ${day?.meals?.length ?? 0} meals, expected ${mealPerDay}`,
+        ),
       )
-      validatedDays.push({
-        ...ultimatePlan.days[0],
-        dayNumber: i + 1,
-      })
-    } else {
-      const dayNutrition = calculateDayNutrition(day.meals)
-      const variance = Math.abs(dayNutrition.calories - dailyCalories)
-      const variancePercent = (variance / dailyCalories) * 100
-
-      if (variancePercent > 10) {
-        console.warn(
-          `Day ${i + 1} AI meals have ${Math.round(variancePercent)}% variance, using ultimate selection`,
-        )
-        const ultimatePlan = generateUltimateMealPlan(
-          userProfile,
-          1,
-          mealPerDay,
-          foodType,
-          allergens,
-        )
-        validatedDays.push({
-          ...ultimatePlan.days[0],
-          dayNumber: i + 1,
-        })
-      } else {
-        validatedDays.push({
-          dayNumber: i + 1,
-          meals: day.meals,
-          totalNutrition: dayNutrition,
-        })
-      }
+      continue
     }
+
+    // Coerce the model's nutrition values before they reach the arithmetic or
+    // the database; a day with an unusable value falls back to templates.
+    const normalizedMeals = day.meals.map(normalizeMealNutrition)
+    if (normalizedMeals.some((m) => m === null)) {
+      console.warn(
+        `Day ${dayNumber} had non-numeric nutrition, using templates`,
+      )
+      validatedDays.push(
+        templateDay(
+          dayNumber,
+          'AI returned nutrition values that were not numbers',
+        ),
+      )
+      continue
+    }
+    day = { ...day, meals: normalizedMeals }
+
+    const dayNutrition = calculateDayNutrition(day.meals)
+    const variance = Math.abs(dayNutrition.calories - dailyCalories)
+    const variancePercent = (variance / dailyCalories) * 100
+
+    if (variancePercent > AI_DAY_VARIANCE_TOLERANCE) {
+      console.warn(
+        `Day ${dayNumber} AI meals have ${Math.round(variancePercent)}% variance, using ultimate selection`,
+      )
+      validatedDays.push(
+        templateDay(
+          dayNumber,
+          `AI day was ${Math.round(variancePercent)}% off the ${dailyCalories} kcal target ` +
+            `(tolerance ${AI_DAY_VARIANCE_TOLERANCE}%)`,
+        ),
+      )
+      continue
+    }
+
+    validatedDays.push({
+      dayNumber,
+      meals: day.meals,
+      totalNutrition: dayNutrition,
+    })
   }
 
-  return { days: validatedDays }
-}
-
-/**
- * Generate nutrition summary for entire meal plan
- */
-export function generatePlanNutritionSummary(planData, targets) {
-  const plan = planData.days
-
-  const totals = plan.reduce(
-    (sum, day) => ({
-      calories: sum.calories + day.totalNutrition.calories,
-      protein: sum.protein + day.totalNutrition.protein,
-      carbs: sum.carbs + day.totalNutrition.carbs,
-      fat: sum.fat + day.totalNutrition.fat,
-      days: sum.days + 1,
-    }),
-    { calories: 0, protein: 0, carbs: 0, fat: 0, days: 0 },
-  )
-
-  const averages = {
-    calories: Math.round(totals.calories / totals.days),
-    protein: Math.round(totals.protein / totals.days),
-    carbs: Math.round(totals.carbs / totals.days),
-    fat: Math.round(totals.fat / totals.days),
-  }
-
-  const planMacroPercentages = calculateMacroPercentages({
-    calories: averages.calories,
-    protein: averages.protein,
-    carbs: averages.carbs,
-    fat: averages.fat,
-  })
+  const templateDays = substitutions.length
+  const aiDays = planDuration - templateDays
 
   return {
-    totalDays: totals.days,
-    planTotals: {
-      calories: Math.round(totals.calories),
-      protein: Math.round(totals.protein),
-      carbs: Math.round(totals.carbs),
-      fat: Math.round(totals.fat),
-    },
-    dailyAverages: averages,
-    macroPercentages: planMacroPercentages,
-    validationSummary: {
-      averageCalorieVariance: Math.round(
-        averages.calories - targets.dailyCalories,
-      ),
-      averageProteinVariance: Math.round(averages.protein - targets.protein),
-      averageCarbsVariance: Math.round(averages.carbs - targets.carbs),
-      averageFatVariance: Math.round(averages.fat - targets.fat),
-    },
+    days: validatedDays,
+    source: templateDays === 0 ? 'ai' : aiDays === 0 ? 'templates' : 'mixed',
+    aiDays,
+    templateDays,
+    substitutions,
   }
 }

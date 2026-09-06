@@ -1,7 +1,5 @@
 # NutriVa
 
-333
-
 A full-stack health and nutrition management platform with AI-powered features. Track meals, get personalized diet plans, and receive health consultations all in one place.
 
 ## What is NutriVa?
@@ -61,19 +59,31 @@ cd backend
 npm install
 
 # Create .env file
-cp .env.example .env
+cp .env.sample .env
 ```
 
 Update your `.env` file with:
 
 ```env
-MONGODB_URI=mongodb://localhost:27017/nutriva
-JWT_SECRET=your_secret_here
-PORT=5000
-SMTP_USER=your_email@gmail.com
-SMTP_PASS=your_password
-OLLAMA_API_URL=http://localhost:11434
+MONGO_URL=mongodb://localhost:27017
+DATABASE=nutriva
+PORT=3000
 NODE_ENV=development
+
+FRONTEND_URL=http://localhost:5173
+
+JWT_SECRET=your_secret_here
+JWT_EXPIRE=24h
+COOKIE_EXPIRE=24
+
+EMAIL_USER=your_email@gmail.com
+EMAIL_PASS=your_app_password
+
+# Defaults to the hosted service; point at http://127.0.0.1:11434 for a local Ollama
+OLLAMA_HOST=https://ollama.com
+OLLAMA_API_KEY=your_api_key_here
+OLLAMA_MODEL=deepseek-v3.1:671b
+OLLAMA_CHAT_MODEL=gpt-oss:120b
 ```
 
 Then start the backend:
@@ -82,7 +92,7 @@ Then start the backend:
 npm run dev
 ```
 
-Backend will run on `http://localhost:5000`
+Backend will run on `http://localhost:3000`
 
 ### Frontend Setup
 
@@ -93,7 +103,7 @@ cd frontend
 npm install
 
 # Create .env file (optional)
-cp .env.example .env
+cp .env.sample .env
 ```
 
 Start the development server:
@@ -131,54 +141,88 @@ NutriVa/
 
 ## API Endpoints
 
-**Authentication**
+All protected routes accept the JWT either from the `token` httpOnly cookie or
+an `Authorization: Bearer <token>` header.
+
+**Authentication** — `/api/auth`
 
 ```
-POST   /api/auth/signup         - Create new account
-POST   /api/auth/login          - Login user
-POST   /api/auth/logout         - Logout
-POST   /api/auth/refresh        - Refresh token
+POST   /api/auth/signup                  - Create new account
+POST   /api/auth/login                   - Login user
+GET    /api/auth/me                      - Current authenticated user
+POST   /api/auth/logout                  - Logout (clears cookie)
+POST   /api/auth/forgot-password         - Request a reset link
+POST   /api/auth/reset-password/:token   - Set a new password
 ```
 
-**User Profile**
+**User account** — `/api/user`
 
 ```
-GET    /api/profile             - Get profile
-PUT    /api/profile             - Update profile
+GET    /api/user/me                      - Get basic user info
+PUT    /api/user/me                      - Update basic user info
+PUT    /api/user/change-password         - Change password
 ```
 
-**Diet Tracking**
+**Profile** — `/api/profile`
 
 ```
-GET    /api/diet-tracker        - Get logged meals
-POST   /api/diet-tracker        - Add meal
-DELETE /api/diet-tracker/:id    - Delete meal
+GET    /api/profile                      - Get profile + nutrition targets
+POST   /api/profile/complete             - Create profile
+PUT    /api/profile                      - Update profile
+DELETE /api/profile                      - Delete profile
 ```
 
-**Meal Plans**
+**Meal Plans** — `/api/ai-meal-plans`
 
 ```
-POST   /api/ai-meal-plan        - Create meal plan
-GET    /api/ai-meal-plan        - Get meal plan
+POST   /api/ai-meal-plans                - Generate a meal plan
+GET    /api/ai-meal-plans                - List the user's plans
+GET    /api/ai-meal-plans/latest         - Most recent plan
+GET    /api/ai-meal-plans/days/:day      - A day from the latest plan
+GET    /api/ai-meal-plans/:id            - Get one plan
+GET    /api/ai-meal-plans/:id/day/:day   - A day from a specific plan
+DELETE /api/ai-meal-plans/:id            - Delete a plan
 ```
 
-**AI Doctor**
+**Diet Tracking** — `/api/diet-trackers`
 
 ```
-POST   /api/ai-doctor           - Ask health question
-GET    /api/ai-doctor/history   - Get chat history
+POST   /api/diet-trackers/:mealPlanId              - Start tracking a plan
+GET    /api/diet-trackers                          - List trackers (paginated)
+GET    /api/diet-trackers/active                   - Active tracker
+GET    /api/diet-trackers/day/:day                 - One day of the tracker
+POST   /api/diet-trackers/day/:day/meals/:id/eat   - Mark a meal eaten
+POST   /api/diet-trackers/day/:day/meals/:id/undo  - Undo a meal
 ```
+
+**AI Doctor** — `/api/ai-doctor`
+
+```
+POST   /api/ai-doctor/chat               - Ask a nutrition question
+POST   /api/ai-doctor/chat/stream        - Same, streamed over SSE
+```
+
+### Rate limits
+
+| Endpoint group | Limit |
+| --- | --- |
+| Login / signup / change-password | 10 per 15 min (failed attempts only) |
+| Forgot / reset password | 5 per hour |
+| AI Doctor chat | 30 per hour, per user |
+| Meal plan generation | 10 per hour, per user |
+| Everything else | 300 per 15 min |
 
 ## Development
 
 ### Linting and Formatting
 
 ```bash
-# Check code style
-npm run lint
+# Frontend: lint and format
+cd frontend && npm run lint
+cd frontend && npm run format
 
-# Fix formatting
-npm run format
+# Backend: format (no linter configured)
+cd backend && npm run format
 ```
 
 ### Building for Production
@@ -193,9 +237,13 @@ Build output will be in the `dist/` folder.
 ## Security
 
 - Passwords are hashed with bcryptjs
-- JWT-based authentication
-- Input validation on all endpoints
-- CORS protection
+- JWT-based authentication over httpOnly cookies
+- Security headers via helmet
+- Rate limiting on auth, password-reset and AI endpoints
+- Field whitelisting on profile and user updates
+- Client-supplied AI chat history is sanitised before it reaches the model
+- Input validation via express-validator
+- CORS restricted to `FRONTEND_URL`
 - Environment variables for sensitive data
 
 ## Issues & Feedback

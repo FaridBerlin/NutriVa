@@ -164,28 +164,32 @@ body {
     transform: none;
     transition: none;
   }
+}
 
-  /* Landing page: replace green(primary) with primary color in dark mode */
-  html.dark .landing-page .text-primary.text-primary {
-    color: var(--nv-heading-text);
-  }
+/* Landing-page dark overrides.
+   These must live OUTSIDE @layer utilities: Tailwind treats class names
+   inside that layer as utility candidates and re-emits them with variant
+   prefixes, which mangled these selectors into rules that never matched.
+   Replaces green (primary) with the heading colour in dark mode. */
+html.dark .landing-page .text-primary.text-primary {
+  color: var(--nv-heading-text);
+}
 
-  html.dark .landing-page .bg-primary.bg-primary {
-    background-color: rgba(52, 211, 153, 0.15);
-  }
+html.dark .landing-page .bg-primary.bg-primary {
+  background-color: rgba(52, 211, 153, 0.15);
+}
 
-  /* Replace green avatar/circle backgrounds used in testimonials/steps */
-  html.dark .landing-page .bg-primary.text-white {
-    background-color: var(--nv-heading-text);
-    color: var(--nv-card-bg);
-  }
+/* Replace green avatar/circle backgrounds used in testimonials/steps */
+html.dark .landing-page .bg-primary.text-white {
+  background-color: var(--nv-heading-text);
+  color: var(--nv-card-bg);
+}
 
-  /* Headings that use text-primary become yellow in landing dark mode */
-  html.dark .landing-page h1.text-primary.text-primary,
-  html.dark .landing-page h2.text-primary.text-primary,
-  html.dark .landing-page .text-primary.font-semibold.text-primary {
-    color: var(--nv-heading-text);
-  }
+/* Headings that use text-primary become yellow in landing dark mode */
+html.dark .landing-page h1.text-primary.text-primary,
+html.dark .landing-page h2.text-primary.text-primary,
+html.dark .landing-page .text-primary.font-semibold.text-primary {
+  color: var(--nv-heading-text);
 }
 
 html,

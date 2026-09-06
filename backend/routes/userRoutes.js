@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import { protect } from '../middleware/authMiddleware.js'
+import { authLimiter } from '../middleware/rateLimiters.js'
 import {
   getUser,
   updateUser,
@@ -18,6 +19,6 @@ userRouter.get('/me', getUser)
 userRouter.put('/me', updateUser)
 
 // PUT /api/user/change-password - Change user password
-userRouter.put('/change-password', changePassword)
+userRouter.put('/change-password', authLimiter, changePassword)
 
 export default userRouter

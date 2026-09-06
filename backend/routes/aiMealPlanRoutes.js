@@ -9,6 +9,7 @@ import {
   deleteMealPlan,
 } from '../controllers/aiMealPlanController.js'
 import AiMealPlan from '../models/AiMealPlan.js'
+import { mealPlanLimiter } from '../middleware/rateLimiters.js'
 
 const mealPlanRouter = Router()
 
@@ -16,7 +17,7 @@ const mealPlanRouter = Router()
 mealPlanRouter.use(protect)
 
 // Routes for meal plans
-mealPlanRouter.post('/', createMealPlan)
+mealPlanRouter.post('/', mealPlanLimiter, createMealPlan)
 mealPlanRouter.get('/', getMealPlans)
 mealPlanRouter.get('/latest', getLatestMealPlan)
 

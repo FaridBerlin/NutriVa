@@ -21,6 +21,7 @@ import AiDoctorPage from './pages/AiDoctorPage'
 import PrivacyPolicy from './pages/PrivacyPolicy'
 import Terms from './pages/Terms'
 import ContactPage from './pages/ContactPage'
+import NotFound from './pages/NotFound'
 
 // Components
 
@@ -137,6 +138,9 @@ function App() {
                       </ProtectedRoute>
                     }
                   />
+
+                  {/* Catch-all: unknown URLs rendered an empty layout */}
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </AppLayout>
             </Router>

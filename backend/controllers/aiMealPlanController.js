@@ -109,6 +109,10 @@ export const createMealPlan = async (req, res, next) => {
       : []
 
     let mealPlanData
+    // Truthful record of what actually produced the plan, so the client is not
+    // told 'ai' when the AI call failed and templates were used instead.
+    let generationMethod = 'templates'
+    let generationDetail = null
 
     // 🔥 V3: Build user profile for ultimate generation
     const userProfile = {
@@ -133,6 +137,11 @@ export const createMealPlan = async (req, res, next) => {
         normalizedFoodType,
         normalizedAllergens,
       )
+      generationMethod = 'templates'
+      generationDetail =
+        planDuration > 14
+          ? 'Plans longer than 14 days always use templates'
+          : 'Quick Generate was selected'
 
       // ❌ OLD V1: Random selection + scaling
       // mealPlanData = generateTemplateMealPlan(
@@ -180,7 +189,7 @@ export const createMealPlan = async (req, res, next) => {
         })
 
         // 🔥 V3: Validate and fix AI result with ultimate selection
-        mealPlanData = validateAndFixMealPlanV3(
+        const validated = validateAndFixMealPlanV3(
           aiResult,
           userProfile,
           planDuration,
@@ -188,6 +197,18 @@ export const createMealPlan = async (req, res, next) => {
           normalizedFoodType,
           normalizedAllergens,
         )
+        mealPlanData = validated
+        generationMethod =
+          validated.source === 'ai'
+            ? 'ai'
+            : validated.source === 'mixed'
+              ? 'ai-partial-templates'
+              : 'templates-ai-rejected'
+        generationDetail = {
+          aiDays: validated.aiDays,
+          templateDays: validated.templateDays,
+          substitutions: validated.substitutions,
+        }
 
         // ❌ OLD V1: Validate with random selection + scaling
         // mealPlanData = validateAndFixMealPlan(
@@ -205,6 +226,15 @@ export const createMealPlan = async (req, res, next) => {
           'AI generation failed, falling back to ULTIMATE templates V3:',
           aiError.message,
         )
+        generationMethod = 'templates-ai-failed'
+        // Surface why the AI path failed instead of silently serving templates.
+        let reason = aiError.message
+        try {
+          reason = JSON.parse(aiError.message).details || reason
+        } catch {
+          /* message was not the JSON-wrapped Ollama error */
+        }
+        generationDetail = { aiError: reason }
         // 🔥 V3: Fallback to ultimate templates
         mealPlanData = generateUltimateMealPlan(
           userProfile,
@@ -249,12 +279,14 @@ export const createMealPlan = async (req, res, next) => {
 
     await dietPlan.save()
 
+    console.log(`Plan generated via: ${generationMethod}`)
+
     return res.status(201).json({
       success: true,
       message: 'Diet plan generated successfully',
       mealPlan: dietPlan,
-      generationMethod:
-        useTemplates || planDuration > 14 ? 'templates' : 'ai-with-fallback',
+      generationMethod,
+      generationDetail,
     })
   } catch (error) {
     console.error('❌ Error generating diet plan:', error)

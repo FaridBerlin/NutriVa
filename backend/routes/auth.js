@@ -13,16 +13,24 @@ import {
   validateLogin,
   handleValidationErrors,
 } from '../middleware/validators.js'
-
-
+import {
+  authLimiter,
+  passwordResetLimiter,
+} from '../middleware/rateLimiters.js'
 
 const router = express.Router()
 
 // POST /api/auth/signup - Register new user
-router.post('/signup', validateSignup, handleValidationErrors, signup)
+router.post(
+  '/signup',
+  authLimiter,
+  validateSignup,
+  handleValidationErrors,
+  signup,
+)
 
 // POST /api/auth/login - Login user
-router.post('/login', validateLogin, handleValidationErrors, login)
+router.post('/login', authLimiter, validateLogin, handleValidationErrors, login)
 
 // GET /api/auth/me - Get current authenticated user (verify token)
 router.get('/me', protect, getUser)
@@ -31,11 +39,9 @@ router.get('/me', protect, getUser)
 router.post('/logout', logout)
 
 // POST /api/auth/forgot-password
-router.post('/forgot-password', forgotPassword)
+router.post('/forgot-password', passwordResetLimiter, forgotPassword)
 
 // POST /api/auth/reset-password/:token
-router.post('/reset-password/:token', resetPassword)
-
-
+router.post('/reset-password/:token', passwordResetLimiter, resetPassword)
 
 export default router

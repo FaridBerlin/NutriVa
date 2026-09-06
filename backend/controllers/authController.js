@@ -10,17 +10,26 @@ const generateToken = (id) => {
   })
 }
 
+// A cleared cookie is only accepted by the browser when its attributes match
+// the ones it was set with, so both paths share this.
+const cookieOptions = () => {
+  const isProduction = config.NODE_ENV === 'production'
+  return {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    path: '/',
+  }
+}
+
 const sendTokenResponse = (user, statusCode, res) => {
   const token = generateToken(user._id)
 
   const cookieExpireHours = config.COOKIE_EXPIRE
-  const isProduction = config.NODE_ENV === 'production'
 
   const options = {
+    ...cookieOptions(),
     expires: new Date(Date.now() + cookieExpireHours * 60 * 60 * 1000),
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
   }
 
   // Set cookie
@@ -37,15 +46,11 @@ const sendTokenResponse = (user, statusCode, res) => {
     },
   })
 }
-export const signup = async (req, res) => {
-  console.log(' SIGNUP REQUEST RECEIVED')
-  console.log(' Email:', req.body.email)
-
+export const signup = async (req, res, next) => {
   try {
     const { name, email, password } = req.body
     let user = await User.findOne({ email: email.toLowerCase() })
     if (user) {
-      console.log(' User already exists')
       return res.status(400).json({ message: 'User already exists' })
     }
 
@@ -56,11 +61,9 @@ export const signup = async (req, res) => {
     })
 
     await user.save()
-    console.log('✅ User created, sending cookie...')
     sendTokenResponse(user, 201, res)
   } catch (error) {
-    console.log(' Signup error:', error.message)
-    res.status(500).json({ message: error.message })
+    next(error)
   }
 }
 export const login = async (req, res) => {
@@ -98,16 +101,10 @@ export const getUser = async (req, res) => {
 }
 
 export const logout = async (req, res) => {
-  res
-    .status(200)
-    .cookie('token', 'none', {
-      expires: new Date(Date.now() + 10 * 1000),
-      httpOnly: true,
-    })
-    .json({
-      success: true,
-      message: 'Logged out successfully',
-    })
+  res.status(200).clearCookie('token', cookieOptions()).json({
+    success: true,
+    message: 'Logged out successfully',
+  })
 }
 
 // Forgot Password
@@ -120,7 +117,8 @@ export const forgotPassword = async (req, res) => {
     // Always send the same response
     res.status(200).json({
       success: true,
-      message: 'If that email exists, a reset link has been sent. Check your email.',
+      message:
+        'If that email exists, a reset link has been sent. Check your email.',
     })
 
     // If user does not exist, stop here
@@ -147,13 +145,11 @@ If you did not request this, please ignore this email.
       to: user.email,
       subject: 'Password Reset - Nutriva MealPlanner',
       text: message,
-    }).catch(err => {
+    }).catch((err) => {
       console.error('Password reset email failed:', err)
     })
-
   } catch (error) {
     console.error('Forgot password error:', error)
-    
   }
 }
 

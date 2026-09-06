@@ -1,9 +1,12 @@
 import User from '../models/User.js'
-import bcryptjs from 'bcryptjs'
+
+// Only these may be changed through the profile-settings endpoint. Anything
+// else in the body (password hashes, reset tokens, profileCompleted, _id) is
+// dropped rather than trusted.
+const USER_UPDATABLE_FIELDS = ['name']
 
 // Get basic user info (name, email) - NOT profile data
 export const getUser = async (req, res) => {
-  console.log('req.user =', req.user)
   try {
     const user = await User.findById(req.user.id).select('-password')
 
@@ -17,10 +20,22 @@ export const getUser = async (req, res) => {
 // Update basic user info (name, email) - NOT password or profile data
 export const updateUser = async (req, res) => {
   try {
-    const updates = req.body
-    // Prevent password updates through this endpoint
-    delete updates.password
-    delete updates.profileCompleted // Prevent manual manipulation
+    // Whitelist rather than blacklist: an unknown field must never reach the
+    // update. Email changes are excluded because they need a verification
+    // flow before they can be trusted.
+    const updates = {}
+    for (const field of USER_UPDATABLE_FIELDS) {
+      if (Object.prototype.hasOwnProperty.call(req.body, field)) {
+        updates[field] = req.body[field]
+      }
+    }
+
+    if (Object.keys(updates).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No updatable fields provided',
+      })
+    }
 
     const user = await User.findByIdAndUpdate(req.user.id, updates, {
       new: true,

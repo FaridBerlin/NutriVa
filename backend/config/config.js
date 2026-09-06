@@ -30,14 +30,12 @@ const config = {
   EMAIL_USER: process.env.EMAIL_USER,
   EMAIL_PASS: process.env.EMAIL_PASS,
 
-  // Meal Generator
-  MEAL_GENERATOR: process.env.MEAL_GENERATOR || 'mock',
-  USE_OLLAMA: process.env.USE_OLLAMA === 'true',
-
-  // Ollama
-  OLLAMA_HOST: process.env.OLLAMA_HOST || 'http://127.0.0.1:11434',
-  OLLAMA_BASE_URL: process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434',
+  // Ollama. Defaults to the hosted service, which is what the API key is for;
+  // point OLLAMA_HOST at a local instance to run models yourself.
+  OLLAMA_HOST: process.env.OLLAMA_HOST || 'https://ollama.com',
   OLLAMA_API_KEY: process.env.OLLAMA_API_KEY,
+  OLLAMA_MODEL: process.env.OLLAMA_MODEL || 'gpt-oss:120b',
+  OLLAMA_CHAT_MODEL: process.env.OLLAMA_CHAT_MODEL || 'gpt-oss:120b',
 }
 
 export default config
