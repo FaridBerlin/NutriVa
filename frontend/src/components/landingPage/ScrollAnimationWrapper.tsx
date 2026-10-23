@@ -1,0 +1,45 @@
+import type { ReactNode } from 'react'
+import { motion } from 'motion/react'
+
+type Direction = 'up' | 'down' | 'left' | 'right'
+
+const directionOffsets: Record<Direction, { x: number; y: number }> = {
+  up: { x: 0, y: 50 },
+  down: { x: 0, y: -50 },
+  left: { x: 50, y: 0 },
+  right: { x: -50, y: 0 },
+}
+
+interface ScrollAnimationWrapperProps {
+  children: ReactNode
+  className?: string
+  delay?: number
+  direction?: Direction
+  once?: boolean
+}
+
+/**
+ * Reusable scroll animation wrapper for landing page sections
+ * Provides smooth fade-in and slide animations on scroll
+ */
+export default function ScrollAnimationWrapper({
+  children,
+  className = '',
+  delay = 0,
+  direction = 'up',
+  once = true,
+}: ScrollAnimationWrapperProps) {
+  const offset = directionOffsets[direction]
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: offset.y, x: offset.x }}
+      whileInView={{ opacity: 1, y: 0, x: 0 }}
+      viewport={{ once, margin: '-100px' }}
+      transition={{ duration: 0.5, delay, ease: 'easeIn' }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  )
+}

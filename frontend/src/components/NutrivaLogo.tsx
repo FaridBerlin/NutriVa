@@ -1,0 +1,22 @@
+import logo from '../assets/nutriva-logo.png'
+
+type LogoSize = 'sm' | 'md' | 'lg' | 'xl'
+
+const sizeClasses: Record<LogoSize, string> = {
+  sm: 'h-20',
+  md: 'h-24',
+  lg: 'h-28',
+  xl: 'h-32',
+}
+
+export default function NutrivaLogo({ size = 'lg' }: { size?: LogoSize }) {
+  return (
+    <div className="flex items-center gap-1 select-none">
+      <img
+        src={logo}
+        alt="Nutriva Logo"
+        className={`${sizeClasses[size]} w-auto object-contain`}
+      />
+    </div>
+  )
+}

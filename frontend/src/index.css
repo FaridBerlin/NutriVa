@@ -1,6 +1,60 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/*
+  Tailwind is imported in parts so utilities can be emitted UNLAYERED at the
+  end of this file (see the bottom). That reproduces Tailwind v3's cascade,
+  which this stylesheet was written against: custom rules below beat plain
+  utilities via doubled class names, while variant utilities (dark:, hover:,
+  md:, …) still come last and win ties. With the default single import, all
+  utilities sit in a cascade layer and lose to every custom rule.
+*/
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/preflight.css' layer(base);
+
+/* Class-based dark mode (the app toggles `.dark` on <html>). `:is()` keeps
+   the same specificity as Tailwind v3's `darkMode: 'class'`. */
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --font-sans: Newsreader, ui-sans-serif, system-ui;
+  --font-display: Newsreader, system-ui;
+  --font-serif: Times New Roman, serif;
+
+  --color-primary2: #83d385; /* main green color */
+  --color-primary: #34d399;
+  --color-accentYellow: #fcd34d; /* warm yellow for dark-mode accents */
+  --color-accentYellowDark: #fdba74; /* warm orange for dark-mode accents */
+  --color-primaryDark2: #7fbc81; /* hover */
+  --color-primaryDark: #0d9488;
+  --color-primarySoft: rgba(127, 188, 129, 0.85); /* button bg */
+  --color-primaryLight70: rgba(131, 211, 133, 0.7);
+  --color-primaryLight40: rgba(131, 211, 133, 0.4);
+  --color-textDark: #2e2e2e; /* almost black */
+  --color-textLight: #6b7280;
+
+  --color-gray-600: #4b5563;
+  --color-gray-700: #374151;
+  --color-gray-800: #1f2937;
+
+  /* Utility colors */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+}
+
+/*
+  Tailwind v4 changed the default border colour to `currentcolor` and the
+  default ring to 1px currentcolor. Keep the v3 look.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 @font-face {
   font-family: 'Newsreader';
@@ -10,160 +64,294 @@
   font-display: swap;
 }
 
-/* Global styles */
-body {
-  background: linear-gradient(
-    to bottom,
-    rgba(131, 211, 133, 0.44) 0%,
-    white 50%,
-    rgba(131, 211, 133, 0.25) 100%
-  );
-  color: #111827; /* make body text dark by default for better readability */
+/* Global styles — in @layer base so Tailwind utilities can override them
+   (v4 puts utilities in a cascade layer; unlayered CSS would always win). */
+@layer base {
+  /* Global styles */
+  body {
+    background: linear-gradient(
+      to bottom,
+      rgba(131, 211, 133, 0.44) 0%,
+      white 50%,
+      rgba(131, 211, 133, 0.25) 100%
+    );
+    color: #111827; /* make body text dark by default for better readability */
+  }
 }
 
-@layer utilities {
-  html.dark body {
-    background: linear-gradient(
-      to bottom,
-      rgba(15, 23, 42, 0.9) 0%,
-      #0b1220 50%,
-      rgba(2, 6, 23, 0.9) 100%
-    );
-    color: #e5e7eb;
-  }
-  /* Make explicit bg-white utility opaque in dark mode by mapping to card bg variable */
-  html.dark .bg-white.bg-white {
-    background-color: var(--nv-card-bg);
-    color: var(--nv-card-text);
-  }
+/* Theme overrides. These deliberately stay OUTSIDE any cascade layer: in
+   Tailwind v3 this was an `@layer utilities` block that compiled to plain CSS
+   and won over utilities by specificity (hence the doubled class names). In v4
+   `@layer utilities` is a real cascade layer and would lose to the unlayered
+   rules further down, so it is kept unlayered to preserve the v3 behaviour. */
+html.dark body {
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.9) 0%,
+    #0b1220 50%,
+    rgba(2, 6, 23, 0.9) 100%
+  );
+  color: #e5e7eb;
+}
+/* Make explicit bg-white utility opaque in dark mode by mapping to card bg variable */
+html.dark .bg-white.bg-white {
+  background-color: var(--nv-card-bg);
+  color: var(--nv-card-text);
+}
 
-  /* Convert common semi-transparent white utilities to opaque card background in dark mode
-     This mapping was preventing translucent/background-blur effects on components
-     that intentionally use semi-transparent white (e.g., nav with `bg-white/30`).
-     Commenting it out so components can control their own dark-mode translucency.
-  html.dark .bg-white\/20,
-  html.dark .bg-white\/30,
-  html.dark .bg-white\/50,
-  html.dark .bg-white\/60,
-  html.dark .bg-white\/70,
-  html.dark .bg-white\/80 {
-    background-color: var(--nv-card-bg) !important;
-    color: var(--nv-card-text) !important;
-  } */
+/* Convert common semi-transparent white utilities to opaque card background in dark mode
+   This mapping was preventing translucent/background-blur effects on components
+   that intentionally use semi-transparent white (e.g., nav with `bg-white/30`).
+   Commenting it out so components can control their own dark-mode translucency.
+html.dark .bg-white\/20,
+html.dark .bg-white\/30,
+html.dark .bg-white\/50,
+html.dark .bg-white\/60,
+html.dark .bg-white\/70,
+html.dark .bg-white\/80 {
+  background-color: var(--nv-card-bg) !important;
+  color: var(--nv-card-text) !important;
+} */
 
-  /* Navbar dark-mode override removed so component classes control glass effect.
-     Previously this forced a solid gradient which prevented backdrop-blur
-     and semi-transparent backgrounds from the component's utility classes
-     (e.g., `dark:bg-slate-900/40` and `dark:backdrop-blur-md`) from showing.
-     Keeping this commented allows the Navbar component to apply a glassy
-     translucent background via its own classes. */
-  /* html.dark nav {
-    background: linear-gradient(
-      to bottom,
-      rgba(2, 6, 23, 0.85),
-      rgba(8, 12, 20, 0.85)
-    );
-    border-bottom-color: rgba(148, 163, 184, 0.06);
-  } */
+/* Navbar dark-mode override removed so component classes control glass effect.
+   Previously this forced a solid gradient which prevented backdrop-blur
+   and semi-transparent backgrounds from the component's utility classes
+   (e.g., `dark:bg-slate-900/40` and `dark:backdrop-blur-md`) from showing.
+   Keeping this commented allows the Navbar component to apply a glassy
+   translucent background via its own classes. */
+/* html.dark nav {
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 6, 23, 0.85),
+    rgba(8, 12, 20, 0.85)
+  );
+  border-bottom-color: rgba(148, 163, 184, 0.06);
+} */
 
-  /* Backdrop blur elements (e.g. header) should be darker */
-  html.dark .backdrop-blur-lg.backdrop-blur-lg {
-    background-color: rgba(2, 6, 23, 0.45);
-  }
+/* Backdrop blur elements (e.g. header) should be darker */
+html.dark .backdrop-blur-lg.backdrop-blur-lg {
+  background-color: rgba(2, 6, 23, 0.45);
+}
 
-  html.dark .text-textDark.text-textDark {
-    color: var(--nv-body-text);
-  }
+html.dark .text-textDark.text-textDark {
+  color: var(--nv-body-text);
+}
 
-  html.dark .text-textLight.text-textLight {
-    color: var(--nv-muted-text);
-  }
+html.dark .text-textLight.text-textLight {
+  color: var(--nv-muted-text);
+}
 
-  html.dark .border-gray-200.border-gray-200 {
-    border-color: var(--nv-input-border);
-  }
+html.dark .border-gray-200.border-gray-200 {
+  border-color: var(--nv-input-border);
+}
 
-  html.dark .ring-gray-200.ring-gray-200 {
-    box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.12);
-  }
+html.dark .ring-gray-200.ring-gray-200 {
+  box-shadow: 0 0 0 3px rgba(148, 163, 184, 0.12);
+}
 
-  /* Common gray/white backgrounds used across pages */
-  html.dark .bg-gray-50.bg-gray-50 {
-    background-color: var(--nv-input-bg);
-  }
+/* Common gray/white backgrounds used across pages */
+html.dark .bg-gray-50.bg-gray-50 {
+  background-color: var(--nv-input-bg);
+}
 
-  html.dark .bg-gray-100.bg-gray-100 {
-    background-color: var(--nv-card-bg);
-  }
+html.dark .bg-gray-100.bg-gray-100 {
+  background-color: var(--nv-card-bg);
+}
 
-  html.dark .bg-gray-200.bg-gray-200 {
-    background-color: var(--nv-card-bg);
-  }
+html.dark .bg-gray-200.bg-gray-200 {
+  background-color: var(--nv-card-bg);
+}
 
-  html.dark .bg-gray-300.bg-gray-300 {
-    background-color: var(--nv-card-bg);
-  }
+html.dark .bg-gray-300.bg-gray-300 {
+  background-color: var(--nv-card-bg);
+}
 
-  /* Pages that use min-h-screen wrappers (e.g., signup) */
-  html.dark .min-h-screen.min-h-screen {
-    background: linear-gradient(
-      to bottom,
-      rgba(15, 23, 42, 0.95) 0%,
-      var(--nv-card-bg) 50%,
-      rgba(2, 6, 23, 0.95) 100%
-    );
-    color: var(--nv-body-text);
-  }
+/* Pages that use min-h-screen wrappers (e.g., signup) */
+html.dark .min-h-screen.min-h-screen {
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.95) 0%,
+    var(--nv-card-bg) 50%,
+    rgba(2, 6, 23, 0.95) 100%
+  );
+  color: var(--nv-body-text);
+}
 
-  /* Text color overrides for common gray text classes */
-  html.dark .text-gray-700.text-gray-700 {
-    color: var(--nv-body-text);
-  }
+/* Text color overrides for common gray text classes */
+html.dark .text-gray-700.text-gray-700 {
+  color: var(--nv-body-text);
+}
 
-  html.dark .text-gray-500.text-gray-500 {
-    color: var(--nv-muted-text);
-  }
+html.dark .text-gray-500.text-gray-500 {
+  color: var(--nv-muted-text);
+}
 
-  /* Light-mode overrides: force commonly-used gray classes to darker color for readability */
-  html:not(.dark) .text-gray-500.text-gray-500,
-  html:not(.dark) .text-gray-600.text-gray-600,
-  html:not(.dark) .text-gray-700.text-gray-700,
-  html:not(.dark) .text-gray-400.text-gray-400,
-  html:not(.dark) .text-muted.text-muted,
-  html:not(.dark) .text-textLight.text-textLight,
-  html:not(.dark) .text-text-tertiary.text-text-tertiary,
-  html:not(.dark) .text-secondary.text-secondary {
-    color: var(--nv-body-text);
-  }
+/* Light-mode overrides: force commonly-used gray classes to darker color for readability */
+html:not(.dark) .text-gray-500.text-gray-500,
+html:not(.dark) .text-gray-600.text-gray-600,
+html:not(.dark) .text-gray-700.text-gray-700,
+html:not(.dark) .text-gray-400.text-gray-400,
+html:not(.dark) .text-muted.text-muted,
+html:not(.dark) .text-textLight.text-textLight,
+html:not(.dark) .text-text-tertiary.text-text-tertiary,
+html:not(.dark) .text-secondary.text-secondary {
+  color: var(--nv-body-text);
+}
 
-  /*hover */
-  html.dark .bg-gray-100.bg-gray-100:hover,
-  html.dark .bg-gray-200.bg-gray-200:hover,
-  html.dark .bg-gray-50.bg-gray-50:hover {
-    background-color: var(--nv-input-bg);
-  }
+/*hover */
+html.dark .bg-gray-100.bg-gray-100:hover,
+html.dark .bg-gray-200.bg-gray-200:hover,
+html.dark .bg-gray-50.bg-gray-50:hover {
+  background-color: var(--nv-input-bg);
+}
 
-  /* Apply yellow glow to dashboard cards on hover/focus when in dark mode */
-  html.dark .nv-card:hover,
-  html.dark .nv-card:focus,
-  html.dark .nv-card:focus-within {
-    box-shadow:
-      0 8px 30px rgba(251, 191, 36, 0.14),
-      0 4px 10px rgba(251, 191, 36, 0.06) inset;
-    transform: translateY(-6px) scale(1.03);
-    transition:
-      box-shadow 200ms ease,
-      transform 200ms ease;
-  }
+/* Apply yellow glow to dashboard cards on hover/focus when in dark mode */
+html.dark .nv-card:hover,
+html.dark .nv-card:focus,
+html.dark .nv-card:focus-within {
+  box-shadow:
+    0 8px 30px rgba(251, 191, 36, 0.14),
+    0 4px 10px rgba(251, 191, 36, 0.06) inset;
+  transform: translateY(-6px) scale(1.03);
+  transition:
+    box-shadow 200ms ease,
+    transform 200ms ease;
+}
 
-  /* When `nv-no-hover` is present we opt-out of the dark-mode hover transforms */
-  html.dark .nv-card.nv-no-hover:hover,
-  html.dark .nv-card.nv-no-hover:focus,
-  html.dark .nv-card.nv-no-hover:focus-within {
-    box-shadow: none;
-    transform: none;
-    transition: none;
-  }
+/* When `nv-no-hover` is present we opt-out of the dark-mode hover transforms */
+html.dark .nv-card.nv-no-hover:hover,
+html.dark .nv-card.nv-no-hover:focus,
+html.dark .nv-card.nv-no-hover:focus-within {
+  box-shadow: none;
+  transform: none;
+  transition: none;
+}
+
+/* ---------------------------------------------------------------------------
+   Tailwind v3 compatibility.
+   v3 silently generated extra rules from the overrides above: it re-emitted
+   them for variant classes (e.g. `dark:text-textDark`, `hover:bg-gray-100`)
+   and copied them into classes that `@apply` those utilities (nv-btn-primary,
+   nv-form-label, btn-*, status-*). v4 does neither, so the rules the old
+   build actually produced are listed here explicitly to keep the UI identical.
+   --------------------------------------------------------------------------- */
+html.dark .landing-page .text-primary.nv-btn-primary.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .nv-btn-primary.bg-primary {
+  background-color: #34d39926;
+}
+
+html.dark .landing-page .nv-btn-primary.text-white,
+html.dark .landing-page .bg-primary.nv-btn-primary {
+  background-color: var(--nv-heading-text);
+  color: var(--nv-card-bg);
+}
+
+html.dark .nv-form-label.text-gray-700 {
+  color: var(--nv-body-text);
+}
+
+html:not(.dark) .nv-form-label.text-gray-700 {
+  color: var(--nv-body-text);
+}
+
+html.dark .landing-page .bg-primary.nv-btn-gradient {
+  background-color: var(--nv-heading-text);
+  color: var(--nv-card-bg);
+}
+
+html.dark .landing-page .text-primary.nv-btn-gradient.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .bg-primary.btn-primary {
+  background-color: var(--nv-heading-text);
+  color: var(--nv-card-bg);
+}
+
+html.dark .landing-page .text-primary.btn-primary.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.btn-secondary.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.btn-outline.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.status-success.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.status-warning.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.status-error.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html.dark .landing-page .text-primary.status-info.text-primary {
+  color: var(--nv-heading-text);
+}
+
+html:not(.dark) .placeholder\:text-muted.text-muted::placeholder {
+  color: var(--nv-body-text);
+}
+
+html.dark .hover\:ring-gray-200:hover.hover\:ring-gray-200:hover {
+  box-shadow: 0 0 0 3px #94a3b81f;
+}
+
+html.dark .hover\:bg-gray-50:hover.hover\:bg-gray-50:hover {
+  background-color: var(--nv-input-bg);
+}
+
+html.dark .hover\:bg-gray-100:hover.hover\:bg-gray-100:hover,
+html.dark .hover\:bg-gray-200:hover.hover\:bg-gray-200:hover,
+html.dark .hover\:bg-gray-300:hover.hover\:bg-gray-300:hover {
+  background-color: var(--nv-card-bg);
+}
+
+html.dark .hover\:text-gray-700:hover.hover\:text-gray-700:hover {
+  color: var(--nv-body-text);
+}
+
+html:not(.dark) .hover\:text-gray-700:hover.hover\:text-gray-700:hover {
+  color: var(--nv-body-text);
+}
+
+html.dark .focus\:ring-gray-200:focus.focus\:ring-gray-200:focus {
+  box-shadow: 0 0 0 3px #94a3b81f;
+}
+
+html.dark .dark\:text-textDark.dark\:text-textDark {
+  color: var(--nv-body-text);
+}
+
+html.dark .dark\:text-gray-700.dark\:text-gray-700 {
+  color: var(--nv-body-text);
+}
+
+html.dark .dark\:text-gray-500.dark\:text-gray-500 {
+  color: var(--nv-muted-text);
+}
+
+/* v3 `@apply nv-input` also copied its focus/disabled states */
+.nv-form-input:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+  box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
+}
+
+.nv-form-input[disabled],
+.nv-form-input:disabled {
+  opacity: 0.9;
+  cursor: not-allowed;
 }
 
 /* Landing-page dark overrides.
@@ -192,15 +380,19 @@ html.dark .landing-page .text-primary.font-semibold.text-primary {
   color: var(--nv-heading-text);
 }
 
-html,
-body,
-#root {
-  height: 100%;
-}
+/* Root sizing and font — in @layer base so Tailwind utilities can override them
+   (v4 puts utilities in a cascade layer; unlayered CSS would always win). */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
 
-/* Set base font using CSS variable so Tailwind font families can fallback gracefully */
-html {
-  font-family: var(--font-sans);
+  /* Set base font using CSS variable so Tailwind font families can fallback gracefully */
+  html {
+    font-family: var(--font-sans);
+  }
 }
 
 /* Light-mode tweak: make the common muted gray slightly lighter (closer to white)
@@ -336,11 +528,6 @@ html.dark {
       0 4px 12px rgba(251, 191, 36, 0.06);
   }
 
-  /* Central muted text utility that respects light/dark variables */
-  .text-muted {
-    color: var(--nv-muted-text);
-  }
-
   /* Accent label that follows heading color (black in light, yellow in dark) */
   .nv-accent {
     color: var(--nv-heading-text);
@@ -355,7 +542,7 @@ html.dark {
   }
 
   .nv-input:focus {
-    @apply outline-none ring-2;
+    @apply outline-hidden ring-2 ring-blue-500/50;
     box-shadow: 0 6px 18px rgba(2, 6, 23, 0.06);
   }
 
@@ -367,16 +554,16 @@ html.dark {
 
   /* Base button used across the app */
   .nv-btn {
-    @apply rounded-lg font-semibold transition-all transform disabled:opacity-50;
+    @apply rounded-lg font-semibold transition-all disabled:opacity-50;
+  }
+
+  .nv-btn {
+    @apply px-4 py-2;
   }
 
   /* Size variants */
   .nv-btn-sm {
     @apply px-3 py-1.5 text-sm;
-  }
-
-  .nv-btn {
-    @apply px-4 py-2;
   }
 
   .nv-btn-lg {
@@ -385,7 +572,7 @@ html.dark {
 
   /* Themed button variants */
   .nv-btn-primary {
-    @apply nv-btn bg-primary hover:bg-primaryDark text-white;
+    @apply rounded-lg px-4 py-2 font-semibold transition-all disabled:opacity-50 bg-primary hover:bg-primaryDark text-white;
   }
 
   /* Form helpers */
@@ -400,7 +587,10 @@ html.dark {
   /* Alias for shared input styles (keeps existing nv-input semantics)
      Use `nv-input` on input/textarea/select elements */
   .nv-form-input {
-    @apply nv-input;
+    @apply w-full px-4 py-3 rounded-lg border transition-all;
+    background-color: var(--nv-input-bg);
+    color: var(--nv-input-text);
+    border-color: var(--nv-input-border);
   }
 
   .nv-form-actions {
@@ -409,7 +599,7 @@ html.dark {
 
   /* Gradient primary button used in forms */
   .nv-btn-gradient {
-    @apply nv-btn bg-gradient-to-r from-primary to-green-400 text-white font-semibold rounded-lg transition-all;
+    @apply rounded-lg px-4 py-2 font-semibold transition-all disabled:opacity-50 bg-linear-to-r from-primary to-green-400 text-white font-semibold rounded-lg transition-all;
   }
 
   .nv-form-success {
@@ -426,7 +616,7 @@ html.dark {
   }
 
   .nv-btn-danger {
-    @apply nv-btn bg-red-500 hover:bg-red-600 text-white;
+    @apply rounded-lg px-4 py-2 font-semibold transition-all disabled:opacity-50 bg-red-500 hover:bg-red-600 text-white;
   }
 
   /* Confined Marquee / ticker for motivational messages (safe: absolute track) */
@@ -440,40 +630,45 @@ html.dark {
   --font-display: 'CustomDisplay', var(--font-sans);
 }
 
-html {
-  font-family: var(--font-sans);
-}
-
 /* Ensure Tailwind `font-display` utility always maps to the Newsreader face first
    so components that use `font-display` reliably render the imported Newsreader font. */
-.font-display {
+.font-display.font-display {
   font-family: 'Newsreader', var(--font-sans);
 }
 
 /* Ensure every element inside the sidebar uses the Newsreader face */
-.nv-sidebar,
-.nv-sidebar * {
+.nv-sidebar.nv-sidebar,
+.nv-sidebar.nv-sidebar * {
   font-family: 'Newsreader', var(--font-sans);
 }
 
-/* Global text colors and weights (use variables so dark/light can be tuned centrally) */
-body {
-  color: var(--nv-body-text);
-  font-weight: 500;
-}
+/* Global element styles — in @layer base so Tailwind utilities (text-white,
+   text-yellow-400, …) can still override them. Tailwind v4 puts utilities in
+   a cascade layer, and unlayered CSS would otherwise always win. */
+@layer base {
+  html {
+    font-family: var(--font-sans);
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--nv-heading-text);
-  font-weight: 700;
-}
+  /* Global text colors and weights (use variables so dark/light can be tuned centrally) */
+  body {
+    color: var(--nv-body-text);
+    font-weight: 500;
+  }
 
-a {
-  color: var(--nv-link);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: var(--nv-heading-text);
+    font-weight: 700;
+  }
+
+  a {
+    color: var(--nv-link);
+  }
 }
 
 /* Map common Tailwind gray text utilities to our variables so existing classes follow theme */
@@ -489,29 +684,39 @@ a {
 }
 
 /* Ensure small-muted utilities use central muted color */
-.text-muted {
+.text-muted.text-muted {
   color: var(--nv-muted-text);
 }
 
-.btn-primary {
-  @apply w-auto px-6 py-3 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all;
+.btn-primary.btn-primary {
+  @apply w-auto px-6 py-3 bg-linear-to-r from-emerald-400 to-teal-500 text-white rounded-xl font-semibold hover:shadow-lg transition-all;
 }
-.btn-secondary {
+.btn-secondary.btn-secondary {
   @apply w-auto px-6 py-3 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-300 rounded-xl font-semibold hover:bg-emerald-200 dark:hover:bg-emerald-900/50 transition-all;
 }
-.btn-outline {
+.btn-outline.btn-outline {
   @apply w-auto px-6 py-3 border-2 border-emerald-500 text-emerald-600 dark:text-emerald-400 rounded-xl font-semibold hover:bg-emerald-50 dark:hover:bg-emerald-900/20 transition-all;
 }
 
-.status-success {
+.status-success.status-success {
   @apply bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-900/30 dark:text-emerald-200 dark:border-emerald-700 font-semibold rounded-lg p-2 my-2;
 }
-.status-warning {
+.status-warning.status-warning {
   @apply bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-900/30 dark:text-amber-200 dark:border-amber-700 font-semibold rounded-lg p-2 my-2;
 }
-.status-error {
+.status-error.status-error {
   @apply bg-red-100 text-red-800 border border-red-300 dark:bg-red-900/30 dark:text-red-200 dark:border-red-700 font-semibold rounded-lg p-2 my-2;
 }
-.status-info {
+.status-info.status-info {
   @apply bg-blue-100 text-blue-800 border border-blue-300 dark:bg-blue-900/30 dark:text-blue-200 dark:border-blue-700 font-semibold rounded-lg p-2 my-2;
 }
+
+/* Muted text that follows the light/dark variables. Declared with @utility
+   (not a plain class) so variants like `dark:text-muted` and
+   `placeholder:text-muted` are generated, as Tailwind v3 did automatically. */
+@utility text-muted {
+  color: var(--nv-muted-text);
+}
+
+/* Utilities last and unlayered — see the note at the top of this file. */
+@tailwind utilities;
