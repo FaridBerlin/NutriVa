@@ -27,17 +27,17 @@ NutriVa helps you manage your health and nutrition more effectively. Whether you
 
 **Frontend**
 
-- React 19
-- Vite
-- Tailwind CSS
-- React Router
+- React 19 + TypeScript 6 (strict mode)
+- Vite 8
+- Tailwind CSS 4
+- React Router 8
 - Recharts for charts
-- Framer Motion for animations
+- Motion (formerly Framer Motion) for animations
 - Axios for API calls
 
 ## Requirements
 
-- Node.js 18+
+- Node.js 22.22+ (required by the frontend toolchain; the backend runs on 18+)
 - MongoDB 6+
 - Ollama (for AI features)
 
@@ -131,10 +131,11 @@ NutriVa/
 │
 └── frontend/
     └── src/
-        ├── components/  # React components
-        ├── pages/       # Page components
-        ├── context/     # State management
-        ├── api/         # API calls
+        ├── components/  # React components (.tsx)
+        ├── pages/       # Page components (lazy-loaded per route)
+        ├── context/     # State management + useX() hooks
+        ├── api/         # Typed API calls
+        ├── types/       # Shared domain types mirroring the backend models
         ├── utils/       # Helpers
         └── assets/      # Images and fonts
 ```
@@ -221,7 +222,8 @@ POST   /api/ai-doctor/chat/stream        - Same, streamed over SSE
 ### Linting and Formatting
 
 ```bash
-# Frontend: lint and format
+# Frontend: type-check, lint and format
+cd frontend && npm run typecheck
 cd frontend && npm run lint
 cd frontend && npm run format
 
@@ -233,7 +235,7 @@ cd backend && npm run format
 
 ```bash
 cd frontend
-npm run build
+npm run build   # type-checks with tsc, then bundles with Vite
 ```
 
 Build output will be in the `dist/` folder.
